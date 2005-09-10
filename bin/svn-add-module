@@ -2,8 +2,8 @@
 
 # $Id$ #
 
-svn add -N $1
-# cd $JAFAR_DIR/modules/$1
+svn import -N $1 -m "new module !" svn+ssh://$USER@pollux.laas.fr/svn/jafar/jafarModules/trunk
+
 cd $1
 svn add -N COPYRIGHT Makefile README User.make doc include macro src test_suite
 svn ps svn:keywords Id COPYRIGHT Makefile README User.make
@@ -44,3 +44,5 @@ svn add *.cpp
 svn ps svn:keywords Id *.cpp
 svn add *.hpp
 svn ps svn:keywords Id *.hpp
+
+echo "\nDo not forget to commit these changes !"
