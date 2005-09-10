@@ -1,0 +1,140 @@
+/* $Id$ */
+
+/** \page pageUnitTest Unit Test in Jafar
+
+\section secTestOverview Overview
+
+In order to implement testing suites in modules we make use of Unit
+Test Framework from the <a
+href="http://boost.org/libs/test/doc/index.html">Boost Test
+Library</a>. It provides the <a
+href="http://boost.org/libs/test/doc/components/unit_test_framework/index.html">Unit
+Test Framework</a> which is a convenient way to write tests, run them
+and report test failures. It heavily relies on macro to make things
+simpler and faster for developpers.
+
+The \e Boost \e Unit \e Test \e Framework relies on three concepts. From bottom to top:
+  
+  - \e Test \e Tools provide simple assertions which rely on a predicate
+evaluation. There are also more complexe Test Tools to deal with
+exceptions for example.
+  - \e Test \e Case are functions which calls functions to be tested and
+check their behavior using Test Tools.
+  - \e Test \e Suite are collections of Test Case or Test Suite. They
+are suitable to define a hierarchy in the tests.
+
+\section secTestWrite Writing a test suite for your module
+
+The directory \c test_suite already contains a \c
+test_suite_module.cpp file that you will extend. We recommend that you
+group your test functions and classes in seperate .hpp files you \c
+#include in \c test_suite_module.cpp.
+
+Depending on the size of your module and the number of classes and
+functions you want to test, we recommend two methods to write a test
+suite for your module:
+
+  - (1) In the light solution you define a set of suitable test case as
+simple functions, or methods grouped in classes. These test case can
+test anything in your module, they are then added to the module test
+suite.  
+  - (2) In an object oriented module (hey! code is in C++), you can
+gather test case concerning a class \e Foo into a \e test_Foo class
+and also create a \e test_suite_Foo. This test suite is used to
+register all the test cases defined in \e test_Foo class. Then all the
+test suites are added to the module main test suite.
+
+There are a lot of other ways to write test case (<a
+href="http://www.boost.org/libs/test/doc/components/unit_test_framework/components/test_case/index.html">Test
+Case</a>).
+
+\subsection subsecTestMacros Most used macros
+
+Among all the macro defined in the Test Tools (<a
+href="http://boost.org/libs/test/doc/components/test_tools/reference/index.html">Refererences
+to all test tools</a>), some of them should be of common use:
+
+  - \c BOOST_CHECK( predicate )
+  - \c BOOST_CHECK_EQUAL( value1, value2 )
+
+For floating point values, a special macro must be used :
+
+  - \c BOOST_CHECK_CLOSE( value1, value2, tolerance) 
+
+You should have used exceptions to report errors, and you may want to
+test functions in order to check if they really throw the correct
+exception when expected. Test Tools provide several macro which should
+meet your needs:
+
+  - \c BOOST_CHECK_THROW(statement, exception)
+  - \c BOOST_CHECK_EXCEPTION(statement, exception, predicate)
+  - \c BOOST_CHECK_NO_THROW(statement)
+    
+\section secTestExanple Example
+
+\subsection subsecTestExample1 Using a single Test Suite per module
+
+This is a very simple example, out of the boost documentation examples
+(unit_test_example2):
+
+\code
+#include <boost/test/unit_test.hpp>
+using boost::unit_test_framework::test_suite;
+
+void force_division_by_zero()
+{
+    // unit test framework can catch operating system signals
+    BOOST_CHECKPOINT("About to force division by zero!");
+    int i = 1, j = 0;
+    i = i / j;
+}
+
+void infinite_loop()
+{
+    // unit test framework can break infinite loops by timeout
+#ifdef __unix  // don't have timeout on other platforms
+    BOOST_CHECKPOINT("About to enter an infinite loop!");
+    while(1);
+#else
+    BOOST_MESSAGE( "Timeout support is not implemented on your platform" );
+#endif
+}
+
+test_suite*
+init_unit_test_suite( int argc, char * argv[] ) {
+    test_suite* test= BOOST_TEST_SUITE( "Unit test example 2" );
+
+    test->add( BOOST_TEST_CASE( &force_division_by_zero ) );
+    test->add( BOOST_TEST_CASE( &infinite_loop ), 0, /* timeout  2 );
+
+    return test; 
+}
+\endcode
+
+\subsection subsecTestExample2 Using multiple Test Suite per module
+
+This particular example comes from helloword module in which there is
+only one class to test. The test_HelloWorld class comes in a seperate
+.cpp file.
+
+  - test_suite_helloworld.cpp:
+
+\include "test_suite_helloworld.cpp"
+
+  - test_suite_HelloWorld.hpp (test_suite_HelloWorldClass.hpp to go
+around apple filesystem limitation, but sould be test_suite_HelloWorld.hpp):
+
+\include "test_suite_HelloWorldClass.hpp"
+
+\section secTestFurther To go further...
+
+Of course the Boost Unit Test Framework is far more powerfull... You
+can for example use parameters of your test case function to run a
+same test on a set of values, use C++ templates to define generic
+tests,...
+
+  - <a href="http://boost.org/libs/test/doc/index.html">Boost Test Library</a>
+  - <a href="http://boost.org/libs/test/doc/components/test_tools/reference/index.html">refererences to all test tools (macro)</a>
+  - <a href="http://boost.org/libs/test/doc/components/unit_test_framework/index.html">Unit Test Framework</a>
+
+*/

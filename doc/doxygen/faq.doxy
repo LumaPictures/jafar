@@ -1,0 +1,36 @@
+/* $Id$ */
+
+/**
+\page pageFaq Frequently Asked Questions
+\section secIndex FAQ Index
+
+\ref subsecFaqExternalLib
+ - \ref subsubsecFaqOpenCV1
+ - \ref subsubsecJafarLinuxLaptop
+
+\section secFaqFaq JAFAR FAQ
+\subsection subsecFaqExternalLib FAQ about external libraries used in JAFAR
+\subsubsection subsubsecFaqOpenCV1 OpenCV-0.96 is developped for linux and windows. Can I use it on other unix ?
+
+We succeed in compiling and using OpenCV on MacOS 10.3.5 (may work on all MacOS X flavours), with only a few modifications of the source code:
+   - install \e Apple \e Developer \e Tools, \e Apple \e X11 with the sdk and \e fink
+   - using \e fink, install libgif, libjpeg, libtiff, libpng and openmotif3 (optionnaly ffmpeg)
+   - remove \c -no-undefined flag in <tt>cxcore/src/Makefile.in</tt>, <tt>cv/src/Makefile.in</tt>, <tt>cvaux/src/Makefile.in</tt>
+   - in <tt>cxcore/src/cxswitcher.cpp</tt>, replace \c timezone by <tt>struct timezone</tt>
+   - in <tt>cvaux/src/cveigenobjects.cpp</tt>, comment the \c icvJacobiEigens_32f function
+   - in <tt>app/haartraining/src/cvboost.cpp</tt>, replace \c malloc.h par <tt>malloc/malloc.h</tt>
+   - run \c configure with the following option:
+\verbatim
+$ ./configure CPPFLAGS="-I/sw/include" LDFLAGS="-L/sw/lib"
+\endverbatim
+   - comment \c HAVE_CAMV4L in \c cvconfig.h
+   - and now it may work with just a litte
+\verbatim
+$ make; make install
+\endverbatim
+
+On the other hand, <strong>OpenCV does not work on Sparc-Solaris </strong>, probably because of endianess incompatibility.
+
+\subsubsection subsubsecJafarLinuxLaptop I have a linux laptop and I want to use Jafar. How can I do it ?
+A extensive guideline is avalaible <a href=./pageGettingStartedfromaLinuxLaptop.html>here</a>. 
+*/

@@ -1,0 +1,147 @@
+\documentclass[a4paper,twoside,8pt]{article}
+
+% $Id$ %
+\usepackage{a4wide}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{indentfirst}
+\frenchspacing
+\usepackage{times}
+
+\ifx\pdfoutput\undefined
+  \usepackage{graphicx}
+\else
+  \usepackage[pdftex]{graphicx}
+\fi
+
+\ifx\pdfoutput\undefined
+  \usepackage[hypertex,bookmarks,linkcolor=blue,colorlinks]{hyperref}
+\else
+  \usepackage[pdftex,bookmarks,linkcolor=blue,colorlinks]{hyperref}
+\fi
+
+\title{TP Jafar : module \emph{devin}}
+\author{Thomas Lemaire}
+
+\begin{document}
+
+\maketitle
+
+\section{Pour commencer}
+
+\subsection{But du TP}
+
+Ce TP va vous familiariser avec Jafar en vous guidant tout au long de
+la réalisation d'un module très simple. Le jeu du \emph{devin}
+consiste à deviner un nombre choisi par votre partenaire (en
+l'occurence l'ordinateur) dans un intervalle pré-défini (par exemple
+$[0,100]$).  Pour cela vous devez proposer un nombre, et votre
+partenaire vous répond GAGNÉ, PLUS PETIT ou PLUS GRAND. Le but du jeu
+est de deviner le nombre avec le moins de tentatives possible.
+
+\subsection{Installation de Jafar}
+
+Vous pouvez consulter la documentation HTML de jafar à
+\url{file:///usr/local/jafar/doc/html/index.html}. Ce sujet de TP ne
+reproduit pas la documentation jafar, mais de nombreuses références y
+sont faites\ldots{} Une autre source d'inspiration peut être le module
+helloworld.
+
+Une branche (au sens subversion tu terme) particulière a été créé pour
+le TP, afin de récupérer une copie de cette branche:
+
+\begin{small}
+\begin{verbatim}
+svn co svn+ssh://pollux.laas.fr/home/tlemaire/svnroot_jafar/branches/tp_devin tp_jafar
+\end{verbatim}
+\end{small}
+
+Dans le répertoire tp\_jafar/doc/tp\_devin, le fichier tp\_env.sh peut
+vous aider à configurer votre environnement (gnu, gcc, tcl, swig,
+boost, eltclsh,...).
+
+Si besoin est, consulter la page \emph{Install} pour configurer jafar.
+
+Vous pouvez maintenant lancer \emph{configure} et \emph{make} pour les
+modules que vous venez de récupérer (kernel, jmath et helloworld) et
+vérifier que tout fonctionne bien. Dans votre shell tcl
+favori (par exemple l'alias \emph{jafar}):
+
+\begin{verbatim}
+source tp_jafar/share/jafarInit.tcl
+package require helloworld
+help helloworld::demoHello
+helloworld::demoHello 4
+\end{verbatim}
+
+\section{Module \emph{devin}}
+
+\subsection{Création du module}
+Comme indiquer sur la page \emph{Jafar module}, créer un nouveau
+module \emph{devin}, puis ``configure'' dans ce module.
+
+\subsection{Classe \emph{Devin}}
+
+Recopier les fichiers JAFAR\_DIR/doc/tp\_devin/devin.cpp,devin.hpp
+dans les répertoires correspondants de votre module, puis éditez-les
+si nécessaire. Ces fichiers définissent la classe \emph{Devin} (figure
+\ref{fig:uml_devin}). Vérifier que tout compile bien.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=7cm]{uml_devin}
+  \caption{Classe Devin}
+  \label{fig:uml_devin}
+\end{figure}
+
+Aidez vous de la page \emph{Jafar module} afin de wrapper la classe
+devin (éditer le fichier include/devin.i)
+
+Compiler\ldots{} Vous pouvez maintenant essayer de jouer au devin depuis un shell tcl !
+
+\subsection{Ajouter une erreur}
+
+Nous allons rajouter une erreur lorsque le nombre proposé n'est pas
+dans $[nbMin,nbMax]$. Consultez \emph{Jafar error} afin d'ajouter une
+erreur de type INVALID\_NUMBER (\emph{per module simple error}), puis
+modifier la méthode \verb Devin::tryNumber(). Vérifier le comportement dans
+un shell tcl.
+
+\subsection{Définir des macros tcl pour rendre le jeu plus conviviale}
+
+En C++ comme en C, les types énumérés sont représentés par un entier,
+le retour de la méthode \verb Devin::tryNumber() n'est donc pas très
+explicite. Écrire quelques macros tcl afin de rendre le jeu plus
+conviviale. Penser à définir ces macros dans l'espace de nom tcl de
+votre module (voir la page \emph{Jafar module}).
+
+\subsection{Ajouter quelques tests}
+
+Dans le répertoire test\_suite, ajouter quelques tests pour la classe
+devin, la page \emph{Unit test in Jafar} vous guidera. Quelques idées
+de tests basiques :
+\begin{itemize}
+  \item le nombre secret est bien dans l'interval $[nbMin,nbMax]$
+  \item la reponse est correcte
+  \item le nombre de coups évolue correctement
+  \item \ldots{} 
+\end{itemize}
+
+\subsection{Documentation}
+
+Éditer devin.doxy dans le répertoire doc/ de votre module, puis
+utiliser la commande \emph{doxygen} dans le répertoire JAFAR\_DIR
+pour générer la documentation. Aller voir le résultat dans
+JAFAR\_DIR/doc/html !
+
+\subsection{Utilisation d'un autre module (jmath)}
+
+Comme vous l'avez sans doute remarqué, le nombre à deviner n'est pas
+choisi au hasard. Utiliser la classe UniformDistribution définie dans
+le module jmath afin de tirer un nombre au hasard.
+
+\end{document}
+
+
+

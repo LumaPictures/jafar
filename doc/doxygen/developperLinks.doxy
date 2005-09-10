@@ -1,0 +1,65 @@
+/* $Id$ */
+
+/**
+\page pageDevelopperLinks Developper useful links
+
+
+\section secDevCPPSTL C++ STL
+
+Developers are encouraged to carefully use the C++ Standard Template
+Library as it can really make life easier. Some recommended documentations:
+
+     - <a
+href="http://gcc.gnu.org/onlinedocs/libstdc++/documentation.html"> GNU
+C++ standard library documentation </a>
+     - <a
+href="http://gcc.gnu.org/onlinedocs/libstdc++/libstdc++-html-USERS-3.4/index.html">
+libstdc++-v3 Source Documentation </a>
+     - <a href="http://www.sgi.com/tech/stl/"> SGI Standard Template
+Library Programmer's Guide </a> 
+     - <a href="http://www.dinkumware.com/refxcpp.html"> Dinkum C++
+Library Reference Manual </a>
+     -  A huge C++ course in french <a href="http://c.ftp-developpez.com/downloads/cpp/cours_cpp-1.40.6-html.zip">zipped html</a>, <a href="ftp://ftp2.developpez.biz/developpo/c/cours_cpp-1.40.4-pdf.zip">zipped pdf</a>, <a href="http://c.developpez.com/tutcpp/">online version</a>
+     - <a href="http://www.developpez.biz/download/stl.pdf"> A STL course in french </a>
+     -  Seems to be a great C ++ course (english) but in html  : <a href="ftp://ftp2.developpez.biz/developpo/cpp/bruce-eckel/TICPP-2nd-ed-Vol-one.zip">volume one</a>
+, <a href="ftp://ftp2.developpez.biz/developpo/cpp/bruce-eckel/TICPP-2nd-ed-Vol-two.zip">volume two</a>
+
+\section secDevTcl Tool Command Language (Tcl/Tk)
+
+Tcl is a powerful script language we have choosen for its
+extendability, its ease of use and the ability to build clean
+graphical user interface in a few lines with Tk.
+
+     - home page: http://www.tcl.tk
+     - manual (tcl8.4): http://www.tcl.tk/man/tcl8.4
+     - [incr Tcl] OO extension: http://incrtcl.sourceforge.net
+     - manual (itcl3.1): http://www.tcl.tk/man/itcl3.1
+
+\section secDevExternalTools External tools
+
+Jafar uses several external tools, we provide here a list of these tools
+along with relevant links to get to know them:
+
+    - Doxygen: 
+        - http://www.doxygen.org
+        - http://www.stack.nl/~dimitri/doxygen/commands.html (for a list of special commands)
+
+    - Subversion: 
+        - http://subversion.tigris.org 
+        - on-line book: http://svnbook.red-bean.com/en/1.1/index.html
+
+    - SWIG (Simple Wrapper Interface Generator): http://www.swig.org
+
+    - OpenCV (Computer Vision Library): http://www.intel.com/technology/computing/opencv/index.htm
+
+    - Boost (set of libraries): 
+        - http://www.boost.org/
+        - <a href="http://www.crystalclearsoftware.com/cgi-bin/boost_wiki/wiki.pl?BOOST_WIKI">
+boost wiki</a>
+
+    - Autoconf, Automake and Libtool: 
+        - on-line autobook: http://sources.redhat.com/autobook/ 
+        - autoconf macro archive: http://ac-archive.sourceforge.net/
+
+    - GNU M4 : http://www.gnu.org/software/m4/manual/m4.html
+*/

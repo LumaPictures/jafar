@@ -1,0 +1,69 @@
+/* $Id$ */
+
+/*! \page pageInstall Installing Jafar
+
+\section secInstallGettingSource Getting the source
+
+\subsection subsecInstallLonelyInstall Lonely installation
+
+Untar the Jafar archive in a directory of your choice, that's all ! If needed add the desired modules in the \c jafar/modules/ directory.
+
+\subsection subsecInstallVersionedInstall Versioned installation
+
+It is likely that several developpers work on inter-dependent Jafar
+modules at the same time. In this case each developper will checkout
+its own copy. LAAS users must read \ref subsecLaasCo.
+
+\section secInstallDependencies Dependencies
+
+Jafar uses \e swig to generate module's tcl interface, you must have this tool installed. Some modules use advanced swig features (and bugfix) which only appeared in swig 1.3.25.
+
+Each jafar module can have its own dependencies, the dependencies appears in the \c User.make of each module. The most often used libraries in Jafar are \e boost and \e openCV.
+
+\section secInstallConfigureMake ./configure, make
+
+    - Set your environement variable \c $JAFAR_DIR  to the directory
+where you put jafar.
+    - If necessary add to your \c $LD_LIBRARY_PATH \c $JAFAR_DIR/lib/platform.
+
+Then you can start to \e configure jafar and \e compile the modules.
+
+\subsection subsecInstallConfigure ./configure
+
+The only configure script of jafar is located in the \c jafar/ directory. It will generate \c Module.config from \c Module.config.in, and \c include/jafarConfig.h from \c include/jafarConfig.h.in: 
+    - \c Module.config defines platform specific tools and options,
+    - \c jafarConfig.h defines preprocessor variables to be used by developper for conditionnal compilation based on the current configuration (\c HAVE_LAPACK, \c HAVE_OPENGL, ...)
+
+This is a standard configure script, to get help on the available options:
+
+\verbatim
+$ ./configure --help
+\endverbatim
+
+\subsection subsecInstallMake make
+
+The compilation process of each module is driven by four Makefiles. Two of them are global to all modules, they are in the \c jafar/ directory:
+    - \c Module.rules defines compilation rules,
+    - \c Module.config defines platform specific tools and options (through configure process).
+
+The two others are in each module directory:
+    - \c Makefile is the entry point of the \e make command, it \e must not be modified,
+    - \c User.make contains all specific options related to that module.
+
+\section secInstallTclsh Tcl shell configuration
+
+In order to use jafar from a tcl shell, you need to source \c
+$JAFAR_DIR/share/initJafar.tcl to set up some variables. It is handy
+to add the \c source command into your .tclshrc file for example.
+
+We also recommend you use a completion system within your shell:
+
+  - eltclsh: http://softs.laas.fr/openrobots/tools/eltclsh.php
+  - tclreadline: http://tclreadline.sourceforge.net
+
+\section secInstallSpecific Specific instructions
+
+  - LAAS users should also refer to \ref pageGettingStartedLaas
+  - \ref pageGettingStartedfromaLinuxLaptop
+
+*/

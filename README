@@ -1,0 +1,12 @@
+Jafar, an interactive modular framework for software development
+
+                                                   copyright LAAS-CNRS 2005
+
+The entry point for the doc is doc/html/index.html. Before you need to
+run doxygen to generate the doc in html format
+(http://www.doxygen.org).
+
+The doc in raw format can be found in doc/doxygen
+
+--
+$Id$

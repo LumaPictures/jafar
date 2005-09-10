@@ -1,0 +1,23 @@
+/* $Id$ */
+
+/**
+\page pageJafarModuleCommand jafar-module command
+
+\section secJafarModuleCommandUser User help
+
+\verbinclude jafar-module_help.txt
+
+\section secJafarModuleCommandHow How does it work ?
+
+The command \c jafar-module is a tcl script located in \c
+$JAFAR_DIR/bin. It copies files from \c
+$JAFAR_DIR/share/template_module/ to a target dirctory. Moreover,
+directory names, file names and files content is parsed to process a
+search/replace on special strings:
+
+  - \c _jfr_module_: name of the module (given on the command line)
+  - \c _jfr_Module_: name of the module, first character upper-case 
+  - \c _jfr_MODULE_: name of the module, upper-case
+  - \c _jfr_date_: the current date with format year-month-day 
+
+*/

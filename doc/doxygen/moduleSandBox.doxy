@@ -1,0 +1,35 @@
+/* $Id$ */
+
+/** \page pageModuleSandBox Module sand-box
+
+This is a list of candidate module, it is to say a library which
+already exists at LAAS but has not yet been introduced in jafar. It
+can be introduced if any body needs it.
+
+
+<table> 
+
+<tr>
+<td><center><b>Description</b></center></td>
+<td><center><b>Contact</b></center></td>
+</tr>
+
+<tr>
+<td>
+Cette bibliothe`que fournit des outils permettant de construire des
+approximations de fonctions continues de'finies sur un intervalle. Les
+approximations sont fonde'es sur la somme d'un trino^me du second degre'
+et d'une se'rie de Fourier. L'approximation assure la convergence
+uniforme (lorsque l'ordre de la se'rie de Fourier tend vers l'infini)
+pour la fonction et pour ses deux premie`res de'rive'es si la fonction
+approxime'e est de classe C 2. 
+
+La bibliothèque se trouve dans /usr/local/robots/lib/fourExp avec une
+doc dans /usr/local/robots/lib/fourExp/doc
+</td>
+<td>florent@laas.fr</td>
+
+</table>
+
+
+*/

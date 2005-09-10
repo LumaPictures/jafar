@@ -1,0 +1,17 @@
+/* jafarConfig.h.in  */
+
+/* boost library */
+#undef HAVE_BOOST
+
+/* boost sandbox library */
+#undef HAVE_BOOST_SANDBOX
+
+/* lapack library */
+#undef HAVE_LAPACK
+
+/* openCV library */
+#undef HAVE_OPENCV
+
+/* opengl library */
+#undef HAVE_OPENGL
+

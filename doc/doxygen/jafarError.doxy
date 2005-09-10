@@ -1,0 +1,291 @@
+/* $Id$ */
+
+/** \page pageJafarError Jafar error
+
+\section secErrorOverview Overview
+
+Jafar adopts an error management system based on exceptions. The exception
+mechanism is a tool to report an error. When an error is detected, an
+exception is thrown and the execution of the program enters \c catch() control
+sequence.  All the errors are defined as exceptions and all derive from the
+jafar::kernel::Exception class. An \c operator<< is defined to print standard
+debug information when the exception is catched:
+
+\code
+    try {
+    // ...
+    }
+    catch(jafar::kernel::Exception& e) {
+        std::cerr << e << std::endl << std::flush;
+    }
+\endcode
+
+In Jafar, distinction between several kinds of errors is made:
+    - \ref subsecErrorCommon
+    - per module defined errors:
+        - \ref subsecErrorSimple
+        - \ref subsecErrorComplexe
+
+A given module can use common errors or errors defined in this given
+module. A function defined in a module must not throw an exception
+defined in an other module (except a
+jafar::kernel::JafarException). This is not enforced by any compiler,
+but is a rule to enable traceability of errors. Of course, if
+module \c A uses functions defined in module \c B, relevant functions
+of module \c A can propagate exceptions thrown in module \c B if they
+cannot be handled in module \c A.
+
+Moreover, each exception must have an ID attribute. This attribute is
+used to easily define new errors without having to write a whole new
+exception class when it is not needed. This ID is also useful to map
+errors between Jafar and other robotic softwares (<a
+href="http://softs.laas.fr/openrobots/tools/genom.php">GenoM</a>), or
+to report errors to a supervisor process (<a
+href="http://softs.laas.fr/openrobots/tools/openprs.php">
+OpenPRS</a>).
+
+These sections describe the glue with Tcl (\ref secExceptionSwigTcl) and with
+GenoM (\ref secGenomError).
+                
+The developper will carefully choose the kind of exception he
+needs. Examples can be found in the helloworld module.
+
+The C++ keyword \c throw() declares which exceptions a method may
+throw (if unsure have a look at a C++ manual, \ref
+pageDevelopperLinks). Use it with care, we recommend using it only
+with exceptions constructors and destructors to declare they do not
+throw any exception.
+
+\section secErrorErrors Different types of errors
+
+\subsection subsecErrorCommon Common errors
+
+The corresponding exception IDs are defined in
+jafar::kernel::JafarException :
+
+\code
+      /// This enumeration defines exceptions ID of JafarException
+      enum ExceptionId {
+        PRECONDITION,  /**< precondition not met */
+        POSTCONDITION, /**< postcondition not met */
+        INVARIANT,     /**< invariant not respected */
+        RUN_TIME,      /**< run time error, the programm should not end up here */
+        IO_STREAM      /**< input/output error when using a c++ stream*/ 
+      };
+\endcode
+
+\subsubsection subsubsecErrorContract Programmation by contract errors
+
+These errors are defined in the jafar::kernel::JafarException
+class. To use them \c #include \c "kernel/jafarException.hpp".
+
+These common errors have been defined according to the \e programmation \e
+by \e contract paragdim. These ideas are well-known and implemented in
+java by JML for example. Jafar standard exceptions are build on three
+main concepts:
+
+    - \e preconditions of a method which must be verified when it is
+    called (for example on the arguments of the method, but not only).
+    - \e postconditions of a method which must be verified after it is
+    executed (for example on the returned values of the method, but
+    not only).
+    - \e invariant on an object which must hold all along the life of
+    the object.
+
+These concepts are well-adapted to object oriented programming, but
+can also be used in functionnal programmation, substituting \e method
+with \e function, and thinking of invariant on \e global \e variables.
+
+And for ease of use three macros are also defined (in jafarMacro.hpp,
+already included by jafarException.hpp):
+
+    - JFR_PRECOND(predicate, message)
+    - JFR_POSTCOND(predicate, message)
+    - JFR_INVARIANT(predicate, message)
+
+which will throw the corresponding exception (along with the given
+message) if the \a predicate does not hold to \c TRUE.
+
+Further more, documentation on the \e contract of an entity can be
+added using doxygen special commands (\ref subsecCodeDocErrors).
+
+\subsubsection subsubsecErrorRunTime Run time error
+
+An other last standard error is called \c RUN_TIME. It can be used to
+throw an error when the execution end up in a forbidden place, for
+example in the \c default of a switch/case.
+
+For ease of use a macro is defined:
+
+    - JFR_RUN_TIME(message)
+
+\subsubsection subsubsecErrorIOStream Input/Output error
+
+Input/Output operations must always be handled with care since they
+can fail. STL offers the \e stream mechanism, but this is up to the
+user to check if the operation succeded. In jafar developpers must do
+these verifications, and in many cases, a detected error must be
+propagated using an exception. For this purpose, a
+jafar::kernel::JafarException with ID IO_STREAM is defined, it can be
+easily thrown with the macro:
+
+     - JFR_IO_STREAM(predicate, message)
+
+Example:
+
+\code 
+  void T3D::read(const std::string& fileName_) { 
+    std::ifstream file(fileName_.c_str()); 
+    JFR_IO_STREAM(file, "error while opening file " << fileName_); 
+    try { 
+      file >> (*this); 
+    }
+    catch(jafar::kernel::Exception& e) { 
+      JFR_TRACE(e," (reading file:" << fileName_ << ")"); 
+      throw; 
+    } 
+    file.close(); 
+  } 
+\endcode
+
+\subsection subsecErrorSimple Per module simple errors
+
+When a module is created using the jafar-module command (\ref
+secModuleNewModule), it comes with a standard exception class \c
+ModuleException defined in \c moduleException.hpp. The class \c
+ModuleException derives from jafar::kernel::Exception as required, and
+adds an \em ID attribute. \e ID is an enum called \c ExceptionId, and
+this enum is initially empty. To add a simple error, the developper
+only has to add a new enum value in \c ExceptionId, that's all !
+
+To throw such an exception, two macros are defined in (jafarMacro.hpp):
+
+  - JFR_ERROR(ExceptionName, id, message)
+  - JFR_PRED_ERROR(predicate, ExceptionName, id, message)
+
+Further more, it is recommended to modify the \c exceptionIdToString()
+method to take into account the new enum value. This method is called
+when the message of an exception is built (if \c exceptionIdToString()
+is not modified, only an integer corresponding to the enum is
+printed).
+
+\subsection subsecErrorComplexe Per module complex errors
+
+If the developper needs a more complex exception, for example extra
+attributes or extra methods, a new exception class can be
+defined. This must be done on a per module basis, and the new class
+must derive form \c ModuleException class. Also a corresponding enum
+value must be added to \c ModuleException::ExceptionId, and \c
+ModuleException::exceptionIdToString() method should be modified
+accordingly. 
+
+If the constructor signature of the exception match the standard one,
+JFR_ERROR(ExceptionName, id, message) can still be used.
+
+\subsection subsecErrorMacros About the macros
+
+All the macros described above are defined in jafarMacro.hpp (module
+\ref kernel). For ease of use, the argument called \c message is in
+fact given to a \c std::ostringstream to build a \c std::string. In
+C++, this is what I think to be the good way of building a complex
+string. The developper can then use the powerfull stream mechanism to build
+error messages, including value of relevant variables.
+
+\section secErrorTrace Getting more info about exceptions (trace of the calling stack)
+
+An exception is an object which goes up the calling stack until an
+appropriate \c try {} \c catch block is found. Usefull information is
+what this calling stack looks like to guess where the exception comes
+from. For this purpose, jafar::kernel::Exception::callingStack
+attribute has been added. It can be filled in by the user using
+jafar::kernel::Exception::addFunctionCall function. 
+
+The general method is to catch the exception, add information to the
+calling stack attribute, and throw again the exception.  Convenient
+macros are defined (in jafarMacro.hpp) which do this for you :
+
+  - \ref JFR_TRACE_BEGIN starts a block in which exceptions will be "tagged".
+  - \ref JFR_TRACE_END ends such a block.
+  - \ref JFR_TRACE_POINT is a shortcut for JFR_TRACE_END JFR_TRACE, it is
+intended to be put inside a block in order to get more relevant line
+number information.
+
+Be carefull when you enclose a local variable declaration in such a
+block, since the variable will be made invisible outside of the block.
+
+The macro JFR_TRACE is intended to be used in a \c catch() {...}
+block which catches a jafar::kernel::Exception (or one of its
+child). It is used to add information to the trace, along with a
+message.
+
+Example:
+
+\code 
+  void T3D::read(const std::string& fileName_) { 
+    std::ifstream file(fileName_.c_str()); 
+    JFR_IO_STREAM(file, "error while opening file " << fileName_); 
+    try { 
+      file >> (*this); 
+    }
+    catch(jafar::kernel::Exception& e) { 
+      JFR_TRACE(e," (reading file:" << fileName_ << ")"); 
+      throw; 
+    } 
+    file.close(); 
+  } 
+\endcode
+will output, when file >> (*this); throws an exception:
+\verbatim
+tclsh8.4 [~/tmp]$t read "toto.t3d"
+** Exception from jafar module cine
+Id: JafarException::IO_STREAM
+src/t3dEuler.cpp:409: T3DEuler::get: bad format
+trace:
+src/t3dEuler.cpp:433
+src/t3d.cpp:110 (reading file: toto.t3d)
+\endverbatim
+
+
+\section secErrorExample Examples
+
+The simple class jafar::helloworld::HelloWorld defines two new errors
+(a simple one, and a more complexe), and also makes use of a \e
+precondition check. Have a look at:
+
+    - helloworldException.hpp and helloworldException.cpp to see new
+errors defined,
+    - helloWorld.hpp and helloWorld.cpp to see the Jafar error system
+    in use.
+
+\section secExceptionSwigTcl Exceptions, Swig and Tcl
+
+When a Jafar module is used within a tcl shell, what happens to
+exceptions ? 
+
+There can be two different cases whether or not the exception is
+catched inside the module.  If the exception goes up the calling stack
+until the tcl function, then the catch clause defined in \c
+moduleException.i inside \c \%exception starts a default exception
+treatment (a complete debug message is printed). The default \c
+moduleException.i is already enough to catch all the exceptions, even
+the user-defined errors. It looks like:
+
+\include _jfr_module_Exception.i
+
+It deals with all the exceptions defined in jafar
+(jafar::kernel:Exception), the exceptions defined in the Standard
+Template Library (std::exception), and does quite nothing with all
+other exceptions (...).  If one would like to add a special treatment
+for its own exceptions, or for exceptions defined in third-party
+libraries, a \c catch() clause can be easily added. Be aware that the
+order of the \c catch() clauses is meaningfull (read a C++ manual if
+you are not sure see \ref secDevCPPSTL).
+
+\section secExceptionReadings Further readings
+
+For those who wants to know exceptions a little bit more deeper:
+
+  - http://www.boost.org/more/error_handling.html
+  - http://www.boost.org/more/generic_exception_safety.html
+
+*/

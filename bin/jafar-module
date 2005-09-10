@@ -1,0 +1,177 @@
+#!/bin/sh
+# the next line restarts using tclsh \
+exec tclsh8.4 "$0" "$@"
+
+# $Id$ #
+
+#
+# This script creates a new module from the template one, files name
+# and content are parsed to replace defined variables by their value.
+#
+# Defined variables: 
+#  _jfr_module_: name of the module (given on the command line)
+#  _jfr_Module_: name of the module, first char upper-case 
+#  _jfr_MODULE_: name of the module, upper-case
+#  _jfr_date_: the current date with format year-month-day 
+#
+
+#
+# Definition of some functions
+#
+
+# display a help message
+proc printHelp {} {
+    global env
+    set helpMessage [open [file join $env(JAFAR_DIR) "bin" "jafar-module_help.txt"]]
+    while {[gets $helpMessage l] != -1} {
+        puts $l
+    }
+    close $helpMessage
+}
+
+# process a string (file content or filename) by searching/replacing pre-defined expressions
+proc processString { string } {
+    global module Module MODULE  today
+    set s [regsub -all _jfr_module_ $string $module]
+    set s [regsub -all _jfr_Module_ $s $Module]
+    set s [regsub -all _jfr_MODULE_ $s $MODULE]
+    set s [regsub -all _jfr_date_ $s $today] 
+    
+    return $s
+}
+
+proc processFile { file } {
+    global destination_dir
+
+    set permissions [file attributes $file -permissions]
+    set fp [processString $file]
+    puts -nonewline "$fp ... "
+    set templateFile [open $file "r"]
+    set moduleFileName [file join $destination_dir $fp]
+    set moduleFile [open $moduleFileName "w"]
+    puts $moduleFile [processString [read $templateFile] ]
+    close $templateFile
+    close $moduleFile
+    file attributes $moduleFileName -permissions $permissions
+    puts "ok"
+}
+
+proc processFileList { filesList } {
+    foreach f "$filesList" {
+        if [file isdirectory $f] {
+            processDirectory $f
+        } elseif [file isfile $f] {
+            processFile $f
+        } else {
+            puts "ERROR: $f is neither a directory nor a file..."
+        }
+    }
+}
+
+proc processDirectory { dir } {
+    global destination_dir
+
+    set fp [processString $dir]
+    puts -nonewline "$fp ... "
+    file mkdir [file join $destination_dir $fp]
+    puts "ok"
+
+    # we want to get all files and some special hidden files
+    set filesList [ glob -nocomplain [file join $dir *] [file join $dir .cvsignore] [file join $dir .config] ]
+
+    processFileList $filesList
+}
+
+# go through the template_module directory :
+#  - mkdir needed directory
+#  - process files
+proc processTemplate { } {
+    global module destination_dir template_dir
+
+    puts "Creating module $module"
+    puts "  template dir    : $template_dir"
+    puts "  destination dir : $destination_dir"
+    puts ""
+
+    if [file exist $destination_dir] {
+        puts -nonewline "Directory $destination_dir already exists, erase it ? (y/N) "
+        flush stdout
+        gets stdin answer
+        if {"$answer"=="y"} {
+            exec rm -r $destination_dir
+            puts "$destination_dir erased"
+            puts ""
+        } else {
+            puts "Abort"
+            exit
+        }
+    }
+
+    puts -nonewline "Directory $destination_dir..."
+    file mkdir $destination_dir
+    puts "ok"
+
+    cd $template_dir
+
+    processDirectory "."
+
+    puts ""
+    puts "Module $module successfully created !"
+    puts ""
+}
+
+proc initVariables {} {
+    global argv env today module Module MODULE destination_dir template_dir
+
+    set today [clock format [clock seconds] -format %Y-%m-%d]
+
+    set module [lindex $argv 1]    
+
+    if {[string index $module end]=="/"} {
+        set module [string trimright $module "/"]
+        puts "warning: remove trailing \"/\" from module name"
+    }
+
+    if [expr ![string equal $module [string tolower $module]]] {
+        puts "Module name is not lower-case, use \"[string tolower $module]\" instead ? (y/N)"
+        flush stdout
+        gets stdin answer
+        if {"$answer"=="y"} {
+            puts "Setting module name to [string tolower $module]"
+            set module [string tolower $module]
+        } else {
+            puts "Abort"
+            exit
+        }
+    }
+    
+    set Module [string toupper $module 0 0]
+    set MODULE [string toupper $module]
+    set destination_dir [file join $env(JAFAR_DIR) "modules" $module]
+    set template_dir [file join $env(JAFAR_DIR) "share" "template_module"]
+}
+
+#
+# The main program
+#
+
+if {$argc == 0} { 
+    printHelp 
+    return
+}
+
+set arg1 [lindex $argv 0]
+
+if { $argc==1 && ("$arg1"=="-h" || "$arg1"=="-help" || "$arg1"=="--help") } {
+    printHelp
+    return
+} elseif { $argc==2 && ("$arg1"=="-c" || "$arg1"=="--create") } {
+
+    initVariables
+
+    processTemplate
+
+} else {
+    printHelp 
+    return
+}

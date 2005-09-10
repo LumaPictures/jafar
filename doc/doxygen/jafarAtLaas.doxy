@@ -1,0 +1,135 @@
+/* $Id$ */
+
+/*! \page pageJafarAtLaas Jafar @ LAAS
+
+\section secLaasRepository Jafar under version control at LAAS
+
+At LAAS we use subversion to version control the jafar tree.
+
+\subsection subsecLaasSvnAbout About Subversion
+
+Subversion is quite similar to CVS, most of the commands \c cvs \c command are now \c svn \c command. http://svnbook.red-bean.com/svnbook-1.0/apa.html will help you moving from CVS to subversion. You also can start with the \c help command.
+
+\verbatim
+$ svn help
+$ svn help status
+$ svn help ci
+\endverbatim
+
+\subsection subsecLaasSvnRep Svn repository layout
+
+The layout of the repository follows the general guidelines given in
+the subversion documentation: at the top of the repository, there are two directories:
+    - \c jafar contains the backbone of jafar, including the kernel module.
+    - \c jafarModules is dedicated to modules development, exept for the kernel module.
+
+Each one of these two directories contains three subdirectories :
+    - \c trunk/ holds the main development files,
+    - \c branches/ holds alternative development branches,
+    - \c tags/ holds tagged version.
+
+Be aware that in subversion the difference between a \e branch and a \e tag does not exist any more, a tag becomes a branche once some one has commited on it.
+
+Do not hesitate to tag versions of your modules, and to use branches for developpement.
+Names of your branches and tags must reflect module version numbers (\ref secModuleVersion) !
+
+\subsection subsecLaasSvnModule Adding a new module under subversion
+
+The \c svn-add-module command can be found in \c JAFAR_DIR/bin. This shell script can be used to add a new module under subversion, or ensure a module is properly set under version control. It will do the following for you:
+
+  - add all the relevant directories and files,
+  - enable the Id variable,
+  - enable and set the $copyright$ variable.
+
+Example:
+\verbatim
+$ svn-add-module helloworld
+\endverbatim
+
+\subsection subsecLaasCo Check out of your working copy
+
+You first retrieve a version of the jafar backbone:
+\verbatim
+$ svn co svn+ssh://toto@pollux.laas.fr/svn/svnroot_jafar/jafar/trunk jafar/
+\endverbatim
+
+You will get, among other things, the kernel module in the \c jafar/module/ directory.
+
+Then retrieve the modules versions you are interested in, cd in the module directory and do some checkouts:
+\verbatim
+$ cd /home/toto/jafar/modules
+$ svn co svn+ssh://toto@pollux.laas.fr/svn/svnroot_jafar/jafarModules/trunk/helloworld helloworld
+$ svn co svn+ssh://toto@pollux.laas.fr/svn/svnroot_jafar/jafarModules/tags/image_0.3 image
+\endverbatim
+
+\section secLaasLib Installing external libraries
+
+Some of the Jafar modules depends on external libraries. If you are working on the laboratory network, every thing should already be properly installed.
+
+If you are developping on your Linux laptop you should refer to \ref pageGettingStartedfromaLinuxLaptop. For MacOSX users the \ref pageFaq should be of high interest.
+
+\section secLaasTcl About Tcl...
+
+Jafar uses tcl8.4, so you MUST use this same version for your tcl
+shell. If rtclsh and rwish, or eltclsh and elwish are not compiled
+with tcl8.4 you CANNOT use them.
+
+tcl8.4 is installed in /usr/local/tcl-8.4, the corresponding shell is
+in /usr/local/tcl-8.4/bin/tclsh8.4. Do not use tclsh, use tclsh8.4.
+
+A corresponding version of tclreadline (for solaris) can be found at
+/home/tlemaire/usr/sparc-solaris. Add to your .login:
+
+\verbatim
+#
+# TCL/TK
+#
+setenv TCL_TK_HOME "/usr/local/tcl-8.4"
+setenv PATH "${TCL_TK_HOME}/bin:${PATH}"
+setenv MANPATH "${MANPATH}:${TCL_TK_HOME}/man"
+setenv LD_LIBRARY_PATH "${TCL_TK_HOME}/lib:${LD_LIBRARY_PATH}"
+
+#
+# Swig
+#
+setenv PATH "${PATH}:/usr/local/swig/bin"
+
+#
+# Boost
+#
+setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:/usr/local/boost/lib"
+
+#
+# jafar
+#
+setenv JAFAR_DIR ${HOME}/jafar
+setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${JAFAR_DIR}/lib/sparc-solaris2.9"
+alias cdj cd ~/jafar
+alias jfr tclsh8.4
+alias jfr_configure ./configure --with-boost=/home/tlemaire/usr/sparc-solaris/local/boost
+\endverbatim
+
+and your .tclshrc:
+
+\verbatim
+source $env(JAFAR_DIR)/share/initJafar.tcl
+
+source /home/tlemaire/usr/sparc-solaris/lib/tclreadline2.1.0/tclreadlineInit.tcl
+
+if {$tcl_interactive} {
+      package require tclreadline 
+      ::tclreadline::Loop
+}
+\endverbatim
+
+\section secLaasMailingList Mailing list
+
+There are two mailing list related to jafar, both hosted on http://sympa.laas.fr
+
+  - jafar@laas.fr is for discussion about Jafar, for more info and
+  archive go to http://sympa.laas.fr/wws/info/jafar 
+  - jafar-source@laas.fr distributes commit mails from subversion
+  repository, for more info and archive go to
+  http://sympa.laas.fr/wws/info/jafar-source
+
+*/

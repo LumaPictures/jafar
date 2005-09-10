@@ -1,0 +1,35 @@
+/* $Id$ */
+
+/**
+\mainpage JAFAR Jafar is A Framework for Algorithms [developments] in Robotic
+
+\image html jafar.jpg "Jafar in a good mood"
+
+Jafar adopts a modular framework which makes it easy for developpers to
+plug-in their own algorithms and use algorithms developped by other
+people. In order to keep things working properly, every developper
+must read carefully the following docs...
+
+You should first have a look at:
+    - \ref pageOverview
+    - \ref pageInstall
+    - \ref pageJafarModule
+
+Important readings are:
+    - \ref kernel
+    - \ref pageJafarError
+    - \ref pageCodeDocRules
+    - \ref pageUnitTest
+    - \ref pageJafarModuleCommand
+
+And complementary readings :
+    - \ref pageDevelopperLinks
+    - \ref pageJafarAndGenom
+    - \ref pageFaq
+    - \ref pageTodo
+
+For LAAS people :    
+    - \ref pageJafarAtLaas
+    - \ref pageModuleSandBox
+
+*/

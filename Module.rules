@@ -1,0 +1,209 @@
+# $Id: Module.make 701 2005-02-17 15:02:28Z tlemaire $ #
+
+# list of source files
+#######################
+
+SRCSC = $(wildcard $(dev_srcdir)/*.c)
+SRCSCPP = $(wildcard $(dev_srcdir)/*.cpp) 
+TESTCPP = $(wildcard $(dev_testdir)/*.cpp) 
+DEV_HEADERS = $(wildcard $(dev_includedir)/$(MODULE)/*.hpp) $(wildcard $(dev_includedir)/$(MODULE)/*.tpp) $(wildcard $(dev_includedir)/$(MODULE)/*.h)
+HEADERS = $(patsubst %.hpp, $(includedir)/$(MODULE)/%.hpp, $(notdir $(wildcard $(dev_includedir)/$(MODULE)/*.hpp)))
+HEADERS+= $(patsubst %.tpp, $(includedir)/$(MODULE)/%.tpp, $(notdir $(wildcard $(dev_includedir)/$(MODULE)/*.tpp)))
+HEADERS+= $(patsubst %.h, $(includedir)/$(MODULE)/%.h, $(notdir $(wildcard $(dev_includedir)/$(MODULE)/*.h)))
+SWIG_LIBS = $(patsubst %.i, $(includedir)/$(MODULE)/%.i, $(notdir $(wildcard $(dev_includedir)/$(MODULE)/*.i)))
+
+MACROS = $(patsubst %.tcl, $(tclpkgdir)/%.tcl, $(notdir $(wildcard $(dev_macrodir)/*.tcl)))
+
+# .dep files
+#############
+
+SRCS_DEP = $(patsubst %.cpp,$(dev_objdir)/%.dep,$(notdir $(SRCSCPP))) $(patsubst %.c,$(dev_objdir)/%.dep,$(notdir $(SRCSC)))
+
+
+# .o files
+###########
+
+OBJS = $(patsubst %.cpp,$(dev_objdir)/%.lo,$(notdir $(SRCSCPP))) $(patsubst %.c,$(dev_objdir)/%.lo,$(notdir $(SRCSC)))
+
+TESTOBJS = $(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.lo,$(notdir $(TESTCPP)))
+
+
+# Standard rules
+#################
+
+all: $(USE_MODULES) dirs lib tcl
+
+# C++ compilation
+##################
+
+$(dev_objdir)/%.lo: $(dev_srcdir)/%.c
+	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) -o $@ $<
+
+$(dev_objdir)/%.lo: $(dev_srcdir)/%.cpp
+	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) -o $@ $<
+
+
+# tcl module generation using swig
+###################################
+
+$(tclpkgdir)/%.tcl: $(dev_macrodir)/%.tcl
+	-$(LIBTOOL) --mode=install cp $< $@
+
+$(tclpkgdir)/pkgIndex.tcl : $(tclpkgdir)/$(MODULE)$(SHLIB_SUFFIX) $(MACROS)
+	$(JAFAR_DIR)/bin/pkg_mkIndex $(tclpkgdir) $(MODULE)
+
+$(dev_objdir)/tcl/$(MODULE)_wrap.lo : $(dev_includedir)/$(MODULE).i $(dev_includedir)/$(MODULE)Tools.i $(DEV_HEADERS)
+	@echo ""
+	@echo "    *************************************"
+	@echo "    * Generating tcl wrappers with SWIG *"
+	@echo "    *************************************"
+	@echo ""
+	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_TCL) $(CPPFLAGS) -I/usr/include -o $(dev_srcdir)/tcl/$(MODULE)_wrap.cpp $<
+	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) $(TCL_CPPFLAGS) -o $@ $(dev_srcdir)/tcl/$(MODULE)_wrap.cpp
+
+$(dev_libdir)/lib$(MODULE)_swig.la : $(dev_objdir)/tcl/$(MODULE)_wrap.lo $(dev_libdir)/lib$(MODULE).la
+	$(LTLD) $(LDFLAGS) $(TCL_LDFLAGS) -o $@ -rpath $(tclpkgdir) -version-info $(MODULE_VERSION):$(MODULE_REVISION) $(LIBS) -l$(MODULE) $(TCL_LIBS) $<
+#	$(MAKE) tcl-pkg
+
+$(tclpkgdir)/$(MODULE)$(SHLIB_SUFFIX) : $(dev_libdir)/lib$(MODULE)_swig.la
+	-@mkdir -p $(tclpkgdir)
+	$(LIBTOOL) --mode=install cp $(dev_libdir)/lib$(MODULE)_swig.la $(tclpkgdir)
+	-ln -fs $(tclpkgdir)/lib$(MODULE)_swig$(SHLIB_SUFFIX) $(tclpkgdir)/$(MODULE)$(SHLIB_SUFFIX)
+
+tcl-lib : $(dev_libdir)/lib$(MODULE)_swig.la
+
+tcl : tcl-pkg
+
+tcl-pkg : $(tclpkgdir)/pkgIndex.tcl
+
+
+# module library
+#################
+
+$(includedir)/$(MODULE)/%.hpp: $(dev_includedir)/$(MODULE)/%.hpp
+	-$(LIBTOOL) --mode=install cp $< $@
+
+$(includedir)/$(MODULE)/%.tpp: $(dev_includedir)/$(MODULE)/%.tpp
+	-$(LIBTOOL) --mode=install cp $< $@
+
+$(includedir)/$(MODULE)/%.h: $(dev_includedir)/$(MODULE)/%.h
+	-$(LIBTOOL) --mode=install cp $< $@
+
+$(includedir)/$(MODULE)/%.i: $(dev_includedir)/$(MODULE)/%.i
+	-$(LIBTOOL) --mode=install cp $< $@
+
+$(dev_libdir)/lib$(MODULE).la : $(OBJS)
+	$(LTLD) $(LDFLAGS) -o $@ -rpath $(libdir) -R $(libdir) -version-info $(MODULE_VERSION):$(MODULE_REVISION) $(LIBS) $^
+
+$(libdir)/lib$(MODULE).la: $(dev_libdir)/lib$(MODULE).la
+	$(LIBTOOL) --mode=install cp $(dev_libdir)/lib$(MODULE).la $(libdir)
+
+lib-install : $(libdir)/lib$(MODULE).la $(HEADERS) $(SWIG_LIBS)
+
+lib : lib-install
+
+
+# build dirs
+#############
+
+dirs :
+	-@mkdir -p $(dev_libdir)
+	-@mkdir -p $(dev_srcdir)/tcl
+	-@mkdir -p $(dev_objdir)
+	-@mkdir -p $(dev_objdir)/tcl
+	-@mkdir -p $(dev_testdir)/$(BUILD)
+	-@mkdir -p $(includedir)/$(MODULE)
+	-@mkdir -p $(libdir)
+
+
+
+# clean rules
+##############
+clean: clean-build clean-headers clean-test
+
+clean-build: clean-objs clean-headers clean-dep
+	$(LIBTOOL) --mode=clean rm -fr $(dev_libdir)/lib$(MODULE).la
+	$(LIBTOOL) --mode=clean rm -fr $(dev_libdir)/lib$(MODULE)_swig.la
+	$(LIBTOOL) --mode=clean rm -fr $(libdir)/lib$(MODULE).*
+	-@rm -fr $(tclpkgdir)
+
+clean-objs:
+	-@rm -fr $(dev_objdir)
+	-@rm -fr $(dev_srcdir)/tcl
+
+clean-dep:
+	-@rm -fr $(dev_objdir)/*.dep
+
+clean-headers:
+	-@rm -fr $(includedir)/$(MODULE)
+
+clean-test:
+	-@rm -fr $(dev_testdir)/$(BUILD)
+
+
+
+# dependances rules
+####################
+
+
+$(dev_objdir)/%.dep: $(dev_srcdir)/%.cpp
+	-@mkdir -p $(dev_objdir)
+	@echo "Making dependencies for $<"
+	-@$(CXX) -MM $(CPPFLAGS) -MT"$(patsubst %.cpp,$(dev_objdir)/%.lo,$(notdir $<))" -MF$@ $<
+
+$(dev_objdir)/%.dep: $(dev_srcdir)/%.c
+	-@mkdir -p $(dev_objdir)
+	@echo "Making dependencies for $<"
+	-@$(CXX) -MM $(CPPFLAGS) -MT"$(patsubst %.c,$(dev_objdir)/%.lo,$(notdir $<))" -MF$@ $<
+
+# USE_MODULES rules
+####################
+$(USE_MODULES):
+	(cd $(JAFAR_DIR)/modules/$@; $(MAKE))
+
+
+# libtool and configure rules
+##############################
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) ./config.status --recheck
+
+
+# For an explanation of the following Makefile rules, see node
+# `Automatic Remaking' in GNU Autoconf documentation.
+Makefile.module: Makefile.module.in User.make config.status
+	CONFIG_FILES=$@ CONFIG_HEADERS= ./config.status
+
+config.status: configure
+	./config.status --recheck
+
+config.h: stamp-h
+
+stamp-h: config.h.in config.status ./config/user.ac
+	CONFIG_FILES= CONFIG_HEADERS=config.h ./config.status
+	date > stamp-h
+
+# unit test rules
+##################
+
+test: test-build
+	@echo ""
+	@echo "    **************************************"
+	@echo "    * Running tests for module $(MODULE) *"
+	@echo "    **************************************"
+	@echo ""
+	$(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
+
+$(dev_testdir)/$(BUILD)/%.lo: $(dev_testdir)/%.cpp dirs
+	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS)  $(BOOST_CPPFLAGS) -o $@ $<
+
+test-build: lib $(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
+
+$(dev_testdir)/$(BUILD)/test_suite_$(MODULE): $(TESTOBJS)
+	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -lboost_unit_test_framework -o $@ $^
+
+.PHONY: $(USE_MODULES)
+
+# include dep files
+####################
+
+-include $(SRCS_DEP)
