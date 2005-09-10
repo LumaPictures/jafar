@@ -20,7 +20,7 @@ $ svn help ci
 
 The layout of the repository follows the general guidelines given in
 the subversion documentation: at the top of the repository, there are two directories:
-    - \c jafar contains the backbone of jafar, including the kernel module.
+    - \c jafarBackbone contains the common files of jafar, including the kernel module.
     - \c jafarModules is dedicated to modules development, exept for the kernel module.
 
 Each one of these two directories contains three subdirectories :
@@ -33,6 +33,24 @@ Be aware that in subversion the difference between a \e branch and a \e tag does
 Do not hesitate to tag versions of your modules, and to use branches for developpement.
 Names of your branches and tags must reflect module version numbers (\ref secModuleVersion) !
 
+\image html repositoryLayout.png "Jafar repository layout"
+
+\subsection subsecLaasCo Check out of your working copy
+
+You first retrieve a version of the jafar backbone:
+\verbatim
+$ svn co svn+ssh://toto@pollux.laas.fr/svn/jafar/jafarBackbone/trunk jafar/
+\endverbatim
+
+You will get, among other things, the kernel module in the \c jafar/module/ directory.
+
+Then retrieve the modules versions you are interested in, cd in the module directory and do some checkouts:
+\verbatim
+$ cd /home/toto/jafar/modules
+$ svn co svn+ssh://toto@pollux.laas.fr/svn/jafar/jafarModules/trunk/helloworld helloworld/
+$ svn co svn+ssh://toto@pollux.laas.fr/svn/jafar/jafarModules/tags/image_0.3 image/
+\endverbatim
+
 \subsection subsecLaasSvnModule Adding a new module under subversion
 
 The \c svn-add-module command can be found in \c JAFAR_DIR/bin. This shell script can be used to add a new module under subversion, or ensure a module is properly set under version control. It will do the following for you:
@@ -43,23 +61,8 @@ The \c svn-add-module command can be found in \c JAFAR_DIR/bin. This shell scrip
 
 Example:
 \verbatim
-$ svn-add-module helloworld
-\endverbatim
-
-\subsection subsecLaasCo Check out of your working copy
-
-You first retrieve a version of the jafar backbone:
-\verbatim
-$ svn co svn+ssh://toto@pollux.laas.fr/svn/svnroot_jafar/jafar/trunk jafar/
-\endverbatim
-
-You will get, among other things, the kernel module in the \c jafar/module/ directory.
-
-Then retrieve the modules versions you are interested in, cd in the module directory and do some checkouts:
-\verbatim
 $ cd /home/toto/jafar/modules
-$ svn co svn+ssh://toto@pollux.laas.fr/svn/svnroot_jafar/jafarModules/trunk/helloworld helloworld
-$ svn co svn+ssh://toto@pollux.laas.fr/svn/svnroot_jafar/jafarModules/tags/image_0.3 image
+$ svn-add-module helloworld
 \endverbatim
 
 \section secLaasLib Installing external libraries
