@@ -270,9 +270,9 @@
 #  define JFR_IO_STREAM(predicate, message) ((void)0)
 #  define JFR_DEBUG(message) ((void)0)
 #  define JFR_TRACE ((void)0)
-#  define JFR_TRACE_BEGIN ((void)0);
-#  define JFR_TRACE_POINT ((void)0);
-#  define JFR_TRACE_END ((void)0);
+#  define JFR_TRACE_BEGIN ((void)0)
+#  define JFR_TRACE_POINT ((void)0)
+#  define JFR_TRACE_END ((void)0)
 #endif // JFR_NDEBUG
 
 #endif // KERNEL_JAFAR_MACRO
