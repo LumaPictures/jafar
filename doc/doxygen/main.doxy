@@ -20,16 +20,16 @@ Important readings are:
     - \ref pageJafarError
     - \ref pageCodeDocRules
     - \ref pageUnitTest
+    - \ref pageJafarAndLaasTools
     - \ref pageJafarModuleCommand
+
+For LAAS people :
+    - \ref pageJafarDevAtLaas
+    - \ref pageModuleSandBox
 
 And complementary readings :
     - \ref pageDevelopperLinks
-    - \ref pageJafarAndGenom
     - \ref pageFaq
     - \ref pageTodo
-
-For LAAS people :    
-    - \ref pageJafarAtLaas
-    - \ref pageModuleSandBox
 
 */

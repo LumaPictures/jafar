@@ -1,0 +1,53 @@
+/* $Id$ */
+
+/**
+\page pageJafarAndLaasTools Using Jafar with other LAAS tools
+
+\section secLaasToolsGdhe Jafar, OpenGL and GDHE
+
+\link http://softs.laas.fr/openrobots/tools/gdhe.php GDHE \endlink is a client/server application for 3D display using OpenGL, GDHE also provides a tcl interface. When using GDHE tcl interface, objects can be drawn using basic tcl procedures provided by GDHE, for complex objects it can be convenient to define them directly with OpenGL. 
+
+\subsection subsecLaasToolsGdhe User defined OpenGL objects
+
+In a Jafar module \e pipo, you have defined the structure \e MyStruct, and you want to display instances of \e MyStruct using GDHE. In the \e pipo module, you add a \c displayMyStruct() function which contains OpenGL statements.
+
+\c myStruct.hpp
+\code
+#include <GL/gl.h>
+
+#include "jafarConfig.h"
+
+namespace jafar {
+    namespace pipo {
+        struct MyStruct;
+
+#ifdef HAVE_OPENGL
+        void displayMyStruct(MyStruct const& s_);
+#endif
+    }
+}
+\endcode
+
+\c myStruct.cpp
+\code
+#include "pipo/myStruct.hpp"
+
+#ifdef HAVE_OPENGL
+void jafar::pipo::displayMyStruct(MyStruct const& s_)
+{
+    // OpenGL statements
+}
+#endif
+\endcode
+
+Do not forget to add \c myStruct.hpp and \c jafarConfig.h to \c pipo.i. If OpenGL is enabled (see \ref subsecInstallConfigure) the function \e pipo::displayMyStruct() is available in tcl and can be used with GDHE.
+
+\section secLaasToolsGenom Jafar and GenoM
+
+\subsection subsecLaasToolsGenomModule Using a Jafar module from GenoM
+
+\subsection subsecLaasToolsGenomError Jafar errors to GenoM
+
+
+*/
+
