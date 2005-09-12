@@ -1,0 +1,55 @@
+#!/bin/sh
+# $Id$
+# This script does the following:
+#   - updates jafar copy in pollux:/usr/local/jafar
+#   - generate html documentation with doxygen
+#   - compile from scratch several modules
+
+MAILTO=jafar-source
+
+#
+output=/tmp/jafar.daily
+rm -f $output
+
+(
+umask 02
+#
+JAFAR_DIR='/usr/local/jafar'
+
+# modules to be checked
+MODULES="kernel helloworld image display jmath hpm cine model3d stereo filter slam"
+
+cd ${JAFAR_DIR}
+
+echo '\n--------------------- svn update -----------------------------\n'
+
+if svn update ; then
+
+    echo '\n------------------- Documentation ----------------------------\n'
+    if ssh warhol "cd ${JAFAR_DIR}; make doc" > /dev/null 2>&1; then
+        echo 'html...OK'
+    else
+        echo 'html...ERROR'
+    fi
+
+    echo '\n--------------------- Compilation ----------------------------\n'
+    for m in ${MODULES}; do
+        if ssh warhol "cd /usr/local/jafar/modules/${m}; \
+           setenv JAFAR_DIR ${JAFAR_DIR}; \
+           make clean; \
+           make" > /dev/null 2>&1; then
+                echo "${m}...OK"
+        else
+            echo "${m}...ERROR"
+        fi
+    done
+
+else
+    echo 'ERROR'
+fi
+echo '\n------------------------ End ---------------------------------\n'
+) > $output 2>&1
+mailx -s 'Daily jafar report' $MAILTO < $output
+rm -f $output
+exit 0
+
