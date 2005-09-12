@@ -71,7 +71,7 @@ then
     BOOST_LDFLAGS="$with_boostlib"
     AC_SUBST(BOOST_CPPFLAGS)
     AC_SUBST(BOOST_LDFLAGS)
-    AC_DEFINE(HAVE_BOOST,,[boost library])
+    AC_DEFINE(HAVE_BOOST,1,[boost library])
 fi
 
 ## check for openCV ##
@@ -82,7 +82,7 @@ then
     OPENCV_LDFLAGS="$with_opencvlib"
     AC_SUBST(OPENCV_CPPFLAGS)
     AC_SUBST(OPENCV_LDFLAGS)
-    AC_DEFINE(HAVE_OPENCV,,[openCV library])
+    AC_DEFINE(HAVE_OPENCV,1,[openCV library])
 fi
 
 ## check for boost-sandbox ##
@@ -91,7 +91,7 @@ if test "x$with_boost_sandbox" = "xyes";
 then
     BOOST_SANDBOX_CPPFLAGS="$boost_sandbox_cppflags"
     AC_SUBST(BOOST_SANDBOX_CPPFLAGS)
-    AC_DEFINE(HAVE_BOOST_SANDBOX,,[boost sandbox library])
+    AC_DEFINE(HAVE_BOOST_SANDBOX,1,[boost sandbox library])
 fi
 
 ## check for lapack ##
@@ -100,7 +100,7 @@ if test "x$with_lapack" = "xyes";
 then
     LAPACK_LDFLAGS="$with_lapacklib"
     AC_SUBST(LAPACK_LDFLAGS)
-    AC_DEFINE(HAVE_LAPACK,,[lapack library])
+    AC_DEFINE(HAVE_LAPACK,1,[lapack library])
 fi
 
 ## check for openGL ##
@@ -112,7 +112,29 @@ then
     OPENGL_LDFLAGS="$with_opengllib"
     AC_SUBST(OPENGL_CPPFLAGS)
     AC_SUBST(OPENGL_LDFLAGS)
-    AC_DEFINE(HAVE_OPENGL,,[openGL library])
+    AC_DEFINE(HAVE_OPENGL,1,[openGL library])
+fi
+
+## check for dc1394 and raw1384 ##
+MD_FIND_PACKAGE_OPT(raw1394, raw1394, libraw1394/raw1394.h, [support for raw1394])
+if test "x$with_raw1384" = "xyes";
+then 
+   MD_FIND_PACKAGE_OPT(dc1394, dc1394_control, libdc1394/dc1394_control.h, [support for dc1394])
+   if test "x$with_dc1394" = "xyes";
+   then
+    IEEE1394_CPPFLAGS="$raw1394_cppflags $dc1394_cppflags"
+    IEEE1394_LDFLAGS="$with_raw1394lib $with_dc1394lib"
+    AC_SUBST(IEEE1394_CPPFLAGS)
+    AC_SUBST(IEEE1394_LDFLAGS)
+    AC_DEFINE(HAVE_IEEE1394,1,[IEEE1394 support])
+  fi
+fi
+
+## check for video4linux ##
+MD_FIND_PACKAGE_OPT(v4l,, linux/videodev.h, [support for v4l])
+if test "x$with_v4l" = "xyes";
+then
+    AC_DEFINE(HAVE_V4L,1,[v4l support])
 fi
 
 ##########################

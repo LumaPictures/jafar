@@ -236,23 +236,17 @@ AC_DEFUN([MD_FIND_PACKAGE],
 	found_$1="yes"
         ifelse([$3],[],[], [
 		MD_FIND_INCLUDE($1, $3)
-		if test "$include_found" = ""; then
+		if test "x$include_found" = "x"; then
 			found_$1="no"
         	fi	
 	])
         ifelse([$2],[],[], [
 		MD_FIND_LIBRARY($1, $2)
-		if test "$lib_found" = ""; then
+		if test "x$lib_found" = "x"; then
 			found_$1="no"
         	fi
 	])
-    fi
-
-    if test "${found_[$1]}" = "no"; then
-	with_[$1]="no"
-        AC_MSG_ERROR(  Can't find [$1] . see ./configure --help for more option, 1)
-    else
-	with_[$1]="yes"	
+	ifelse([$found_[$1]],[no],[AC_MSG_ERROR(Cannot find [$1] . see ./configure --help for more option, 1)])
     fi
 
 ])dnl
@@ -260,7 +254,7 @@ AC_DEFUN([MD_FIND_PACKAGE],
 
 #########################################################
 
-dnl MD_FIND_PACKAGE_OPT(packageName, packageLib, packageInc, packageComment)
+dnl MD_FIND_PACKAGE_OPT(packageName, packageLib, packageInc, packageComment, packageHeaderDefine)
 dnl defines with_packageName=yes/no
 dnl         with_packageNamelib=<path>/empty if not found
 dnl         with_packageNameinc=<path>/empty if not found
@@ -307,17 +301,11 @@ AC_DEFUN([MD_FIND_PACKAGE_OPT],
             		found_$1="no"
         	fi
 	])
+	ifelse([$found_[$1]],[no],[AC_MSG_WARN(  Configuring without [$1] support )],[with_[$1]="yes"]);
     else
 	with_[$1]="no"
 	AC_MSG_WARN(  Configuring without [$1] support )
     fi
-
-    if test "${found_[$1]}" = "no"; then
-	with_[$1]="no"
-	AC_MSG_WARN(  Configuring without [$1] support )
-    else
-	with_[$1]="yes"	
-    fi	
 
 ])dnl
 

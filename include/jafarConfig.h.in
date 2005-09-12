@@ -15,3 +15,8 @@
 /* opengl library */
 #undef HAVE_OPENGL
 
+/* IEEE1394 support */
+#undef HAVE_IEEE1394
+
+/* v4l support */
+#undef HAVE_V4L

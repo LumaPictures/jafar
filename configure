@@ -465,7 +465,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX LN_S EGREP ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB STRIP ac_ct_STRIP CPP CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL LIBTOOL_DEPS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SHLIB_SUFFIX SWIG SWIG_RUNTIME_LIBS_DIR TCL_CPPFLAGS TCL_EXTRA_CFLAGS TCL_SHLIB_SUFFIX TCL_CC LIB_RUNTIME_DIR TCL_LDFLAGS TCL_LIB_SPEC TK_LIB_SPEC TCL_SHLIB_LDFLAGS TCL_SHLIB_CFLAGS TCL_SHLIB_LD TCL_LIB_FLAGS BOOST_CPPFLAGS BOOST_LDFLAGS OPENCV_CPPFLAGS OPENCV_LDFLAGS BOOST_SANDBOX_CPPFLAGS LAPACK_LDFLAGS OPENGL_CPPFLAGS OPENGL_LDFLAGS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX LN_S EGREP ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB STRIP ac_ct_STRIP CPP CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL LIBTOOL_DEPS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SHLIB_SUFFIX SWIG SWIG_RUNTIME_LIBS_DIR TCL_CPPFLAGS TCL_EXTRA_CFLAGS TCL_SHLIB_SUFFIX TCL_CC LIB_RUNTIME_DIR TCL_LDFLAGS TCL_LIB_SPEC TK_LIB_SPEC TCL_SHLIB_LDFLAGS TCL_SHLIB_CFLAGS TCL_SHLIB_LD TCL_LIB_FLAGS BOOST_CPPFLAGS BOOST_LDFLAGS OPENCV_CPPFLAGS OPENCV_LDFLAGS BOOST_SANDBOX_CPPFLAGS LAPACK_LDFLAGS OPENGL_CPPFLAGS OPENGL_LDFLAGS IEEE1394_CPPFLAGS IEEE1394_LDFLAGS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1119,6 +1119,53 @@ Optional Packages:
       alternatively, you can specify:
         --with-opengllib=dir : the opengl package's lib directory
         --with-openglinc=dir : the opengl package's include directory
+
+  --with-raw1394
+  --with-raw1394=dir
+  --without-raw1394
+  --with-raw1394lib=dir
+  --with-raw1394inc=dir
+      support for raw1394. default: --with-raw1394
+      if --with-raw1394 or --with-raw1394=yes is given: raw1394 package files will be
+         searched for in some standard directories (the default).
+      if --with-raw1394=dir is given, and dir is a directory: raw1394 package files
+         will be searched for below 'dir' using 'find'.
+      if --with-raw1394=no or --without-raw1394 is given: raw1394 package will
+         not be used.
+      alternatively, you can specify:
+        --with-raw1394lib=dir : the raw1394 package's lib directory
+        --with-raw1394inc=dir : the raw1394 package's include directory
+
+  --with-dc1394
+  --with-dc1394=dir
+  --without-dc1394
+  --with-dc1394lib=dir
+  --with-dc1394inc=dir
+      support for dc1394. default: --with-dc1394
+      if --with-dc1394 or --with-dc1394=yes is given: dc1394 package files will be
+         searched for in some standard directories (the default).
+      if --with-dc1394=dir is given, and dir is a directory: dc1394 package files
+         will be searched for below 'dir' using 'find'.
+      if --with-dc1394=no or --without-dc1394 is given: dc1394 package will
+         not be used.
+      alternatively, you can specify:
+        --with-dc1394lib=dir : the dc1394 package's lib directory
+        --with-dc1394inc=dir : the dc1394 package's include directory
+
+  --with-v4l
+  --with-v4l=dir
+  --without-v4l
+
+  --with-v4linc=dir
+      support for v4l. default: --with-v4l
+      if --with-v4l or --with-v4l=yes is given: v4l package files will be
+         searched for in some standard directories (the default).
+      if --with-v4l=dir is given, and dir is a directory: v4l package files
+         will be searched for below 'dir' using 'find'.
+      if --with-v4l=no or --without-v4l is given: v4l package will
+         not be used.
+      alternatively, you can specify:
+        --with-v4linc=dir : the v4l package's include directory
   --with-includes=DIR     search include DIR for optional packages below
   --with-libraries=DIR    search library DIR for optional packages below
 
@@ -1228,7 +1275,7 @@ esac
     else
       echo "$as_me: WARNING: no configuration information is in $ac_dir" >&2
     fi
-    cd "$ac_popdir"
+    cd $ac_popdir
   done
 fi
 
@@ -2258,7 +2305,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2316,7 +2364,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2432,7 +2481,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2486,7 +2536,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2531,7 +2582,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2575,7 +2627,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2759,7 +2812,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2817,7 +2871,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2888,7 +2943,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -2932,7 +2988,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -3542,7 +3599,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 3545 "configure"' > conftest.$ac_ext
+  echo '#line 3602 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -3662,7 +3719,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -3971,7 +4029,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -4141,7 +4200,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -4208,7 +4268,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -4646,7 +4707,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:4649:" \
+echo "$as_me:4710:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -4692,7 +4753,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_f77_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_f77_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -4741,7 +4803,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_f77_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_f77_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -5678,11 +5741,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:5681: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:5744: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:5685: \$? = $ac_status" >&5
+   echo "$as_me:5748: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -5910,11 +5973,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:5913: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:5976: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:5917: \$? = $ac_status" >&5
+   echo "$as_me:5980: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -5977,11 +6040,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:5980: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6043: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:5984: \$? = $ac_status" >&5
+   echo "$as_me:6047: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -6340,7 +6403,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -6400,7 +6464,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -7567,7 +7632,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -7670,7 +7736,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -7735,7 +7802,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -7828,7 +7896,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -7893,7 +7962,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -7959,7 +8029,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -8025,7 +8096,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -8100,7 +8172,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8103 "configure"
+#line 8175 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8198,7 +8270,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8201 "configure"
+#line 8273 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -9274,7 +9346,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -9335,7 +9408,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -10383,11 +10457,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10386: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10460: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:10390: \$? = $ac_status" >&5
+   echo "$as_me:10464: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -10450,11 +10524,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10453: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10527: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:10457: \$? = $ac_status" >&5
+   echo "$as_me:10531: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -11239,7 +11313,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -11342,7 +11417,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -11407,7 +11483,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -11500,7 +11577,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -11565,7 +11643,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -11631,7 +11710,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -11697,7 +11777,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -11772,7 +11853,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 11775 "configure"
+#line 11856 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11870,7 +11951,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 11873 "configure"
+#line 11954 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12695,11 +12776,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12698: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12779: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:12702: \$? = $ac_status" >&5
+   echo "$as_me:12783: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -12762,11 +12843,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12765: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12846: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:12769: \$? = $ac_status" >&5
+   echo "$as_me:12850: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -13115,7 +13196,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_f77_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_f77_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -13165,7 +13247,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_f77_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_f77_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -14743,11 +14826,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14746: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14829: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14750: \$? = $ac_status" >&5
+   echo "$as_me:14833: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -14975,11 +15058,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14978: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15061: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14982: \$? = $ac_status" >&5
+   echo "$as_me:15065: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15042,11 +15125,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15045: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15128: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:15049: \$? = $ac_status" >&5
+   echo "$as_me:15132: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -15405,7 +15488,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -15465,7 +15549,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -16632,7 +16717,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -16735,7 +16821,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -16800,7 +16887,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -16893,7 +16981,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -16958,7 +17047,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -17024,7 +17114,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -17090,7 +17181,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -17165,7 +17257,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17168 "configure"
+#line 17260 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -17263,7 +17355,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17266 "configure"
+#line 17358 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -18743,7 +18835,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -18845,7 +18938,7 @@ echo "${ECHO_T}$include_found" >&6
         boost_cppflags=""
     fi
 
-		if test "$include_found" = ""; then
+		if test "x$include_found" = "x"; then
 			found_boost="no"
         	fi
 
@@ -18883,7 +18976,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -19021,19 +19115,11 @@ echo "${ECHO_T}$lib_found" >&6
         fi
     fi
 
-		if test "$lib_found" = ""; then
+		if test "x$lib_found" = "x"; then
 			found_boost="no"
         	fi
 
-    fi
 
-    if test "${found_boost}" = "no"; then
-	with_boost="no"
-        { { echo "$as_me:$LINENO: error: Can't find boost . see ./configure --help for more option" >&5
-echo "$as_me: error: Can't find boost . see ./configure --help for more option" >&2;}
-   { (exit 1); exit 1; }; }
-    else
-	with_boost="yes"
     fi
 
 
@@ -19045,7 +19131,7 @@ then
 
 
 cat >>confdefs.h <<\_ACEOF
-#define HAVE_BOOST
+#define HAVE_BOOST 1
 _ACEOF
 
 fi
@@ -19114,7 +19200,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -19255,7 +19342,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -19397,18 +19485,11 @@ echo "${ECHO_T}$lib_found" >&6
             		found_opencv="no"
         	fi
 
+	with_opencv="yes";
     else
 	with_opencv="no"
 	{ echo "$as_me:$LINENO: WARNING: Configuring without opencv support " >&5
 echo "$as_me: WARNING: Configuring without opencv support " >&2;}
-    fi
-
-    if test "${found_opencv}" = "no"; then
-	with_opencv="no"
-	{ echo "$as_me:$LINENO: WARNING: Configuring without opencv support " >&5
-echo "$as_me: WARNING: Configuring without opencv support " >&2;}
-    else
-	with_opencv="yes"
     fi
 
 
@@ -19420,7 +19501,7 @@ then
 
 
 cat >>confdefs.h <<\_ACEOF
-#define HAVE_OPENCV
+#define HAVE_OPENCV 1
 _ACEOF
 
 fi
@@ -19484,7 +19565,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -19592,18 +19674,11 @@ echo "${ECHO_T}$include_found" >&6
 
 
 
+	with_boost_sandbox="yes";
     else
 	with_boost_sandbox="no"
 	{ echo "$as_me:$LINENO: WARNING: Configuring without boost_sandbox support " >&5
 echo "$as_me: WARNING: Configuring without boost_sandbox support " >&2;}
-    fi
-
-    if test "${found_boost_sandbox}" = "no"; then
-	with_boost_sandbox="no"
-	{ echo "$as_me:$LINENO: WARNING: Configuring without boost_sandbox support " >&5
-echo "$as_me: WARNING: Configuring without boost_sandbox support " >&2;}
-    else
-	with_boost_sandbox="yes"
     fi
 
 
@@ -19613,7 +19688,7 @@ then
 
 
 cat >>confdefs.h <<\_ACEOF
-#define HAVE_BOOST_SANDBOX
+#define HAVE_BOOST_SANDBOX 1
 _ACEOF
 
 fi
@@ -19678,7 +19753,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -19820,18 +19896,11 @@ echo "${ECHO_T}$lib_found" >&6
             		found_lapack="no"
         	fi
 
+	with_lapack="yes";
     else
 	with_lapack="no"
 	{ echo "$as_me:$LINENO: WARNING: Configuring without lapack support " >&5
 echo "$as_me: WARNING: Configuring without lapack support " >&2;}
-    fi
-
-    if test "${found_lapack}" = "no"; then
-	with_lapack="no"
-	{ echo "$as_me:$LINENO: WARNING: Configuring without lapack support " >&5
-echo "$as_me: WARNING: Configuring without lapack support " >&2;}
-    else
-	with_lapack="yes"
     fi
 
 
@@ -19841,7 +19910,7 @@ then
 
 
 cat >>confdefs.h <<\_ACEOF
-#define HAVE_LAPACK
+#define HAVE_LAPACK 1
 _ACEOF
 
 fi
@@ -19911,7 +19980,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -20052,7 +20122,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -20194,18 +20265,11 @@ echo "${ECHO_T}$lib_found" >&6
             		found_opengl="no"
         	fi
 
+	with_opengl="yes";
     else
 	with_opengl="no"
 	{ echo "$as_me:$LINENO: WARNING: Configuring without opengl support " >&5
 echo "$as_me: WARNING: Configuring without opengl support " >&2;}
-    fi
-
-    if test "${found_opengl}" = "no"; then
-	with_opengl="no"
-	{ echo "$as_me:$LINENO: WARNING: Configuring without opengl support " >&5
-echo "$as_me: WARNING: Configuring without opengl support " >&2;}
-    else
-	with_opengl="yes"
     fi
 
 
@@ -20217,7 +20281,921 @@ then
 
 
 cat >>confdefs.h <<\_ACEOF
-#define HAVE_OPENGL
+#define HAVE_OPENGL 1
+_ACEOF
+
+fi
+
+## check for dc1394 and raw1384 ##
+
+
+# Check whether --with-raw1394 or --without-raw1394 was given.
+if test "${with_raw1394+set}" = set; then
+  withval="$with_raw1394"
+
+fi;
+
+# Check whether --with-raw1394lib or --without-raw1394lib was given.
+if test "${with_raw1394lib+set}" = set; then
+  withval="$with_raw1394lib"
+
+fi;
+
+# Check whether --with-raw1394inc or --without-raw1394inc was given.
+if test "${with_raw1394inc+set}" = set; then
+  withval="$with_raw1394inc"
+
+fi;
+
+
+    # default is "no"
+    if test ${with_raw1394:-""} = ""; then
+        with_raw1394="no"
+    fi
+
+    if test ${with_raw1394:-""} != "no"; then
+	found_raw1394="yes"
+
+
+    if test "libraw1394/raw1394.h" != ""; then
+        echo "$as_me:$LINENO: checking for libraw1394/raw1394.h " >&5
+echo $ECHO_N "checking for libraw1394/raw1394.h ... $ECHO_C" >&6
+
+        # check whether the include is in the path by default (e.g. /usr/include)
+        include_found=""
+        if test "$with_raw1394inc" = "" -a "$with_raw1394" = "yes"; then
+            cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <stdio.h>  /* necessary because jpeglib.h fails to include it */
+#include <libraw1394/raw1394.h>
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  include_found="in default path"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+include_found=""
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+        fi
+
+        # if not found by default, try searching for it
+        if test "$include_found" = ""; then
+            dirs=""
+            if test "$with_raw1394inc" != ""; then
+                dirs="$with_raw1394inc"
+            elif test "$with_raw1394" != "yes"; then
+                dirs="$with_raw1394"
+            else
+                dirs="/usr/local/include /usr/local/gnu/include /usr/local/raw1394 /usr/local/raw1394/include /opt/include /opt/gnu/include /opt/raw1394 /opt/raw1394/include /opt/local/include /opt/local/include/raw1394 /usr/include /sw /sw/include /sw/raw1394 /sw/raw1394/include \$HOME/ \$HOME/include \$HOME/usr \$HOME/usr/include \$HOME/usr/raw1394 \$HOME/opt \$HOME/opt/include \$HOME/opt/raw1394 \$HOME/raw1394 \$HOME/local \$HOME/local/include \$HOME/local/raw1394"
+            fi
+
+            # use find for searching
+
+    if test "$findprog" = ""; then
+        if test "$CYGWIN" = "yes"; then
+          findprog="/usr/bin/find"
+        else
+          findprog="find"
+        fi
+    fi
+
+
+            # first, look for the given header file without directory components..
+            found=""
+            for i in $dirs; do
+                if test -d $i; then
+                    found="$found `$findprog $i -follow -name raw1394.h -print 2> /dev/null`"
+                fi
+            done
+
+            # now, check each found file for relative path prefix.
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*include\)/libraw1394/raw1394\.h"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+            if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*\)/libraw1394/raw1394\.h"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+            fi
+            include_found=$regExResult
+        fi
+
+        # report the search result and set result variables
+        if test "$include_found" = ""; then
+            with_raw1394inc=""
+            echo "$as_me:$LINENO: result: not found in $dirs" >&5
+echo "${ECHO_T}not found in $dirs" >&6
+        else
+            echo "$as_me:$LINENO: result: $include_found" >&5
+echo "${ECHO_T}$include_found" >&6
+            if test "$include_found" != "/usr/include" -a \
+                    "$include_found" != "in default path"; then
+                with_raw1394inc="$include_found"
+                raw1394_cppflags="-I$include_found"
+            else
+                with_raw1394inc=""
+                raw1394_cppflags=""
+            fi
+        fi
+    else
+        with_raw1394inc=""
+        raw1394_cppflags=""
+    fi
+
+	 	if test "x$include_found" = "x"; then
+			found_raw1394="no"
+        	fi
+
+
+
+
+    echo "$as_me:$LINENO: checking for libraw1394 " >&5
+echo $ECHO_N "checking for libraw1394 ... $ECHO_C" >&6
+
+    # check whether the include is in the path by default (e.g. /usr/include)
+    lib_found=""
+    if test "$with_raw1394lib" = "" -a "$with_raw1394" = "yes"; then
+        ac_save_LIBS="$LIBS"
+        LIBS="$LIBS -lraw1394"
+        cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  lib_found="in default path"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+lib_found=""
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+        LIBS=$ac_save_LIBS
+    fi
+
+    # if not found by default, try searching for it
+    if test "$lib_found" = ""; then
+        if test "$libext" = ""; then
+            libext=".a"
+        fi
+
+
+	case $build_os in
+	     cygwin*) SHLIB_SUFFIX='.dll' ;;
+	     darwin*) SHLIB_SUFFIX='.dylib' ;;
+	     hpux*)   SHLIB_SUFFIX='.sl'  ;;
+	     *)	      SHLIB_SUFFIX='.so'  ;;
+	esac
+
+        if test "$solibext" = ""; then
+	    solibext="$SHLIB_SUFFIX"
+        fi
+
+        if test "$libpre" = ""; then
+            libpre="lib"
+        fi
+
+
+    if test "$findprog" = ""; then
+        if test "$CYGWIN" = "yes"; then
+          findprog="/usr/bin/find"
+        else
+          findprog="find"
+        fi
+    fi
+
+
+        dirs=""
+        if test "$with_raw1394lib" != ""; then
+            dirs=$with_raw1394lib
+        elif test "$with_raw1394" != "yes"; then
+            dirs=$with_raw1394
+        else
+            dirs="/usr/local/lib /usr/local/gnu/lib /usr/local/raw1394 /usr/local/raw1394/lib /opt/lib /opt/gnu/lib /opt/raw1394 /opt/raw1394/lib /opt/local/lib /usr/lib /sw /sw/lib /sw/raw1394 /sw/raw1394/lib \$HOME \$HOME/lib \$HOME/raw1394 \$HOME/raw1394/lib \$HOME/usr \$HOME/usr/lib \$HOME/usr/raw1394 \$HOME/opt \$HOME/opt/lib \$HOME/opt/raw1394 \$HOME/local \$HOME/local/include \$HOME/local/raw1394"
+        fi
+        found=""
+        for i in $dirs; do
+            if test -d $i; then
+                found="$found `$findprog $i -follow -name "${libpre}raw1394$solibext" -print 2> /dev/null; $findprog $i -follow -name "${libpre}raw1394$libext" -print 2> /dev/null`"
+            fi
+        done
+
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*lib\)/${libpre}raw1394$solibext"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+        if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*lib\)/${libpre}raw1394$libext"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+        fi
+        if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*\)/${libpre}raw1394$solibext"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+        fi
+        if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*\)/${libpre}raw1394$libext"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+        fi
+        lib_found=$regExResult
+    fi
+    if test "$lib_found" = ""; then
+        with_raw1394lib=""
+        echo "$as_me:$LINENO: result: not found in $dirs" >&5
+echo "${ECHO_T}not found in $dirs" >&6
+    else
+        echo "$as_me:$LINENO: result: $lib_found" >&5
+echo "${ECHO_T}$lib_found" >&6
+        if test "$lib_found" != "/usr/lib" -a \
+                "$lib_found" != "in default path"; then
+            with_raw1394lib="-L$lib_found"
+        else
+            with_raw1394lib=""
+        fi
+    fi
+
+		if test "x$lib_found" = "x"; then
+            		found_raw1394="no"
+        	fi
+
+	with_raw1394="yes";
+    else
+	with_raw1394="no"
+	{ echo "$as_me:$LINENO: WARNING: Configuring without raw1394 support " >&5
+echo "$as_me: WARNING: Configuring without raw1394 support " >&2;}
+    fi
+
+
+if test "x$with_raw1384" = "xyes";
+then
+
+
+# Check whether --with-dc1394 or --without-dc1394 was given.
+if test "${with_dc1394+set}" = set; then
+  withval="$with_dc1394"
+
+fi;
+
+# Check whether --with-dc1394lib or --without-dc1394lib was given.
+if test "${with_dc1394lib+set}" = set; then
+  withval="$with_dc1394lib"
+
+fi;
+
+# Check whether --with-dc1394inc or --without-dc1394inc was given.
+if test "${with_dc1394inc+set}" = set; then
+  withval="$with_dc1394inc"
+
+fi;
+
+
+    # default is "no"
+    if test ${with_dc1394:-""} = ""; then
+        with_dc1394="no"
+    fi
+
+    if test ${with_dc1394:-""} != "no"; then
+	found_dc1394="yes"
+
+
+    if test "libdc1394/dc1394_control.h" != ""; then
+        echo "$as_me:$LINENO: checking for libdc1394/dc1394_control.h " >&5
+echo $ECHO_N "checking for libdc1394/dc1394_control.h ... $ECHO_C" >&6
+
+        # check whether the include is in the path by default (e.g. /usr/include)
+        include_found=""
+        if test "$with_dc1394inc" = "" -a "$with_dc1394" = "yes"; then
+            cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <stdio.h>  /* necessary because jpeglib.h fails to include it */
+#include <libdc1394/dc1394_control.h>
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  include_found="in default path"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+include_found=""
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+        fi
+
+        # if not found by default, try searching for it
+        if test "$include_found" = ""; then
+            dirs=""
+            if test "$with_dc1394inc" != ""; then
+                dirs="$with_dc1394inc"
+            elif test "$with_dc1394" != "yes"; then
+                dirs="$with_dc1394"
+            else
+                dirs="/usr/local/include /usr/local/gnu/include /usr/local/dc1394 /usr/local/dc1394/include /opt/include /opt/gnu/include /opt/dc1394 /opt/dc1394/include /opt/local/include /opt/local/include/dc1394 /usr/include /sw /sw/include /sw/dc1394 /sw/dc1394/include \$HOME/ \$HOME/include \$HOME/usr \$HOME/usr/include \$HOME/usr/dc1394 \$HOME/opt \$HOME/opt/include \$HOME/opt/dc1394 \$HOME/dc1394 \$HOME/local \$HOME/local/include \$HOME/local/dc1394"
+            fi
+
+            # use find for searching
+
+    if test "$findprog" = ""; then
+        if test "$CYGWIN" = "yes"; then
+          findprog="/usr/bin/find"
+        else
+          findprog="find"
+        fi
+    fi
+
+
+            # first, look for the given header file without directory components..
+            found=""
+            for i in $dirs; do
+                if test -d $i; then
+                    found="$found `$findprog $i -follow -name dc1394_control.h -print 2> /dev/null`"
+                fi
+            done
+
+            # now, check each found file for relative path prefix.
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*include\)/libdc1394/dc1394_control\.h"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+            if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*\)/libdc1394/dc1394_control\.h"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+            fi
+            include_found=$regExResult
+        fi
+
+        # report the search result and set result variables
+        if test "$include_found" = ""; then
+            with_dc1394inc=""
+            echo "$as_me:$LINENO: result: not found in $dirs" >&5
+echo "${ECHO_T}not found in $dirs" >&6
+        else
+            echo "$as_me:$LINENO: result: $include_found" >&5
+echo "${ECHO_T}$include_found" >&6
+            if test "$include_found" != "/usr/include" -a \
+                    "$include_found" != "in default path"; then
+                with_dc1394inc="$include_found"
+                dc1394_cppflags="-I$include_found"
+            else
+                with_dc1394inc=""
+                dc1394_cppflags=""
+            fi
+        fi
+    else
+        with_dc1394inc=""
+        dc1394_cppflags=""
+    fi
+
+	 	if test "x$include_found" = "x"; then
+			found_dc1394="no"
+        	fi
+
+
+
+
+    echo "$as_me:$LINENO: checking for libdc1394_control " >&5
+echo $ECHO_N "checking for libdc1394_control ... $ECHO_C" >&6
+
+    # check whether the include is in the path by default (e.g. /usr/include)
+    lib_found=""
+    if test "$with_dc1394lib" = "" -a "$with_dc1394" = "yes"; then
+        ac_save_LIBS="$LIBS"
+        LIBS="$LIBS -ldc1394_control"
+        cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  lib_found="in default path"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+lib_found=""
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+        LIBS=$ac_save_LIBS
+    fi
+
+    # if not found by default, try searching for it
+    if test "$lib_found" = ""; then
+        if test "$libext" = ""; then
+            libext=".a"
+        fi
+
+
+	case $build_os in
+	     cygwin*) SHLIB_SUFFIX='.dll' ;;
+	     darwin*) SHLIB_SUFFIX='.dylib' ;;
+	     hpux*)   SHLIB_SUFFIX='.sl'  ;;
+	     *)	      SHLIB_SUFFIX='.so'  ;;
+	esac
+
+        if test "$solibext" = ""; then
+	    solibext="$SHLIB_SUFFIX"
+        fi
+
+        if test "$libpre" = ""; then
+            libpre="lib"
+        fi
+
+
+    if test "$findprog" = ""; then
+        if test "$CYGWIN" = "yes"; then
+          findprog="/usr/bin/find"
+        else
+          findprog="find"
+        fi
+    fi
+
+
+        dirs=""
+        if test "$with_dc1394lib" != ""; then
+            dirs=$with_dc1394lib
+        elif test "$with_dc1394" != "yes"; then
+            dirs=$with_dc1394
+        else
+            dirs="/usr/local/lib /usr/local/gnu/lib /usr/local/dc1394 /usr/local/dc1394/lib /opt/lib /opt/gnu/lib /opt/dc1394 /opt/dc1394/lib /opt/local/lib /usr/lib /sw /sw/lib /sw/dc1394 /sw/dc1394/lib \$HOME \$HOME/lib \$HOME/dc1394 \$HOME/dc1394/lib \$HOME/usr \$HOME/usr/lib \$HOME/usr/dc1394 \$HOME/opt \$HOME/opt/lib \$HOME/opt/dc1394 \$HOME/local \$HOME/local/include \$HOME/local/dc1394"
+        fi
+        found=""
+        for i in $dirs; do
+            if test -d $i; then
+                found="$found `$findprog $i -follow -name "${libpre}dc1394_control$solibext" -print 2> /dev/null; $findprog $i -follow -name "${libpre}dc1394_control$libext" -print 2> /dev/null`"
+            fi
+        done
+
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*lib\)/${libpre}dc1394_control$solibext"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+        if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*lib\)/${libpre}dc1394_control$libext"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+        fi
+        if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*\)/${libpre}dc1394_control$solibext"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+        fi
+        if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*\)/${libpre}dc1394_control$libext"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+        fi
+        lib_found=$regExResult
+    fi
+    if test "$lib_found" = ""; then
+        with_dc1394lib=""
+        echo "$as_me:$LINENO: result: not found in $dirs" >&5
+echo "${ECHO_T}not found in $dirs" >&6
+    else
+        echo "$as_me:$LINENO: result: $lib_found" >&5
+echo "${ECHO_T}$lib_found" >&6
+        if test "$lib_found" != "/usr/lib" -a \
+                "$lib_found" != "in default path"; then
+            with_dc1394lib="-L$lib_found"
+        else
+            with_dc1394lib=""
+        fi
+    fi
+
+		if test "x$lib_found" = "x"; then
+            		found_dc1394="no"
+        	fi
+
+	with_dc1394="yes";
+    else
+	with_dc1394="no"
+	{ echo "$as_me:$LINENO: WARNING: Configuring without dc1394 support " >&5
+echo "$as_me: WARNING: Configuring without dc1394 support " >&2;}
+    fi
+
+
+   if test "x$with_dc1394" = "xyes";
+   then
+    IEEE1394_CPPFLAGS="$raw1394_cppflags $dc1394_cppflags"
+    IEEE1394_LDFLAGS="$with_raw1394lib $with_dc1394lib"
+
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_IEEE1394 1
+_ACEOF
+
+  fi
+fi
+
+## check for video4linux ##
+
+
+# Check whether --with-v4l or --without-v4l was given.
+if test "${with_v4l+set}" = set; then
+  withval="$with_v4l"
+
+fi;
+
+
+# Check whether --with-v4linc or --without-v4linc was given.
+if test "${with_v4linc+set}" = set; then
+  withval="$with_v4linc"
+
+fi;
+
+
+    # default is "no"
+    if test ${with_v4l:-""} = ""; then
+        with_v4l="no"
+    fi
+
+    if test ${with_v4l:-""} != "no"; then
+	found_v4l="yes"
+
+
+    if test "linux/videodev.h" != ""; then
+        echo "$as_me:$LINENO: checking for linux/videodev.h " >&5
+echo $ECHO_N "checking for linux/videodev.h ... $ECHO_C" >&6
+
+        # check whether the include is in the path by default (e.g. /usr/include)
+        include_found=""
+        if test "$with_v4linc" = "" -a "$with_v4l" = "yes"; then
+            cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <stdio.h>  /* necessary because jpeglib.h fails to include it */
+#include <linux/videodev.h>
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  include_found="in default path"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+include_found=""
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+        fi
+
+        # if not found by default, try searching for it
+        if test "$include_found" = ""; then
+            dirs=""
+            if test "$with_v4linc" != ""; then
+                dirs="$with_v4linc"
+            elif test "$with_v4l" != "yes"; then
+                dirs="$with_v4l"
+            else
+                dirs="/usr/local/include /usr/local/gnu/include /usr/local/v4l /usr/local/v4l/include /opt/include /opt/gnu/include /opt/v4l /opt/v4l/include /opt/local/include /opt/local/include/v4l /usr/include /sw /sw/include /sw/v4l /sw/v4l/include \$HOME/ \$HOME/include \$HOME/usr \$HOME/usr/include \$HOME/usr/v4l \$HOME/opt \$HOME/opt/include \$HOME/opt/v4l \$HOME/v4l \$HOME/local \$HOME/local/include \$HOME/local/v4l"
+            fi
+
+            # use find for searching
+
+    if test "$findprog" = ""; then
+        if test "$CYGWIN" = "yes"; then
+          findprog="/usr/bin/find"
+        else
+          findprog="find"
+        fi
+    fi
+
+
+            # first, look for the given header file without directory components..
+            found=""
+            for i in $dirs; do
+                if test -d $i; then
+                    found="$found `$findprog $i -follow -name videodev.h -print 2> /dev/null`"
+                fi
+            done
+
+            # now, check each found file for relative path prefix.
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*include\)/linux/videodev\.h"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+            if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*\)/linux/videodev\.h"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+            fi
+            include_found=$regExResult
+        fi
+
+        # report the search result and set result variables
+        if test "$include_found" = ""; then
+            with_v4linc=""
+            echo "$as_me:$LINENO: result: not found in $dirs" >&5
+echo "${ECHO_T}not found in $dirs" >&6
+        else
+            echo "$as_me:$LINENO: result: $include_found" >&5
+echo "${ECHO_T}$include_found" >&6
+            if test "$include_found" != "/usr/include" -a \
+                    "$include_found" != "in default path"; then
+                with_v4linc="$include_found"
+                v4l_cppflags="-I$include_found"
+            else
+                with_v4linc=""
+                v4l_cppflags=""
+            fi
+        fi
+    else
+        with_v4linc=""
+        v4l_cppflags=""
+    fi
+
+	 	if test "x$include_found" = "x"; then
+			found_v4l="no"
+        	fi
+
+
+
+	with_v4l="yes";
+    else
+	with_v4l="no"
+	{ echo "$as_me:$LINENO: WARNING: Configuring without v4l support " >&5
+echo "$as_me: WARNING: Configuring without v4l support " >&2;}
+    fi
+
+
+if test "x$with_v4l" = "xyes";
+then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_V4L 1
 _ACEOF
 
 fi
@@ -20281,7 +21259,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -20323,7 +21302,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -20380,7 +21360,8 @@ if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   cat conftest.err >&5
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+	 { ac_try='test -z "$ac_cxx_werror_flag"
+			 || test ! -s conftest.err'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -21191,6 +22172,8 @@ s,@BOOST_SANDBOX_CPPFLAGS@,$BOOST_SANDBOX_CPPFLAGS,;t t
 s,@LAPACK_LDFLAGS@,$LAPACK_LDFLAGS,;t t
 s,@OPENGL_CPPFLAGS@,$OPENGL_CPPFLAGS,;t t
 s,@OPENGL_LDFLAGS@,$OPENGL_LDFLAGS,;t t
+s,@IEEE1394_CPPFLAGS@,$IEEE1394_CPPFLAGS,;t t
+s,@IEEE1394_LDFLAGS@,$IEEE1394_LDFLAGS,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
 CEOF
@@ -21359,6 +22342,11 @@ esac
   *) ac_INSTALL=$ac_top_builddir$INSTALL ;;
   esac
 
+  if test x"$ac_file" != x-; then
+    { echo "$as_me:$LINENO: creating $ac_file" >&5
+echo "$as_me: creating $ac_file" >&6;}
+    rm -f "$ac_file"
+  fi
   # Let's still pretend it is `configure' which instantiates (i.e., don't
   # use $as_me), people would be surprised to read:
   #    /* config.h.  Generated by config.status.  */
@@ -21397,12 +22385,6 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
 	 fi;;
       esac
     done` || { (exit 1); exit 1; }
-
-  if test x"$ac_file" != x-; then
-    { echo "$as_me:$LINENO: creating $ac_file" >&5
-echo "$as_me: creating $ac_file" >&6;}
-    rm -f "$ac_file"
-  fi
 _ACEOF
 cat >>$CONFIG_STATUS <<_ACEOF
   sed "$ac_vpsub
