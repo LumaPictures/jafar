@@ -31,7 +31,7 @@ TESTOBJS = $(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.lo,$(notdir $(TESTCPP)))
 # Standard rules
 #################
 
-all: $(USE_MODULES) dirs lib tcl
+all: $(USE_MODULES) lib tcl
 
 # C++ compilation
 ##################
@@ -100,7 +100,7 @@ $(libdir)/lib$(MODULE).la: $(dev_libdir)/lib$(MODULE).la
 
 lib-install : $(libdir)/lib$(MODULE).la $(HEADERS) $(SWIG_LIBS)
 
-lib : lib-install
+lib : dirs lib-install
 
 
 # build dirs
@@ -186,19 +186,23 @@ stamp-h: config.h.in config.status ./config/user.ac
 ##################
 
 test: test-build
-	@echo ""
-	@echo "    **************************************"
-	@echo "    * Running tests for module $(MODULE) *"
-	@echo "    **************************************"
-	@echo ""
-	$(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
+#	@echo ""
+#	@echo "    **************************************"
+#	@echo "    * Running tests for module $(MODULE) *"
+#	@echo "    **************************************"
+#	@echo ""
+	@$(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
 
-$(dev_testdir)/$(BUILD)/%.lo: $(dev_testdir)/%.cpp dirs
+
+
+$(dev_testdir)/$(BUILD)/%.lo: $(dev_testdir)/%.cpp
+	echo "compile $@"
 	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS)  $(BOOST_CPPFLAGS) -o $@ $<
 
-test-build: lib $(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
+test-build: dirs lib $(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
 
 $(dev_testdir)/$(BUILD)/test_suite_$(MODULE): $(TESTOBJS)
+	echo "link"
 	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -lboost_unit_test_framework -o $@ $^
 
 .PHONY: $(USE_MODULES)
