@@ -131,11 +131,20 @@ then
 fi
 
 ## check for video4linux ##
-MD_FIND_PACKAGE_OPT(v4l,, linux/videodev.h, [support for v4l])
+MD_FIND_PACKAGE_OPT(v4l,, linux/videodev.h, [support for v4l (only available on Linux)])
 if test "x$with_v4l" = "xyes";
 then
     AC_DEFINE(HAVE_V4L,1,[v4l support])
 fi
+
+## check for quicktime
+MD_FIND_PACKAGE_OPT(quicktime,, QuickTime/QuickTime.h, [support for QuickTime (only available on MacOSX)])
+if test "x$with_quicktime" = "xyes";
+then
+    QUICKTIME_LDFLAGS="-Wl,-framework -Wl,Carbon -Wl,-framework -Wl,Quicktime"
+    AC_SUBST(QUICKTIME_LDFLAGS) 
+    AC_DEFINE(HAVE_QUICKTIME,1)
+fi  
 
 ##########################
 # Check for header files #

@@ -20,3 +20,6 @@
 
 /* v4l support */
 #undef HAVE_V4L
+
+/* Quicktime support */
+#undef HAVE_QUICKTIME
