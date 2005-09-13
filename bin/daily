@@ -7,49 +7,70 @@
 
 MAILTO=jafar-source
 
-#
 output=/tmp/jafar.daily
 rm -f $output
 
 (
-umask 02
-#
+
+# compilation host
+targetHost=chico
+
 JAFAR_DIR='/usr/local/jafar'
+
+# configure command
+configureCmd='./configure --with-opencv=/usr/local/opencv'
 
 # modules to be checked
 MODULES="kernel helloworld image display jmath hpm cine model3d stereo filter slam"
 
-cd ${JAFAR_DIR}
+# targets to be executed
+TARGETS="clean lib tcl test-build test"
 
 echo '\n--------------------- svn update -----------------------------\n'
 
-if svn update ; then
+if ssh ${targetHost} "cd ${JAFAR_DIR}; svn update" ; then
 
     echo '\n------------------- Documentation ----------------------------\n'
+    # dot is installed on warhol
     if ssh warhol "cd ${JAFAR_DIR}; make doc" > /dev/null 2>&1; then
         echo 'html...OK'
     else
         echo 'html...ERROR'
     fi
 
-    echo '\n--------------------- Compilation ----------------------------\n'
-    for m in ${MODULES}; do
-        if ssh warhol "cd /usr/local/jafar/modules/${m}; \
-           setenv JAFAR_DIR ${JAFAR_DIR}; \
-           make clean; \
-           make" > /dev/null 2>&1; then
-                echo "${m}...OK"
-        else
-            echo "${m}...ERROR"
-        fi
-    done
+    echo '\n---------------------- Configure -----------------------------\n'
 
+    if ssh ${targetHost} "cd ${JAFAR_DIR}; \
+	setenv JAFAR_DIR ${JAFAR_DIR}; \
+	${configureCmd}" >/dev/null ; then
+	
+	echo "${configureCmd}...OK"
+
+	echo '\n--------------------- Compilation ----------------------------\n'
+	for m in ${MODULES}; do
+	    echo "** module ${m}"
+
+	    for t in ${TARGETS}; do
+		if ssh ${targetHost} "cd /usr/local/jafar/modules/${m}; \
+		    setenv JAFAR_DIR ${JAFAR_DIR}; \
+		    make ${t}" > /dev/null 2>&1; then
+		    echo "${t}...OK"
+		else
+		    echo "${t}...ERROR"
+		fi
+
+	    done
+	    echo '\n'
+	done
+    else
+	echo "${configureCmd}...ERROR"	
+    fi
 else
     echo 'ERROR'
 fi
 echo '\n------------------------ End ---------------------------------\n'
 ) > $output 2>&1
-mailx -s 'Daily jafar report' $MAILTO < $output
+mailx -s 'Daily Jafar report' $MAILTO < $output
 rm -f $output
 exit 0
 
