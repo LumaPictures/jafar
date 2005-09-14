@@ -20658,8 +20658,6 @@ echo "$as_me: WARNING: Configuring without raw1394 support " >&2;}
     fi
 
 
-if test "x$with_raw1384" = "xyes";
-then
 
 
 # Check whether --with-dc1394 or --without-dc1394 was given.
@@ -21016,8 +21014,8 @@ echo "$as_me: WARNING: Configuring without dc1394 support " >&2;}
     fi
 
 
-   if test "x$with_dc1394" = "xyes";
-   then
+if test "x$with_dc1394" = "xyes" && test "x$with_raw1394" = "xyes";
+then
     IEEE1394_CPPFLAGS="$raw1394_cppflags $dc1394_cppflags"
     IEEE1394_LDFLAGS="$with_raw1394lib $with_dc1394lib"
 
@@ -21027,7 +21025,6 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_IEEE1394 1
 _ACEOF
 
-  fi
 fi
 
 ## check for video4linux ##

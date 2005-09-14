@@ -117,17 +117,14 @@ fi
 
 ## check for dc1394 and raw1384 ##
 MD_FIND_PACKAGE_OPT(raw1394, raw1394, libraw1394/raw1394.h, [support for raw1394])
-if test "x$with_raw1384" = "xyes";
-then 
-   MD_FIND_PACKAGE_OPT(dc1394, dc1394_control, libdc1394/dc1394_control.h, [support for dc1394])
-   if test "x$with_dc1394" = "xyes";
-   then
+MD_FIND_PACKAGE_OPT(dc1394, dc1394_control, libdc1394/dc1394_control.h, [support for dc1394])
+if test "x$with_dc1394" = "xyes" && test "x$with_raw1394" = "xyes";
+then
     IEEE1394_CPPFLAGS="$raw1394_cppflags $dc1394_cppflags"
     IEEE1394_LDFLAGS="$with_raw1394lib $with_dc1394lib"
     AC_SUBST(IEEE1394_CPPFLAGS)
     AC_SUBST(IEEE1394_LDFLAGS)
     AC_DEFINE(HAVE_IEEE1394,1,[IEEE1394 support])
-  fi
 fi
 
 ## check for video4linux ##
