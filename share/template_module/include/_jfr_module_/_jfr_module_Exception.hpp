@@ -14,7 +14,7 @@ namespace jafar {
      *
      * @ingroup _jfr_module_
      */
-    class _jfr_Module_Exception : public jafar::kernel::Exception {
+    class _jfr_Module_Exception : public ::jafar::kernel::Exception {
 
     public:
 
