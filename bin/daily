@@ -15,6 +15,8 @@ rm -f $output
 # compilation host
 targetHost=chico
 
+SSH='/usr/local/bin/ssh'
+
 JAFAR_DIR='/usr/local/jafar'
 
 # configure command
@@ -28,19 +30,19 @@ TARGETS="clean lib tcl test-build test"
 
 echo '\n--------------------- svn update -----------------------------\n'
 
-if ssh ${targetHost} "cd ${JAFAR_DIR}; svn update" ; then
+if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; svn update" ; then
 
     echo '\n------------------- Documentation ----------------------------\n'
     # dot is installed on warhol
-    if ssh warhol "cd ${JAFAR_DIR}; make doc" > /dev/null 2>&1; then
-        echo 'html...OK'
+    if ${SSH} warhol "cd ${JAFAR_DIR}; make doc" > /dev/null 2>&1; then
+        echo "html...OK"
     else
-        echo 'html...ERROR'
+        echo "html...ERROR"
     fi
 
     echo '\n---------------------- Configure -----------------------------\n'
 
-    if ssh ${targetHost} "cd ${JAFAR_DIR}; \
+    if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; \
 	setenv JAFAR_DIR ${JAFAR_DIR}; \
 	${configureCmd}" >/dev/null ; then
 	
@@ -51,7 +53,7 @@ if ssh ${targetHost} "cd ${JAFAR_DIR}; svn update" ; then
 	    echo "** module ${m}"
 
 	    for t in ${TARGETS}; do
-		if ssh ${targetHost} "cd /usr/local/jafar/modules/${m}; \
+		if ${SSH} ${targetHost} "cd /usr/local/jafar/modules/${m}; \
 		    setenv JAFAR_DIR ${JAFAR_DIR}; \
 		    make ${t}" > /dev/null 2>&1; then
 		    echo "${t}...OK"
