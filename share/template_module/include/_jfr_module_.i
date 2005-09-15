@@ -21,6 +21,8 @@
 // to wrap std::string
 // %include "std_string.i" 
 
+%include "jafarConfig.h"
+
 %include "_jfr_module_Exception.i"
 
 /* headers to be wrapped goes here */
