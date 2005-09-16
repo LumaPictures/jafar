@@ -1,0 +1,21 @@
+#!/bin/sh
+# $Id$
+#
+# This script makes an update in jafar, and in all the modules
+#
+
+echo "Jafar backbone..."
+cd "${JAFAR_DIR}"
+svn up
+
+cd "modules"
+
+for m in *; do
+    echo ""
+    echo "Module ${m}..."
+    cd "${m}"
+    svn up
+    cd ".."
+done
+
+
