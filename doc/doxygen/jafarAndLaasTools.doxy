@@ -40,7 +40,7 @@ void jafar::pipo::displayMyStruct(MyStruct const& s_)
 #endif
 \endcode
 
-Do not forget to add \c myStruct.hpp and \c jafarConfig.h to \c pipo.i. If OpenGL is enabled (see \ref subsecInstallConfigure) the function \e pipo::displayMyStruct() is available in tcl and can be used with GDHE.
+Do not forget to add \c myStruct.hpp to \c pipo.i. If OpenGL is enabled (see \ref subsecInstallConfigure) the function \e pipo::displayMyStruct() is available in tcl and can be used with GDHE.
 
 \section secLaasToolsGenom Jafar and GenoM
 
