@@ -45,11 +45,17 @@ $ svn co svn+ssh://toto@pollux.laas.fr/svn/jafar/jafarBackbone/trunk jafar/
 You will get, among other things, the kernel module in the \c jafar/module/ directory.
 
 Then retrieve the modules versions you are interested in, cd in the module directory and do some checkouts:
-\verbatim
+\verbatim 
 $ cd /home/toto/jafar/modules
 $ svn co svn+ssh://toto@pollux.laas.fr/svn/jafar/jafarModules/trunk/helloworld helloworld/
 $ svn co svn+ssh://toto@pollux.laas.fr/svn/jafar/jafarModules/tags/image_0.3 image/
 \endverbatim
+
+\subsection subsecLaasCoUp Commit/Update
+
+Please refer to http://svnbook.red-bean.com for a complete subversion documentation. This section only describes usage of \c svn-update-jafar which can be found in \c JAFAR_DIR/bin.
+
+Because of the special layout of the repository, directories in your \c modules/ do not belong to the \c modules/ directory of the repository (except for \e kernel), this does break the recursive execution of \c svn \c update. \c svn-update-jafar updates your jafar and all your modules in one go. A module which has not already been added to the repository is just skipped.
 
 \subsection subsecLaasSvnModule Adding a new module under subversion
 
