@@ -2,7 +2,11 @@
 
 # $Id$ #
 
-svn import -N $1 -m "new module !" svn+ssh://$USER@pollux.laas.fr/svn/jafar/jafarModules/trunk
+mv $1 ${1}_tmp
+svn mkdir -m"new module !" svn+ssh://$USER@pollux.laas.fr/svn/jafar/jafarModules/trunk/${1}
+svn co svn+ssh://$USER@pollux.laas.fr/svn/jafar/jafarModules/trunk/${1} $1
+mv ${1}_tmp/* $1
+rm -rf ${1}_tmp
 
 cd $1
 svn add -N COPYRIGHT Makefile README User.make doc include macro src test_suite
