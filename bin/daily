@@ -30,7 +30,7 @@ TARGETS="clean lib tcl test-build test"
 
 echo '\n--------------------- svn update -----------------------------\n'
 
-if ${SSH} ${targetHost} "setenv ${JAFAR_DIR}; ${JAFAR_DIR}/bin/svn-update-jafar" ; then
+if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; ${JAFAR_DIR}/bin/svn-update-jafar" ; then
 
     echo '\n------------------- Documentation ----------------------------\n'
     # a recent doxygen and dot are installed on warhol
