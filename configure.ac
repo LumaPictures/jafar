@@ -110,8 +110,10 @@ if test "x$with_opengl" = "xyes";
 then
     OPENGL_CPPFLAGS="$opengl_cppflags"
     OPENGL_LDFLAGS="$with_opengllib"
+    OPENGL_LIBS="-lGL"
     AC_SUBST(OPENGL_CPPFLAGS)
     AC_SUBST(OPENGL_LDFLAGS)
+    AC_SUBST(OPENGL_LIBS)
     AC_DEFINE(HAVE_OPENGL,1,[openGL library])
 fi
 
