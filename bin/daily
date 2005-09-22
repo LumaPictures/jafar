@@ -30,7 +30,22 @@ TARGETS="clean lib tcl test-build test"
 
 echo '\n--------------------- svn update -----------------------------\n'
 
-if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; ${JAFAR_DIR}/bin/svn-update-jafar" ; then
+echo 'Jafar backbone...'
+
+if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; svn up ${JAFAR_DIR}" ; then
+
+    for m in ${MODULES}; do
+	echo ""
+	echo "Module ${m}..."
+	if test -d ${JAFAR_DIR}/modules/$m ; then
+	    ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; \
+		svn up ${JAFAR_DIR}/modules/$m" 
+	else
+	    echo "svn co svn+ssh://pollux.laas.fr/svn/jafar/jafarModules/trunk/${m} ${JAFAR_DIR}/modules/${m}"
+	    ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; \
+		svn co svn+ssh://pollux.laas.fr/svn/jafar/jafarModules/trunk/${m} ${JAFAR_DIR}/modules/${m}"
+	fi
+    done
 
     echo '\n------------------- Documentation ----------------------------\n'
     # a recent doxygen and dot are installed on warhol
@@ -68,7 +83,7 @@ if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; ${JAFAR_DIR}/bin/svn-upd
 	echo "${configureCmd}...ERROR"	
     fi
 else
-    echo 'ERROR'
+    echo 'ERROR: svn update failed'
 fi
 echo '\n------------------------ End ---------------------------------\n'
 ) > $output 2>&1
