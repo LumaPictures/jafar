@@ -10,6 +10,10 @@ MAILTO=jafar-source
 output=/tmp/jafar.daily
 rm -f $output
 
+# log of all operations
+logDir=/usr/local/jafar/log/
+rm -f ${logDir}/*.log
+
 (
 
 # compilation host
@@ -49,7 +53,7 @@ if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; svn up ${JAFAR_DIR}" ; t
 
     echo '\n------------------- Documentation ----------------------------\n'
     # a recent doxygen and dot are installed on warhol
-    if ${SSH} warhol "cd ${JAFAR_DIR}; make doc" > /dev/null 2>&1; then
+    if ${SSH} warhol "cd ${JAFAR_DIR}; make doc" &> ${logDir}/doc.log ; then
         echo "html...OK"
     else
         echo "html...ERROR"
@@ -59,7 +63,7 @@ if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; svn up ${JAFAR_DIR}" ; t
 
     if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; \
 	setenv JAFAR_DIR ${JAFAR_DIR}; \
-	${configureCmd}" >/dev/null ; then
+	${configureCmd}" &> ${logDir}/configure.log; then
 	
 	echo "${configureCmd}...OK"
 
@@ -70,7 +74,7 @@ if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; svn up ${JAFAR_DIR}" ; t
 	    for t in ${TARGETS}; do
 		if ${SSH} ${targetHost} "cd /usr/local/jafar/modules/${m}; \
 		    setenv JAFAR_DIR ${JAFAR_DIR}; \
-		    make ${t}" > /dev/null 2>&1; then
+		    make ${t}" &> ${logDir}/${m}.${t}.log; then
 		    echo "${t}...OK"
 		else
 		    echo "${t}...ERROR"
