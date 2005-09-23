@@ -14,7 +14,7 @@ It is likely that several developpers work on inter-dependent Jafar
 modules at the same time. In this case each developper will checkout
 its own copy. LAAS users must read \ref subsecLaasCo.
 
-\section secInstallDependencies Dependencies
+\section secInstallDependencies Jafar dependencies
 
 Jafar uses \e swig to generate module's tcl interface, you must have this tool installed. Some modules use advanced swig features (and bugfix) which only appeared in swig 1.3.25.
 
