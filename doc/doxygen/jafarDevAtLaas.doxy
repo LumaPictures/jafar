@@ -71,6 +71,22 @@ $ cd /home/toto/jafar/modules
 $ svn-add-module helloworld
 \endverbatim
 
+\section secDaily daily script
+
+The \c daily script in \c jafar/bin is run every night. For a given list of modules, it does the following in \c /usr/local/jafar :
+- update jafar and the modules to the current version,
+- generate the documentation,
+- launch the \c configure script,
+- for each module: clean it, compile lib, generate the tcl module, compile the test suite and run the test suite,
+- these operations are logged in /usr/local/jafar/log
+- at last the "Jafar daily report" is sent by mail to jafar-source@laas.fr.
+
+In order to add a module to this automatic process, it is necessary to edit \c bin/daily and modify the \c MODULES variable.
+\verbatim
+# modules to be checked
+MODULES="kernel helloworld image display jmath hpm cine model3d stereo filter slam facetsmap"
+\endverbatim
+
 \section secLaasLib Installing external libraries
 
 Some of the Jafar modules depends on external libraries. If you are working on the laboratory network, every thing should already be properly installed.
