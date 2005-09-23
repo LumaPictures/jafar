@@ -2,11 +2,11 @@
 
 /*! \page pageOverview Overview
 
-Jafar is a development tool using a flat hierarchy of \e modules. Each
-module is composed by C/C++ functions and classes and provides the
-corresponding set of static and dynamic libraries. Also a wrapper is
-generated to provide a tcl package giving access to specific
-functions and classes. 
+Jafar is a development tool composed of a set of \e modules. All
+modules are at the same level. Each of them is composed by C/C++ functions
+and classes and provides the corresponding set of static and dynamic
+libraries. Also a wrapper is generated to provide a tcl package giving
+access to specific functions and classes.
 
 Also Jafar defines some rules to make all the modules consistant:
 error management, coding rules, documentations,...
