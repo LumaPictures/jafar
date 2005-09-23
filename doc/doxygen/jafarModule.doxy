@@ -58,45 +58,33 @@ To go further with your new module please read \ref pageCodeDocRules
 
 FIXME
 
-\section secModuleConfMake Customize the configure scripts and the Makefile
+\section secModuleUserMake User.make file
 
-You \e must \e not edit by hand the configure scripts or the
-Makefiles. If you need to add features to the \c configure.sh script
-please refer to \ref subsecModuleConfigure, and to \ref subsecModuleUserMake for
-the \c Makefile
+\subsection subsecModuleCustomizeMake Customize the compilation process
 
-\subsection subsecModuleConfigure User.ac
+\c User.make is the file where developpers can configure the compilation process for their module.
 
-This file is for the module's developer only. through it, you can add m4 macros for the configure script in order to check third party libraries or non default system capabilities. 
-The file is in the \e config directory of the module tree. Once the file edited, you will need to regenerate the \c configure script with the following command:
+Standard compilation flags can be modified (\c CPPFLAGS, \c CXXFLAGS, \c LDFLAGS, \c LIBS) so that the compiler finds all the necessary external libraries. Please make use of the variables defined by the configure process (see \ref secInstallConfigureMake).
+
+\subsection subsecModuleDependencies Inter modules dependancies
+
+You are developping module \e pipo, and your module depends on module \e image, then you need to modify \c User.make in \e pipo:
+
+- Add \e image to the list of modules in \c USE_MODULES. During the compilation process, these modules will be checked for beeing up to date.
+- Add the \c -l option to the \c LIBS variable if needed (no need to modify other flags).
+
 \verbatim
-$ make acf
+USE_MODULES = kernel image
+LIBS += -lkernel -limage
 \endverbatim
-For more information about \c configure and \e m4 \e macros, please refer to \ref pageDevelopperLinks
-
-\subsection subsecModuleUserMake User.make
-
-User.make allows you to specified the compilation options of your
-module (ex: \c CPPFLAGS, \c LDFLAGS, ...).  There is also one
-important variable: \c USE_MODULES 
-
-- If your module need other jafar modules, you will need to specified
-them in the \c USE_MODULES variable, in dependances order; just enter
-modules names separated by a space. \e NOTA: by default, your module
-library is not linked with modules libraries specified in \c
-USE_MODULES. You will have to add yourself the \e -l flags to the \c
-LIBS variable if needed.
 
 \section secModuleVersion Module versions policy
 
-The version of a module is defined in User.make by two variables,
+The version of a module is defined in \c User.make by two variables,
 MODULE_VERSION and MODULE_REVISION. MODULE_REVISION should increment
 when small improvments are done which do not break the
 API. MODULE_VERSION should increment when huge modifications are done,
 MODULE_REVISION is then reset to 0. 
-
-When you want to start huge developments on a module, concider
-creating a branche for that new version.
 
 \section secModuleSwig Swig .i files
 
