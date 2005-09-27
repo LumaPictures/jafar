@@ -268,6 +268,7 @@
 #  define JFR_RUN_TIME(message) ((void)0)
 #  define JFR_PRED_RUN_TIME(message) ((void)0)
 #  define JFR_IO_STREAM(predicate, message) ((void)0)
+#  define JFR_NUMERIC(predicate, message) ((void)0)
 #  define JFR_DEBUG(message) ((void)0)
 #  define JFR_TRACE ((void)0)
 #  define JFR_TRACE_BEGIN ((void)0)
