@@ -2,6 +2,8 @@
 
 /** \page pageGettingStartedfromaLinuxLaptop An extensive guideline to start with Jafar on a Linux laptop
 
+\b Warning: This page is partially broken.
+
 The main difficulty in using Jafar on a Linux laptop is that you need some external librairies probably not already installed on your system. We are going to cope with this. The install procedure is very simple and can be resume in these few steps :
 
   - check which librairies you need
