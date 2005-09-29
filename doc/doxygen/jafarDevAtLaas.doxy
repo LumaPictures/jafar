@@ -71,6 +71,19 @@ $ cd /home/toto/jafar/modules
 $ svn-add-module helloworld
 \endverbatim
 
+\section secConfigure Typical configure option at laas on a linux workstation
+
+In order to get a recent swig, some modules (\e jmath...) relie on recent swig features:
+
+\verbatim
+$ ./configure --with-swig=/home/tlemaire/usr/i386-linux/bin
+\endverbatim
+
+Other options of interest:
+  - \c --with-opencv: to use openCv library required by module image
+  - \c --with-boost_sandbox=/home/tlemaire/usr/i386-linux/local/boost-sandbox \c --with-lapack: to use lapack algebra function from within uBlas
+  - \c --with-opengl: to develop openGL 3D display function, to be used with gdhe (\ref secLaasToolsGdhe)
+
 \section secDaily daily script
 
 The \c daily script in \c jafar/bin is run every night. For a given list of modules, it does the following in \c /usr/local/jafar :
