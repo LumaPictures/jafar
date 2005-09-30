@@ -70,8 +70,17 @@ namespace eval kernel {
 	uplevel 1 "eval $command"
     }
 
+    proc addHashedDirectory {dir} {
+	# add a directory to the list of hashed directory
+	# see also rehash
+
+	global jafar_macros
+	lappend jafar_macros $dir
+    }
+
     proc rehash {} {
-	    # re-source user macros in directories listed by jafar_macros
+	# re-source user macros in hashed directories list
+	# see also addHashedDirectory
 	
 	global jafar_macros
 	

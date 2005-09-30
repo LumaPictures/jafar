@@ -22,15 +22,16 @@ Two kinds of macro can be used with the jafar tcl shell:
   - macros distributed within jafar modules (\ref secModuleMacro), 
   - user defined macros
 
-The \e rehash command provides a handfull way to (re)source user
-defined macros. One can add to \c jafar_macros variable the
-directories containing his macros (\c jafar_macros can be a list), and
-call \e rehash to resources these macros. To do things automatically,
-\c .tclshrc can be modified:
+The \c addHashedDirectory and \c rehash commands provide a handfull
+way to (re)source user defined macros. One can add directories
+containing his macros using \c kernel::addHashedDirectory procedure,
+and call \c rehash to resources these macros (\c rehash is exported to
+the global namespace, specifying \c kernel:: is useless). To do things
+automatically, \c .tclshrc can be modified:
 
 \verbatim
 source $env(JAFAR_DIR)/share/initJafar.tcl
-lappend jafar_macros "/home/thomas/jafar_macros/test"
+kernel::addHashedDirectory "/home/thomas/jafar_macros/test"
 rehash
 \endverbatim
   
