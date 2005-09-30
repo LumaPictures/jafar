@@ -62,6 +62,21 @@ We also recommend you use a completion system within your shell:
 
 For using with tclreadline, the file \c $JAFAR_DIR/share/tclreadlineJafar.tcl setups the tclreadline package for jafar.
 
+Also, <a href="http://incrtcl.sourceforge.net">[incr tcl]</a> object oriented extention to tcl can be very usefull. 
+
+A typical \c .tclshrc looks like:
+\verbatim
+package require Itcl
+namespace import ::itcl::*
+
+source $env(JAFAR_DIR)/share/initJafar.tcl
+
+kernel::addHashedDirectory "/home/thomas/myJafarMacros/"
+kernel::rehash
+
+source $env(JAFAR_DIR)/share/tclreadlineJafar.tcl
+\endverbatim
+
 \section secInstallSpecific Specific instructions
 
   - LAAS users should also refer to \ref pageJafarDevAtLaas
