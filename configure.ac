@@ -124,8 +124,10 @@ if test "x$with_dc1394" = "xyes" && test "x$with_raw1394" = "xyes";
 then
     IEEE1394_CPPFLAGS="$raw1394_cppflags $dc1394_cppflags"
     IEEE1394_LDFLAGS="$with_raw1394lib $with_dc1394lib"
+    IEEE1394_LIBS="-lraw1394 -ldc1394_control"
     AC_SUBST(IEEE1394_CPPFLAGS)
     AC_SUBST(IEEE1394_LDFLAGS)
+    AC_SUBST(IEEE1394_LIBS)
     AC_DEFINE(HAVE_IEEE1394,1,[IEEE1394 support])
 fi
 
