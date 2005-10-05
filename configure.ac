@@ -69,10 +69,10 @@ if test "x$with_boost" = "xyes";
 then
     BOOST_CPPFLAGS="$boost_cppflags"
     BOOST_LDFLAGS="$with_boostlib"
-    BOOST_LIBS="-lboost_date_time"
+    BOOST_DATETIME_LIBS="-lboost_date_time"
     AC_SUBST(BOOST_CPPFLAGS)
     AC_SUBST(BOOST_LDFLAGS)
-    AC_SUBST(BOOST_LIBS)
+    AC_SUBST(BOOST_DATETIME_LIBS)
     AC_DEFINE(HAVE_BOOST,1,[boost library])
 fi
 
