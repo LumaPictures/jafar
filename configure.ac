@@ -69,8 +69,10 @@ if test "x$with_boost" = "xyes";
 then
     BOOST_CPPFLAGS="$boost_cppflags"
     BOOST_LDFLAGS="$with_boostlib"
+    BOOST_LIBS="-lboost_date_time"
     AC_SUBST(BOOST_CPPFLAGS)
     AC_SUBST(BOOST_LDFLAGS)
+    AC_SUBST(BOOST_LIBS)
     AC_DEFINE(HAVE_BOOST,1,[boost library])
 fi
 
@@ -80,8 +82,10 @@ if test "x$with_opencv" = "xyes";
 then
     OPENCV_CPPFLAGS="$opencv_cppflags"
     OPENCV_LDFLAGS="$with_opencvlib"
+    OPENCV_LIBS="-lcxcore -lcv -lcvaux -lhighgui"
     AC_SUBST(OPENCV_CPPFLAGS)
     AC_SUBST(OPENCV_LDFLAGS)
+    AC_SUBST(OPENCV_LIBS)
     AC_DEFINE(HAVE_OPENCV,1,[openCV library])
 fi
 
@@ -99,7 +103,9 @@ MD_FIND_PACKAGE_OPT(lapack, lapack,[], [support for Linear Algebra Package (LAPA
 if test "x$with_lapack" = "xyes";
 then
     LAPACK_LDFLAGS="$with_lapacklib"
+    LAPACK_LIBS="-lapack"
     AC_SUBST(LAPACK_LDFLAGS)
+    AC_SUBST(LAPACK_LIBS)
     AC_DEFINE(HAVE_LAPACK,1,[lapack library])
 fi
 
