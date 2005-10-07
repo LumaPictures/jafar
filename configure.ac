@@ -103,7 +103,7 @@ MD_FIND_PACKAGE_OPT(lapack, lapack,[], [support for Linear Algebra Package (LAPA
 if test "x$with_lapack" = "xyes";
 then
     LAPACK_LDFLAGS="$with_lapacklib"
-    LAPACK_LIBS="-lapack"
+    LAPACK_LIBS="-llapack"
     AC_SUBST(LAPACK_LDFLAGS)
     AC_SUBST(LAPACK_LIBS)
     AC_DEFINE(HAVE_LAPACK,1,[lapack library])
