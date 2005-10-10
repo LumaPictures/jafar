@@ -109,34 +109,14 @@ files must be in the \c src/ directory of the module.
 
 \include helloWorld.cpp
 
-
 \section secCodingTemplate About templates
 
 Templates are a special feature of the C++ language which enables \e
 generic \e programming. The templates are fully contained in headers
-files, which is a problem when distributing your code in binary
-form... Compilers developpers are aware of this problem and some
-solution should appear to \e hide templates implementation in binary
-files. To be ready to use this future feature we split template
-declaration and template implementation into two files:
+files, and can be defined in two different ways:
+  - directly in the class declaration,
+  - after the class declaration.
 
-    - template declaration in \e .hpp file
-    - template implementation in \e .tpp file
-
-Both files must be located in the \c include/module/ directory of the
-module.
-
-\subsection subsecTemplateExample Short example
-
-FIXME example needed
-
-From the module ublas, the template class
-jafar::ublas::VectorTools in vector.hpp :
-
-
-
-The implementation of this template in vector.tpp:
-
-
+The syntax of the second method is a bit weird, so we advice people to use the first one.
 
 */
