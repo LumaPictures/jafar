@@ -106,10 +106,11 @@
  *  RUN_TIME.
  */
 #  define JFR_PRED_RUN_TIME(predicate, message)				\
-  if (!(predicate)) {									\
+  if (!(predicate)) {							\
     using jafar::kernel::JafarException;				\
     std::ostringstream s;						\
     s << message;							\
+    s << " (" << #predicate << ")";					\
     throw JafarException(JafarException::RUN_TIME,			\
 			 s.str(),					\
 			 _JFR_MODULE_, __FILE__, __LINE__);		\
@@ -158,27 +159,51 @@
       using jafar::kernel::JafarException;				\
       std::ostringstream s;						\
       s << message;							\
+      s << " (" << #predicate << ")";					\
       throw JafarException(JafarException::NUMERIC,			\
 			   s.str(),					\
 			   _JFR_MODULE_, __FILE__, __LINE__);		\
     }
 
-/** Send \a message to the debug stream. You can use \c operator<< to
+/** Send \a message to the debug stream. \c operator<< can be used to
  * format the message.
  *
  * \code
- *  jfrDbg("The value of i is " << i); 
+ *  JFR_DEBUG("The value of i is " << i); 
  *
  * output:
  *  D: jafarMacro.hpp:55: The value of i is 2
  * \endcode
  */
-#  define JFR_DEBUG(message)				                                    \
-  (*jafar::kernel::JafarDebug::dbg)					                            \
-    << "D: " << __FILE__ << ":" << __LINE__ << ": "                     \
-                                               << message               \
-                                                  << std::endl          \
-                                                     << std::flush
+#define JFR_DEBUG(message)						\
+  {									\
+    (*jafar::kernel::JafarDebug::dbg)					\
+      << "D:" << _JFR_MODULE_ << "/"					\
+      << basename(__FILE__) << ":" << __LINE__ << ": "			\
+      << message							\
+      << std::endl							\
+      << std::flush;							\
+  }
+
+/** If \a predicate is \c FALSE, send warning \a message to the
+ * debug. \c operator<< can be used to format the message.
+ *
+ * \code 
+ *   JFR_WARNING(x*x+y*y > 1e-3, "(x,y) vector is too small"); 
+ * \endcode
+ *
+ */
+#define JFR_WARNING(predicate, message)					\
+  if (!(predicate))							\
+    {									\
+      (*jafar::kernel::JafarDebug::dbg)					\
+	<< "W: " << _JFR_MODULE_ << "/"					\
+	<< basename(__FILE__) << ":" << __LINE__ << ": "		\
+	<< message << " (" << #predicate << ")"				\
+	<< std::endl							\
+	<< std::flush;							\
+    }
+
 /** This macro add a trace with \a message to \a exception. \a
  * exception must be a jafar::kernel::Exception (all jafar exceptions
  * normally are !).
@@ -270,6 +295,7 @@
 #  define JFR_IO_STREAM(predicate, message) ((void)0)
 #  define JFR_NUMERIC(predicate, message) ((void)0)
 #  define JFR_DEBUG(message) ((void)0)
+#  define JFR_WARNING(message) ((void)0)
 #  define JFR_TRACE ((void)0)
 #  define JFR_TRACE_BEGIN ((void)0)
 #  define JFR_TRACE_POINT ((void)0)
