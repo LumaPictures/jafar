@@ -7,20 +7,20 @@ using namespace std;
 
 using namespace jafar::helloworld;
 
-
-// HelloWorld::HelloWorld() : hello("A simple helloworld program") {}
-
 HelloWorld::HelloWorld() : hello() {
-  JFR_DEBUG("HelloWorld object created");
+  JFR_VDEBUG("HelloWorld object created");
 }
 
 HelloWorld::HelloWorld(const string& hello_) :
   hello() 
 {
+  JFR_VDEBUG("HelloWorld object created");
   setHello(hello_);
 }
 
-HelloWorld::~HelloWorld() {}
+HelloWorld::~HelloWorld() {
+  JFR_VDEBUG("HelloWorld object destroyed");
+}
 
 const string& HelloWorld::getHello() const {
   return hello;

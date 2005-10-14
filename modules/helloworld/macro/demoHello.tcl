@@ -14,6 +14,7 @@ namespace eval helloworld {
         for {set i 0} {$i<$n} {incr i} {
             set h [helloworld::new_HelloWorld "Hello world ! ($i)"]
             $h printHello
+	    helloworld::delete_HelloWorld $h
         }
     }
 

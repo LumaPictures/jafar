@@ -7,7 +7,6 @@
 #include <ostream>
 
 #include "kernel/jafarException.hpp"
-using jafar::kernel::JafarException;
 
 #include "helloworld/helloworldException.hpp"
 

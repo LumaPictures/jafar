@@ -21,9 +21,6 @@
 
 #include <string>
 
-// uncomment to control debug output from tcl
-#include "kernel/jafarDebug.hpp"
-
 #include "helloworld/helloWorld.hpp"
 
 %}
@@ -40,9 +37,6 @@
  * %include "toto.hpp"
  *
  */
-
-// uncomment to control debug output from tcl
-%include "kernel/jafarDebug.hpp"
 
 %include "helloworldTools.i"
 %template(print) jafar::helloworld::print<jafar::helloworld::HelloWorld>;
