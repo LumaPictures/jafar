@@ -9,57 +9,19 @@
 #ifndef KERNEL_JAFAR_MACRO
 #define KERNEL_JAFAR_MACRO
 
-#ifndef JFR_NDEBUG
-
 #include <string>
-#include <iostream>
 #include <sstream>
+#include <iostream>
+
+// we could use better singleton here...
+#include "boost/pool/detail/singleton.hpp"
 
 #include "kernel/jafarDebug.hpp"
+
 #include "kernel/jafarException.hpp"
 
-/** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
- * with ID \c PRECONDITION, along with \a message.
- */
-#  define JFR_PRECOND(predicate, message)				\
-  if (!(predicate)) {							\
-    using jafar::kernel::JafarException;				\
-    std::ostringstream s;						\
-    s << message;							\
-    s << " (" << #predicate << ")";					\
-    throw JafarException(JafarException::PRECONDITION,			\
-			 s.str(),					\
-			 _JFR_MODULE_, __FILE__, __LINE__);		\
-  }									\
-  
+#define JFR_DEBUG_PATH _JFR_MODULE_ << "/" << basename(__FILE__) << ":" << __LINE__ << ": "
 
-/** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
- * with ID \c POSTCONDITION, along with \a message.
- */
-#  define JFR_POSTCOND(predicate, message)				\
-  if (!(predicate)) {							\
-    using jafar::kernel::JafarException;				\
-    std::ostringstream s;						\
-    s << message;							\
-    s << " (" << #predicate << ")";					\
-    throw JafarException(JafarException::POSTCONDITION,			\
-			 s.str(),					\
-			 _JFR_MODULE_, __FILE__, __LINE__);		\
-  }									\
-
-/** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
- * with ID \c INVARIANT, along with \a message.
- */
-#  define JFR_INVARIANT(predicate, message)				\
-  if (!(predicate)) {							\
-    using jafar::kernel::JafarException;				\
-    std::ostringstream s;						\
-    s << message;							\
-    s << " (" << #predicate << ")";					\
-    throw JafarException(JafarException::INVARIANT,			\
-			 s.str(),					\
-			 _JFR_MODULE_, __FILE__, __LINE__);		\
-  }
 
 /** Throw \a ExceptionName with ID \a id along with \a message. The
  * constructor of the class \a ExceptionName must have signature
@@ -68,7 +30,7 @@
  * generated with a module, but may not be the case for user defined
  * exceptions.
  */
-#  define JFR_ERROR(ExceptionName, id, message)			\
+#define JFR_ERROR(ExceptionName, id, message)			\
   {								\
     std::ostringstream s;					\
     s << message;						\
@@ -82,7 +44,7 @@
  * class which is generated with a module, but may not be the case for
  * user defined exceptions.
  */
-#  define JFR_PRED_ERROR(predicate, ExceptionName, id, message)         \
+#define JFR_PRED_ERROR(predicate, ExceptionName, id, message)		\
   if (!(predicate)) {							\
     std::ostringstream s;						\
     s << message;							\
@@ -92,7 +54,7 @@
 
 /** Throw a \c JafarException with id RUN_TIME.
  */
-#  define JFR_RUN_TIME(message)                                         \
+#define JFR_RUN_TIME(message)						\
   {									\
     using jafar::kernel::JafarException;				\
     std::ostringstream s;						\
@@ -105,7 +67,7 @@
 /** If \a predicate is \c FALSE, throw a \c JafarException with id
  *  RUN_TIME.
  */
-#  define JFR_PRED_RUN_TIME(predicate, message)				\
+#define JFR_PRED_RUN_TIME(predicate, message)				\
   if (!(predicate)) {							\
     using jafar::kernel::JafarException;				\
     std::ostringstream s;						\
@@ -165,44 +127,137 @@
 			   _JFR_MODULE_, __FILE__, __LINE__);		\
     }
 
-/** Send \a message to the debug stream. \c operator<< can be used to
- * format the message.
+
+/** When JFR_NDEBUG is defined, some checks are skipped.
+ *
+ */
+#ifndef JFR_NDEBUG
+
+using boost::details::pool::singleton_default;
+using jafar::debug::DebugStream;
+
+/** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
+ * with ID \c PRECONDITION, along with \a message.
+ */
+#  define JFR_PRECOND(predicate, message)				\
+  if (!(predicate)) {							\
+    using jafar::kernel::JafarException;				\
+    std::ostringstream s;						\
+    s << message;							\
+    s << " (" << #predicate << ")";					\
+    throw JafarException(JafarException::PRECONDITION,			\
+			 s.str(),					\
+			 _JFR_MODULE_, __FILE__, __LINE__);		\
+  }									\
+  
+
+/** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
+ * with ID \c POSTCONDITION, along with \a message.
+ */
+#  define JFR_POSTCOND(predicate, message)				\
+  if (!(predicate)) {							\
+    using jafar::kernel::JafarException;				\
+    std::ostringstream s;						\
+    s << message;							\
+    s << " (" << #predicate << ")";					\
+    throw JafarException(JafarException::POSTCONDITION,			\
+			 s.str(),					\
+			 _JFR_MODULE_, __FILE__, __LINE__);		\
+  }									\
+
+/** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
+ * with ID \c INVARIANT, along with \a message.
+ */
+#  define JFR_INVARIANT(predicate, message)				\
+  if (!(predicate)) {							\
+    using jafar::kernel::JafarException;				\
+    std::ostringstream s;						\
+    s << message;							\
+    s << " (" << #predicate << ")";					\
+    throw JafarException(JafarException::INVARIANT,			\
+			 s.str(),					\
+			 _JFR_MODULE_, __FILE__, __LINE__);		\
+  }
+
+/** Send \a message to the debug stream with level
+ * DebugStream::Warning. \c operator<< can be used to format the
+ * message.
+ *
+ * \code
+ *  if (d < EPSILON)
+ *    JFR_WARING("Small value, check numerical stability - d=" << d); 
+ *
+ * output:
+ *  W:pipo/test.cpp:55: Small value, check numerical stability - d= 1e-12 
+ * \endcode
+ */
+#define JFR_WARNING(message)						\
+    {									\
+      DebugStream& dbg = singleton_default<DebugStream>::instance();	\
+      dbg.setup(_JFR_MODULE_, DebugStream::Warning);			\
+      dbg << "W:" << JFR_DEBUG_PATH << message				\
+	  << jafar::debug::endl;					\
+    }
+
+/** Send \a message to the debug stream with level
+ * DebugStream::Debug. \c operator<< can be used to format the
+ * message.
  *
  * \code
  *  JFR_DEBUG("The value of i is " << i); 
  *
  * output:
- *  D: jafarMacro.hpp:55: The value of i is 2
+ *  D:pipo/test.cpp:55: The value of i is 2
  * \endcode
  */
 #define JFR_DEBUG(message)						\
   {									\
-    (*jafar::kernel::JafarDebug::dbg)					\
-      << "D:" << _JFR_MODULE_ << "/"					\
-      << basename(__FILE__) << ":" << __LINE__ << ": "			\
-      << message							\
-      << std::endl							\
-      << std::flush;							\
+      DebugStream& dbg = singleton_default<DebugStream>::instance();	\
+      dbg.setup(_JFR_MODULE_, DebugStream::Debug);			\
+      dbg << "D:" << JFR_DEBUG_PATH << message				\
+	  << jafar::debug::endl;					\
   }
 
-/** If \a predicate is \c FALSE, send warning \a message to the
- * debug. \c operator<< can be used to format the message.
- *
- * \code 
- *   JFR_WARNING(x*x+y*y > 1e-3, "(x,y) vector is too small"); 
- * \endcode
+
+/** Send \a message to the debug stream with level
+ * DebugStream::VerboseDebug. \c operator<< can be used to format the
+ * message.
+ */
+#define JFR_VDEBUG(message)						\
+  {									\
+      DebugStream& dbg = singleton_default<DebugStream>::instance();	\
+      dbg.setup(_JFR_MODULE_, DebugStream::VerboseDebug);		\
+      dbg << "D:" << JFR_DEBUG_PATH << message				\
+	  << jafar::debug::endl;					\
+  }
+
+/** Send \a message to the debug stream with level
+ * DebugStream::VeryVerboseDebug. \c operator<< can be used to format the
+ * message.
+ */
+#define JFR_VVDEBUG(message)						\
+  {									\
+      DebugStream& dbg = singleton_default<DebugStream>::instance();	\
+      dbg.setup(_JFR_MODULE_, DebugStream::VeryVerboseDebug);		\
+      dbg << "D:" << JFR_DEBUG_PATH << message				\
+	  << jafar::debug::endl;					\
+  }
+
+#else // JFR_NDEBUG
+#  define JFR_PRECOND(predicate, message) ((void)0)
+#  define JFR_POSTCOND(predicate, message) ((void)0)
+#  define JFR_INVARIANT(predicate, message) ((void)0)
+#  define JFR_WARNING(message) ((void)0)
+#  define JFR_DEBUG(message) ((void)0)
+#  define JFR_VDEBUG(message) ((void)0)
+#  define JFR_VVDEBUG(message) ((void)0)
+#endif // JFR_NDEBUG
+
+
+/** When JFR_NTRACE is defined, trace information is discarded.
  *
  */
-#define JFR_WARNING(predicate, message)					\
-  if (!(predicate))							\
-    {									\
-      (*jafar::kernel::JafarDebug::dbg)					\
-	<< "W: " << _JFR_MODULE_ << "/"					\
-	<< basename(__FILE__) << ":" << __LINE__ << ": "		\
-	<< message << " (" << #predicate << ")"				\
-	<< std::endl							\
-	<< std::flush;							\
-    }
+#ifndef JFR_NTRACE
 
 /** This macro add a trace with \a message to \a exception. \a
  * exception must be a jafar::kernel::Exception (all jafar exceptions
@@ -250,15 +305,17 @@
     throw;                                                              \
   }                                                                     \
   catch(std::exception& e) {                                            \
-    (*jafar::kernel::JafarDebug::dbg)                                   \
-      << "E: " << __FILE__ << ":" << __LINE__                           \
-      << ": std::exception" << std::endl;                               \
+    DebugStream& dbg = singleton_default<DebugStream>::instance();	\
+    dbg.setup(_JFR_MODULE_, DebugStream::Trace);			\
+    dbg << "E:" << JFR_DEBUG_PATH					\
+	<< "std::exception" << jafar::debug::endl;			\
     throw;                                                              \
   }                                                                     \
   catch(...) {                                                          \
-    (*jafar::kernel::JafarDebug::dbg)                                   \
-      << "E: " << __FILE__ << ":" << __LINE__                           \
-      << ": ..." << std::endl;                                          \
+    DebugStream& dbg = singleton_default<DebugStream>::instance();	\
+    dbg.setup(_JFR_MODULE_, DebugStream::Trace);			\
+    dbg << "E:" << JFR_DEBUG_PATH					\
+	<< "..." << jafar::debug::endl;					\
     throw;                                                              \
   }                                                                     \
   try { ((void)0)
@@ -272,34 +329,25 @@
     throw;                                                              \
   }                                                                     \
   catch(std::exception& e) {                                            \
-    (*jafar::kernel::JafarDebug::dbg)                                   \
-      << "E: " << __FILE__ << ":" << __LINE__                           \
-      << ": std::exception" << std::endl;                               \
+    DebugStream& dbg = singleton_default<DebugStream>::instance();	\
+    dbg.setup(_JFR_MODULE_, DebugStream::Trace);			\
+    dbg << "E:" << JFR_DEBUG_PATH					\
+	<< "std::exception" << jafar::debug::endl;			\
     throw;                                                              \
   }                                                                     \
   catch(...) {                                                          \
-    (*jafar::kernel::JafarDebug::dbg)                                   \
-      << "E: " << __FILE__ << ":" << __LINE__                           \
-      << ": ..." << std::endl;                                          \
+    DebugStream& dbg = singleton_default<DebugStream>::instance();	\
+    dbg.setup(_JFR_MODULE_, DebugStream::Trace);			\
+    dbg << "E:" << JFR_DEBUG_PATH					\
+	<< "..." << jafar::debug::endl;					\
     throw;                                                              \
   } ((void)0)
 
-#else // JFR_NDEBUG
-#  define JFR_PRECOND(predicate, message) ((void)0)
-#  define JFR_POSTCOND(predicate, message) ((void)0)
-#  define JFR_INVARIANT(predicate, message) ((void)0)
-#  define JFR_ERROR(ExceptionName, id, message) ((void)0)
-#  define JFR_PRED_ERROR(ExceptionName, id, message) ((void)0)
-#  define JFR_RUN_TIME(message) ((void)0)
-#  define JFR_PRED_RUN_TIME(message) ((void)0)
-#  define JFR_IO_STREAM(predicate, message) ((void)0)
-#  define JFR_NUMERIC(predicate, message) ((void)0)
-#  define JFR_DEBUG(message) ((void)0)
-#  define JFR_WARNING(message) ((void)0)
+#else // JFR_NTRACE
 #  define JFR_TRACE ((void)0)
 #  define JFR_TRACE_BEGIN ((void)0)
 #  define JFR_TRACE_POINT ((void)0)
 #  define JFR_TRACE_END ((void)0)
-#endif // JFR_NDEBUG
+#endif // JFR_NTRACE
 
 #endif // KERNEL_JAFAR_MACRO
