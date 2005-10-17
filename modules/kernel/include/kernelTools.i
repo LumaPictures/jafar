@@ -23,8 +23,8 @@ namespace jafar {
     void putsDbg(std::string const& message, 
 		 jafar::debug::DebugStream::Level level_ = jafar::debug::DebugStream::Debug)
     {
-      DebugStream::setup("shell", level_);
-      DebugStream::instance() << "D:shell: " << message << jafar::debug::endl;
+      jafar::debug::DebugStream::setup("shell", level_);
+      jafar::debug::DebugStream::instance() << "D:shell: " << message << jafar::debug::endl;
     };
 
     /// template print function which calls the output operator<<.

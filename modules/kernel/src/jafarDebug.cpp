@@ -2,7 +2,9 @@
 
 #include "kernel/jafarDebug.hpp"
 
-using namespace jafar::kernel;
+#include <cstring>
+
+using namespace jafar::debug;
 
 /*
  * class Debug
