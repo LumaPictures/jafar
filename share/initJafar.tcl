@@ -22,9 +22,13 @@ puts "Welcome to jafar !         (c) 2004-2005 LAAS-CNRS"
 puts ""
 puts "jafar_dir: $jafar_dir"
 puts ""
+
+puts "Loading kernel module..."
+package require kernel
+
+puts ""
 puts "Available packages:"
 
-package require kernel
 namespace import ::kernel::*
 
 set pkgList [glob -tail -directory $jafar_pkg_dir *]

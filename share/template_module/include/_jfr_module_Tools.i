@@ -1,6 +1,6 @@
 /* $Id$ */
 
-/** tcl tools for module _jfr_module_.
+/** Tools for module _jfr_module_.
  *
  * \file _jfr_module_Tools.i
  * \ingroup _jfr_module_
