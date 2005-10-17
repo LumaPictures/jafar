@@ -41,7 +41,7 @@ namespace jafar {
     public:
 
       /// Levels of the debug output.
-      enum Level {Null             = 0, /**< nothing */
+      enum Level {Off              = 0, /**< nothing */
 		  Trace            = 1, /**< trace message for non-jafar exceptions */
 		  Warning          = 2, /**< warning message */
 		  Debug            = 3, /**< debug message, this is the default level */
@@ -49,9 +49,11 @@ namespace jafar {
 		  VeryVerboseDebug = 5  /**< very verbose debug */
       };
 
-      /// set the global debug level
-      static void setLevel(Level level_) {
-	instance().level = level_;
+      /** Set the default debug level. This level is used when no
+       * level is specified for a given module.
+       */
+      static void setDefaultLevel(Level level_) {
+	instance().defaultLevel = level_;
       }
 
       /// set the level for a given module
@@ -59,21 +61,35 @@ namespace jafar {
 	instance().modulesLevel[module_]=level_;
       }
 
-      /// shortcut for setLevel(module_, DebugStream::Debug)
-      static void moduleOn(std::string const& module_) { 
-	setLevel(module_, DebugStream::Debug); 
+      /// shortcut for setLevel(module_, DebugStream::Off)
+      static void moduleOff(std::string const& module_) { 
+	setLevel(module_, DebugStream::Off); 
       }
 
       /// shortcut for setLevel(module_, DebugStream::Warning)
-      static void moduleOff(std::string const& module_) { 
+      static void moduleWarning(std::string const& module_) { 
 	setLevel(module_, DebugStream::Warning); 
       }
 
-      /// shortcut for setLevel(DebugStream::Debug)
-      static void on() { setLevel(DebugStream::Debug); }
+      /// shortcut for setLevel(module_, DebugStream::Debug)
+      static void moduleDebug(std::string const& module_) { 
+	setLevel(module_, DebugStream::Debug); 
+      }
 
-      /// shortcut for setLevel(DebugStream::Warning)
-      static void off() { setLevel(DebugStream::Warning); }
+      /// shortcut for setLevel(module_, DebugStream::VerboseDebug)
+      static void moduleVerboseDebug(std::string const& module_) { 
+	setLevel(module_, DebugStream::VerboseDebug); 
+      }
+
+      /// shortcut for setLevel(module_, DebugStream::VeryVerboseDebug)
+      static void moduleVeryVerboseDebug(std::string const& module_) {
+	setLevel(module_, DebugStream::VeryVerboseDebug); 
+      }
+
+      /// unset debug level configuration for \a module_
+      static void unsetModule(std::string const& module_) {
+	instance().modulesLevel.erase(module_);
+      }
 
       /// send the debug stream to \a filename_.
       static void setOutputFile(std::string const& filename_);
@@ -119,7 +135,8 @@ namespace jafar {
 
       std::map<std::string, Level> modulesLevel;
 
-      Level level;
+      /// level used when module level is not set.
+      Level defaultLevel;
 
       bool debugging;
 

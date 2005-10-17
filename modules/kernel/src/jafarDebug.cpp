@@ -18,7 +18,7 @@ DebugStream::DebugStream() :
   debugStream(&std::cerr),
   fileStream(),
   modulesLevel(),
-  level(Debug),
+  defaultLevel(Debug),
   debugging()
 {
 #ifndef JFR_NDEBUG
@@ -36,12 +36,12 @@ DebugStream::~DebugStream()
 void DebugStream::setup(std::string const& module_, Level level_)
 {
   DebugStream& dbg = instance();
-  dbg.debugging = level_ <= dbg.level;
-  if (dbg.debugging) {
-    std::map<std::string, Level>::const_iterator it = dbg.modulesLevel.find(module_);
-    if (it != dbg.modulesLevel.end()) 
-      dbg.debugging = level_ <= it->second;
-  }
+
+  std::map<std::string, Level>::const_iterator it = dbg.modulesLevel.find(module_);
+  if (it != dbg.modulesLevel.end()) 
+    dbg.debugging = level_ <= it->second;
+  else
+    dbg.debugging = level_ <= dbg.defaultLevel;
 }
 
 void DebugStream::sendLocation(std::string const& module_, char const* file_, int line_)
