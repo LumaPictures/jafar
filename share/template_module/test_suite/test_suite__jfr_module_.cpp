@@ -16,14 +16,14 @@ using boost::unit_test_framework::test_case;
 
 
 /*
- * standard init_unit_test_suite function
+ * standard init_unit_test_suite functione
  */
 
 test_suite*
 init_unit_test_suite( int, char* [] ) {
 
   // we set the debug level to Warning
-  jafar::kernel::DebugStream::setLevel(DebugStream::Warning);
+  jafar::debug::DebugStream::setLevel(DebugStream::Warning);
 
   // module helloworld test suite
   test_suite* test= BOOST_TEST_SUITE( "_jfr_module_ module test suite" );
