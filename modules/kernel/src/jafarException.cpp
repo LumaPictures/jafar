@@ -3,6 +3,9 @@
 #if (defined(__MACH__) && defined(__APPLE__))
 #include <libgen.h>
 #endif
+
+#include <cstring>
+
 #include <sstream>
 #include "kernel/jafarException.hpp"
 

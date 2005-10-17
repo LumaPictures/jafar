@@ -3,6 +3,9 @@
 #if (defined(__MACH__) && defined(__APPLE__))
 #include <libgen.h>
 #endif
+
+#include <cstring>
+
 #include "kernel/jafarDebug.hpp"
 
 using namespace jafar::debug;
