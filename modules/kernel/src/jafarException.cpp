@@ -1,5 +1,6 @@
 /* $Id$ */
 
+#include <cstring>
 #include <sstream>
 
 #include "kernel/jafarException.hpp"
