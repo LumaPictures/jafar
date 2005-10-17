@@ -1,8 +1,9 @@
 /* $Id$ */
 
-#include <cstring>
+#if (defined(__MACH__) && defined(__APPLE__))
+#include <libgen.h>
+#endif
 #include <sstream>
-
 #include "kernel/jafarException.hpp"
 
 using std::string;

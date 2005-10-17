@@ -1,8 +1,9 @@
 /* $Id$ */
 
+#if (defined(__MACH__) && defined(__APPLE__))
+#include <libgen.h>
+#endif
 #include "kernel/jafarDebug.hpp"
-
-#include <cstring>
 
 using namespace jafar::debug;
 
