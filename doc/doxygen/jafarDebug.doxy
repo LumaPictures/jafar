@@ -11,6 +11,9 @@ Module kernel defines a debug stream in class jafar::debug::DebugStream. The use
 To send a message to the debug stream, one has to use the macros \ref JFR_WARNING, \ref JFR_DEBUG, \ref JFR_VDEBUG, \ref JFR_VVDEBUG defined in jafarMacro.hpp. Each macro sends a message with the corresponding level, the name of the current module is automatically added.
 
 \code
+#include "kernel/jafarDebug.hpp"
+
+int i = 2;
 JFR_DEBUG("The value of i is " << i); 
  
 output:
@@ -30,13 +33,14 @@ jafar% kernel::putsDbg "i=$i" $::kernel::DebugStream_VeryVerboseDebug
 jafar%
 \endverbatim
 Here the debug level for pseudo module \c shell is \c DebugStream::Debug
+
 \section secDebugControl Controlling the debug output
 
 \subsection subsecDebugControlCompile Controlling at compile time
 
 At compile time, debug messages are disabled with the flag \c JFR_NDEBUG (\ref subsecModuleUserMakeJafar).
 
-Usually, warning messages are also sent to the debug stream, when the flag \c JFR_NDEBUG is defined, warning message are still active and sent to the \c std::cerr stream. To disable all outputs, you can define the flag \c JFR_QUIET (\ref subsecModuleUserMakeJafar).
+Usually, warning messages are also sent to the debug stream. When the flag \c JFR_NDEBUG is defined, warning messages are still active and sent to the \c std::cerr stream. To disable all outputs, you can define the flag \c JFR_QUIET (\ref subsecModuleUserMakeJafar).
 
 \subsection subsecDebugControlRun Controlling at runtime
 
