@@ -24,7 +24,7 @@ init_unit_test_suite( int, char* [] ) {
 
   // we send debug message to test_suite_kernel.dbg so that they
   // do not pollute unit test output
-  jafar::kernel::JafarDebug::setOutputFile("test_suite_kernel.dbg");
+  jafar::kernel::DebugStream::setOutputFile("test_suite_kernel.dbg");
 
   // module helloworld test suite
   test_suite* test= BOOST_TEST_SUITE( "kernel module test suite" );

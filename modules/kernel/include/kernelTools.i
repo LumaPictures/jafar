@@ -1,17 +1,14 @@
 /* $Id$ */
 
-/** tools for module kernel.
+/** Tools for module kernel.
  *
- * \file kernelTools.hpp
+ * \file kernelTools.i
  * \ingroup kernel
  */   
 
 %{
 
 #include <iostream>
-
-// we could use better singleton here...
-#include "boost/pool/detail/singleton.hpp"
 
 #include "kernel/jafarDebug.hpp"
 
@@ -22,18 +19,12 @@
 namespace jafar {
   namespace kernel {
 
-    jafar::debug::DebugStream& debug() {
-      return boost::details::pool::singleton_default<jafar::debug::DebugStream>::instance();
-    };
-
+    /// Send \a message to the debug stream.
     void putsDbg(std::string const& message, 
 		 jafar::debug::DebugStream::Level level_ = jafar::debug::DebugStream::Debug)
     {
-      jafar::debug::DebugStream& dbg = 
-	boost::details::pool::singleton_default<jafar::debug::DebugStream>::instance();
-  
-      dbg.setup("tcl", level_);
-      dbg << "D:tcl macro: " << message << jafar::debug::endl;
+      DebugStream::setup("shell", level_);
+      DebugStream::instance() << "D:shell: " << message << jafar::debug::endl;
     };
 
     /// template print function which calls the output operator<<.

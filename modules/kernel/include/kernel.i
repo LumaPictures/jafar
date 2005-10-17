@@ -3,6 +3,7 @@
 /** swig/tcl interface file for module kernel.
  *
  * \file kernel.i
+ * \ingroup kernel
  */      
 
 %module kernel

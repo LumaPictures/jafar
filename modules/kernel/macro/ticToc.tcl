@@ -29,4 +29,4 @@ namespace eval kernel {
 
 }
 
-package provide kernel 0.1
+package provide kernel 0.2

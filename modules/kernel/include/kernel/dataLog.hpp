@@ -28,7 +28,9 @@ namespace jafar {
      * double d1 = 1.2;
      * myDataLog.log << d1 << endl << flush; 
      * \endcode
-     * 
+     *
+     * \todo rework the code so as to define a nice stream. 
+     *
      * \ingroup kernel
      */
     class DataLog {
@@ -43,13 +45,6 @@ namespace jafar {
       std::string commentPrefix;
 
       bool logging;
-
-      
-#ifdef SWIG  // we do not want swig to wrap this attribute
-
-      std::ofstream log;
-
-#endif
 
     public :
 

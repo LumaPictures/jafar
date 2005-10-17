@@ -11,17 +11,8 @@
 
 #include <string>
 #include <sstream>
-#include <iostream>
-
-// we could use better singleton here...
-#include "boost/pool/detail/singleton.hpp"
-
-#include "kernel/jafarDebug.hpp"
 
 #include "kernel/jafarException.hpp"
-
-#define JFR_DEBUG_PATH _JFR_MODULE_ << "/" << basename(__FILE__) << ":" << __LINE__ << ": "
-
 
 /** Throw \a ExceptionName with ID \a id along with \a message. The
  * constructor of the class \a ExceptionName must have signature
@@ -60,8 +51,7 @@
     std::ostringstream s;						\
     s << message;							\
     throw JafarException(JafarException::RUN_TIME,			\
-			 s.str(),					\
-			 _JFR_MODULE_, __FILE__, __LINE__);		\
+			 s.str(),_JFR_MODULE_, __FILE__, __LINE__);	\
   }
 
 /** If \a predicate is \c FALSE, throw a \c JafarException with id
@@ -74,8 +64,7 @@
     s << message;							\
     s << " (" << #predicate << ")";					\
     throw JafarException(JafarException::RUN_TIME,			\
-			 s.str(),					\
-			 _JFR_MODULE_, __FILE__, __LINE__);		\
+			 s.str(),_JFR_MODULE_, __FILE__, __LINE__);	\
   }
 
 /** If \a predicate is \c FALSE, throw a IO_STREAM
@@ -103,8 +92,7 @@
       std::ostringstream s;						\
       s << message;							\
       throw JafarException(JafarException::IO_STREAM,			\
-			   s.str(),					\
-			   _JFR_MODULE_, __FILE__, __LINE__);		\
+			   s.str(), _JFR_MODULE_, __FILE__, __LINE__);	\
     }
 
 /** If \a predicate is \c FALSE, throw a NUMERIC
@@ -128,12 +116,12 @@
     }
 
 
-/** When JFR_NDEBUG is defined, some checks are skipped.
- *
+/** When JFR_NDEBUG is defined, contract programming checks, debug
+ * messages and trace information are disabled.
  */
 #ifndef JFR_NDEBUG
 
-using boost::details::pool::singleton_default;
+#include "kernel/jafarDebug.hpp"
 using jafar::debug::DebugStream;
 
 /** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
@@ -146,9 +134,8 @@ using jafar::debug::DebugStream;
     s << message;							\
     s << " (" << #predicate << ")";					\
     throw JafarException(JafarException::PRECONDITION,			\
-			 s.str(),					\
-			 _JFR_MODULE_, __FILE__, __LINE__);		\
-  }									\
+			 s.str(),_JFR_MODULE_, __FILE__, __LINE__);	\
+  }
   
 
 /** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
@@ -161,9 +148,8 @@ using jafar::debug::DebugStream;
     s << message;							\
     s << " (" << #predicate << ")";					\
     throw JafarException(JafarException::POSTCONDITION,			\
-			 s.str(),					\
-			 _JFR_MODULE_, __FILE__, __LINE__);		\
-  }									\
+			 s.str(),_JFR_MODULE_, __FILE__, __LINE__);	\
+  }
 
 /** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
  * with ID \c INVARIANT, along with \a message.
@@ -175,8 +161,7 @@ using jafar::debug::DebugStream;
     s << message;							\
     s << " (" << #predicate << ")";					\
     throw JafarException(JafarException::INVARIANT,			\
-			 s.str(),					\
-			 _JFR_MODULE_, __FILE__, __LINE__);		\
+			 s.str(),_JFR_MODULE_, __FILE__, __LINE__);	\
   }
 
 /** Send \a message to the debug stream with level
@@ -193,10 +178,11 @@ using jafar::debug::DebugStream;
  */
 #define JFR_WARNING(message)						\
     {									\
-      DebugStream& dbg = singleton_default<DebugStream>::instance();	\
-      dbg.setup(_JFR_MODULE_, DebugStream::Warning);			\
-      dbg << "W:" << JFR_DEBUG_PATH << message				\
-	  << jafar::debug::endl;					\
+      DebugStream::setup(_JFR_MODULE_, DebugStream::Warning);		\
+      DebugStream::instance() << "W:";					\
+      DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
+      DebugStream::instance() << message				\
+			      << jafar::debug::endl;			\
     }
 
 /** Send \a message to the debug stream with level
@@ -212,10 +198,11 @@ using jafar::debug::DebugStream;
  */
 #define JFR_DEBUG(message)						\
   {									\
-      DebugStream& dbg = singleton_default<DebugStream>::instance();	\
-      dbg.setup(_JFR_MODULE_, DebugStream::Debug);			\
-      dbg << "D:" << JFR_DEBUG_PATH << message				\
-	  << jafar::debug::endl;					\
+    DebugStream::setup(_JFR_MODULE_, DebugStream::Debug);		\
+    DebugStream::instance() << "D:";					\
+    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
+    DebugStream::instance() << message					\
+			    << jafar::debug::endl;			\
   }
 
 
@@ -225,10 +212,11 @@ using jafar::debug::DebugStream;
  */
 #define JFR_VDEBUG(message)						\
   {									\
-      DebugStream& dbg = singleton_default<DebugStream>::instance();	\
-      dbg.setup(_JFR_MODULE_, DebugStream::VerboseDebug);		\
-      dbg << "D:" << JFR_DEBUG_PATH << message				\
-	  << jafar::debug::endl;					\
+    DebugStream::setup(_JFR_MODULE_, DebugStream::VerboseDebug);	\
+    DebugStream::instance() << "D:";					\
+    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
+    DebugStream::instance() << message					\
+			    << jafar::debug::endl;			\
   }
 
 /** Send \a message to the debug stream with level
@@ -237,27 +225,12 @@ using jafar::debug::DebugStream;
  */
 #define JFR_VVDEBUG(message)						\
   {									\
-      DebugStream& dbg = singleton_default<DebugStream>::instance();	\
-      dbg.setup(_JFR_MODULE_, DebugStream::VeryVerboseDebug);		\
-      dbg << "D:" << JFR_DEBUG_PATH << message				\
-	  << jafar::debug::endl;					\
+    DebugStream::setup(_JFR_MODULE_, DebugStream::VeryVerboseDebug);	\
+    DebugStream::instance() << "D:";					\
+    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
+    DebugStream::instance() << message					\
+			    << jafar::debug::endl;			\
   }
-
-#else // JFR_NDEBUG
-#  define JFR_PRECOND(predicate, message) ((void)0)
-#  define JFR_POSTCOND(predicate, message) ((void)0)
-#  define JFR_INVARIANT(predicate, message) ((void)0)
-#  define JFR_WARNING(message) ((void)0)
-#  define JFR_DEBUG(message) ((void)0)
-#  define JFR_VDEBUG(message) ((void)0)
-#  define JFR_VVDEBUG(message) ((void)0)
-#endif // JFR_NDEBUG
-
-
-/** When JFR_NTRACE is defined, trace information is discarded.
- *
- */
-#ifndef JFR_NTRACE
 
 /** This macro add a trace with \a message to \a exception. \a
  * exception must be a jafar::kernel::Exception (all jafar exceptions
@@ -278,11 +251,11 @@ using jafar::debug::DebugStream;
  *    } 
  * \endcode
  */
-#  define JFR_TRACE(exception, message)			\
-  {							\
-    std::ostringstream s;				\
-    s << message;					\
-    exception.addTrace(__FILE__, __LINE__, s.str());	\
+#  define JFR_TRACE(exception, message)					\
+  {									\
+    std::ostringstream s;						\
+    s << message;							\
+    exception.addTrace(_JFR_MODULE_, __FILE__, __LINE__, s.str());	\
   }
 
 /** Begin a trace block. A trace block helps the developer to known
@@ -298,24 +271,26 @@ using jafar::debug::DebugStream;
  *   JFR_TRACE.
  * \endcode
  */
-#  define JFR_TRACE_POINT                                               \
+#    define JFR_TRACE_POINT						\
   }						                        \
   catch(jafar::kernel::Exception& e) {                                  \
-    e.addTrace(__FILE__,__LINE__);                                      \
-    throw;                                                              \
+    std::ostringstream l;						\
+    e.addTrace(_JFR_MODULE_, __FILE__, __LINE__);			\
+    throw;								\
   }                                                                     \
   catch(std::exception& e) {                                            \
-    DebugStream& dbg = singleton_default<DebugStream>::instance();	\
-    dbg.setup(_JFR_MODULE_, DebugStream::Trace);			\
-    dbg << "E:" << JFR_DEBUG_PATH					\
-	<< "std::exception" << jafar::debug::endl;			\
+    DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
+    DebugStream::instance() << "E:";					\
+    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
+    DebugStream::instance() << "std::exception" << jafar::debug::endl;	\
     throw;                                                              \
   }                                                                     \
   catch(...) {                                                          \
-    DebugStream& dbg = singleton_default<DebugStream>::instance();	\
-    dbg.setup(_JFR_MODULE_, DebugStream::Trace);			\
-    dbg << "E:" << JFR_DEBUG_PATH					\
-	<< "..." << jafar::debug::endl;					\
+    DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
+    DebugStream::instance() << "E:";					\
+    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
+    DebugStream::instance() << "unknown exception"			\
+			    << jafar::debug::endl;			\
     throw;                                                              \
   }                                                                     \
   try { ((void)0)
@@ -325,29 +300,47 @@ using jafar::debug::DebugStream;
 #  define JFR_TRACE_END							\
   }									\
   catch(jafar::kernel::Exception& e) {                                  \
-    e.addTrace(__FILE__, __LINE__);                                     \
+    std::ostringstream l;						\
+    e.addTrace(_JFR_MODULE_, __FILE__, __LINE__);			\
     throw;                                                              \
   }                                                                     \
   catch(std::exception& e) {                                            \
-    DebugStream& dbg = singleton_default<DebugStream>::instance();	\
-    dbg.setup(_JFR_MODULE_, DebugStream::Trace);			\
-    dbg << "E:" << JFR_DEBUG_PATH					\
-	<< "std::exception" << jafar::debug::endl;			\
+    DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
+    DebugStream::instance() << "E:";					\
+    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
+    DebugStream::instance() << "std::exception" << jafar::debug::endl;	\
     throw;                                                              \
   }                                                                     \
   catch(...) {                                                          \
-    DebugStream& dbg = singleton_default<DebugStream>::instance();	\
-    dbg.setup(_JFR_MODULE_, DebugStream::Trace);			\
-    dbg << "E:" << JFR_DEBUG_PATH					\
-	<< "..." << jafar::debug::endl;					\
+    DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
+    DebugStream::instance() << "E:";					\
+    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
+    DebugStream::instance() << "unknown exception"			\
+			    << jafar::debug::endl;			\
     throw;                                                              \
   } ((void)0)
 
-#else // JFR_NTRACE
+#else // JFR_NDEBUG
+#  define JFR_PRECOND(predicate, message) ((void)0)
+#  define JFR_POSTCOND(predicate, message) ((void)0)
+#  define JFR_INVARIANT(predicate, message) ((void)0)
+
+#  ifndef JFR_QUIET
+#    define JFR_WARNING(message)					\
+  {									\
+    std::cerr << "W:"  << message << std::endl;				\
+  }
+#  else // JFR_QUIET
+#    define JFR_WARNING(message) ((void)0)
+#  endif // JFR_QUIET
+
+#  define JFR_DEBUG(message) ((void)0)
+#  define JFR_VDEBUG(message) ((void)0)
+#  define JFR_VVDEBUG(message) ((void)0)
 #  define JFR_TRACE ((void)0)
 #  define JFR_TRACE_BEGIN ((void)0)
 #  define JFR_TRACE_POINT ((void)0)
 #  define JFR_TRACE_END ((void)0)
-#endif // JFR_NTRACE
+#endif // JFR_NDEBUG
 
 #endif // KERNEL_JAFAR_MACRO

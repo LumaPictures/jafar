@@ -7,7 +7,7 @@
 
 # module version 
 MODULE_VERSION = 0
-MODULE_REVISION = 1
+MODULE_REVISION = 2
 
 # modules dependencies
 USE_MODULES = 

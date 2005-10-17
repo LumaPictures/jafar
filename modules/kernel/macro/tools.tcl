@@ -110,10 +110,10 @@ namespace eval kernel {
 	}
     }
 
-     namespace export help
-     namespace export args
-     namespace export ask
-     namespace export rehash
+    namespace export help
+    namespace export args
+    namespace export ask
+    namespace export rehash
 }
 
-package provide kernel 0.1
+package provide kernel 0.2

@@ -1,7 +1,7 @@
 /*!
   \addtogroup kernel Module kernel
 
-\version 0.1
+\version 0.2
 
 \author thomas.lemaire@laas.fr
 
@@ -10,7 +10,20 @@ exceptions, debug message facility, data logging facility,...
 
 \section secKernelHistory History
 
+  - 0.2 (2005-10-14) - Add a better debug system
   - 0.1 (2004-09-09) - Initial version
+
+\section secKernelDebugPath Format of the debug path
+
+When sending a debug message, or adding trace information to an jafar::kernel::Exception, the location of this action in the source code is added. By default the format of this information  is the following:
+
+\verbatim
+D:module/file:line: message
+\endverbatim
+This form is convenient since it is compact. One could prefer to have the full path of the file in order to copy/paste this path. This can be obtained defining flag \c JFR_DEBUG_FULL_PATH in module kernel:
+\verbatim
+D:/full/path/to/module/file:line: message
+\endverbatim
 
 \section secKernelMacro Macro
 
@@ -41,6 +54,7 @@ rehash
 
   The interface of the module is generated from the following files:
     - kernel.i defines the wrapped classes and functions,
+    - kernelTools.i defines functions to be used in the interactive shell,
     - kernelException.i defines the \c try { } \c catch block
 for this module.
 
