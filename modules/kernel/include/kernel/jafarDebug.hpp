@@ -14,7 +14,7 @@
 #include "boost/pool/detail/singleton.hpp"
 
 namespace jafar { 
-  namespace debug { // FIXME kernel
+  namespace debug {
 
 #ifndef SWIG
     
@@ -104,7 +104,7 @@ namespace jafar {
        */
       static DebugStream& instance() {
 	// we could use better singleton here...
-	return boost::details::pool::singleton_default<jafar::debug::DebugStream>::instance(); 
+	return boost::details::pool::singleton_default<DebugStream>::instance(); 
       }
 
 #endif // SWIG
@@ -133,7 +133,7 @@ namespace jafar {
       static std::ostream& stream() { return *(instance().debugStream); }
 
       // necessary because because the constructor is private
-      friend class boost::details::pool::singleton_default<jafar::debug::DebugStream>;
+      friend class boost::details::pool::singleton_default<DebugStream>;
 
       friend DebugStream& operator << (DebugStream& debugStream, 
 				       details::stream_function function);
