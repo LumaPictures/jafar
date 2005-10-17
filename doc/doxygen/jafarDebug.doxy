@@ -44,6 +44,6 @@ Usually, warning messages are also sent to the debug stream. When the flag \c JF
 
 \subsection subsecDebugControlRun Controlling at runtime
 
-Based on the debugging level and the name of the sending module, debugging messages can be enabled or disabled. When a message is disabled, c++ stream mechanism allows the operation to be very low cost. Moreover, the stream can be sent to a file. The debug stream is configured via static methods of the jafar::debug::DebugStream class. These methods are wrapped by swig and can therefore be used from a tcl shell.
+Based on the debugging level and the name of the sending module, debugging messages can be enabled or disabled. When a message is disabled, c++ stream mechanism allows the operation to be very low cost. Moreover, the stream can be sent to a file. The debug stream is configured via static methods of the jafar::debug::DebugStream class. These methods are wrapped by swig and can therefore be used from the interactive shell.
 
 */
