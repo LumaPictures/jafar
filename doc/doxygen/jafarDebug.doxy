@@ -1,0 +1,45 @@
+/** \page pageJafarDebug Jafar debug tools
+
+\section secDebugOverview Overview
+
+Module kernel defines a debug stream in class jafar::debug::DebugStream. The use of a singleton class ensures that a single instance of this stream is created. A debug message has two characteristics:
+  - the name of the module which sends the message,
+  - the debug level of the message.
+
+\section secDebugSend Sending a message to the debug stream
+
+To send a message to the debug stream, one has to use the macros \ref JFR_WARNING, \ref JFR_DEBUG, \ref JFR_VDEBUG, \ref JFR_VVDEBUG defined in jafarMacro.hpp. Each macro sends a message with the corresponding level, the name of the current module is automatically added.
+
+\code
+JFR_DEBUG("The value of i is " << i); 
+ 
+output:
+  D:pipo/test.cpp:55: The value of i is 2
+\endcode
+
+\section secDebugTcl Sending message from tcl
+
+Module kernel defines \c kernel::putsDbg to send a message to the debug stream from the interactive shell. The message is sent with module value \c shell and with default level \c DebugStream::Debug.
+
+\verbatim
+jafar% set i 12
+12
+jafar% kernel::putsDbg "i=$i"
+D:shell: i=12
+jafar% kernel::putsDbg "i=$i" $::kernel::DebugStream_VeryVerboseDebug
+jafar%
+\endverbatim
+Here the debug level for pseudo module \c shell is \c DebugStream::Debug
+\section secDebugControl Controlling the debug output
+
+\subsection subsecDebugControlCompile Controlling at compile time
+
+At compile time, debug messages are disabled with the flag \c JFR_NDEBUG (\ref subsecModuleUserMakeJafar).
+
+Usually, warning messages are also sent to the debug stream, when the flag \c JFR_NDEBUG is defined, warning message are still active and sent to the \c std::cerr stream. To disable all outputs, you can define the flag \c JFR_QUIET (\ref subsecModuleUserMakeJafar).
+
+\subsection subsecDebugControlRun Controlling at runtime
+
+Based on the debugging level and the name of the sending module, debugging messages can be enabled or disabled. Moreover, the stream can be sent to a file. The debug stream is configured via static methods of the jafar::debug::DebugStream class. These methods are wrapped by swig and can therefore be used from a tcl shell.
+
+*/

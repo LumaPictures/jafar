@@ -17,7 +17,8 @@ You should first have a look at:
 
 Important readings are:
     - \ref kernel
-    - \ref pageJafarError
+    - \ref pageJafarErrors
+    - \ref pageJafarDebug
     - \ref pageCodeDocRules
     - \ref pageUnitTest
     - \ref pageJafarAndLaasTools

@@ -14,7 +14,7 @@ is constituted by:
     - errors definition (\ref pageJafarError),
     - swig wrapped interface definition (\ref secModuleSwig),
     - documentation (\ref secModuleDocumentation).
-    
+
 A jafar module provides:
     - static and shared library,
     - tcl package,
@@ -56,15 +56,20 @@ To go further with your new module please read \ref pageCodeDocRules
 
 \section secModuleFilesLayout Files layout
 
-FIXME
+\image html moduleLayout.png "Module files layout (module helloworld)"
 
 \section secModuleUserMake User.make file
 
-\subsection subsecModuleCustomizeMake Customize the compilation process
+\subsection subsecModuleUserMakeStandard Customize the compilation process: standard flags
 
 \c User.make is the file where developpers can configure the compilation process for their module.
 
 Standard compilation flags can be modified (\c CPPFLAGS, \c CXXFLAGS, \c LDFLAGS, \c LIBS) so that the compiler finds all the necessary external libraries. Please make use of the variables defined by the configure process (see \ref secInstallConfigureMake).
+
+\subsection subsecModuleUserMakeJafar Customize the compilation process: Jafar specific flags
+Compilation process of Jafar is driven by a few flags:
+  - \c JFR_NDEBUG: when this flag is defined, the specific debug checks, messages and trace mechanism are disabled. The following macros are desactivated: \ref JFR_PRECOND, \ref JFR_POSTCOND, \ref JFR_INVARIANT, \ref JFR_DEBUG, \ref JFR_VDEBUG, \ref JFR_VVDEBUG, \ref JFR_TRACE, \ref JFR_TRACE_BEGIN, \ref JFR_TRACE_POINT, \ref JFR_TRACE_END. \ref JFR_WARNING sends its messages to std::cerr.
+  - \c JFR_QUIET disable also warning messages (when JFR_NDEBUG is defined).
 
 \subsection subsecModuleDependencies Inter modules dependancies
 
@@ -150,10 +155,10 @@ In addition to the source documentation in the header files, one
 should add at least a short description of the module in the
 doc/module.doxy file.
 
-The doc/doxygen/module.doxy file contains already a skeleton. Write
+The \c doc/doxygen/module.doxy file already contains a skeleton. Write
 general doc in this file and organize it as you wish, make use of
-sectionning commands and others to structure your doc and add
-links. Be aware that label names in doxygen are global, it is better
+sectionning commands and others to structure your document and add
+hyperlinks. Be aware that label names in doxygen are global, it is better
 to prefix them with the module name for example.
 
 */

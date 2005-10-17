@@ -1,8 +1,8 @@
 /* $Id$ */
 
-/** \page pageJafarError Jafar error
+/** \page pageJafarErrors Jafar errors
 
-\section secErrorOverview Overview
+\section secErrorOverview Error Overview
 
 Jafar adopts an error management system based on exceptions. The exception
 mechanism is a tool to report an error. When an error is detected, an
@@ -66,11 +66,11 @@ jafar::kernel::JafarException :
 \code
       /// This enumeration defines exceptions ID of JafarException
       enum ExceptionId {
-        PRECONDITION,  /**< precondition not met */
-        POSTCONDITION, /**< postcondition not met */
-        INVARIANT,     /**< invariant not respected */
-        RUN_TIME,      /**< run time error, the programm should not end up here */
-        IO_STREAM      /**< input/output error when using a c++ stream*/ 
+        PRECONDITION,
+        POSTCONDITION,
+        INVARIANT,
+        RUN_TIME,
+        IO_STREAM
       };
 \endcode
 
@@ -193,12 +193,7 @@ error messages, including value of relevant variables.
 
 \section secErrorTrace Getting more info about exceptions (trace of the calling stack)
 
-An exception is an object which goes up the calling stack until an
-appropriate \c try {} \c catch block is found. Usefull information is
-what this calling stack looks like to guess where the exception comes
-from. For this purpose, jafar::kernel::Exception::callingStack
-attribute has been added. It can be filled in by the user using
-jafar::kernel::Exception::addFunctionCall function. 
+An exception is an object which goes up the calling stack until an appropriate \c try {} \c catch block is found. What this calling stack looks like is a usefull information. For this purpose, jafar::kernel::Exception::callingStack attribute has been added. It can be filled in by the user using \ref JFR_TRACE macro.
 
 The general method is to catch the exception, add information to the
 calling stack attribute, and throw again the exception.  Convenient
@@ -211,11 +206,11 @@ intended to be put inside a block in order to get more relevant line
 number information.
 
 Be carefull when you enclose a local variable declaration in such a
-block, since the variable will be made invisible outside of the block.
+block, since the block defines a restricted scope.
 
-The macro JFR_TRACE is intended to be used in a \c catch() {...}
-block which catches a jafar::kernel::Exception (or one of its
-child). It is used to add information to the trace, along with a
+The macro \ref JFR_TRACE is intended to be used in a \c catch() {...}
+block which catches a jafar::kernel::Exception (or an instance of one of its
+child class). It is used to add information to the trace, along with a
 message.
 
 Example:
@@ -245,6 +240,7 @@ src/t3dEuler.cpp:433
 src/t3d.cpp:110 (reading file: toto.t3d)
 \endverbatim
 
+The compilation flag \c JFR_NDEBUG disables all these macros (\ref subsecModuleUserMakeJafar).
 
 \section secErrorExample Examples
 

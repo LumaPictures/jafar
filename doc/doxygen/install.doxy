@@ -48,7 +48,7 @@ The compilation process of each module is driven by four Makefiles. Two of them 
 
 The two others are in each module directory:
     - \c Makefile is the entry point of the \e make command, it \e must not be modified,
-    - \c User.make contains all specific options related to that module.
+    - \c User.make contains all specific options related to that module (\ref secModuleUserMake).
 
 \section secInstallTclsh Tcl shell configuration
 
