@@ -35,7 +35,7 @@ namespace jafar {
       /** Append \a message_ to exception message.
        * @see JFR_TRACE, JFR_TRACE_POINT, JFR_TRACE_END, JFR_TRACE_MESSAGE
        */
-      void addTrace(char const* module_, char const* file_, int line_, std::string const& message_ = "");
+      void addTrace(std::string const& module_, std::string const& file_, int line_, std::string const& message_ = "");
 
     protected:
 
@@ -43,10 +43,6 @@ namespace jafar {
       Exception(const std::string& message_, 
                 const std::string& module_, const std::string& id_, 
                 const std::string& file_, int line_) throw();
-
-      Exception(const std::string& message_, 
-                const char* module_, const char* id_, 
-                const char* file_, int line_) throw();
 
       virtual ~Exception() throw();
 

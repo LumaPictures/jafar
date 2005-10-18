@@ -27,17 +27,6 @@ Exception::Exception(const string& message_,
   s << "\n** Exception from jafar module " << module_ << endl;
   s << "Id: " << id_ << endl;
   _what = s.str();
-  addTrace(module_.c_str(), file_.c_str(), line_, message_);
-}
-
-Exception::Exception(const string& message_, 
-                     const char* module_, const char* id_,
-                     const char* file_, int line_) throw() : _what(), trace()
-{
-  std::stringstream s;
-  s << "\n** Exception from jafar module " << module_ << endl;
-  s << "Id: " << id_ << endl;
-  _what = s.str();
   addTrace(module_, file_, line_, message_);
 }
 
@@ -47,11 +36,11 @@ const string& Exception::what() const throw() {
   return _what;
 }
 
-void Exception::addTrace(char const* module_, const char* file_, int line_, const std::string& message_) {
+void Exception::addTrace(std::string const& module_, std::string const& file_, int line_, const std::string& message_) {
   std::stringstream s;
 
 #ifndef JFR_DEBUG_FULL_PATH
-  s << module_ << "/" << basename(file_) << ":" << line_ << ":\n" << message_;
+  s << module_ << "/" << basename(file_.c_str()) << ":" << line_ << ":\n" << message_;
 #else
   s << file_ << ":" << line_ << ":\n" << message_;
 #endif
