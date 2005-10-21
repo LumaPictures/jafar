@@ -110,10 +110,16 @@ namespace eval kernel {
 	}
     }
 
+    proc putsDbg {message
+		  {level 3} } {
+	kernel::sendDebug $message $level
+    }
+
     namespace export help
     namespace export args
     namespace export ask
     namespace export rehash
+    namespace export putsDbg
 }
 
 package provide kernel 0.2

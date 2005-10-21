@@ -42,6 +42,20 @@ void DebugStream::setup(std::string const& module_, Level level_)
     dbg.debugging = level_ <= it->second;
   else
     dbg.debugging = level_ <= dbg.defaultLevel;
+
+  if (dbg.isDebugging()) {
+    switch (level_) {
+    case Trace:
+      dbg << "E:";
+      break;
+    case Warning:
+      dbg << "W:";
+      break;
+    default:
+      dbg << "D:";
+      break;
+    }
+  }
 }
 
 void DebugStream::sendLocation(std::string const& module_, char const* file_, int line_)

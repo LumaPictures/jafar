@@ -20,11 +20,11 @@ namespace jafar {
   namespace kernel {
 
     /// Send \a message to the debug stream.
-    void putsDbg(std::string const& message, 
-		 jafar::debug::DebugStream::Level level_ = jafar::debug::DebugStream::Debug)
+    void sendDebug(std::string const& message, 
+		   jafar::debug::DebugStream::Level level_ = jafar::debug::DebugStream::Debug)
     {
       jafar::debug::DebugStream::setup("shell", level_);
-      jafar::debug::DebugStream::instance() << "D:shell: " << message << jafar::debug::endl;
+      jafar::debug::DebugStream::instance() << "shell: " << message << jafar::debug::endl;
     };
 
     /// template print function which calls the output operator<<.

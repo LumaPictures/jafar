@@ -179,7 +179,6 @@ using jafar::debug::DebugStream;
 #define JFR_WARNING(message)						\
     {									\
       DebugStream::setup(_JFR_MODULE_, DebugStream::Warning);		\
-      DebugStream::instance() << "W:";					\
       DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
       DebugStream::instance() << message				\
 			      << jafar::debug::endl;			\
@@ -199,7 +198,6 @@ using jafar::debug::DebugStream;
 #define JFR_DEBUG(message)						\
   {									\
     DebugStream::setup(_JFR_MODULE_, DebugStream::Debug);		\
-    DebugStream::instance() << "D:";					\
     DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
     DebugStream::instance() << message					\
 			    << jafar::debug::endl;			\
@@ -213,7 +211,6 @@ using jafar::debug::DebugStream;
 #define JFR_VDEBUG(message)						\
   {									\
     DebugStream::setup(_JFR_MODULE_, DebugStream::VerboseDebug);	\
-    DebugStream::instance() << "D:";					\
     DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
     DebugStream::instance() << message					\
 			    << jafar::debug::endl;			\
@@ -226,7 +223,6 @@ using jafar::debug::DebugStream;
 #define JFR_VVDEBUG(message)						\
   {									\
     DebugStream::setup(_JFR_MODULE_, DebugStream::VeryVerboseDebug);	\
-    DebugStream::instance() << "D:";					\
     DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
     DebugStream::instance() << message					\
 			    << jafar::debug::endl;			\
@@ -280,14 +276,12 @@ using jafar::debug::DebugStream;
   }                                                                     \
   catch(std::exception& e) {                                            \
     DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
-    DebugStream::instance() << "E:";					\
     DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
     DebugStream::instance() << "std::exception" << jafar::debug::endl;	\
     throw;                                                              \
   }                                                                     \
   catch(...) {                                                          \
     DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
-    DebugStream::instance() << "E:";					\
     DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
     DebugStream::instance() << "unknown exception"			\
 			    << jafar::debug::endl;			\
@@ -306,14 +300,12 @@ using jafar::debug::DebugStream;
   }                                                                     \
   catch(std::exception& e) {                                            \
     DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
-    DebugStream::instance() << "E:";					\
     DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
     DebugStream::instance() << "std::exception" << jafar::debug::endl;	\
     throw;                                                              \
   }                                                                     \
   catch(...) {                                                          \
     DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
-    DebugStream::instance() << "E:";					\
     DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
     DebugStream::instance() << "unknown exception"			\
 			    << jafar::debug::endl;			\
