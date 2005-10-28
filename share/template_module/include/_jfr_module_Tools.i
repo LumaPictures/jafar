@@ -8,7 +8,7 @@
 
 %{
 
-#include <iostream>
+#include <sstream>
 
 %}
 
@@ -17,10 +17,15 @@
 namespace jafar {
   namespace _jfr_module_ {
 
-    /// template print function which calls the output operator<<.
+
+    /** Template print function which calls the output operator<< of A
+     * and returns the resulting string.
+     */
     template<class A>
-    void print(const A& a_) {
-      std::cout << a_ << std::endl;
+    std::string print(const A& a_) {
+      std::ostringstream os;
+      os << a_ << std::endl;
+      return os.str();
     };
 
   } // namespace _jfr_module_
