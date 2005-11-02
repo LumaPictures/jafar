@@ -97,6 +97,13 @@ namespace jafar {
        */
       void writeTime();
 
+      template<class Vec>
+      void writeVec(Vec v) {
+	for (std::size_t i = 0 ; i < v.size() ; ++i) {
+	  log << v(i) << " ";
+	}
+      }
+      
       /** This function writes string \c s_ into the log and ends the
        * line. It is intended to be wrapped by swig and used with
        * tcl. In C++ prefer the operator <<.
