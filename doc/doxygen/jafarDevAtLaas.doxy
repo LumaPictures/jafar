@@ -47,7 +47,7 @@ You will get, among other things, the kernel module in the \c jafar/module/ dire
 Then retrieve the modules versions you are interested in, cd in the module directory and do some checkouts:
 \verbatim 
 $ cd /home/toto/jafar/modules
-$ svn co svn+ssh://toto@pollux.laas.fr/svn/jafar/jafarModules/trunk/helloworld helloworld/
+$ svn co svn+ssh://toto@pollux.laas.fr/svn/jafar/jafarModules/trunk/jmath jmath/
 $ svn co svn+ssh://toto@pollux.laas.fr/svn/jafar/jafarModules/tags/image_0.3 image/
 \endverbatim
 
@@ -80,7 +80,7 @@ $ ./configure --with-swig=/home/tlemaire/usr/i386-linux/bin
 \endverbatim
 
 Other options of interest:
-  - \c --with-opencv: to use openCv library required by module image
+  - \c --with-opencv=/usr/local/opencv: to use openCv library required by module image
   - \c --with-boost_sandbox=/home/tlemaire/usr/i386-linux/local/boost-sandbox \c --with-lapack: to use lapack algebra function from within uBlas
   - \c --with-opengl: to develop openGL 3D display function, to be used with gdhe (\ref secLaasToolsGdhe)
 
