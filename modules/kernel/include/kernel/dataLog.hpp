@@ -5,10 +5,110 @@
 
 #include <string>
 #include <fstream>
+#include <list>
 
 namespace jafar {
 
   namespace kernel {
+
+
+    class DataLogger;
+    class DataLoggable;
+
+    /** Interface DataLoggable. Objects which send data to a
+     * DataLogger have to implement this interface.
+     *
+     * \ingroup kernel
+     */
+    class DataLoggable {
+
+    public:
+
+      virtual ~DataLoggable() {};
+
+      /// implements this method calling repeatidly DataLogger::writeLegend().
+      virtual void writeLogHeader(DataLogger& dataLogger_) const = 0;
+
+      /// implements  this method calling repeatidly DataLogger::writeData().
+      virtual void writeLogData(DataLogger& dataLogger_) const = 0;
+
+    }; // class Loggable
+
+    /** This object logs data.
+     */
+    class DataLogger {
+
+    private:
+
+      std::ofstream logStream;
+
+      /// default separator is whitespace
+      std::string separator;
+
+      /// default comment prefix is '# '
+      std::string commentPrefix;
+
+      unsigned int nbColumns;
+
+      typedef std::list<DataLoggable const*> LoggablesList;
+      LoggablesList loggables;
+
+    public:
+
+      /**
+       * @param logFilename_ filename od the data log.
+       * @param separator_ string used to separate the data
+       * @param commentPrefix_ string which starts a comment line
+       */
+      DataLogger(std::string const& logFilename_, 
+		 std::string const& separator_ = " ", 
+		 std::string const& commentPrefix_ = "#");
+
+      /// write \a comment_
+      void writeComment(std::string const& comment_);
+
+      /// write current date as a comment
+      void writeCurrentDate();
+
+      /// add \a loggable_ to be legged by this logger.
+      void addLoggable(DataLoggable const& loggable_);
+
+      /// this method triggers a log.
+      void log();
+
+      /** This method writes a line of legend. Example:
+       * 
+       * \code
+       *  log.writeLegend("x");
+       * \endcode
+       */
+      void writeLegend(std::string const& legend_);
+
+      /** This method writes lines of legend based on the tokens found
+       * in \a legendTokens_ and seperated by \a separator_. It uses
+       * boost::tokenizer. Example:
+       *
+       * \code
+       *  log.writeLegendTokens("x,y,z");
+       * \endcode
+       */
+      void writeLegendTokens(std::string const& legendTokens_, std::string const& separator_ = " ");
+
+      /// this method logs any data
+      template <typename T>
+      void writeData(T const& d) {
+	logStream << d << separator;
+      }
+
+      /// this method logs any data vector
+      template <class Vec>
+      void writeDataVector(Vec const& v) {
+	for (std::size_t i = 0 ; i < v.size() ; ++i)
+	  writeData(v[i]);
+      }
+
+    }; // class DataLogger
+
 
     /** This class helps you log data into files. You can use it in 3
      * ways: 
@@ -29,7 +129,7 @@ namespace jafar {
      * myDataLog.log << d1 << endl << flush; 
      * \endcode
      *
-     * \todo rework the code so as to define a nice stream. 
+     * \deprecated
      *
      * \ingroup kernel
      */
