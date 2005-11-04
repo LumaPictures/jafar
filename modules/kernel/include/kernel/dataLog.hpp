@@ -22,15 +22,17 @@ namespace jafar {
      */
     class DataLoggable {
 
-    public:
+    protected:
 
       virtual ~DataLoggable() {};
 
       /// implements this method calling repeatidly DataLogger::writeLegend().
-      virtual void writeLogHeader(DataLogger& dataLogger_) const = 0;
+      virtual void writeLogHeader(DataLogger& log) const = 0;
 
       /// implements  this method calling repeatidly DataLogger::writeData().
-      virtual void writeLogData(DataLogger& dataLogger_) const = 0;
+      virtual void writeLogData(DataLogger& log) const = 0;
+
+      friend class DataLogger;
 
     }; // class Loggable
 

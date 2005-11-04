@@ -23,7 +23,7 @@ DataLogger::DataLogger(std::string const& logFilename_,
 
 void DataLogger::writeComment(std::string const& comment_)
 {
-  logStream << commentPrefix << " " << comment_ << std::endl;
+  logStream << commentPrefix << commentPrefix << " " << comment_ << " " << std::endl;
 }
 
 void DataLogger::writeCurrentDate()
