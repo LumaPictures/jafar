@@ -49,7 +49,7 @@ void DebugStream::setup(std::string const& module_, Level level_)
       dbg << "E:";
       break;
     case Warning:
-      dbg << "W:";
+      dbg << "** WARNING:";
       break;
     default:
       dbg << "D:";
