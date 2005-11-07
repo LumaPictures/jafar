@@ -40,9 +40,9 @@ void Exception::addTrace(std::string const& module_, std::string const& file_, i
   std::stringstream s;
 
 #ifndef JFR_DEBUG_FULL_PATH
-  s << module_ << "/" << basename(file_.c_str()) << ":" << line_ << ":\n" << message_;
+  s << module_ << "/" << basename(file_.c_str()) << ":" << line_ << ":\n  " << message_;
 #else
-  s << file_ << ":" << line_ << ":\n" << message_;
+  s << file_ << ":" << line_ << ":\n  " << message_;
 #endif
 
   trace.push_back(s.str());

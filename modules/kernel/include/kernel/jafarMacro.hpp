@@ -71,16 +71,14 @@
  * jafar::kernel::JafarException.  
  * example: 
  * \code 
- *    void T3D::read(const std::string& filename_) { 
- *      std::ifstream file(filename_.c_str()); 
- *      JFR_IO_STREAM(file, "error while opening file " + filename_); 
- *      try { 
- *        file >> (*this); 
- *      }
- *      catch(jafar::kernel::Exception& e) { 
- *        JFR_TRACE(e," (reading file:" + filename_ + ")"); 
- *        throw; 
- *      } 
+ *    void T3D::read(const std::string& fileName_) { 
+ *      std::ifstream file(fileName_.c_str()); 
+ *      JFR_IO_STREAM(file, "error while opening file " << fileName_); 
+ *
+ *      JFR_TRACE_BEGIN; 
+ *      file >> (*this); 
+ *      JFR_TRACE_END(" (reading file:" << fileName_ << ")"); 
+ *
  *      file.close(); 
  *    } 
  * \endcode
@@ -233,14 +231,14 @@ using jafar::debug::DebugStream;
  * normally are !).
  * example: 
  * \code 
- *    void T3D::read(const std::string& fileName_) { 
- *      std::ifstream file(fileName_.c_str()); 
- *      JFR_IO_STREAM(file, "error while opening file " << fileName_); 
+ *    void T3D::read(const std::string& filename_) { 
+ *      std::ifstream file(filename_.c_str()); 
+ *      JFR_IO_STREAM(file, "error while opening file " + filename_); 
  *      try { 
  *        file >> (*this); 
  *      }
  *      catch(jafar::kernel::Exception& e) { 
- *        JFR_TRACE(e," (reading file:" << fileName_ << ")"); 
+ *        JFR_TRACE(e," (reading file:" + filename_ + ")"); 
  *        throw; 
  *      } 
  *      file.close(); 
@@ -261,56 +259,41 @@ using jafar::debug::DebugStream;
 #  define JFR_TRACE_BEGIN                       \
   try { ((void)0)
 
+/** End a trace block. Append \a message to the trace.
+ */
+#  define JFR_TRACE_END(message)					\
+  }									\
+  catch(jafar::kernel::Exception& e) {                                  \
+    std::ostringstream m;						\
+    m << message;							\
+    e.addTrace(_JFR_MODULE_, __FILE__, __LINE__, m.str());		\
+    throw;                                                              \
+  }                                                                     \
+  catch(std::exception& e) {                                            \
+    DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
+    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
+    DebugStream::instance() << "std::exception" << jafar::debug::endl	\
+			    << message << jafar::debug::endl;		\
+    throw;                                                              \
+  }                                                                     \
+  catch(...) {                                                          \
+    DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
+    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
+    DebugStream::instance() << "unknown exception"			\
+			    << jafar::debug::endl			\
+			    << message << jafar::debug::endl;		\
+    throw;                                                              \
+  } ((void)0)
+
 /** shortcut for: 
  * \code
- *   JFR_TRACE_END 
+ *   JFR_TRACE_END; 
  *   JFR_TRACE.
  * \endcode
  */
-#    define JFR_TRACE_POINT						\
-  }						                        \
-  catch(jafar::kernel::Exception& e) {                                  \
-    std::ostringstream l;						\
-    e.addTrace(_JFR_MODULE_, __FILE__, __LINE__);			\
-    throw;								\
-  }                                                                     \
-  catch(std::exception& e) {                                            \
-    DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
-    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
-    DebugStream::instance() << "std::exception" << jafar::debug::endl;	\
-    throw;                                                              \
-  }                                                                     \
-  catch(...) {                                                          \
-    DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
-    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
-    DebugStream::instance() << "unknown exception"			\
-			    << jafar::debug::endl;			\
-    throw;                                                              \
-  }                                                                     \
-  try { ((void)0)
-
-/** End a trace block.
- */
-#  define JFR_TRACE_END							\
-  }									\
-  catch(jafar::kernel::Exception& e) {                                  \
-    std::ostringstream l;						\
-    e.addTrace(_JFR_MODULE_, __FILE__, __LINE__);			\
-    throw;                                                              \
-  }                                                                     \
-  catch(std::exception& e) {                                            \
-    DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
-    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
-    DebugStream::instance() << "std::exception" << jafar::debug::endl;	\
-    throw;                                                              \
-  }                                                                     \
-  catch(...) {                                                          \
-    DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
-    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
-    DebugStream::instance() << "unknown exception"			\
-			    << jafar::debug::endl;			\
-    throw;                                                              \
-  } ((void)0)
+#    define JFR_TRACE_POINT(message)					\
+  JFR_TRACE_END(message);						\
+  JFR_TRACE_BEGIN
 
 #else // JFR_NDEBUG
 #  define JFR_PRECOND(predicate, message) ((void)0)

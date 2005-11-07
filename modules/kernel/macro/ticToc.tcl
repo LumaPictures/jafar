@@ -8,18 +8,6 @@ package require kernel
 
 namespace eval kernel {
 
-    proc tic {} {
-        # tic ala matlab
-        # reset the timer
-        kernel::TicToc_tic
-    }
-
-    proc toc {} {
-        # toc ala matlab
-        # return elapsed time in millisecond since the last tic
-        kernel::TicToc_toc
-    }
-
     proc tictoc {command} {
         # measure duration of command (in millisecond)
         kernel::tic

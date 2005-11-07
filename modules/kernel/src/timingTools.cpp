@@ -5,22 +5,10 @@
 using namespace boost::posix_time;
 using namespace jafar::kernel;
 
-ptime TicToc::refTime = microsec_clock::local_time();
 
-void TicToc::tic() {
-  refTime = microsec_clock::local_time();
-}
-
-long TicToc::toc() {
-  ptime curTime = microsec_clock::local_time();
-  return (curTime - refTime).total_milliseconds();
-}
-
-long TicToc::toc_micro() {
-  ptime curTime = microsec_clock::local_time();
-  return (curTime - refTime).total_microseconds();
-}
-
+/*
+ * class FrameRate
+ */
 
 FrameRate::FrameRate(FrameRate::TypeUpdate upd_, int updTimeInt_, int updFrameInt_) {
   upd = upd_;

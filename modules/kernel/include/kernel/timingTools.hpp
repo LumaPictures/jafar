@@ -3,35 +3,88 @@
 #ifndef KERNEL_TIMINGTOOLS_HPP
 #define KERNEL_TIMINGTOOLS_HPP
 
+#include <stack>
+
 #include "boost/date_time/posix_time/posix_time.hpp"
+// we could use a better singleton here...
+#include "boost/pool/detail/singleton.hpp"
+
+#include "kernel/jafarDebug.hpp"
 
 namespace jafar {
   namespace kernel {
 
-    /** This class provides tic() and toc() functions (like in
-     * matlab). You use them to measure time consumed by your
-     * algorithm. Also ticToc.tcl defines direct macros.
-     *
+    /** This class functions to measure time consumed by your
+     * algorithm.
+     * 
      * \ingroup kernel
      */
-    class TicToc {
+    class Chrono {
 
     private :
 
-      static boost::posix_time::ptime refTime;
+      boost::posix_time::ptime refTime;
 
     public :
 
-      /// reset the reference time
-      static void tic();
+      /// Constructor calls reset().
+      Chrono() {
+	reset();
+      }
 
-      /// return the time elapsed since the last tic (in millisecond)
-      static long toc();
+      /// reset the reference time.
+      void reset() {
+	refTime = boost::posix_time::microsec_clock::local_time();
+      }
 
-      /// return the time elapsed since the last tic (in microsecond)
-      static long toc_micro();
+      /// return the time elapsed since the last reset (in millisecond)
+      long elapsed() {
+	boost::posix_time::ptime curTime = boost::posix_time::microsec_clock::local_time();
+	return (curTime - refTime).total_milliseconds();
+      }
 
-    };
+      /// return the time elapsed since the last reset (in microsecond)
+      long elapsedMicro() {
+	boost::posix_time::ptime curTime = boost::posix_time::microsec_clock::local_time();
+	return (curTime - refTime).total_microseconds();
+      }
+
+    }; // class Chrono
+
+
+#ifndef SWIG
+
+    void tic();
+    long toc();
+
+    namespace detail {
+
+      /** Global chronos for tic() and toc() interective functions.
+       *
+       * \ingroup kernel
+       */
+      class TicTocChrono {
+
+      private:
+	
+	TicTocChrono() {};
+
+	Chrono chrono;
+
+	static TicTocChrono& instance() {
+	  return boost::details::pool::singleton_default<TicTocChrono>::instance(); 
+	}
+
+	// necessary because because the constructor is private
+	friend class boost::details::pool::singleton_default<TicTocChrono>;
+
+	friend void jafar::kernel::tic();
+	friend long jafar::kernel::toc();
+
+      };
+    } // namespace detail
+
+#endif // SWIG
     
     /** Class for generate framerate data
      *
@@ -69,6 +122,7 @@ namespace jafar {
       int  numFrames;
       float fps;
     }; // class FrameRate
+
   } // namespace kernel
 } // namespace jafar
 
