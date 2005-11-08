@@ -44,7 +44,13 @@ namespace jafar {
       }
 
       /// return the time elapsed since the last reset (in microsecond)
-      long elapsedMicro() {
+      long elapsedSecond() {
+	boost::posix_time::ptime curTime = boost::posix_time::microsec_clock::local_time();
+	return (curTime - refTime).total_seconds();
+      }
+
+      /// return the time elapsed since the last reset (in microsecond)
+      long elapsedMicrosecond() {
 	boost::posix_time::ptime curTime = boost::posix_time::microsec_clock::local_time();
 	return (curTime - refTime).total_microseconds();
       }
