@@ -12,6 +12,7 @@
   #include "kernel/jafarException.hpp"
 %}
 
+#ifdef SWIGTCL
 /* Tcl exceptions handler.
  *
  * You can customize this handler and add catch blocks to handle your
@@ -36,4 +37,4 @@
     SWIG_fail;
   }
 }
-
+#endif
