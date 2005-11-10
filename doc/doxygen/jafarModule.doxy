@@ -128,7 +128,7 @@ For information about \c moduleException.i, please refer to \ref
 secExceptionSwigTcl. In the general case you will not have to modify
 this file.
 
-\subsection subsecModuleSwigTools moduleSwig.hpp
+\subsection subsecModuleSwigTools moduleTools.i
 
 This file initially contains a template \c print functions which may
 be instantiated with different types (in the .i file using
