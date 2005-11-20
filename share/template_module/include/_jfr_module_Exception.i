@@ -11,13 +11,12 @@
   #include <exception>
 
   #include "kernel/jafarException.hpp"
-
-  // uncomment if you define a catch clause for your own exceptions 
-  // #include "_jfr_module_/_jfr_module_Exception.hpp"
-
+  #include "_jfr_module_/_jfr_module_Exception.hpp"
 %}
 
-#ifdef SWIGTCL
+
+
+#if defined(SWIGTCL)
 /* Tcl exceptions handler.
  *
  * You can customize this handler and add catch blocks to handle your
@@ -42,4 +41,20 @@
     SWIG_fail;
   }
 }
+#elif defined(SWIGRUBY)
+
+%import "kernel/jafarException.hpp"
+%include "_jfr_module_/_jfr_module_Exception.hpp"
+
+JAFAR_EXCEPTION_SUPPORT
+JAFAR_RUBY_EXCEPTION(_jfr_Module_, _jfr_Module_Exception);
+%exception {
+    try {
+        $action
+    }
+    JAFAR_CATCH_MODULE_EXCEPTION(_jfr_module_, _jfr_Module_Exception)
+    JAFAR_CATCH_GENERIC
+}
+
 #endif
+
