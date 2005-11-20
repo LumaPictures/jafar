@@ -27,6 +27,7 @@ AC_DEFUN([MD_USER_FIND_FILE], [
 
 
 
+dnl MD_CHECK_TCLTK([if-found], [if-not_found])
 AC_DEFUN([MD_CHECK_TCLTK],[
     has_tcl=yes
     
@@ -79,6 +80,7 @@ AC_DEFUN([MD_CHECK_TCLTK],[
     fi
 
     if test "$has_tcl" = "yes"; then
+        has_tk=yes
         MD_USER_FIND_FILE([tk], [tkConfig.sh], [${tcl_prefix} \
                 ${exec_prefix}/lib \
                 /usr/local/lib/tk$TCL_VERSION \
@@ -117,9 +119,10 @@ AC_DEFUN([MD_CHECK_TCLTK],[
             [ac_tk_includes=$md_found_dir], [has_tk=no])
     fi
 
+    has_tkint=yes
     if test "$has_tk" = "yes"; then
         dnl look for tkInt.h
-        MD_FIND_FILE([TkInt.h], [$TK_SRC_DIR/generic \
+        MD_FIND_FILE([tkInt.h], [$TK_SRC_DIR/generic \
                 $TK_PREFIX/include/generic	\
                 $TK_PREFIX/include/tk$TK_VERSION/generic \
                 /Library/Frameworks/Tk.framework/PrivateHeaders \
@@ -155,21 +158,28 @@ AC_DEFUN([MD_CHECK_TCLTK],[
         TCL_LIB_FLAGS="$TCL_LIB_FLAG $TK_LIB_FLAG"
     fi
 
+    AS_IF([test "$has_tcl" = yes && test "$has_tk" = yes], [
+        HAS_TCL_SUPPORT=yes
 
-
-    AC_SUBST(TCL_CPPFLAGS)
-    AC_SUBST(TCL_EXTRA_CFLAGS)
-    dnl for modules
-    AC_SUBST(TCL_SHLIB_SUFFIX)
-    AC_SUBST(TCL_CC)
-    AC_SUBST(LIB_RUNTIME_DIR)
-    AC_SUBST(TK_LIB_SPEC)
-    AC_SUBST(TCL_LDFLAGS)
-    AC_SUBST(TCL_LIB_SPEC)
-    AC_SUBST(TCL_SHLIB_LDFLAGS)
-    AC_SUBST(TCL_SHLIB_CFLAGS)
-    AC_SUBST(TCL_SHLIB_LD)
-    AC_SUBST(TCL_LIB_FLAGS)
+        AC_SUBST(HAS_TCL_SUPPORT)
+        AC_SUBST(TCL_CPPFLAGS)
+        AC_SUBST(TCL_EXTRA_CFLAGS)
+        dnl for modules
+        AC_SUBST(TCL_SHLIB_SUFFIX)
+        AC_SUBST(TCL_CC)
+        AC_SUBST(LIB_RUNTIME_DIR)
+        AC_SUBST(TK_LIB_SPEC)
+        AC_SUBST(TCL_LDFLAGS)
+        AC_SUBST(TCL_LIB_SPEC)
+        AC_SUBST(TCL_SHLIB_LDFLAGS)
+        AC_SUBST(TCL_SHLIB_CFLAGS)
+        AC_SUBST(TCL_SHLIB_LD)
+        AC_SUBST(TCL_LIB_FLAGS)
+        $1
+    ], [
+        AC_MSG_WARN([Tcl/Tk not found])
+        $2
+    ])
 ])
 
 
