@@ -21,16 +21,15 @@ includedir = @includedir@
 libdir = @libdir@/$(BUILD)
 datadir = @datadir@
 docdir = $(prefix)/doc
-tclpkgdir = $(prefix)/tclpkg/$(BUILD)/$(MODULE)
 
 # module development dirs #
-dev_dir = $(JAFAR_DIR)/modules/$(MODULE)
+dev_dir    = $(JAFAR_DIR)/modules/$(MODULE)
 dev_srcdir = $(dev_dir)/src
 dev_includedir = $(dev_dir)/include
 dev_objdir = $(dev_dir)/objs/$(BUILD)
 dev_libdir = $(dev_dir)/lib/$(BUILD)
 dev_macrodir = $(dev_dir)/macro
-dev_testdir = $(dev_dir)/test_suite
+dev_testdir  = $(dev_dir)/test_suite
 
 ####################
 # Compiler options #
@@ -64,28 +63,42 @@ LDFLAGS += \
 LIBS +=
 
 ###############################################
-# Add others programs, libraries and includes #
+# Wrapping configuration #
 ###############################################
 
 # swig #
 SWIG = @SWIG@
 
 SWIGFLAGS = -Wall -v \
-	-noexcept \
-	-I$(dev_includedir) -I$(includedir)
+	-I$(dev_includedir) -I$(includedir) -I$(JAFAR_DIR)/swig
 
-SWIGFLAGS_TCL = -tcl -namespace -pkgversion $(MODULE_VERSION).$(MODULE_REVISION) 
+SCRIPT_LANGUAGES = @SCRIPT_LANGUAGES@
+ifneq ($(findstring tcl,$(SCRIPT_LANGUAGES)),)
+    tclpkgdir = $(prefix)/tclpkg/$(BUILD)/$(MODULE)
+    SWIGFLAGS_TCL = -noexcept -tcl -namespace -pkgversion $(MODULE_VERSION).$(MODULE_REVISION) 
 
-# Tcl/Tk #
-TCL_CPPFLAGS =		@TCL_CPPFLAGS@
-TCL_LDFLAGS =		@TCL_LDFLAGS@
-TCL_LIBS =		@TCL_LIB_SPEC@ @TK_LIB_SPEC@
-TCL_LIBDIR =		@LIB_RUNTIME_DIR@
-TCL_LIB_FLAGS =		@TCL_LIB_FLAGS@
-TCL_SHLIB_CFLAGS =	@TCL_SHLIB_CFLAGS@
-TCL_SHLIB_LDFLAGS =	@TCL_SHLIB_LDFLAGS@
-TCL_SHLIB_LD =		@TCL_SHLIB_LD@
-TCL_INCLUDE_DIR =	@TCL_CPPFLAGS@
+    # Tcl/Tk #
+    TCL_CPPFLAGS =		@TCL_CPPFLAGS@
+    TCL_LDFLAGS =		@TCL_LDFLAGS@
+    TCL_LIBS =		@TCL_LIB_SPEC@ @TK_LIB_SPEC@
+    TCL_LIBDIR =		@LIB_RUNTIME_DIR@
+    TCL_LIB_FLAGS =		@TCL_LIB_FLAGS@
+    TCL_SHLIB_CFLAGS =	@TCL_SHLIB_CFLAGS@
+    TCL_SHLIB_LDFLAGS =	@TCL_SHLIB_LDFLAGS@
+    TCL_SHLIB_LD =		@TCL_SHLIB_LD@
+    TCL_INCLUDE_DIR =	@TCL_CPPFLAGS@
+endif
+
+ifneq ($(findstring ruby,$(SCRIPT_LANGUAGES)),)
+    RUBY=@RUBY@
+    RUBY_VERSION=@RUBY_VERSION@
+    SWIGFLAGS_RUBY = -noexcept -ruby -prefix "Jafar::" -I@RUBY_EXTENSION_BASEDIR@ 
+    rubylibdir = $(libdir)/ruby/$(RUBY_VERSION)/jafar
+endif
+
+###############################################
+# Add others programs, libraries and includes #
+###############################################
 
 # Boost #
 BOOST_CPPFLAGS = @BOOST_CPPFLAGS@

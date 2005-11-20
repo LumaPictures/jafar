@@ -12,8 +12,6 @@ HEADERS+= $(patsubst %.tpp, $(includedir)/$(MODULE)/%.tpp, $(notdir $(wildcard $
 HEADERS+= $(patsubst %.h, $(includedir)/$(MODULE)/%.h, $(notdir $(wildcard $(dev_includedir)/$(MODULE)/*.h)))
 SWIG_LIBS = $(patsubst %.i, $(includedir)/$(MODULE)/%.i, $(notdir $(wildcard $(dev_includedir)/$(MODULE)/*.i)))
 
-MACROS = $(patsubst %.tcl, $(tclpkgdir)/%.tcl, $(notdir $(wildcard $(dev_macrodir)/*.tcl)))
-
 # .dep files
 #############
 
@@ -31,7 +29,7 @@ TESTOBJS = $(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.lo,$(notdir $(TESTCPP)))
 # Standard rules
 #################
 
-all: $(USE_MODULES) lib tcl
+all: $(USE_MODULES) lib $(SCRIPT_LANGUAGES)
 
 # C++ compilation
 ##################
@@ -42,28 +40,81 @@ $(dev_objdir)/%.lo: $(dev_srcdir)/%.c
 $(dev_objdir)/%.lo: $(dev_srcdir)/%.cpp
 	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) -o $@ $<
 
+# ruby module generation using swig
+###################################
+ifneq ($(findstring ruby,$(SCRIPT_LANGUAGES)),)
+RUBY_EXTLIB=$(MODULE)$(SHLIB_SUFFIX)
+SWIG_INPUT = $(wildcard $(dev_includedir)/*.i)
+SWIG_JAFAR_HEADERS = $(JAFAR_DIR)/swig/jafar.i $(JAFAR_DIR)/swig/jafarRuby.i
+
+RUBY_USER_SCRIPTS = $(patsubst %.rb, $(rubylibdir)/$(MODULE)/%.rb, $(notdir $(wildcard $(dev_macrodir)/*.rb)))
+RUBY_MAIN_SCRIPT  = $(rubylibdir)/$(MODULE).rb
+RUBY_OTHER_SCRIPTS = $(filter $(RUBY_MAIN_SCRIPT),$(RUBY_USER_SCRIPTS))
+WRAPPER_CPP=$(dev_srcdir)/ruby/$(MODULE)_wrap.cpp
+
+ruby: $(rubylibdir)/$(MODULE)/$(RUBY_EXTLIB) $(RUBY_OTHER_SCRIPTS) $(RUBY_MAIN_SCRIPT)
+
+$(dev_objdir)/ruby/$(RUBY_EXTLIB): $(WRAPPER_CPP) $(dev_objdir)/ruby/Makefile $(dev_libdir)/lib$(MODULE).la
+	$(MAKE) -C $(dev_objdir)/ruby
+
+$(WRAPPER_CPP): $(SWIG_INPUT) $(DEV_HEADERS) $(SWIG_JAFAR_HEADERS)
+	@echo ""
+	@echo "    *************************************"
+	@echo "    * Generating ruby wrappers with SWIG *"
+	@echo "    *************************************"
+	@echo ""
+	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_RUBY) $(CPPFLAGS) -o $(WRAPPER_CPP) include/$(MODULE).i || ( rm -f $(WRAPPER_CPP) && exit 1 )
+
+$(dev_objdir)/ruby/Makefile: $(dev_srcdir)/ruby/extconf.rb
+	-@mkdir -p $(dev_objdir)/ruby
+	cd $(dev_objdir)/ruby && $(RUBY) $(dev_srcdir)/ruby/extconf.rb \
+		--with-ruby="$(RUBY)" --with-cppflags="$(CPPFLAGS) $(CXXFLAGS)" \
+		--with-ldflags="$(LDFLAGS) $(LIBS) -l$(MODULE) -lstdc++ -Wl,-rpath -Wl,$(libdir)"
+
+# Install all macros but $(MODULE).rb in $(rubylibdir)/$(MODULE)
+$(rubylibdir)/$(MODULE)/%.rb: $(dev_macrodir)/%.rb
+	-@mkdir -p $(rubylibdir)/$(MODULE)
+	@cp -f $< $@
+
+$(RUBY_MAIN_SCRIPT): $(dev_macrodir)/$(MODULE).rb
+	@cp -f $< $@
+
+$(rubylibdir)/$(MODULE)/$(RUBY_EXTLIB) : $(dev_objdir)/ruby/$(RUBY_EXTLIB)
+	-@mkdir -p $(rubylibdir)/$(MODULE)
+	@cp -f $< $@
+
+clean: clean-ruby
+clean-ruby:
+	rm -f $(dev_srcdir)/ruby/$(MODULE)_wrap.cpp
+	rm -rf $(rubylibdir)/$(MODULE)*
+
+endif
 
 # tcl module generation using swig
 ###################################
+ifneq ($(findstring tcl,$(SCRIPT_LANGUAGES)),)
+tcl: $(tclpkgdir)/pkgIndex.tcl
 
-$(tclpkgdir)/%.tcl: $(dev_macrodir)/%.tcl
-	-$(LIBTOOL) --mode=install cp $< $@
+MACROS = $(patsubst %.tcl, $(tclpkgdir)/%.tcl, $(notdir $(wildcard $(dev_macrodir)/*.tcl)))
+SWIG_INPUT = $(wildcard $(dev_includedir)/*.i)
 
 $(tclpkgdir)/pkgIndex.tcl : $(tclpkgdir)/$(MODULE)$(SHLIB_SUFFIX) $(MACROS)
 	$(JAFAR_DIR)/bin/pkg_mkIndex $(tclpkgdir) $(MODULE)
 
-$(dev_objdir)/tcl/$(MODULE)_wrap.lo : $(dev_includedir)/$(MODULE).i $(dev_includedir)/$(MODULE)Tools.i $(DEV_HEADERS)
+$(dev_objdir)/tcl/$(MODULE)_wrap.lo : $(SWIG_INPUT) $(DEV_HEADERS)
 	@echo ""
 	@echo "    *************************************"
 	@echo "    * Generating tcl wrappers with SWIG *"
 	@echo "    *************************************"
 	@echo ""
-	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_TCL) $(CPPFLAGS) -I/usr/include -o $(dev_srcdir)/tcl/$(MODULE)_wrap.cpp $<
+	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_TCL) $(CPPFLAGS) -I/usr/include -o $(dev_srcdir)/tcl/$(MODULE)_wrap.cpp include/$(MODULE).i
 	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) $(TCL_CPPFLAGS) -o $@ $(dev_srcdir)/tcl/$(MODULE)_wrap.cpp
 
 $(dev_libdir)/lib$(MODULE)_swig.la : $(dev_objdir)/tcl/$(MODULE)_wrap.lo $(dev_libdir)/lib$(MODULE).la
 	$(LTLD) $(LDFLAGS) $(TCL_LDFLAGS) -o $@ -rpath $(tclpkgdir) -version-info $(MODULE_VERSION):$(MODULE_REVISION) $(LIBS) -l$(MODULE) $(TCL_LIBS) $<
-#	$(MAKE) tcl-pkg
+
+$(tclpkgdir)/%.tcl: $(dev_macrodir)/%.tcl
+	-$(LIBTOOL) --mode=install cp $< $@
 
 $(tclpkgdir)/$(MODULE)$(SHLIB_SUFFIX) : $(dev_libdir)/lib$(MODULE)_swig.la
 	-@mkdir -p $(tclpkgdir)
@@ -72,9 +123,11 @@ $(tclpkgdir)/$(MODULE)$(SHLIB_SUFFIX) : $(dev_libdir)/lib$(MODULE)_swig.la
 
 tcl-lib : $(dev_libdir)/lib$(MODULE)_swig.la
 
-tcl : tcl-pkg
+clean: tcl-clean
+tcl-clean:
+	-@rm -fr $(tclpkgdir)
 
-tcl-pkg : $(tclpkgdir)/pkgIndex.tcl
+endif
 
 
 # module library
@@ -125,7 +178,6 @@ clean-build: clean-objs clean-headers clean-dep
 	$(LIBTOOL) --mode=clean rm -fr $(dev_libdir)/lib$(MODULE).la
 	$(LIBTOOL) --mode=clean rm -fr $(dev_libdir)/lib$(MODULE)_swig.la
 	$(LIBTOOL) --mode=clean rm -fr $(libdir)/lib$(MODULE).*
-	-@rm -fr $(tclpkgdir)
 
 clean-objs:
 	-@rm -fr $(dev_objdir)
@@ -210,4 +262,7 @@ $(dev_testdir)/$(BUILD)/test_suite_$(MODULE): $(TESTOBJS)
 # include dep files
 ####################
 
+ifeq ($(findstring $(MAKECMDGOALS),clean),)
 -include $(SRCS_DEP)
+endif
+

@@ -37,12 +37,14 @@ svn ps svn:keywords Id *.h
 svn ps svn:keywords Id *.i
 cd ../../macro
 svn add *.tcl
-svn ps svn:keywords Id *.tcl
+svn add *.rb
+svn ps svn:keywords Id *.tcl *.rb
 cd ../src
 svn add *.cpp 
 svn add *.c
 svn ps svn:keywords Id *.cpp 
 svn ps svn:keywords Id *.c
+svn propset svn:ignore 'kernel_wrap.cpp' ruby/
 cd ../test_suite
 svn add *.cpp
 svn ps svn:keywords Id *.cpp
