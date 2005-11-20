@@ -465,7 +465,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX LN_S EGREP ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB STRIP ac_ct_STRIP CPP CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL LIBTOOL_DEPS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SHLIB_SUFFIX SWIG SWIG_RUNTIME_LIBS_DIR TCL_CPPFLAGS TCL_EXTRA_CFLAGS TCL_SHLIB_SUFFIX TCL_CC LIB_RUNTIME_DIR TCL_LDFLAGS TCL_LIB_SPEC TK_LIB_SPEC TCL_SHLIB_LDFLAGS TCL_SHLIB_CFLAGS TCL_SHLIB_LD TCL_LIB_FLAGS BOOST_CPPFLAGS BOOST_LDFLAGS BOOST_DATETIME_LIBS OPENCV_CPPFLAGS OPENCV_LDFLAGS OPENCV_LIBS BOOST_SANDBOX_CPPFLAGS LAPACK_LDFLAGS LAPACK_LIBS OPENGL_CPPFLAGS OPENGL_LDFLAGS OPENGL_LIBS IEEE1394_CPPFLAGS IEEE1394_LDFLAGS IEEE1394_LIBS QUICKTIME_LDFLAGS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX LN_S EGREP ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB STRIP ac_ct_STRIP CPP CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL LIBTOOL_DEPS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SHLIB_SUFFIX SWIG SWIG_RUNTIME_LIBS_DIR TCL_CPPFLAGS TCL_EXTRA_CFLAGS TCL_SHLIB_SUFFIX TCL_CC LIB_RUNTIME_DIR TK_LIB_SPEC TCL_LDFLAGS TCL_LIB_SPEC TCL_SHLIB_LDFLAGS TCL_SHLIB_CFLAGS TCL_SHLIB_LD TCL_LIB_FLAGS RUBY RUBY_EXTENSION_BASEDIR RUBY_VERSION SCRIPT_LANGUAGES BOOST_CPPFLAGS BOOST_LDFLAGS BOOST_DATETIME_LIBS OPENCV_CPPFLAGS OPENCV_LDFLAGS OPENCV_LIBS BOOST_SANDBOX_CPPFLAGS LAPACK_LDFLAGS LAPACK_LIBS OPENGL_CPPFLAGS OPENGL_LDFLAGS OPENGL_LIBS IEEE1394_CPPFLAGS IEEE1394_LDFLAGS IEEE1394_LIBS QUICKTIME_LDFLAGS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1029,6 +1029,8 @@ Optional Features:
   --enable-fast-install[=PKGS]
                           optimize for fast installation [default=yes]
   --disable-libtool-lock  avoid locking (might break parallel builds)
+  --enable-lang=lang      space-separated list of scripting languages to use
+                          (default: tcl, available: ruby, tcl)
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -3604,7 +3606,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 3607 "configure"' > conftest.$ac_ext
+  echo '#line 3609 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -4708,7 +4710,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:4711:" \
+echo "$as_me:4713:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -5712,10 +5714,6 @@ fi
 
 
 
-## CAVEAT EMPTOR:
-## There is no encapsulation within the following macros, do not change
-## the running order or otherwise move them around unless you know exactly
-## what you are doing...
 
 lt_prog_compiler_no_builtin_flag=
 
@@ -5740,11 +5738,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:5743: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:5741: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:5747: \$? = $ac_status" >&5
+   echo "$as_me:5745: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -5972,11 +5970,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:5975: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:5973: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:5979: \$? = $ac_status" >&5
+   echo "$as_me:5977: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6039,11 +6037,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6042: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6040: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:6046: \$? = $ac_status" >&5
+   echo "$as_me:6044: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8162,7 +8160,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8165 "configure"
+#line 8163 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8260,7 +8258,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8263 "configure"
+#line 8261 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -10054,10 +10052,6 @@ test "$ld_shlibs_CXX" = no && can_build_shared=no
 GCC_CXX="$GXX"
 LD_CXX="$LD"
 
-## CAVEAT EMPTOR:
-## There is no encapsulation within the following macros, do not change
-## the running order or otherwise move them around unless you know exactly
-## what you are doing...
 
 cat > conftest.$ac_ext <<EOF
 class Foo
@@ -10445,11 +10439,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10448: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10442: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:10452: \$? = $ac_status" >&5
+   echo "$as_me:10446: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -10512,11 +10506,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10515: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10509: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:10519: \$? = $ac_status" >&5
+   echo "$as_me:10513: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -11834,7 +11828,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 11837 "configure"
+#line 11831 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11932,7 +11926,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 11935 "configure"
+#line 11929 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12757,11 +12751,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12760: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12754: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:12764: \$? = $ac_status" >&5
+   echo "$as_me:12758: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -12824,11 +12818,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12827: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12821: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:12831: \$? = $ac_status" >&5
+   echo "$as_me:12825: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -14777,10 +14771,6 @@ compiler_GCJ=$CC
 # GCJ did not exist at the time GCC didn't implicitly link libc in.
 archive_cmds_need_lc_GCJ=no
 
-## CAVEAT EMPTOR:
-## There is no encapsulation within the following macros, do not change
-## the running order or otherwise move them around unless you know exactly
-## what you are doing...
 
 lt_prog_compiler_no_builtin_flag_GCJ=
 
@@ -14805,11 +14795,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14808: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14798: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14812: \$? = $ac_status" >&5
+   echo "$as_me:14802: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15037,11 +15027,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15040: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15030: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15044: \$? = $ac_status" >&5
+   echo "$as_me:15034: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15104,11 +15094,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15107: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15097: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:15111: \$? = $ac_status" >&5
+   echo "$as_me:15101: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -17227,7 +17217,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17230 "configure"
+#line 17220 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -17325,7 +17315,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17328 "configure"
+#line 17318 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -18524,220 +18514,510 @@ echo "$as_me: SWIG runtime library directory is '$SWIG_RUNTIME_LIBS_DIR'" >&6;}
 # Check for libraries #
 #######################
 
-## check for tcl/tk ##
+# Check whether --enable-lang or --disable-lang was given.
+if test "${enable_lang+set}" = set; then
+  enableval="$enable_lang"
+  REQUIRED_SCRIPT_LANGUAGES=$enableval
+else
+  REQUIRED_SCRIPT_LANGUAGES=""
+fi;
+
+if test -z "$REQUIRED_SCRIPT_LANGUAGES" || (echo "$REQUIRED_SCRIPT_LANGUAGES" | grep -q 'tcl' 2>&1); then
+    ## check for tcl/tk ##
+
+    has_tcl=yes
+
 
 
 # Check whether --with-tcl or --without-tcl was given.
 if test "${with_tcl+set}" = set; then
   withval="$with_tcl"
-  tcl_prefix=$withval
+  md_find_path="$withval"
 else
-  for ac_dir in \
-		${exec_prefix}/lib 	\
-		/usr/local/lib/tcl8.4	\
-		/usr/local/tcl-8.4/lib \
-		/usr/local/tcl-8.3/lib \
-		/usr/local/tcl-8.4 \
-		/usr/local/tcl-8.3 \
-		/usr/local/lib/tcl8.3	\
-		/usr/local/lib 		\
-		/usr/pkg/lib		\
-		/usr/lib/tcl8.4		\
-		/usr/lib/tcl8.3		\
-		/usr/lib 		\
-		/sw/lib \
-		/opt/local/lib \
-		; \
-		do
-		if test -r "$ac_dir/tclConfig.sh"; then
-		  tcl_prefix=$ac_dir
-		  break
-		fi
-		done
+  md_find_path="${exec_prefix}/lib \
+            /usr/local/lib/tcl8.4 \
+            /usr/local/tcl-8.4/lib \
+            /usr/local/tcl-8.3/lib \
+            /usr/local/tcl-8.4 \
+            /usr/local/tcl-8.3 \
+            /usr/local/lib/tcl8.3 \
+            /usr/local/lib \
+            /usr/pkg/lib \
+            /usr/lib/tcl8.4 \
+            /usr/lib/tcl8.3 \
+            /usr/lib \
+            /sw/lib \
+            /opt/local/lib"
 fi;
-	file=${tcl_prefix}/tclConfig.sh
-	. $file
-		eval TCL_LIB_FILE=${TCL_LIB_FILE}
 
-	echo "$as_me:$LINENO: checking for tcl headers" >&5
-echo $ECHO_N "checking for tcl headers... $ECHO_C" >&6
-	test -z "$tcl_test_include" && tcl_test_include=tcl.h
-	for ac_dir in \
-		$TCL_PREFIX/include/tcl$TCL_VERSION	\
-		$TCL_PREFIX/include 			\
-		/usr/local/include/tcl$TCL_VERSION 	\
-		/usr/local/include 			\
-		/usr/include 				\
-		/sw/include \
-		/opt/local/include \
-		/Library/Frameworks/Tcl.framework/Headers \
-		$extra_include 				\
-		; \
-	  do
-	  if test -r "$ac_dir/$tcl_test_include"; then
-		ac_tcl_includes=$ac_dir
-		break
-	  fi
-	done
-	if test "x$ac_tcl_includes" != "x"; then
-	  echo "$as_me:$LINENO: result: $ac_tcl_includes" >&5
-echo "${ECHO_T}$ac_tcl_includes" >&6
-	else
-	  echo "$as_me:$LINENO: result: Not found (fatal)" >&5
-echo "${ECHO_T}Not found (fatal)" >&6
-	  exit 2;
-	fi
+    echo "$as_me:$LINENO: checking for tclConfig.sh" >&5
+echo $ECHO_N "checking for tclConfig.sh... $ECHO_C" >&6
 
-	echo "$as_me:$LINENO: checking for tcl library" >&5
-echo $ECHO_N "checking for tcl library... $ECHO_C" >&6
-	test -z "$tcl_test_lib" && tcl_test_lib="${TCL_LIB_FILE}"
-	for ac_dir in \
-		$TCL_PREFIX/lib				\
-		/usr/local/lib				\
-		/usr/lib				\
-		/sw/lib \
-		/opt/local/lib \
-		/Library/Frameworks/Tcl.framework	\
-		$extra_lib				\
-		; \
-	  do
-	  if test -r "$ac_dir/$tcl_test_lib"; then
-		ac_tcl_libs=$ac_dir
-		break
-	  fi
-	done
-	if test "x$ac_tcl_libs" != "x"; then
-	  echo "$as_me:$LINENO: result: $ac_tcl_libs/$TCL_LIB_FILE" >&5
-echo "${ECHO_T}$ac_tcl_libs/$TCL_LIB_FILE" >&6
-	else
-	  echo "$as_me:$LINENO: result: Not found (fatal)" >&5
-echo "${ECHO_T}Not found (fatal)" >&6
-	  exit 2;
-	fi
-	LIB_RUNTIME_DIR=$ac_tcl_libs
+    for ac_dir in $md_find_path; do
+        if test -r "$ac_dir/tclConfig.sh"; then
+          md_found_dir=$ac_dir
+          break
+        fi
+    done
+    md_found_file="$md_found_dir/tclConfig.sh"
+    if test -r $md_found_file; then
+  echo "$as_me:$LINENO: result: $md_found_file" >&5
+echo "${ECHO_T}$md_found_file" >&6; file=$md_found_file
+else
+  echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6; has_tcl=no
+fi
+
+
+
+
+    if test "$has_tcl" = "yes"; then
+        . $file
+
+                eval TCL_LIB_FILE=${TCL_LIB_FILE}
+
+        test -z "$tcl_test_include" && tcl_test_include=tcl.h
+
+    echo "$as_me:$LINENO: checking for $tcl_test_include" >&5
+echo $ECHO_N "checking for $tcl_test_include... $ECHO_C" >&6
+
+    for ac_dir in $TCL_PREFIX/include/tcl$TCL_VERSION \
+                $TCL_PREFIX/include \
+                /usr/local/include/tcl$TCL_VERSION \
+                /usr/local/include \
+                /usr/include \
+                /sw/include \
+                /opt/local/include \
+                /Library/Frameworks/Tcl.framework/Headers \
+                $extra_include; do
+        if test -r "$ac_dir/$tcl_test_include"; then
+          md_found_dir=$ac_dir
+          break
+        fi
+    done
+    md_found_file="$md_found_dir/$tcl_test_include"
+    if test -r $md_found_file; then
+  echo "$as_me:$LINENO: result: $md_found_file" >&5
+echo "${ECHO_T}$md_found_file" >&6; ac_tcl_includes="$md_found_dir"
+else
+  echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6; has_tcl=no
+fi
+
+
+    fi
+
+    if test "$has_tcl" = "yes"; then
+        test -z "$tcl_test_lib" && tcl_test_lib="${TCL_LIB_FILE}"
+
+    echo "$as_me:$LINENO: checking for $tcl_test_lib" >&5
+echo $ECHO_N "checking for $tcl_test_lib... $ECHO_C" >&6
+
+    for ac_dir in $TCL_PREFIX/lib \
+                    /usr/local/lib \
+                    /usr/lib \
+                    /sw/lib \
+                    /opt/local/lib \
+                    /Library/Frameworks/Tcl.framework \
+                    $extra_lib; do
+        if test -r "$ac_dir/$tcl_test_lib"; then
+          md_found_dir=$ac_dir
+          break
+        fi
+    done
+    md_found_file="$md_found_dir/$tcl_test_lib"
+    if test -r $md_found_file; then
+  echo "$as_me:$LINENO: result: $md_found_file" >&5
+echo "${ECHO_T}$md_found_file" >&6; ac_tcl_libs=$md_found_dir
+                    LIB_RUNTIME_DIR=$ac_tcl_libs
+
+else
+  echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6; has_tcl=no
+fi
+
+
+    fi
+
+    if test "$has_tcl" = "yes"; then
 
 
 # Check whether --with-tk or --without-tk was given.
 if test "${with_tk+set}" = set; then
   withval="$with_tk"
-  tk_prefix=$withval
+  md_find_path="$withval"
 else
-  for ac_dir in \
-		${tcl_prefix}			\
-		${exec_prefix}/lib 		\
-		/usr/local/lib/tk$TCL_VERSION	\
-		/usr/local/tk$TCL_VERSION \
-		/usr/local/tk$TCL_VERSION/lib \
-		/usr/local/lib 			\
-		/usr/pkg/lib			\
-		/usr/lib/tk$TCL_VERSION		\
-		/usr/lib 			\
-		/sw/lib/tk$TCL_VERSION		\
-		/sw/lib \
-		/opt/local/lib/tk$TCL_VERSION \
-		/opt/local/lib \
-		; \
-		do
-		if test -r "$ac_dir/tkConfig.sh"; then
-		  tk_prefix=$ac_dir
-		  break
-		fi
-		done
+  md_find_path="${tcl_prefix} \
+                ${exec_prefix}/lib \
+                /usr/local/lib/tk$TCL_VERSION \
+                /usr/local/tk$TCL_VERSION \
+                /usr/local/tk$TCL_VERSION/lib \
+                /usr/local/lib \
+                /usr/pkg/lib \
+                /usr/lib/tk$TCL_VERSION \
+                /usr/lib \
+                /sw/lib/tk$TCL_VERSION \
+                /sw/lib \
+                /opt/local/lib/tk$TCL_VERSION \
+                /opt/local/lib"
 fi;
-	file=${tk_prefix}/tkConfig.sh
-	. $file
-		eval TK_LIB_FILE=${TK_LIB_FILE}
+
+    echo "$as_me:$LINENO: checking for tkConfig.sh" >&5
+echo $ECHO_N "checking for tkConfig.sh... $ECHO_C" >&6
+
+    for ac_dir in $md_find_path; do
+        if test -r "$ac_dir/tkConfig.sh"; then
+          md_found_dir=$ac_dir
+          break
+        fi
+    done
+    md_found_file="$md_found_dir/tkConfig.sh"
+    if test -r $md_found_file; then
+  echo "$as_me:$LINENO: result: $md_found_file" >&5
+echo "${ECHO_T}$md_found_file" >&6; file=$md_found_file
+else
+  echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6; has_tk=no
+fi
 
 
-	echo "$as_me:$LINENO: checking for tk headers" >&5
+
+    fi
+
+    if test "$has_tk" = "yes"; then
+        . $file
+                eval TK_LIB_FILE=${TK_LIB_FILE}
+
+        echo "$as_me:$LINENO: checking for tk headers" >&5
 echo $ECHO_N "checking for tk headers... $ECHO_C" >&6
-	test -z "$tk_test_include" && tk_test_include=tk.h
-	for ac_dir in \
-		$TK_PREFIX/include/tk$TK_VERSION	\
-		$TK_PREFIX/include 			\
-		$ac_tcl_includes			\
-		/usr/local/include/tk$TK_VERSION 	\
-		/usr/local/include 			\
-		/usr/include 				\
-		/sw/include/tk$TK_VERSION 	\
-		/sw/include 			\
-		/opt/local/include/tk$TK_VERSION \
-		/opt/local/include \
-		/Library/Frameworks/Tk.framework/Headers \
-		$extra_include 				\
-		; \
-	  do
-	  if test -r "$ac_dir/$tk_test_include"; then
-		ac_tk_includes=$ac_dir
-		break
-	  fi
-	done
-	if test "x$ac_tk_includes" != "x"; then
-	  echo "$as_me:$LINENO: result: $ac_tk_includes" >&5
-echo "${ECHO_T}$ac_tk_includes" >&6
-	else
-	  echo "$as_me:$LINENO: result: Not found (fatal)" >&5
-echo "${ECHO_T}Not found (fatal)" >&6
-	  exit 2;
-	fi
-		echo "$as_me:$LINENO: checking for TkInt.h" >&5
+        test -z "$tk_test_include" && tk_test_include=tk.h
+
+    echo "$as_me:$LINENO: checking for $tk_test_include" >&5
+echo $ECHO_N "checking for $tk_test_include... $ECHO_C" >&6
+
+    for ac_dir in $TK_PREFIX/include/tk$TK_VERSION	\
+                $TK_PREFIX/include 			\
+                $ac_tcl_includes			\
+                /usr/local/include/tk$TK_VERSION 	\
+                /usr/local/include 			\
+                /usr/include 				\
+                /sw/include/tk$TK_VERSION 	\
+                /sw/include 			\
+                /opt/local/include/tk$TK_VERSION \
+                /opt/local/include \
+                /Library/Frameworks/Tk.framework/Headers \
+                $extra_include; do
+        if test -r "$ac_dir/$tk_test_include"; then
+          md_found_dir=$ac_dir
+          break
+        fi
+    done
+    md_found_file="$md_found_dir/$tk_test_include"
+    if test -r $md_found_file; then
+  echo "$as_me:$LINENO: result: $md_found_file" >&5
+echo "${ECHO_T}$md_found_file" >&6; ac_tk_includes=$md_found_dir
+else
+  echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6; has_tk=no
+fi
+
+
+    fi
+
+    if test "$has_tk" = "yes"; then
+
+    echo "$as_me:$LINENO: checking for TkInt.h" >&5
 echo $ECHO_N "checking for TkInt.h... $ECHO_C" >&6
-	for ac_dir in \
-		$TK_SRC_DIR/generic				\
-		$TK_PREFIX/include/generic			\
-		$TK_PREFIX/include/tk$TK_VERSION/generic	\
-		/Library/Frameworks/Tk.framework/PrivateHeaders \
-		$srcdir/tk/$TK_VERSION				\
-		; \
-	  do
-	  if test -r "$ac_dir/tkInt.h"; then
-		ac_tk_int=$ac_dir
-		break
-	  fi
-	done
-	if test "x$ac_tk_int" != "x"; then
-	  echo "$as_me:$LINENO: result: $ac_tk_int" >&5
-echo "${ECHO_T}$ac_tk_int" >&6
-	else
-	  echo "$as_me:$LINENO: result: Not found (WARNING)" >&5
-echo "${ECHO_T}Not found (WARNING)" >&6
-	fi
 
-	if test "$ac_tcl_includes" != "/usr/include"; then
-	  TCL_CPPFLAGS=-I$ac_tcl_includes
-	else
-	  TCL_CPPFLAGS=""
-	fi
-	if test "$ac_tk_includes" != "$ac_tcl_includes"; then
-		TCL_CPPFLAGS="$TCL_CPPFLAGS -I$ac_tk_includes"
-	fi
-	if test "$ac_dir" = "$srcdir/tk/$TK_VERSION"; then
-		TCL_CPPFLAGS="$TCL_CPPFLAGS -I\${abs_srcdir}/tk/${TK_VERSION}"
-	else
-		TCL_CPPFLAGS="$TCL_CPPFLAGS -I$ac_tk_int"
-	fi
+    for ac_dir in $TK_SRC_DIR/generic \
+                $TK_PREFIX/include/generic	\
+                $TK_PREFIX/include/tk$TK_VERSION/generic \
+                /Library/Frameworks/Tk.framework/PrivateHeaders \
+                $srcdir/tk/$TK_VERSION; do
+        if test -r "$ac_dir/TkInt.h"; then
+          md_found_dir=$ac_dir
+          break
+        fi
+    done
+    md_found_file="$md_found_dir/TkInt.h"
+    if test -r $md_found_file; then
+  echo "$as_me:$LINENO: result: $md_found_file" >&5
+echo "${ECHO_T}$md_found_file" >&6; ac_tk_int=$md_found_dir
+else
+  echo "$as_me:$LINENO: result: not found" >&5
+echo "${ECHO_T}not found" >&6; has_tkint=no
+fi
 
 
+    fi
 
+    if test "$has_tcl" = yes; then
+        if test "$ac_tcl_includes" != "/usr/include"; then
+          TCL_CPPFLAGS=-I$ac_tcl_includes
+        fi
 
-	eval TCL_LDFLAGS=\"${TCL_LD_FLAGS} ${TCL_LD_SEARCH_FLAGS}\"
-	eval TK_LDFLAGS=\"${TK_LD_SEARCH_FLAGS}\"
-	if test "$TK_LDFLAGS" != "$TCL_LDFLAGS"; then
-	  TCL_LDFLAGS="$TCL_LDFLAGS $TK_LDFLAGS"
-	fi
+        eval TCL_LDFLAGS=\"${TCL_LD_FLAGS} ${TCL_LD_SEARCH_FLAGS}\"
+    fi
 
-	eval TK_SHLIB_LDFLAGS=\"${TK_LD_SEARCH_FLAGS}\"
-	TCL_SHLIB_LDFLAGS="$TK_SHLIB_LDFLAGS"
-	TCL_LIB_FLAGS="$TCL_LIB_FLAG $TK_LIB_FLAG"
+    if test "$has_tk" = yes; then
+        if test "$ac_tk_includes" != "$ac_tcl_includes"; then
+          TCL_CPPFLAGS="$TCL_CPPFLAGS -I$ac_tk_includes"
+        fi
+        if test "$ac_dir" = "$srcdir/tk/$TK_VERSION"; then
+                TCL_CPPFLAGS="$TCL_CPPFLAGS -I\${abs_srcdir}/tk/${TK_VERSION}"
+        else
+                TCL_CPPFLAGS="$TCL_CPPFLAGS -I$ac_tk_int"
+        fi
 
+        eval TK_LDFLAGS=\"${TK_LD_SEARCH_FLAGS}\"
+        if test "$TK_LDFLAGS" != "$TCL_LDFLAGS"; then
+          TCL_LDFLAGS="$TCL_LDFLAGS $TK_LDFLAGS"
+        fi
 
-
-
-
+        eval TK_SHLIB_LDFLAGS=\"${TK_LD_SEARCH_FLAGS}\"
+        TCL_SHLIB_LDFLAGS="$TK_SHLIB_LDFLAGS"
+        TCL_LIB_FLAGS="$TCL_LIB_FLAG $TK_LIB_FLAG"
+    fi
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+fi
+
+# Disable Ruby for now
+if echo "$REQUIRED_SCRIPT_LANGUAGES" | grep -q 'ruby' 2>&1; then
+    ## check for ruby ##
+
+
+    md_ruby_support=yes
+    # Extract the first word of "ruby", so it can be a program name with args.
+set dummy ruby; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_RUBY+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $RUBY in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_RUBY="$RUBY" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_RUBY="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  test -z "$ac_cv_path_RUBY" && ac_cv_path_RUBY="md_ruby_support=no"
+  ;;
+esac
+fi
+RUBY=$ac_cv_path_RUBY
+
+if test -n "$RUBY"; then
+  echo "$as_me:$LINENO: result: $RUBY" >&5
+echo "${ECHO_T}$RUBY" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+
+    if test "$md_ruby_support" = "yes"; then
+        RUBY_EXTENSION_BASEDIR=`$RUBY -e "puts Config::MAKEFILE_CONFIG['topdir']"`
+        RUBY_VERSION=`$RUBY -e "puts Config::CONFIG['ruby_version']"`
+
+        md_ruby_cppflags=$CPPFLAGS
+        CPPFLAGS="$CPPFLAGS -I$RUBY_EXTENSION_BASEDIR"
+        if test "${ac_cv_header_ruby_h+set}" = set; then
+  echo "$as_me:$LINENO: checking for ruby.h" >&5
+echo $ECHO_N "checking for ruby.h... $ECHO_C" >&6
+if test "${ac_cv_header_ruby_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+fi
+echo "$as_me:$LINENO: result: $ac_cv_header_ruby_h" >&5
+echo "${ECHO_T}$ac_cv_header_ruby_h" >&6
+else
+  # Is the header compilable?
+echo "$as_me:$LINENO: checking ruby.h usability" >&5
+echo $ECHO_N "checking ruby.h usability... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+#include <ruby.h>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_header_compiler=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_header_compiler=no
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+echo "${ECHO_T}$ac_header_compiler" >&6
+
+# Is the header present?
+echo "$as_me:$LINENO: checking ruby.h presence" >&5
+echo $ECHO_N "checking ruby.h presence... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <ruby.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_cxx_preproc_warn_flag
+    ac_cpp_err=$ac_cpp_err$ac_cxx_werror_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_header_preproc=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_header_preproc=no
+fi
+rm -f conftest.err conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+echo "${ECHO_T}$ac_header_preproc" >&6
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc:$ac_cxx_preproc_warn_flag in
+  yes:no: )
+    { echo "$as_me:$LINENO: WARNING: ruby.h: accepted by the compiler, rejected by the preprocessor!" >&5
+echo "$as_me: WARNING: ruby.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { echo "$as_me:$LINENO: WARNING: ruby.h: proceeding with the compiler's result" >&5
+echo "$as_me: WARNING: ruby.h: proceeding with the compiler's result" >&2;}
+    ac_header_preproc=yes
+    ;;
+  no:yes:* )
+    { echo "$as_me:$LINENO: WARNING: ruby.h: present but cannot be compiled" >&5
+echo "$as_me: WARNING: ruby.h: present but cannot be compiled" >&2;}
+    { echo "$as_me:$LINENO: WARNING: ruby.h:     check for missing prerequisite headers?" >&5
+echo "$as_me: WARNING: ruby.h:     check for missing prerequisite headers?" >&2;}
+    { echo "$as_me:$LINENO: WARNING: ruby.h: see the Autoconf documentation" >&5
+echo "$as_me: WARNING: ruby.h: see the Autoconf documentation" >&2;}
+    { echo "$as_me:$LINENO: WARNING: ruby.h:     section \"Present But Cannot Be Compiled\"" >&5
+echo "$as_me: WARNING: ruby.h:     section \"Present But Cannot Be Compiled\"" >&2;}
+    { echo "$as_me:$LINENO: WARNING: ruby.h: proceeding with the preprocessor's result" >&5
+echo "$as_me: WARNING: ruby.h: proceeding with the preprocessor's result" >&2;}
+    { echo "$as_me:$LINENO: WARNING: ruby.h: in the future, the compiler will take precedence" >&5
+echo "$as_me: WARNING: ruby.h: in the future, the compiler will take precedence" >&2;}
+    (
+      cat <<\_ASBOX
+## ------------------------------- ##
+## Report this to mcottret@laas.fr ##
+## ------------------------------- ##
+_ASBOX
+    ) |
+      sed "s/^/$as_me: WARNING:     /" >&2
+    ;;
+esac
+echo "$as_me:$LINENO: checking for ruby.h" >&5
+echo $ECHO_N "checking for ruby.h... $ECHO_C" >&6
+if test "${ac_cv_header_ruby_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_cv_header_ruby_h=$ac_header_preproc
+fi
+echo "$as_me:$LINENO: result: $ac_cv_header_ruby_h" >&5
+echo "${ECHO_T}$ac_cv_header_ruby_h" >&6
+
+fi
+if test $ac_cv_header_ruby_h = yes; then
+  :
+else
+  md_ruby_support=no
+fi
+
+
+    fi
+
+    if test "$md_ruby_support" = "yes"; then
+
+        HAS_RUBY_SUPPORT=yes
+
+
+        SCRIPT_LANGUAGES="ruby $SCRIPT_LANGUAGES"
+
+else
+
+        { echo "$as_me:$LINENO: WARNING: Ruby support disabled" >&5
+echo "$as_me: WARNING: Ruby support disabled" >&2;}
+        HAS_RUBY_SUPPORT=no
+
+        if test -n "$REQUIRED_SCRIPT_LANGUAGES"; then
+            { { echo "$as_me:$LINENO: error: Ruby support is required but unavailable" >&5
+echo "$as_me: error: Ruby support is required but unavailable" >&2;}
+   { (exit 1); exit 1; }; }
+        fi
+
+
+fi
+
+
+fi
 
 
 
@@ -22303,13 +22583,17 @@ s,@TCL_EXTRA_CFLAGS@,$TCL_EXTRA_CFLAGS,;t t
 s,@TCL_SHLIB_SUFFIX@,$TCL_SHLIB_SUFFIX,;t t
 s,@TCL_CC@,$TCL_CC,;t t
 s,@LIB_RUNTIME_DIR@,$LIB_RUNTIME_DIR,;t t
+s,@TK_LIB_SPEC@,$TK_LIB_SPEC,;t t
 s,@TCL_LDFLAGS@,$TCL_LDFLAGS,;t t
 s,@TCL_LIB_SPEC@,$TCL_LIB_SPEC,;t t
-s,@TK_LIB_SPEC@,$TK_LIB_SPEC,;t t
 s,@TCL_SHLIB_LDFLAGS@,$TCL_SHLIB_LDFLAGS,;t t
 s,@TCL_SHLIB_CFLAGS@,$TCL_SHLIB_CFLAGS,;t t
 s,@TCL_SHLIB_LD@,$TCL_SHLIB_LD,;t t
 s,@TCL_LIB_FLAGS@,$TCL_LIB_FLAGS,;t t
+s,@RUBY@,$RUBY,;t t
+s,@RUBY_EXTENSION_BASEDIR@,$RUBY_EXTENSION_BASEDIR,;t t
+s,@RUBY_VERSION@,$RUBY_VERSION,;t t
+s,@SCRIPT_LANGUAGES@,$SCRIPT_LANGUAGES,;t t
 s,@BOOST_CPPFLAGS@,$BOOST_CPPFLAGS,;t t
 s,@BOOST_LDFLAGS@,$BOOST_LDFLAGS,;t t
 s,@BOOST_DATETIME_LIBS@,$BOOST_DATETIME_LIBS,;t t
