@@ -83,6 +83,9 @@ if echo "$REQUIRED_SCRIPT_LANGUAGES" | grep -q 'ruby' 2>&1; then
     ])
 fi
 
+if test -n $SCRIPT_LANGUAGES; then
+    AC_MSG_WARN([No scripting language available])
+fi
 AC_SUBST(SCRIPT_LANGUAGES)
 
 ## check for boost ##
@@ -209,5 +212,6 @@ MD_EXTRA_LIBS
 
 AC_CONFIG_FILES(Module.config)
 AC_OUTPUT
+echo "Scripting languages: $SCRIPT_LANGUAGES"
 echo "Now, you can run - make - in your modules ! :-)"
 
