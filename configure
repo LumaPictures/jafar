@@ -465,7 +465,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX LN_S EGREP ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB STRIP ac_ct_STRIP CPP CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL LIBTOOL_DEPS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SHLIB_SUFFIX SWIG SWIG_RUNTIME_LIBS_DIR TCL_CPPFLAGS TCL_EXTRA_CFLAGS TCL_SHLIB_SUFFIX TCL_CC LIB_RUNTIME_DIR TK_LIB_SPEC TCL_LDFLAGS TCL_LIB_SPEC TCL_SHLIB_LDFLAGS TCL_SHLIB_CFLAGS TCL_SHLIB_LD TCL_LIB_FLAGS RUBY RUBY_EXTENSION_BASEDIR RUBY_VERSION SCRIPT_LANGUAGES BOOST_CPPFLAGS BOOST_LDFLAGS BOOST_DATETIME_LIBS OPENCV_CPPFLAGS OPENCV_LDFLAGS OPENCV_LIBS BOOST_SANDBOX_CPPFLAGS LAPACK_LDFLAGS LAPACK_LIBS OPENGL_CPPFLAGS OPENGL_LDFLAGS OPENGL_LIBS IEEE1394_CPPFLAGS IEEE1394_LDFLAGS IEEE1394_LIBS QUICKTIME_LDFLAGS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX LN_S EGREP ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB STRIP ac_ct_STRIP CPP CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL LIBTOOL_DEPS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SHLIB_SUFFIX SWIG SWIG_RUNTIME_LIBS_DIR HAS_TCL_SUPPORT TCL_CPPFLAGS TCL_EXTRA_CFLAGS TCL_SHLIB_SUFFIX TCL_CC LIB_RUNTIME_DIR TK_LIB_SPEC TCL_LDFLAGS TCL_LIB_SPEC TCL_SHLIB_LDFLAGS TCL_SHLIB_CFLAGS TCL_SHLIB_LD TCL_LIB_FLAGS RUBY RUBY_EXTENSION_BASEDIR RUBY_VERSION SCRIPT_LANGUAGES BOOST_CPPFLAGS BOOST_LDFLAGS BOOST_DATETIME_LIBS OPENCV_CPPFLAGS OPENCV_LDFLAGS OPENCV_LIBS BOOST_SANDBOX_CPPFLAGS LAPACK_LDFLAGS LAPACK_LIBS OPENGL_CPPFLAGS OPENGL_LDFLAGS OPENGL_LIBS IEEE1394_CPPFLAGS IEEE1394_LDFLAGS IEEE1394_LIBS QUICKTIME_LDFLAGS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -18640,6 +18640,7 @@ fi
     fi
 
     if test "$has_tcl" = "yes"; then
+        has_tk=yes
 
 
 # Check whether --with-tk or --without-tk was given.
@@ -18724,22 +18725,23 @@ fi
 
     fi
 
+    has_tkint=yes
     if test "$has_tk" = "yes"; then
 
-    echo "$as_me:$LINENO: checking for TkInt.h" >&5
-echo $ECHO_N "checking for TkInt.h... $ECHO_C" >&6
+    echo "$as_me:$LINENO: checking for tkInt.h" >&5
+echo $ECHO_N "checking for tkInt.h... $ECHO_C" >&6
 
     for ac_dir in $TK_SRC_DIR/generic \
                 $TK_PREFIX/include/generic	\
                 $TK_PREFIX/include/tk$TK_VERSION/generic \
                 /Library/Frameworks/Tk.framework/PrivateHeaders \
                 $srcdir/tk/$TK_VERSION; do
-        if test -r "$ac_dir/TkInt.h"; then
+        if test -r "$ac_dir/tkInt.h"; then
           md_found_dir=$ac_dir
           break
         fi
     done
-    md_found_file="$md_found_dir/TkInt.h"
+    md_found_file="$md_found_dir/tkInt.h"
     if test -r $md_found_file; then
   echo "$as_me:$LINENO: result: $md_found_file" >&5
 echo "${ECHO_T}$md_found_file" >&6; ac_tk_int=$md_found_dir
@@ -18779,6 +18781,9 @@ fi
         TCL_LIB_FLAGS="$TCL_LIB_FLAG $TK_LIB_FLAG"
     fi
 
+    if test "$has_tcl" = yes && test "$has_tk" = yes; then
+
+        HAS_TCL_SUPPORT=yes
 
 
 
@@ -18792,6 +18797,22 @@ fi
 
 
 
+
+        SCRIPT_LANGUAGES="tcl $SCRIPT_LANGUAGES"
+
+else
+
+        { echo "$as_me:$LINENO: WARNING: Tcl/Tk not found" >&5
+echo "$as_me: WARNING: Tcl/Tk not found" >&2;}
+
+        if test -n "$REQUIRED_SCRIPT_LANGUAGES"; then
+            { { echo "$as_me:$LINENO: error: Tcl support required but unavailable" >&5
+echo "$as_me: error: Tcl support required but unavailable" >&2;}
+   { (exit 1); exit 1; }; }
+        fi
+
+
+fi
 
 
 fi
@@ -19019,6 +19040,10 @@ fi
 
 fi
 
+if test -n $SCRIPT_LANGUAGES; then
+    { echo "$as_me:$LINENO: WARNING: No scripting language available" >&5
+echo "$as_me: WARNING: No scripting language available" >&2;}
+fi
 
 
 ## check for boost ##
@@ -22578,6 +22603,7 @@ s,@INSTALL_DATA@,$INSTALL_DATA,;t t
 s,@SHLIB_SUFFIX@,$SHLIB_SUFFIX,;t t
 s,@SWIG@,$SWIG,;t t
 s,@SWIG_RUNTIME_LIBS_DIR@,$SWIG_RUNTIME_LIBS_DIR,;t t
+s,@HAS_TCL_SUPPORT@,$HAS_TCL_SUPPORT,;t t
 s,@TCL_CPPFLAGS@,$TCL_CPPFLAGS,;t t
 s,@TCL_EXTRA_CFLAGS@,$TCL_EXTRA_CFLAGS,;t t
 s,@TCL_SHLIB_SUFFIX@,$TCL_SHLIB_SUFFIX,;t t
@@ -23104,5 +23130,6 @@ if test "$no_create" != yes; then
   $ac_cs_success || { (exit 1); exit 1; }
 fi
 
+echo "Scripting languages: $SCRIPT_LANGUAGES"
 echo "Now, you can run - make - in your modules ! :-)"
 
