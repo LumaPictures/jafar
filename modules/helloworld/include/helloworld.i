@@ -25,9 +25,7 @@
 
 %}
 
-%include "std_string.i"
-
-%include "helloworldException.i"
+%include "jafar.i"
 
 /*
  * headers to be wrapped goes here
@@ -38,6 +36,7 @@
  *
  */
 
+%include "helloworldException.i"
 %include "helloworldTools.i"
 %template(print) jafar::helloworld::print<jafar::helloworld::HelloWorld>;
 

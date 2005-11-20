@@ -8,13 +8,11 @@
 %{
   #include <iostream>
   #include <exception>
-
-  #include "kernel/jafarException.hpp"
-
-  #include "helloworld/helloworldException.hpp"
+  #include <kernel/jafarException.hpp>
 %}
 
-#ifdef SWIGTCL
+
+#if defined(SWIGTCL)
 /* Tcl exceptions handler.
  *
  * You can customize this handler and add catch blocks to handle your
@@ -45,5 +43,20 @@
     SWIG_fail;
   }
 }
+#elif defined(SWIGRUBY)
+
+%import "kernel/jafarException.hpp"
+%include "helloworld/helloworldException.hpp"
+
+JAFAR_EXCEPTION_SUPPORT
+JAFAR_RUBY_EXCEPTION(Helloworld, HelloworldException);
+%exception {
+    try {
+        $action
+    }
+    JAFAR_CATCH_MODULE_EXCEPTION(helloworld, HelloworldException)
+    JAFAR_CATCH_GENERIC
+}
+
 #endif
 

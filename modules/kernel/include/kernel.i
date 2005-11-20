@@ -12,26 +12,29 @@
 
 #include <string>
 
-#include "kernel/jafarException.hpp"
 #include "kernel/jafarDebug.hpp"
 #include "kernel/dataLog.hpp"
 #include "kernel/timingTools.hpp"
 
 %}
 
-%include "std_string.i"
-
-%include "kernelException.i"
+%include "jafar.i"
 
 /*
  * wrapped headers 
  */       
 
+%include "kernelException.i"
 %include "kernelTools.i"
 %template(print) jafar::kernel::print<jafar::kernel::DataLog>;
 
+/* More Ruby-like constants */
+#ifdef SWIGRUBY
+%rename(ON_TIME)  jafar::kernel::FrameRate::ontime;
+%rename(ON_FRAME) jafar::kernel::FrameRate::onframe;
+#endif
+
 %include "kernel/dataLog.hpp"
-
 %include "kernel/jafarDebug.hpp"
-
 %include "kernel/timingTools.hpp"
+

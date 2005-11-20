@@ -21,6 +21,10 @@ HelloworldException::HelloworldException(ExceptionId id_, const string& message_
 
 HelloworldException::~HelloworldException() throw() {}
 
+HelloworldException::ExceptionId HelloworldException::getExceptionId() const throw() {
+  return id;
+}
+
 string HelloworldException::exceptionIdToString(ExceptionId id_) throw() {
   switch(id_) {
   case EMPTY_HELLO:
