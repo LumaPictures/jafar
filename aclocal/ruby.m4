@@ -12,15 +12,15 @@ AC_DEFUN([MD_CHECK_RUBY], [
         AC_CHECK_HEADER([ruby.h], [], [md_ruby_support=no])
     fi
 
-    if test "$md_ruby_support" = "yes"; then
+    AS_IF([test "$md_ruby_support" = "yes"], [
         HAS_RUBY_SUPPORT=yes
         AC_SUBST(RUBY_EXTENSION_BASEDIR)
         AC_SUBST(RUBY_VERSION)
         ifelse([$1], [], [], [$1])
-    else
+    ], [
         AC_MSG_WARN([Ruby support disabled])
         HAS_RUBY_SUPPORT=no
         ifelse([$2], [], [], [$2])
-    fi
+    ])
 ])
 

@@ -60,8 +60,30 @@ SWIG_ENABLE_CXX
 # Check for libraries #
 #######################
 
-## check for tcl/tk ##
-MD_CHECK_TCLTK
+AC_ARG_ENABLE(lang, AC_HELP_STRING([--enable-lang=lang], 
+                        [space-separated list of scripting languages to use (default: tcl, available: ruby, tcl)]),
+             [REQUIRED_SCRIPT_LANGUAGES=$enableval], [REQUIRED_SCRIPT_LANGUAGES=""])
+
+if test -z "$REQUIRED_SCRIPT_LANGUAGES" || (echo "$REQUIRED_SCRIPT_LANGUAGES" | grep -q 'tcl' 2>&1); then 
+    ## check for tcl/tk ##
+    MD_CHECK_TCLTK([SCRIPT_LANGUAGES="tcl $SCRIPT_LANGUAGES"], [
+        if test -n "$REQUIRED_SCRIPT_LANGUAGES"; then
+            AC_MSG_ERROR([Tcl support required but unavailable])
+        fi
+    ])
+fi
+
+# Disable Ruby for now
+if echo "$REQUIRED_SCRIPT_LANGUAGES" | grep -q 'ruby' 2>&1; then
+    ## check for ruby ##
+    MD_CHECK_RUBY([SCRIPT_LANGUAGES="ruby $SCRIPT_LANGUAGES"], [
+        if test -n "$REQUIRED_SCRIPT_LANGUAGES"; then
+            AC_MSG_ERROR([Ruby support is required but unavailable])
+        fi
+    ])
+fi
+
+AC_SUBST(SCRIPT_LANGUAGES)
 
 ## check for boost ##
 MD_FIND_PACKAGE(boost, boost_date_time, boost/version.hpp, [support for boost C++ library])
