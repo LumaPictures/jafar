@@ -63,7 +63,7 @@ $(WRAPPER_CPP): $(SWIG_INPUT) $(DEV_HEADERS) $(SWIG_JAFAR_HEADERS)
 	@echo "    * Generating ruby wrappers with SWIG *"
 	@echo "    *************************************"
 	@echo ""
-	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_RUBY) $(CPPFLAGS) -o $(WRAPPER_CPP) include/$(MODULE).i || ( rm -f $(WRAPPER_CPP) && exit 1 )
+	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_RUBY) $(CPPFLAGS) -o $(WRAPPER_CPP) $(dev_includedir)/$(MODULE).i || ( rm -f $(WRAPPER_CPP) && exit 1 )
 
 $(dev_objdir)/ruby/Makefile: $(dev_srcdir)/ruby/extconf.rb
 	-@mkdir -p $(dev_objdir)/ruby
@@ -107,7 +107,7 @@ $(dev_objdir)/tcl/$(MODULE)_wrap.lo : $(SWIG_INPUT) $(DEV_HEADERS)
 	@echo "    * Generating tcl wrappers with SWIG *"
 	@echo "    *************************************"
 	@echo ""
-	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_TCL) $(CPPFLAGS) -I/usr/include -o $(dev_srcdir)/tcl/$(MODULE)_wrap.cpp include/$(MODULE).i
+	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_TCL) $(CPPFLAGS) -I/usr/include -o $(dev_srcdir)/tcl/$(MODULE)_wrap.cpp $(dev_includedir)/$(MODULE).i
 	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) $(TCL_CPPFLAGS) -o $@ $(dev_srcdir)/tcl/$(MODULE)_wrap.cpp
 
 $(dev_libdir)/lib$(MODULE)_swig.la : $(dev_objdir)/tcl/$(MODULE)_wrap.lo $(dev_libdir)/lib$(MODULE).la
