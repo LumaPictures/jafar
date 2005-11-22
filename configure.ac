@@ -56,6 +56,25 @@ AC_SUBST(SHLIB_SUFFIX)
 SWIG_PROG
 SWIG_ENABLE_CXX
 
+## Check for a Tcl shell ##
+AC_PATH_PROG([TCLSH], [tclsh eltclsh])
+if test -z "$TCLSH"; then
+  AC_MSG_ERROR([Cannot find a Tcl shell])
+fi
+AC_SUBST(TCLSH)
+AC_CONFIG_FILES([bin/jafar-module bin/pkg_mkIndex])
+
+## Check if we want to enable dot support in Doxygen ##
+AC_PATH_PROG([DOT], [dot])
+if test -z "$HAVE_DOT"; then
+    AC_MSG_WARN([Cannot find dot in the path, disabling class graphs in Doxygen])
+    HAVE_DOT=NO
+else
+    HAVE_DOT=YES
+fi
+AC_SUBST(HAVE_DOT)
+AC_CONFIG_FILES(Doxyfile)
+
 #######################
 # Check for libraries #
 #######################
@@ -83,9 +102,6 @@ if echo "$REQUIRED_SCRIPT_LANGUAGES" | grep -q 'ruby' 2>&1; then
     ])
 fi
 
-if test -n $SCRIPT_LANGUAGES; then
-    AC_MSG_WARN([No scripting language available])
-fi
 AC_SUBST(SCRIPT_LANGUAGES)
 
 ## check for boost ##
@@ -212,6 +228,12 @@ MD_EXTRA_LIBS
 
 AC_CONFIG_FILES(Module.config)
 AC_OUTPUT
-echo "Scripting languages: $SCRIPT_LANGUAGES"
+
+chmod +x bin/pkg_mkIndex bin/jafar-module
+if test -z $SCRIPT_LANGUAGES; then
+    AC_MSG_WARN([No scripting language available])
+else
+    echo "Scripting languages: $SCRIPT_LANGUAGES"
+fi
 echo "Now, you can run - make - in your modules ! :-)"
 

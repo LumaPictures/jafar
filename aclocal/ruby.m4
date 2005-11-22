@@ -1,7 +1,8 @@
 dnl MD_CHECK_RUBY(action-if-found, action-if-not-found)
 AC_DEFUN([MD_CHECK_RUBY], [
     md_ruby_support=yes
-    AC_PATH_PROG([RUBY], [ruby], [md_ruby_support=no])
+    AC_PATH_PROG([RUBY], [ruby])
+    test -z "$RUBY" && md_ruby_support=no
 
     if test "$md_ruby_support" = "yes"; then
         [RUBY_EXTENSION_BASEDIR=`$RUBY -e "puts Config::MAKEFILE_CONFIG['topdir']"`]
