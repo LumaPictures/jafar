@@ -25,7 +25,7 @@ init_unit_test_suite( int, char* [] ) {
   // we set the debug level to Warning
   jafar::debug::DebugStream::setDefaultLevel(jafar::debug::DebugStream::Warning);
 
-  // module helloworld test suite
+  // module _jfr_module_ test suite
   test_suite* test= BOOST_TEST_SUITE( "_jfr_module_ module test suite" );
 
   // add here your test suite to the module test suite
