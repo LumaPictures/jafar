@@ -62,7 +62,8 @@ if test -z "$TCLSH"; then
   AC_MSG_ERROR([Cannot find a Tcl shell])
 fi
 AC_SUBST(TCLSH)
-AC_CONFIG_FILES([bin/jafar-module bin/pkg_mkIndex])
+AC_CONFIG_FILES([bin/jafar-module], [chmod +x bin/jafar-module])
+AC_CONFIG_FILES([bin/pkg_mkIndex],  [chmod +x bin/pkg_mkIndex])
 
 ## Check if we want to enable dot support in Doxygen ##
 AC_PATH_PROG([DOT], [dot])
@@ -229,7 +230,6 @@ MD_EXTRA_LIBS
 AC_CONFIG_FILES(Module.config)
 AC_OUTPUT
 
-chmod +x bin/pkg_mkIndex bin/jafar-module
 if test -z $SCRIPT_LANGUAGES; then
     AC_MSG_WARN([No scripting language available])
 else
