@@ -4,6 +4,7 @@
 # This script makes an update in jafar, and in all the modules
 #
 
+set -e 
 echo "Jafar backbone..."
 cd "${JAFAR_DIR}"
 svn up

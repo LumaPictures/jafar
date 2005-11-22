@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # $Id$ #
+set -e
 
 mv $1 ${1}_tmp
 svn mkdir -m"new module !" svn+ssh://$USER@pollux.laas.fr/svn/jafar/jafarModules/trunk/${1}
