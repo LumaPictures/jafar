@@ -1676,8 +1676,8 @@ ac_configure="$SHELL $ac_aux_dir/configure" # This should be Cygnus configure.
 
 
 if test "$JAFAR_DIR" = ""; then
-  { { echo "$as_me:$LINENO: error: \"variable \$JAFAR_DIR not found.You must define \$JAFAR_DIR topoint to your jafar directory.\"" >&5
-echo "$as_me: error: \"variable \$JAFAR_DIR not found.You must define \$JAFAR_DIR topoint to your jafar directory.\"" >&2;}
+  { { echo "$as_me:$LINENO: error: \"variable \$JAFAR_DIR not found.You must define \$JAFAR_DIR to point to your jafar directory.\"" >&5
+echo "$as_me: error: \"variable \$JAFAR_DIR not found.You must define \$JAFAR_DIR to point to your jafar directory.\"" >&2;}
    { (exit 2); exit 2; }; }
 fi
 
