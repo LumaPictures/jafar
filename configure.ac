@@ -19,7 +19,7 @@ AC_INIT(jafar,0.0,mcottret@laas.fr)
 AC_CONFIG_AUX_DIR(config)
 AC_PREREQ(2.59)
 if test "$JAFAR_DIR" = ""; then
-  AC_MSG_ERROR("variable \$JAFAR_DIR not found.You must define \$JAFAR_DIR topoint to your jafar directory.",2)
+  AC_MSG_ERROR("variable \$JAFAR_DIR not found.You must define \$JAFAR_DIR to point to your jafar directory.",2)
 fi
 AC_PREFIX_DEFAULT("$JAFAR_DIR")
 
@@ -180,14 +180,14 @@ then
 fi
 
 ## check for video4linux ##
-MD_FIND_PACKAGE_OPT(v4l,, linux/videodev.h, [support for v4l (only available on Linux)])
+MD_FIND_PACKAGE_OPT(v4l, [], linux/videodev.h, [support for v4l (only available on Linux)])
 if test "x$with_v4l" = "xyes";
 then
     AC_DEFINE(HAVE_V4L,1,[v4l support])
 fi
 
 ## check for quicktime
-MD_FIND_PACKAGE_OPT(quicktime,, QuickTime/QuickTime.h, [support for QuickTime (only available on MacOSX)])
+MD_FIND_PACKAGE_OPT(quicktime, [], QuickTime/QuickTime.h, [support for QuickTime (only available on MacOSX)])
 if test "x$with_quicktime" = "xyes";
 then
     QUICKTIME_LDFLAGS="-Wl,-framework -Wl,Carbon -Wl,-framework -Wl,Quicktime"
