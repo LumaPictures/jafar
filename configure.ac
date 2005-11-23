@@ -67,7 +67,7 @@ AC_CONFIG_FILES([bin/pkg_mkIndex],  [chmod +x bin/pkg_mkIndex])
 
 ## Check if we want to enable dot support in Doxygen ##
 AC_PATH_PROG([DOT], [dot])
-if test -z "$HAVE_DOT"; then
+if test -z "$DOT"; then
     AC_MSG_WARN([Cannot find dot in the path, disabling class graphs in Doxygen])
     HAVE_DOT=NO
 else
