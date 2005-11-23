@@ -9,7 +9,7 @@ usage()
 svn-add-module name [repository]
     imports the jafar module 'name' at the given SVN URL
 
-The script adds C, C++, Swig and scripts and sets the needed svn properties. 
+The script adds C, C++, documentation, Swig and scripts and sets the needed svn properties. 
 You have to add any other files (if any) manually
 EOF
     exit 1
@@ -75,13 +75,13 @@ cd $TOPDIR
 svn_add COPYRIGHT Makefile README User.make doc include macro src test_suite
 
 cd $TOPDIR/doc
-svn_add *.doxy *.tcl *.hpp *.tpp *.cpp
+svn_add *.doxy *.tcl *.hpp *.cpp
 
 cd $TOPDIR/include
 svn_add $MODULE *.i
 
 cd $TOPDIR/include/$MODULE
-svn_add *.hpp *.tpp *.h *.i
+svn_add *.hpp *.h *.i
 
 cd $TOPDIR/macro
 svn_add *.tcl *.rb
@@ -91,7 +91,7 @@ svn_add *.cpp *.c ruby
 
 cd $TOPDIR/src/ruby
 svn_add extconf.rb
-svn propset svn:ignore 'kernel_wrap.cpp' .
+svn propset svn:ignore '${MODULE}_wrap.cpp' .
 
 cd $TOPDIR/test_suite
 svn_add *.cpp *.hpp
