@@ -38,7 +38,7 @@ CC = @CC@
 CFLAGS = @CFLAGS@
 CPPFLAGS = @CPPFLAGS@
 CXX = @CXX@
-CXXFLAGS = @CXXFLAGS@ -fabi-version=0
+CXXFLAGS = @CXXFLAGS@
 
 CPPFLAGS += \
 	-I$(dev_includedir) -I$(includedir) \
