@@ -18601,7 +18601,7 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-if test -z "$HAVE_DOT"; then
+if test -z "$DOT"; then
     { echo "$as_me:$LINENO: WARNING: Cannot find dot in the path, disabling class graphs in Doxygen" >&5
 echo "$as_me: WARNING: Cannot find dot in the path, disabling class graphs in Doxygen" >&2;}
     HAVE_DOT=NO
