@@ -15,7 +15,10 @@ SWIG_LIBS = $(patsubst %.i, $(includedir)/$(MODULE)/%.i, $(notdir $(wildcard $(d
 # .dep files
 #############
 
-SRCS_DEP = $(patsubst %.cpp,$(dev_objdir)/%.dep,$(notdir $(SRCSCPP))) $(patsubst %.c,$(dev_objdir)/%.dep,$(notdir $(SRCSC)))
+SRCS_DEP = \
+    $(patsubst %.cpp,$(dev_objdir)/%.dep,$(notdir $(SRCSCPP))) \
+    $(patsubst %.c,$(dev_objdir)/%.dep,$(notdir $(SRCSC))) \
+    $(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.dep,$(notdir $(TESTCPP)))
 
 
 # .o files
@@ -126,6 +129,7 @@ tcl-lib : $(dev_libdir)/lib$(MODULE)_swig.la
 clean: tcl-clean
 tcl-clean:
 	-@rm -fr $(tclpkgdir)
+	-@rm -fr $(dev_srcdir)/tcl
 
 endif
 
@@ -175,16 +179,15 @@ dirs :
 clean: clean-build clean-headers clean-test
 
 clean-build: clean-objs clean-headers clean-dep
-	$(LIBTOOL) --mode=clean rm -fr $(dev_libdir)/lib$(MODULE).la
-	$(LIBTOOL) --mode=clean rm -fr $(dev_libdir)/lib$(MODULE)_swig.la
-	$(LIBTOOL) --mode=clean rm -fr $(libdir)/lib$(MODULE).*
+	$(LIBTOOL) --mode=clean rm -f $(dev_libdir)/lib$(MODULE).la
+	$(LIBTOOL) --mode=clean rm -f $(dev_libdir)/lib$(MODULE)_swig.la
+	$(LIBTOOL) --mode=clean rm -f $(libdir)/lib$(MODULE).*
 
 clean-objs:
 	-@rm -fr $(dev_objdir)
-	-@rm -fr $(dev_srcdir)/tcl
 
 clean-dep:
-	-@rm -fr $(dev_objdir)/*.dep
+	-@rm -f $(dev_objdir)/*.dep
 
 clean-headers:
 	-@rm -fr $(includedir)/$(MODULE)
@@ -246,15 +249,22 @@ test: test-build
 	@$(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
 
 
+$(dev_testdir)/$(BUILD)/%.dep: $(dev_testdir)/%.cpp
+	-@mkdir -p $(dev_testdir)/$(BUILD)
+	@echo "Making dependencies for $<"
+	-@$(CXX) -MM $(CPPFLAGS) -MT"$(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.lo,$(notdir $<))" -MF$@ $<
 
-$(dev_testdir)/$(BUILD)/%.lo: $(dev_testdir)/%.cpp
-	echo "compile $@"
+
+$(dev_testdir)/$(BUILD)/%.lo: $(dev_testdir)/%.cpp $(dev_testdir)/$(BUILD)/%.dep
+	-@mkdir -p $(dev_testdir)/$(BUILD)
+	@echo "compile $@"
 	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS)  $(BOOST_CPPFLAGS) -o $@ $<
 
 test-build: dirs lib $(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
 
 $(dev_testdir)/$(BUILD)/test_suite_$(MODULE): $(TESTOBJS)
-	echo "link"
+	-@mkdir -p $(dev_testdir)/$(BUILD)
+	@echo "link"
 	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -lboost_unit_test_framework -o $@ $^
 
 .PHONY: $(USE_MODULES)
