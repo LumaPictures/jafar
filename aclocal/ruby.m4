@@ -5,8 +5,8 @@ AC_DEFUN([MD_CHECK_RUBY], [
     test -z "$RUBY" && md_ruby_support=no
 
     if test "$md_ruby_support" = "yes"; then
-        [RUBY_EXTENSION_BASEDIR=`$RUBY -e "puts Config::MAKEFILE_CONFIG['topdir']"`]
-        [RUBY_VERSION=`$RUBY -e "puts Config::CONFIG['ruby_version']"`]
+        [RUBY_EXTENSION_BASEDIR=`$RUBY -rrbconfig -e "puts Config::MAKEFILE_CONFIG['topdir']"`]
+        [RUBY_VERSION=`$RUBY -rrbconfig -e "puts Config::CONFIG['ruby_version']"`]
         
         md_ruby_cppflags=$CPPFLAGS
         CPPFLAGS="$CPPFLAGS -I$RUBY_EXTENSION_BASEDIR"
