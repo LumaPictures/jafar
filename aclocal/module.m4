@@ -246,7 +246,7 @@ AC_DEFUN([MD_FIND_PACKAGE],
 			found_$1="no"
         	fi
 	])
-	ifelse([$found_[$1]],[no],[AC_MSG_ERROR(Cannot find [$1] . see ./configure --help for more option, 1)])
+	ifelse([$found_[$1]],[no],[AC_MSG_ERROR(Cannot find [$1] . see ./configure --help for more option, 1)],[with_[$1]="yes"])
     fi
 
 ])dnl
