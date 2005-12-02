@@ -26,7 +26,6 @@
 
 %include "kernelException.i"
 %include "kernelTools.i"
-%template(print) jafar::kernel::print<jafar::kernel::DataLog>;
 
 /* More Ruby-like constants */
 #ifdef SWIGRUBY
