@@ -9,11 +9,17 @@
 /* lapack library */
 #undef HAVE_LAPACK
 
+/* Bayes++ library */
+#undef HAVE_BAYESPP
+
 /* openCV library */
 #undef HAVE_OPENCV
 
 /* opengl library */
 #undef HAVE_OPENGL
+
+/* GDHE */
+#undef HAVE_GDHE
 
 /* IEEE1394 support */
 #undef HAVE_IEEE1394

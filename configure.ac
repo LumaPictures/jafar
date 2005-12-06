@@ -112,6 +112,20 @@ then
     BOOST_CPPFLAGS="$boost_cppflags"
     BOOST_LDFLAGS="$with_boostlib"
     BOOST_DATETIME_LIBS="-lboost_date_time"
+    BOOST_THREAD_LIBS="-lboost_thread"
+    AC_SUBST(BOOST_CPPFLAGS)
+    AC_SUBST(BOOST_LDFLAGS)
+    AC_SUBST(BOOST_DATETIME_LIBS)
+    AC_SUBST(BOOST_THREAD_LIBS)
+    AC_DEFINE(HAVE_BOOST,1,[boost library])
+fi
+
+MD_FIND_PACKAGE(boost, boost_date_time, boost/version.hpp, [support for boost C++ library])
+if test "x$with_boost" = "xyes";
+then
+    BOOST_CPPFLAGS="$boost_cppflags"
+    BOOST_LDFLAGS="$with_boostlib"
+    BOOST_DATETIME_LIBS="-lboost_date_time"
     AC_SUBST(BOOST_CPPFLAGS)
     AC_SUBST(BOOST_LDFLAGS)
     AC_SUBST(BOOST_DATETIME_LIBS)
@@ -152,7 +166,6 @@ then
 fi
 
 ## check for openGL ##
-
 MD_FIND_PACKAGE_OPT(opengl, GL, GL/gl.h, [support for openGL])
 if test "x$with_opengl" = "xyes";
 then
@@ -164,6 +177,33 @@ then
     AC_SUBST(OPENGL_LIBS)
     AC_DEFINE(HAVE_OPENGL,1,[openGL library])
 fi
+
+## check for GDHE ##
+MD_FIND_PACKAGE_OPT(gdhe, GDHE, gdhe/GDHE.h, [support for GDHE])
+if test "x$with_gdhe" = "xyes";
+then
+    GDHE_CPPFLAGS="$gdhe_cppflags"
+    GDHE_LDFLAGS="$with_gdhelib"
+    GDHE_LIBS="-lGDHE"
+    AC_SUBST(GDHE_CPPFLAGS)
+    AC_SUBST(GDHE_LDFLAGS)
+    AC_SUBST(GDHE_LIBS)
+    AC_DEFINE(HAVE_GDHE,1,[GDHE 3D display server])
+fi
+
+## check for Bayes++ ##
+MD_FIND_PACKAGE_OPT(bayespp, BayesFilterr, BayesFilter/bayesFlt.hpp, [support for Bayes++, a bayesian filtering library])
+if test "x$with_bayespp" = "xyes";
+then
+    BAYESPP_CPPFLAGS="$bayespp_cppflags"
+    BAYESPP_LDFLAGS="$with_bayespplib"
+    BAYESPP_LIBS="-lBayesFilterr"
+    AC_SUBST(BAYESPP_CPPFLAGS)
+    AC_SUBST(BAYESPP_LDFLAGS)
+    AC_SUBST(BAYESPP_LIBS)
+    AC_DEFINE(HAVE_BAYESPP,1,[Bayes++ library])
+fi
+
 
 ## check for dc1394 and raw1384 ##
 MD_FIND_PACKAGE_OPT(raw1394, raw1394, libraw1394/raw1394.h, [support for raw1394])
