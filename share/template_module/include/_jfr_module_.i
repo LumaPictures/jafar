@@ -13,11 +13,12 @@
    * headers necessary to compile the wrapper
    */
 
+#include "jafarConfig.h"
+
 // using namespace jafar::_jfr_module_;
 
 %}
 
-%include "jafarConfig.h"
 %include "jafar.i"
 %include "_jfr_module_Exception.i"
 
