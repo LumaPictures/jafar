@@ -53,20 +53,29 @@ SWIG_JAFAR_HEADERS = $(JAFAR_DIR)/swig/jafar.i $(JAFAR_DIR)/swig/jafarRuby.i
 RUBY_USER_SCRIPTS = $(patsubst %.rb, $(rubylibdir)/$(MODULE)/%.rb, $(notdir $(wildcard $(dev_macrodir)/*.rb)))
 RUBY_MAIN_SCRIPT  = $(rubylibdir)/$(MODULE).rb
 RUBY_OTHER_SCRIPTS = $(filter $(RUBY_MAIN_SCRIPT),$(RUBY_USER_SCRIPTS))
-WRAPPER_CPP=$(dev_srcdir)/ruby/$(MODULE)_wrap.cpp
+RUBY_WRAPPER_CPP=$(dev_srcdir)/ruby/$(MODULE)_wrap.cpp
 
 ruby: $(rubylibdir)/$(MODULE)/$(RUBY_EXTLIB) $(RUBY_OTHER_SCRIPTS) $(RUBY_MAIN_SCRIPT)
 
-$(dev_objdir)/ruby/$(RUBY_EXTLIB): $(WRAPPER_CPP) $(dev_objdir)/ruby/Makefile $(dev_libdir)/lib$(MODULE).la
+# wrapper dependencies
+SRCS_DEP += $(dev_objdir)/ruby/$(MODULE)_wrap.dep
+$(dev_objdir)/ruby/$(MODULE)_wrap.dep: $(dev_includedir)/$(MODULE).i
+	@echo "Making dependencies for $< (ruby)"
+	-@mkdir -p $(dev_srcdir)/ruby
+	-@$(SWIG) -MM $(SWIGFLAGS) $(SWIGFLAGS_RUBY) $(CPPFLAGS) -I/usr/include -o $(RUBY_WRAPPER_CPP) $(dev_includedir)/$(MODULE).i > /dev/null
+	-@mkdir -p $(dev_objdir)/tcl
+	-@mv $(dev_srcdir)/ruby/$(MODULE)_wrap.d $(dev_objdir)/ruby/$(MODULE)_wrap.dep
+
+$(dev_objdir)/ruby/$(RUBY_EXTLIB): $(RUBY_WRAPPER_CPP) $(dev_objdir)/ruby/Makefile $(dev_libdir)/lib$(MODULE).la
 	$(MAKE) -C $(dev_objdir)/ruby
 
-$(WRAPPER_CPP): $(SWIG_INPUT) $(DEV_HEADERS) $(SWIG_JAFAR_HEADERS)
+$(RUBY_WRAPPER_CPP): $(SWIG_INPUT) $(DEV_HEADERS) $(SWIG_JAFAR_HEADERS)
 	@echo ""
 	@echo "    *************************************"
 	@echo "    * Generating ruby wrappers with SWIG *"
 	@echo "    *************************************"
 	@echo ""
-	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_RUBY) $(CPPFLAGS) -o $(WRAPPER_CPP) $(dev_includedir)/$(MODULE).i || ( rm -f $(WRAPPER_CPP) && exit 1 )
+	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_RUBY) $(CPPFLAGS) -o $(RUBY_WRAPPER_CPP) $(dev_includedir)/$(MODULE).i || ( rm -f $(RUBY_WRAPPER_CPP) && exit 1 )
 
 $(dev_objdir)/ruby/Makefile: $(dev_srcdir)/ruby/extconf.rb
 	-@mkdir -p $(dev_objdir)/ruby
@@ -100,6 +109,17 @@ tcl: $(tclpkgdir)/pkgIndex.tcl
 
 MACROS = $(patsubst %.tcl, $(tclpkgdir)/%.tcl, $(notdir $(wildcard $(dev_macrodir)/*.tcl)))
 SWIG_INPUT = $(wildcard $(dev_includedir)/*.i)
+TCL_WRAPPER_CPP=$(dev_srcdir)/tcl/$(MODULE)_wrap.cpp
+
+# wrapper dependencies
+SRCS_DEP += $(dev_objdir)/tcl/$(MODULE)_wrap.dep
+$(dev_objdir)/tcl/$(MODULE)_wrap.dep: $(dev_includedir)/$(MODULE).i
+	@echo "Making dependencies for $(dev_includedir)/$(MODULE).i (tcl)"
+	-@mkdir -p $(dev_srcdir)/tcl
+	-@$(SWIG) -MM $(SWIGFLAGS) $(SWIGFLAGS_TCL) $(CPPFLAGS) -I/usr/include -o $(TCL_WRAPPER_CPP) $(dev_includedir)/$(MODULE).i > /dev/null
+	-@mkdir -p $(dev_objdir)/tcl
+	-@mv $(dev_srcdir)/tcl/$(MODULE)_wrap.d $(dev_objdir)/tcl/$(MODULE)_wrap.dep
+
 
 $(tclpkgdir)/pkgIndex.tcl : $(tclpkgdir)/$(MODULE)$(SHLIB_SUFFIX) $(MACROS)
 	$(JAFAR_DIR)/bin/pkg_mkIndex $(tclpkgdir) $(MODULE)
@@ -110,8 +130,8 @@ $(dev_objdir)/tcl/$(MODULE)_wrap.lo : $(SWIG_INPUT) $(DEV_HEADERS)
 	@echo "    * Generating tcl wrappers with SWIG *"
 	@echo "    *************************************"
 	@echo ""
-	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_TCL) $(CPPFLAGS) -I/usr/include -o $(dev_srcdir)/tcl/$(MODULE)_wrap.cpp $(dev_includedir)/$(MODULE).i
-	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) $(TCL_CPPFLAGS) -o $@ $(dev_srcdir)/tcl/$(MODULE)_wrap.cpp
+	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_TCL) $(CPPFLAGS) -I/usr/include -o $(TCL_WRAPPER_CPP) $(dev_includedir)/$(MODULE).i
+	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) $(TCL_CPPFLAGS) -o $@ $(TCL_WRAPPER_CPP)
 
 $(dev_libdir)/lib$(MODULE)_swig.la : $(dev_objdir)/tcl/$(MODULE)_wrap.lo $(dev_libdir)/lib$(MODULE).la
 	$(LTLD) $(LDFLAGS) $(TCL_LDFLAGS) -o $@ -rpath $(tclpkgdir) -version-info $(MODULE_VERSION):$(MODULE_REVISION) $(LIBS) -l$(MODULE) $(TCL_LIBS) $<
@@ -199,7 +219,6 @@ clean-test:
 
 # dependances rules
 ####################
-
 
 $(dev_objdir)/%.dep: $(dev_srcdir)/%.cpp
 	-@mkdir -p $(dev_objdir)
