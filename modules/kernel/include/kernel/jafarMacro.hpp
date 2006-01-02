@@ -123,6 +123,20 @@
 using jafar::debug::DebugStream;
 
 /** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
+ * with ID \c ASSERT, along with \a message.
+ */
+#  define JFR_ASSERT(predicate, message)				\
+  if (!(predicate)) {							\
+    using jafar::kernel::JafarException;				\
+    std::ostringstream s;						\
+    s << message;							\
+    s << " (" << #predicate << ")";					\
+    throw JafarException(JafarException::ASSERT,			\
+			 s.str(),_JFR_MODULE_, __FILE__, __LINE__);	\
+  }
+
+
+/** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
  * with ID \c PRECONDITION, along with \a message.
  */
 #  define JFR_PRECOND(predicate, message)				\

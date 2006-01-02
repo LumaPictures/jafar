@@ -75,6 +75,8 @@ JafarException::ExceptionId JafarException::getExceptionId() const throw() {
 
 string JafarException::exceptionIdToString(ExceptionId id_) throw() {
   switch(id_) {
+  case ASSERT:
+    return "JafarException::ASSERT";
   case PRECONDITION:
     return "JafarException::PRECONDITION";
   case POSTCONDITION:

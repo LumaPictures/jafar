@@ -27,7 +27,7 @@ namespace jafar {
     };
 
     /// Send \a message to the debug stream.
-    void sendDebug(std::string const& message, 
+    void sendDebug(std::string const& message,
 		   jafar::debug::DebugStream::Level level_ = jafar::debug::DebugStream::Debug)
     {
       jafar::debug::DebugStream::setup("shell", level_);

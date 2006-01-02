@@ -72,6 +72,7 @@ namespace jafar {
 
       /// This enumeration defines exceptions id of JafarException
       enum ExceptionId {
+	ASSERT,            /**< assertion not met */
         PRECONDITION,      /**< precondition not met */
         POSTCONDITION,     /**< postcondition not met */
         INVARIANT,         /**< invariant not respected */
