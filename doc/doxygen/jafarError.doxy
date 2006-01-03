@@ -66,11 +66,13 @@ jafar::kernel::JafarException :
 \code
       /// This enumeration defines exceptions ID of JafarException
       enum ExceptionId {
+        ASSERT,
         PRECONDITION,
-        POSTCONDITION,
+        POSTCONDITION
         INVARIANT,
         RUN_TIME,
-        IO_STREAM
+        IO_STREAM,
+        NUMERIC
       };
 \endcode
 
@@ -109,9 +111,17 @@ message) if the \a predicate does not hold to \c TRUE.
 Further more, documentation on the \e contract of an entity can be
 added using doxygen special commands (\ref subsecCodeDocErrors).
 
+\subsubsection subsubsecErrorAssert Assertion
+
+This error should be used when a condition must be verified and this condition does not fit in the programmation by contract paragdim.
+
+For ease of use a macro is defined:
+
+    - JFR_ASSERT(predicate, message)
+
 \subsubsection subsubsecErrorRunTime Run time error
 
-An other last standard error is called \c RUN_TIME. It can be used to
+An other standard error is called \c RUN_TIME. It can be used to
 throw an error when the execution end up in a forbidden place, for
 example in the \c default of a switch/case.
 
