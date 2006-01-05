@@ -25,14 +25,20 @@ SSH='/usr/local/bin/ssh'
 
 JAFAR_DIR='/usr/local/jafar'
 
+DOT_BINDIR='/usr/local/graphviz/bin'
+
 # configure command
-configureCmd='./configure --with-opencv=/usr/local/opencv --with-swig=/home/tlemaire/usr/i386-linux/bin'
+configureCmd='setenv PATH ${PATH}:${DOT_BINDIR} ; ./configure --with-opencv=/usr/local/opencv --with-swig=/home/tlemaire/usr/i386-linux/bin'
 
 # modules to be checked
 MODULES="kernel helloworld image display jmath hpm cine model3d stereo filter slam facetsmap camera pfpam pfdesc"
 
 # makefile targets to be executed
 TARGETS="clean lib tcl test-build test"
+
+echo '\n--------------------- svn backup -----------------------------\n'
+
+${JAFAR_DIR}/bin/hot-backup.py /svn/jafar /usr/local/jafar/svn-backup
 
 echo '\n--------------------- svn update -----------------------------\n'
 
@@ -54,8 +60,8 @@ if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; svn up ${JAFAR_DIR}" ; t
     done
 
     echo '\n------------------- Documentation ----------------------------\n'
-    # a recent doxygen and dot are installed on warhol
-    if ${SSH} warhol "cd ${JAFAR_DIR}; make doc" > ${logDir}/doc.log 2>&1 ; then
+
+    if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; setenv PATH ${PATH}:${DOT_BINDIR} ; make doc" > ${logDir}/doc.log 2>&1 ; then
         echo "html...OK"
     else
         echo "html...ERROR"
