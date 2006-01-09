@@ -6,7 +6,7 @@
 #   - compile from scratch several modules
 
 
-MAILTO=tlemaire
+MAILTO=jafar-source
 
 output=/tmp/jafar.daily
 rm -f $output
@@ -39,7 +39,7 @@ TARGETS="clean lib tcl test-build test"
 
 echo '\n--------------------- svn backup -----------------------------\n'
 
-setenv LD_LIBRARY_PATH "/usr/local/lib"
+LD_LIBRARY_PATH='/usr/local/lib'
 ${JAFAR_DIR}/bin/hot-backup.py /svn/jafar /usr/local/jafar/svn-backup
 
 echo '\n--------------------- svn update -----------------------------\n'
@@ -71,10 +71,10 @@ if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; svn up ${JAFAR_DIR}" ; t
 
     echo '\n---------------------- Configure -----------------------------\n'
 
-    if ${SSH} ${targetHost} 'cd ${JAFAR_DIR}; \
+    if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; \
 	setenv JAFAR_DIR ${JAFAR_DIR}; \
-        setenv PATH "${PATH}:${DOT_BINDIR}"; \
-	${configureCmd}' > ${logDir}/configure.log 2>&1; then
+    setenv PATH ${PATH}:${DOT_BINDIR}; \
+	${configureCmd}" > ${logDir}/configure.log 2>&1; then
 	
 	echo "${configureCmd}...OK"
 
