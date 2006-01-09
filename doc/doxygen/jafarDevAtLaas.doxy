@@ -164,10 +164,7 @@ if {$tcl_interactive} {
 
 There are two mailing list related to jafar, both hosted on http://sympa.laas.fr
 
-  - jafar@laas.fr is for discussion about Jafar, for more info and
-  archive go to http://sympa.laas.fr/wws/info/jafar 
+  - jafar@laas.fr is for discussion about Jafar, 
   - jafar-source@laas.fr distributes commit mails from subversion
-  repository, for more info and archive go to
-  http://sympa.laas.fr/wws/info/jafar-source
-
+  repository,
 */
