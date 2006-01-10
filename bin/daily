@@ -1,10 +1,10 @@
 #!/bin/sh
 # $Id$
 # This script does the following:
+#   - backup jafar subversion repository to pollux:/usr/local/jafar/svn-backup
 #   - updates jafar copy in pollux:/usr/local/jafar
 #   - generate html documentation with doxygen
 #   - compile from scratch several modules
-
 
 MAILTO=jafar-source
 
@@ -16,11 +16,10 @@ logDir=/usr/local/jafar/log/
 rm -f ${logDir}/*.log
 
 (
-
 umask 02
 
 # compilation host
-targetHost=chico
+targetHost=groucho
 
 SSH='/usr/local/bin/ssh'
 
@@ -39,8 +38,11 @@ TARGETS="clean lib tcl test-build test"
 
 echo '\n--------------------- svn backup -----------------------------\n'
 
-LD_LIBRARY_PATH='/usr/local/lib'
-${JAFAR_DIR}/bin/hot-backup.py /svn/jafar /usr/local/jafar/svn-backup
+if ${SSH} pollux "setenv LD_LIBRARY_PATH /usr/local/lib ; ${JAFAR_DIR}/bin/hot-backup.py /svn/jafar /usr/local/jafar/svn-backup" ; then
+    echo "repository backup...OK"
+else
+    echo "repository backup...ERROR"
+fi
 
 echo '\n--------------------- svn update -----------------------------\n'
 
