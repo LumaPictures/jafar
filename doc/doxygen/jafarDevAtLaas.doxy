@@ -87,6 +87,7 @@ Other options of interest:
 \section secDaily daily script
 
 The \c daily script in \c jafar/bin is run every night. For a given list of modules, it does the following in \c /usr/local/jafar :
+- backup jafar subversion repository to pollux:/usr/local/jafar/svn-backup
 - update jafar and the modules to the current version,
 - generate the documentation,
 - launch the \c configure script,
@@ -102,7 +103,7 @@ MODULES="kernel helloworld image display jmath hpm cine model3d stereo filter sl
 
 \section secLaasLib Installing external libraries
 
-Some of the Jafar modules depends on external libraries. If you are working on the laboratory network, every thing should already be properly installed.
+Some of the Jafar modules depend on external libraries. If you are working on the laboratory network, every thing should already be properly installed.
 
 If you are developping on your Linux laptop you should refer to \ref pageGettingStartedfromaLinuxLaptop. For MacOSX users the \ref pageFaq should be of high interest.
 
