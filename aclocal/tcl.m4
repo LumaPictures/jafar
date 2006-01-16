@@ -36,12 +36,9 @@ AC_DEFUN([MD_CHECK_TCLTK],[
             /usr/local/tcl-8.4/lib \
             /usr/local/tcl-8.3/lib \
             /usr/local/tcl-8.4 \
-            /usr/local/tcl-8.3 \
-            /usr/local/lib/tcl8.3 \
             /usr/local/lib \
             /usr/pkg/lib \
             /usr/lib/tcl8.4 \
-            /usr/lib/tcl8.3 \
             /usr/lib \
             /sw/lib \ 
             /opt/local/lib], [file=$md_found_file], [has_tcl=no])
@@ -81,7 +78,7 @@ AC_DEFUN([MD_CHECK_TCLTK],[
 
     if test "$has_tcl" = "yes"; then
         has_tk=yes
-        MD_USER_FIND_FILE([tk], [tkConfig.sh], [${tcl_prefix} \
+        MD_USER_FIND_FILE([tk], [tkConfig.sh], [${TCL_PREFIX}/lib \
                 ${exec_prefix}/lib \
                 /usr/local/lib/tk$TCL_VERSION \
                 /usr/local/tk$TCL_VERSION \
