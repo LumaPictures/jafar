@@ -5746,6 +5746,10 @@ fi
 
 
 
+## CAVEAT EMPTOR:
+## There is no encapsulation within the following macros, do not change
+## the running order or otherwise move them around unless you know exactly
+## what you are doing...
 
 lt_prog_compiler_no_builtin_flag=
 
@@ -5770,11 +5774,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:5773: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:5777: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:5777: \$? = $ac_status" >&5
+   echo "$as_me:5781: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6002,11 +6006,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6005: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6009: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6009: \$? = $ac_status" >&5
+   echo "$as_me:6013: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6069,11 +6073,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6072: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6076: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:6076: \$? = $ac_status" >&5
+   echo "$as_me:6080: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8192,7 +8196,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8195 "configure"
+#line 8199 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8290,7 +8294,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8293 "configure"
+#line 8297 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -10084,6 +10088,10 @@ test "$ld_shlibs_CXX" = no && can_build_shared=no
 GCC_CXX="$GXX"
 LD_CXX="$LD"
 
+## CAVEAT EMPTOR:
+## There is no encapsulation within the following macros, do not change
+## the running order or otherwise move them around unless you know exactly
+## what you are doing...
 
 cat > conftest.$ac_ext <<EOF
 class Foo
@@ -10471,11 +10479,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10474: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10482: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:10478: \$? = $ac_status" >&5
+   echo "$as_me:10486: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -10538,11 +10546,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10541: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10549: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:10545: \$? = $ac_status" >&5
+   echo "$as_me:10553: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -11860,7 +11868,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 11863 "configure"
+#line 11871 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11958,7 +11966,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 11961 "configure"
+#line 11969 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12783,11 +12791,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12786: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12794: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:12790: \$? = $ac_status" >&5
+   echo "$as_me:12798: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -12850,11 +12858,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12853: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12861: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:12857: \$? = $ac_status" >&5
+   echo "$as_me:12865: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -14803,6 +14811,10 @@ compiler_GCJ=$CC
 # GCJ did not exist at the time GCC didn't implicitly link libc in.
 archive_cmds_need_lc_GCJ=no
 
+## CAVEAT EMPTOR:
+## There is no encapsulation within the following macros, do not change
+## the running order or otherwise move them around unless you know exactly
+## what you are doing...
 
 lt_prog_compiler_no_builtin_flag_GCJ=
 
@@ -14827,11 +14839,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14830: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14842: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14834: \$? = $ac_status" >&5
+   echo "$as_me:14846: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15059,11 +15071,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15062: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15074: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15066: \$? = $ac_status" >&5
+   echo "$as_me:15078: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15126,11 +15138,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15129: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15141: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:15133: \$? = $ac_status" >&5
+   echo "$as_me:15145: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -17249,7 +17261,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17252 "configure"
+#line 17264 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -17347,7 +17359,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17350 "configure"
+#line 17362 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -19533,370 +19545,6 @@ then
     BOOST_DATETIME_LIBS="-lboost_date_time"
     BOOST_THREAD_LIBS="-lboost_thread"
 
-
-
-
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_BOOST 1
-_ACEOF
-
-fi
-
-
-
-# Check whether --with-boost or --without-boost was given.
-if test "${with_boost+set}" = set; then
-  withval="$with_boost"
-
-fi;
-
-# Check whether --with-boostlib or --without-boostlib was given.
-if test "${with_boostlib+set}" = set; then
-  withval="$with_boostlib"
-
-fi;
-
-# Check whether --with-boostinc or --without-boostinc was given.
-if test "${with_boostinc+set}" = set; then
-  withval="$with_boostinc"
-
-fi;
-
-
-    # default is "yes"
-    if test ${with_boost:-""} = ""; then
-        with_boost="yes"
-    fi
-
-    if test ${with_boost:-""} != "no"; then
-	found_boost="yes"
-
-
-    if test "boost/version.hpp" != ""; then
-        echo "$as_me:$LINENO: checking for boost/version.hpp " >&5
-echo $ECHO_N "checking for boost/version.hpp ... $ECHO_C" >&6
-
-        # check whether the include is in the path by default (e.g. /usr/include)
-        include_found=""
-        if test "$with_boostinc" = "" -a "$with_boost" = "yes"; then
-            cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <stdio.h>  /* necessary because jpeglib.h fails to include it */
-#include <boost/version.hpp>
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  include_found="in default path"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-include_found=""
-fi
-rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
-        fi
-
-        # if not found by default, try searching for it
-        if test "$include_found" = ""; then
-            dirs=""
-            if test "$with_boostinc" != ""; then
-                dirs="$with_boostinc"
-            elif test "$with_boost" != "yes"; then
-                dirs="$with_boost"
-            else
-                dirs="/usr/local/include /usr/local/gnu/include /usr/local/boost /usr/local/boost/include /opt/include /opt/gnu/include /opt/boost /opt/boost/include /opt/local/include /opt/local/include/boost /usr/include /sw /sw/include /sw/boost /sw/boost/include \$HOME/ \$HOME/include \$HOME/usr \$HOME/usr/include \$HOME/usr/boost \$HOME/opt \$HOME/opt/include \$HOME/opt/boost \$HOME/boost \$HOME/local \$HOME/local/include \$HOME/local/boost"
-            fi
-
-            # use find for searching
-
-    if test "$findprog" = ""; then
-        if test "$CYGWIN" = "yes"; then
-          findprog="/usr/bin/find"
-        else
-          findprog="find"
-        fi
-    fi
-
-
-            # first, look for the given header file without directory components..
-            found=""
-            for i in $dirs; do
-                if test -d $i; then
-                    found="$found `$findprog $i -follow -name version.hpp -print 2> /dev/null`"
-                fi
-            done
-
-            # now, check each found file for relative path prefix.
-
-    regExResult=""
-    if test "$found" != ""; then
-        for i in $found; do
-            regExResult=`expr "$i" : "\(.*include\)/boost/version\.hpp"`
-            if test "$regExResult" != ""; then
-                break
-            fi
-        done
-    fi
-
-            if test "$regExResult" = ""; then
-
-    regExResult=""
-    if test "$found" != ""; then
-        for i in $found; do
-            regExResult=`expr "$i" : "\(.*\)/boost/version\.hpp"`
-            if test "$regExResult" != ""; then
-                break
-            fi
-        done
-    fi
-
-            fi
-            include_found=$regExResult
-        fi
-
-        # report the search result and set result variables
-        if test "$include_found" = ""; then
-            with_boostinc=""
-            echo "$as_me:$LINENO: result: not found in $dirs" >&5
-echo "${ECHO_T}not found in $dirs" >&6
-        else
-            echo "$as_me:$LINENO: result: $include_found" >&5
-echo "${ECHO_T}$include_found" >&6
-            if test "$include_found" != "/usr/include" -a \
-                    "$include_found" != "in default path"; then
-                with_boostinc="$include_found"
-                boost_cppflags="-I$include_found"
-            else
-                with_boostinc=""
-                boost_cppflags=""
-            fi
-        fi
-    else
-        with_boostinc=""
-        boost_cppflags=""
-    fi
-
-		if test "x$include_found" = "x"; then
-			found_boost="no"
-        	fi
-
-
-
-    echo "$as_me:$LINENO: checking for libboost_date_time " >&5
-echo $ECHO_N "checking for libboost_date_time ... $ECHO_C" >&6
-
-    # check whether the include is in the path by default (e.g. /usr/include)
-    lib_found=""
-    if test "$with_boostlib" = "" -a "$with_boost" = "yes"; then
-        ac_save_LIBS="$LIBS"
-        LIBS="$LIBS -lboost_date_time"
-        cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  lib_found="in default path"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-lib_found=""
-fi
-rm -f conftest.err conftest.$ac_objext \
-      conftest$ac_exeext conftest.$ac_ext
-        LIBS=$ac_save_LIBS
-    fi
-
-    # if not found by default, try searching for it
-    if test "$lib_found" = ""; then
-        if test "$libext" = ""; then
-            libext=".a"
-        fi
-
-
-	case $build_os in
-	     cygwin*) SHLIB_SUFFIX='.dll' ;;
-	     darwin*) SHLIB_SUFFIX='.dylib' ;;
-	     hpux*)   SHLIB_SUFFIX='.sl'  ;;
-	     *)	      SHLIB_SUFFIX='.so'  ;;
-	esac
-
-        if test "$solibext" = ""; then
-	    solibext="$SHLIB_SUFFIX"
-        fi
-
-        if test "$libpre" = ""; then
-            libpre="lib"
-        fi
-
-
-    if test "$findprog" = ""; then
-        if test "$CYGWIN" = "yes"; then
-          findprog="/usr/bin/find"
-        else
-          findprog="find"
-        fi
-    fi
-
-
-        dirs=""
-        if test "$with_boostlib" != ""; then
-            dirs=$with_boostlib
-        elif test "$with_boost" != "yes"; then
-            dirs=$with_boost
-        else
-            dirs="/usr/local/lib /usr/local/gnu/lib /usr/local/boost /usr/local/boost/lib /opt/lib /opt/gnu/lib /opt/boost /opt/boost/lib /opt/local/lib /usr/lib /sw /sw/lib /sw/boost /sw/boost/lib \$HOME \$HOME/lib \$HOME/boost \$HOME/boost/lib \$HOME/usr \$HOME/usr/lib \$HOME/usr/boost \$HOME/opt \$HOME/opt/lib \$HOME/opt/boost \$HOME/local \$HOME/local/include \$HOME/local/boost"
-        fi
-        found=""
-        for i in $dirs; do
-            if test -d $i; then
-                found="$found `$findprog $i -follow -name "${libpre}boost_date_time$solibext" -print 2> /dev/null; $findprog $i -follow -name "${libpre}boost_date_time$libext" -print 2> /dev/null`"
-            fi
-        done
-
-
-    regExResult=""
-    if test "$found" != ""; then
-        for i in $found; do
-            regExResult=`expr "$i" : "\(.*lib\)/${libpre}boost_date_time$solibext"`
-            if test "$regExResult" != ""; then
-                break
-            fi
-        done
-    fi
-
-        if test "$regExResult" = ""; then
-
-    regExResult=""
-    if test "$found" != ""; then
-        for i in $found; do
-            regExResult=`expr "$i" : "\(.*lib\)/${libpre}boost_date_time$libext"`
-            if test "$regExResult" != ""; then
-                break
-            fi
-        done
-    fi
-
-        fi
-        if test "$regExResult" = ""; then
-
-    regExResult=""
-    if test "$found" != ""; then
-        for i in $found; do
-            regExResult=`expr "$i" : "\(.*\)/${libpre}boost_date_time$solibext"`
-            if test "$regExResult" != ""; then
-                break
-            fi
-        done
-    fi
-
-        fi
-        if test "$regExResult" = ""; then
-
-    regExResult=""
-    if test "$found" != ""; then
-        for i in $found; do
-            regExResult=`expr "$i" : "\(.*\)/${libpre}boost_date_time$libext"`
-            if test "$regExResult" != ""; then
-                break
-            fi
-        done
-    fi
-
-        fi
-        lib_found=$regExResult
-    fi
-    if test "$lib_found" = ""; then
-        with_boostlib=""
-        echo "$as_me:$LINENO: result: not found in $dirs" >&5
-echo "${ECHO_T}not found in $dirs" >&6
-    else
-        echo "$as_me:$LINENO: result: $lib_found" >&5
-echo "${ECHO_T}$lib_found" >&6
-        if test "$lib_found" != "/usr/lib" -a \
-                "$lib_found" != "in default path"; then
-            with_boostlib="-L$lib_found"
-        else
-            with_boostlib=""
-        fi
-    fi
-
-		if test "x$lib_found" = "x"; then
-			found_boost="no"
-        	fi
-
-	with_boost="yes"
-    fi
-
-
-if test "x$with_boost" = "xyes";
-then
-    BOOST_CPPFLAGS="$boost_cppflags"
-    BOOST_LDFLAGS="$with_boostlib"
-    BOOST_DATETIME_LIBS="-lboost_date_time"
 
 
 
