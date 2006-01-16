@@ -120,18 +120,6 @@ then
     AC_DEFINE(HAVE_BOOST,1,[boost library])
 fi
 
-MD_FIND_PACKAGE(boost, boost_date_time, boost/version.hpp, [support for boost C++ library])
-if test "x$with_boost" = "xyes";
-then
-    BOOST_CPPFLAGS="$boost_cppflags"
-    BOOST_LDFLAGS="$with_boostlib"
-    BOOST_DATETIME_LIBS="-lboost_date_time"
-    AC_SUBST(BOOST_CPPFLAGS)
-    AC_SUBST(BOOST_LDFLAGS)
-    AC_SUBST(BOOST_DATETIME_LIBS)
-    AC_DEFINE(HAVE_BOOST,1,[boost library])
-fi
-
 ## check for openCV ##
 MD_FIND_PACKAGE_OPT(opencv, cxcore, opencv/cxcore.h, [support for openCV library])
 if test "x$with_opencv" = "xyes";
