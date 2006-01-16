@@ -18685,12 +18685,9 @@ else
             /usr/local/tcl-8.4/lib \
             /usr/local/tcl-8.3/lib \
             /usr/local/tcl-8.4 \
-            /usr/local/tcl-8.3 \
-            /usr/local/lib/tcl8.3 \
             /usr/local/lib \
             /usr/pkg/lib \
             /usr/lib/tcl8.4 \
-            /usr/lib/tcl8.3 \
             /usr/lib \
             /sw/lib \
             /opt/local/lib"
@@ -18794,7 +18791,7 @@ if test "${with_tk+set}" = set; then
   withval="$with_tk"
   md_find_path="$withval"
 else
-  md_find_path="${tcl_prefix} \
+  md_find_path="${TCL_PREFIX}/lib \
                 ${exec_prefix}/lib \
                 /usr/local/lib/tk$TCL_VERSION \
                 /usr/local/tk$TCL_VERSION \
