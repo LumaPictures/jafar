@@ -8,8 +8,6 @@
 #include <string>
 #include <map>
 
-#include "boost/shared_ptr.hpp"
-
 // we could use a better singleton here...
 #include "boost/pool/detail/singleton.hpp"
 
