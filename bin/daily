@@ -7,6 +7,7 @@
 #   - compile from scratch several modules
 
 MAILTO=jafar-source
+#MAILTO=tlemaire
 
 output=/tmp/jafar.daily
 rm -f $output
@@ -65,7 +66,10 @@ if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; svn up ${JAFAR_DIR}" ; t
 
     echo '\n------------------- Documentation ----------------------------\n'
 
-    if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; setenv PATH ${PATH}:${DOT_BINDIR} ; make doc" > ${logDir}/doc.log 2>&1 ; then
+    if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; \
+    setenv JAFAR_DIR ${JAFAR_DIR}; \
+    setenv PATH \${PATH}:${DOT_BINDIR} ; \
+    make doc" > ${logDir}/doc.log 2>&1 ; then
         echo "html...OK"
     else
         echo "html...ERROR"
