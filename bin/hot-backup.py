@@ -35,7 +35,7 @@ svnlook = "/usr/local/subversion/bin/svnlook"
 svnadmin = "/usr/local/subversion/bin/svnadmin"
 
 # Number of backups to keep around (0 for "keep them all")
-num_backups = 30
+num_backups = 10
 
 ######################################################################
 # Command line arguments
