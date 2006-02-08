@@ -37,6 +37,8 @@ namespace jafar {
     }; // class Loggable
 
     /** This object logs data.
+     *
+     * \ingroup kernel
      */
     class DataLogger {
 
@@ -91,7 +93,7 @@ namespace jafar {
        * boost::tokenizer. Example:
        *
        * \code
-       *  log.writeLegendTokens("x,y,z");
+       *  log.writeLegendTokens("x y z");
        * \endcode
        */
       void writeLegendTokens(std::string const& legendTokens_, std::string const& separator_ = " ");
