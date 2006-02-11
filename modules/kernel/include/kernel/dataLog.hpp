@@ -26,10 +26,15 @@ namespace jafar {
 
       virtual ~DataLoggable() {};
 
-      /// implements this method calling repeatidly DataLogger::writeLegend().
+      /** Implements this method calling repeatidly \a log
+       * methods. You should use writeComment(), writeLegend() or
+       * writeLegendTokens().
+       */
       virtual void writeLogHeader(DataLogger& log) const = 0;
 
-      /// implements  this method calling repeatidly DataLogger::writeData().
+      /** Implements this method calling repeatidly \a log
+       * methods. You should use writeData() or writeDataVector().
+       */
       virtual void writeLogData(DataLogger& log) const = 0;
 
       friend class DataLogger;
@@ -57,10 +62,13 @@ namespace jafar {
       typedef std::list<DataLoggable const*> LoggablesList;
       LoggablesList loggables;
 
+      typedef std::list<DataLogger*> LoggersList;
+      LoggersList slaves;
+
     public:
 
       /**
-       * @param logFilename_ filename od the data log.
+       * @param logFilename_ filename of the data log.
        * @param separator_ string used to separate the data
        * @param commentPrefix_ string which starts a comment line
        */
@@ -68,14 +76,20 @@ namespace jafar {
 		 std::string const& separator_ = " ", 
 		 std::string const& commentPrefix_ = "#");
 
+
       /// write \a comment_
       void writeComment(std::string const& comment_);
 
       /// write current date as a comment
       void writeCurrentDate();
 
-      /// add \a loggable_ to be legged by this logger.
+      /// add \a loggable_ to be logged by this logger.
       void addLoggable(DataLoggable const& loggable_);
+
+      /** Add slave \a logger_. log() events are dispatched to the
+       * slaves.
+       */
+      void addSlaveLogger(DataLogger& logger_);
 
       /// this method triggers a log.
       void log();

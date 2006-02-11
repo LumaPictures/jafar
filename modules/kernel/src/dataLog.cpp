@@ -45,14 +45,24 @@ void DataLogger::addLoggable(DataLoggable const& loggable_)
   loggable_.writeLogHeader(*this);
 }
 
+void DataLogger::addSlaveLogger(DataLogger& logger_)
+{
+  slaves.push_back(&logger_);
+}
+
 void DataLogger::log()
 {
+  // ask loggables to log their data in turn
   for (LoggablesList::const_iterator it = loggables.begin() ; it != loggables.end() ; ++it) {
     (**it).writeLogData(*this);
   }
   logStream << std::endl;
-    JFR_IO_STREAM(logStream,
-		  "DataLogger::log");
+  JFR_IO_STREAM(logStream, "DataLogger::log");
+
+  // dispatch the log() event to the slaves
+  for (LoggersList::iterator it = slaves.begin() ; it != slaves.end() ; ++it) {
+    (**it).log();
+  }
 }
 
 
