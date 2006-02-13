@@ -9,6 +9,23 @@
 using namespace jafar::kernel;
 
 /*
+ * DataLoggable
+ */
+
+DataLoggable::DataLoggable() : p_logger(0) {}
+
+DataLoggable::~DataLoggable() {
+  if (p_logger)
+    p_logger->removeLoggable(*this);
+}
+
+void DataLoggable::setLogger(DataLogger& logger) {
+  JFR_PRECOND(!p_logger,
+	      "DataLoggable: only one logger is supported");
+  p_logger = &logger;
+}
+
+/*
  * DataLogger
  */
 
@@ -39,10 +56,16 @@ void DataLogger::writeCurrentDate()
 //   JFR_TRACE_END("DataLogger::writeCurrentDate");
 }
 
-void DataLogger::addLoggable(DataLoggable const& loggable_)
+void DataLogger::addLoggable(DataLoggable& loggable_)
 {
   loggables.push_back(&loggable_);
+  loggable_.setLogger(*this);
   loggable_.writeLogHeader(*this);
+}
+
+void DataLogger::removeLoggable(DataLoggable const& loggable_)
+{
+  loggables.remove(&loggable_);
 }
 
 void DataLogger::addSlaveLogger(DataLogger& logger_)

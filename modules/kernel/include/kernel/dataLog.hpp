@@ -22,9 +22,17 @@ namespace jafar {
      */
     class DataLoggable {
 
+    private:
+
+      /// My logger
+      DataLogger* p_logger;
+
+      void setLogger(DataLogger& logger);
+
     protected:
 
-      virtual ~DataLoggable() {};
+      DataLoggable();
+      virtual ~DataLoggable();
 
       /** Implements this method calling repeatidly \a log
        * methods. You should use writeComment(), writeLegend() or
@@ -84,7 +92,10 @@ namespace jafar {
       void writeCurrentDate();
 
       /// add \a loggable_ to be logged by this logger.
-      void addLoggable(DataLoggable const& loggable_);
+      void addLoggable(DataLoggable& loggable_);
+
+      /// remove \a loggable_
+      void removeLoggable(DataLoggable const& loggable_);
 
       /** Add slave \a logger_. log() events are dispatched to the
        * slaves.
