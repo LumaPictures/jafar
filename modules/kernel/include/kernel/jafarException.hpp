@@ -17,6 +17,8 @@ namespace jafar {
      * instanciated, instead use exceptions classes defined in each
      * module. Have a look at the module \ref helloworld to see an example.
      *
+     * \todo print ExceptionId with an operator<< rather than a toString() method.
+     *
      * \ingroup kernel
      */
     class Exception {
