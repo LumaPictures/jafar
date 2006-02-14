@@ -40,6 +40,13 @@ namespace jafar {
        */
       virtual void writeLogHeader(DataLogger& log) const = 0;
 
+      /** Once the loggable has been added, this method is called so
+       * that the loggable can add some of its members to the
+       * log. Implements this method calling addLoggable(). By default
+       * this method is empty.
+       */
+      virtual void addMembersToLog(DataLogger& log) const {}
+
       /** Implements this method calling repeatidly \a log
        * methods. You should use writeData() or writeDataVector().
        */

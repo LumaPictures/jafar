@@ -61,6 +61,7 @@ void DataLogger::addLoggable(DataLoggable& loggable_)
   loggables.push_back(&loggable_);
   loggable_.setLogger(*this);
   loggable_.writeLogHeader(*this);
+  loggable_.addMembersToLog(*this);
 }
 
 void DataLogger::removeLoggable(DataLoggable const& loggable_)
