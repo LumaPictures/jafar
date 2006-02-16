@@ -136,6 +136,11 @@ namespace jafar {
 	logStream << d << separator;
       }
 
+      /// write a NaN to the log
+      void writeNaN() {
+	logStream << "NaN" << separator;
+      }
+
       /// this method logs any data vector
       template <class Vec>
       void writeDataVector(Vec const& v) {
