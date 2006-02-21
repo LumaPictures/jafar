@@ -4,7 +4,7 @@
 
 \section secLaasRepository Jafar under version control at LAAS
 
-At LAAS we use subversion to version control the jafar tree.
+At LAAS we use subversion to version control the jafar tree. You must be in the \e h2 user group to use the repository (even for a simple checkout). To get into this group, send a request to sysadmin@laas.fr.
 
 \subsection subsecLaasSvnAbout About Subversion
 
