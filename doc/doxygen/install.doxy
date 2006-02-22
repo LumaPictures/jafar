@@ -20,13 +20,14 @@ Jafar uses \e swig to generate module's tcl interface, you must have this tool i
 
 Each jafar module can have its own dependencies, the dependencies appears in the \c User.make of each module. The most often used libraries in Jafar are \e boost and \e openCV.
 
-\section secInstallConfigureMake ./configure, make
+\section secInstallEnvironment Setting your environment
 
-    - Set your environement variable \c $JAFAR_DIR  to the directory
-where you put jafar.
+    - Set your environement variable \c $JAFAR_DIR  to the directory where you uncompress or checkout the jafar source.
     - If necessary add to your \c $LD_LIBRARY_PATH \c $JAFAR_DIR/lib/platform.
 
 Then you can start to \e configure jafar and \e compile the modules.
+
+\section secInstallConfigureMake ./configure, make
 
 \subsection subsecInstallConfigure ./configure
 

@@ -107,7 +107,7 @@ Some of the Jafar modules depend on external libraries. If you are working on th
 
 If you are developping on your Linux laptop you should refer to \ref pageGettingStartedfromaLinuxLaptop. For MacOSX users the \ref pageFaq should be of high interest.
 
-\section secLaasTcl About Tcl...
+\section secLaasSolaris About Solaris workstation
 
 Jafar uses tcl8.4, so you MUST use this same version for your tcl
 shell. If rtclsh and rwish, or eltclsh and elwish are not compiled
