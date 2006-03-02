@@ -30,8 +30,8 @@ void DataLoggable::setLogger(DataLogger& logger) {
  */
 
 DataLogger::DataLogger(std::string const& logFilename_, 
-		       std::string const& separator_, 
-		       std::string const& commentPrefix_) :
+		       char separator_, 
+		       char commentPrefix_) :
   logStream(logFilename_.c_str()),
   separator(separator_),
   commentPrefix(commentPrefix_),
@@ -98,15 +98,15 @@ void DataLogger::writeLegend(std::string const& legend_)
 		"DataLogger::writeLegend: error while writting :\n" << legend_);
 }
 
-void DataLogger::writeLegendTokens(std::string const& legendTokens_, std::string const& separator_)
+void DataLogger::writeLegendTokens(std::string const& legendTokens_, std::string const& tokenSep_)
 {
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
-  boost::char_separator<char> sep(separator_.c_str());
+  boost::char_separator<char> sep(tokenSep_.c_str());
   tokenizer tokens(legendTokens_, sep);
   logStream << commentPrefix << " ";
   for (tokenizer::iterator it = tokens.begin(); it != tokens.end(); ++it) {
     nbColumns++;
-    logStream << nbColumns << ":" << *it << separator_;
+    logStream << nbColumns << ":" << *it << separator;
   }
   logStream << std::endl;
   JFR_IO_STREAM(logStream,

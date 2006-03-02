@@ -67,10 +67,10 @@ namespace jafar {
       std::ofstream logStream;
 
       /// default separator is whitespace
-      std::string separator;
+      char separator;
 
       /// default comment prefix is '# '
-      std::string commentPrefix;
+      char commentPrefix;
 
       unsigned int nbColumns;
 
@@ -88,8 +88,8 @@ namespace jafar {
        * @param commentPrefix_ string which starts a comment line
        */
       DataLogger(std::string const& logFilename_, 
-		 std::string const& separator_ = " ", 
-		 std::string const& commentPrefix_ = "#");
+		 char separator_ = ' ', 
+		 char commentPrefix_ = '#');
 
 
       /// write \a comment_
@@ -128,7 +128,7 @@ namespace jafar {
        *  log.writeLegendTokens("x y z");
        * \endcode
        */
-      void writeLegendTokens(std::string const& legendTokens_, std::string const& separator_ = " ");
+      void writeLegendTokens(std::string const& legendTokens_, std::string const& tokenSep_ = " ");
 
       /// this method logs any data
       template <typename T>
