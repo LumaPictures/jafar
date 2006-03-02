@@ -22,7 +22,8 @@ namespace jafar {
        * kernel.
        */
       enum ExceptionId {
-        // MY_ERROR /**< my error */
+	KEYVALUEFILE_UNKNOWN_KEY, /**< KeyValueFile: unknown key           */
+	KEYVALUEFILE_INVALID_LINE /**< KeyValueFile: invalide line in file */
       };
 
       /** Constructor. You should not use this constructor directly,

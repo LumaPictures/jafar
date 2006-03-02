@@ -23,6 +23,10 @@ KernelException::ExceptionId KernelException::getExceptionId() const throw() {
 
 string KernelException::exceptionIdToString(ExceptionId id_) throw() {
   switch(id_) {
+  case KEYVALUEFILE_UNKNOWN_KEY:
+    return "KEYVALUEFILE_UNKNOWN_KEY";
+  case KEYVALUEFILE_INVALID_LINE:
+    return "KEYVALUEFILE_INVALID_LINE";
   default:
     std::stringstream s;
     s << id_;

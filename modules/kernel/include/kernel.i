@@ -15,6 +15,7 @@
 #include "kernel/jafarDebug.hpp"
 #include "kernel/dataLog.hpp"
 #include "kernel/timingTools.hpp"
+#include "kernel/keyValueFile.hpp"
 
 %}
 
@@ -37,3 +38,5 @@
 %include "kernel/jafarDebug.hpp"
 %include "kernel/timingTools.hpp"
 
+%include "kernel/keyValueFile.hpp"
+%template(getItem) jafar::kernel::KeyValueFile::getItem<double>;
