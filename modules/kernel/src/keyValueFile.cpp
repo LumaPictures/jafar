@@ -73,6 +73,7 @@ void KeyValueFile::readFile(std::string const& filename) {
 		<< " is already defined (" << itKeyValue->first << keyValueSeparator << itKeyValue->second << ") " << endl
 		<<  "Redefined at " << filename << ":" << lineNumber);
 
+    //    JFR_DEBUG(key << ": " << value);
     keyValue[key] = value;
   }
 
@@ -81,9 +82,11 @@ void KeyValueFile::readFile(std::string const& filename) {
 void KeyValueFile::load(KeyValueFileLoad & loadable, std::string const& filename,
 			std::string const& keyValueSeparator_, char commentPrefix_)
 {
+  JFR_TRACE_BEGIN;
   KeyValueFile kvf(keyValueSeparator_, commentPrefix_);
   kvf.readFile(filename);
   loadable.load(kvf);
+  JFR_TRACE_END("KeyValueFile:load: loading file " << filename);
 }
 
 void KeyValueFile::save(KeyValueFileSave & loadable, std::string const& filename,

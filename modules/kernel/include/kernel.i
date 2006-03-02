@@ -38,5 +38,17 @@
 %include "kernel/jafarDebug.hpp"
 %include "kernel/timingTools.hpp"
 
-%include "kernel/keyValueFile.hpp"
-%template(getItem) jafar::kernel::KeyValueFile::getItem<double>;
+/*
+ * class KeyValueFile
+ */
+
+namespace jafar { namespace kernel {
+  class KeyValueFile {
+  public:
+
+    static void load(jafar::kernel::KeyValueFileLoad & loadable, std::string const& filename,
+		  std::string const& keyValueSeparator_ = ":", char commentPrefix_ = '#');
+    
+  };
+}}
+
