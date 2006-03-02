@@ -6,7 +6,7 @@ set jafar_cfg_sub [file join $jafar_dir config config.sub]
 
 set buildalias [ exec $jafar_cfg_guess ]
 if { $buildalias == "" } {
-    puts "[jfrsh] Can't guess build system"
+    puts "Error: Can't guess build system"
     exit
 }
 set build [exec $jafar_cfg_sub $buildalias]
@@ -18,7 +18,7 @@ lappend auto_path $jafar_pkg_dir
 set jafar_macros ""
 
 puts ""
-puts "Welcome to jafar !         (c) 2004-2005 LAAS-CNRS"
+puts "Welcome to jafar !         (c) 2004-2006 LAAS-CNRS"
 puts ""
 puts "jafar_dir: $jafar_dir"
 puts ""
