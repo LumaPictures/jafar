@@ -64,17 +64,6 @@ if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; svn up ${JAFAR_DIR}" ; t
 	fi
     done
 
-    echo '\n------------------- Documentation ----------------------------\n'
-
-    if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; \
-    setenv JAFAR_DIR ${JAFAR_DIR}; \
-    setenv PATH \${PATH}:${DOT_BINDIR} ; \
-    make doc" > ${logDir}/doc.log 2>&1 ; then
-        echo "html...OK"
-    else
-        echo "html...ERROR"
-    fi
-
     echo '\n---------------------- Configure -----------------------------\n'
 
     if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; \
@@ -83,6 +72,17 @@ if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; svn up ${JAFAR_DIR}" ; t
 	${configureCmd}" > ${logDir}/configure.log 2>&1; then
 	
 	echo "${configureCmd}...OK"
+
+	echo '\n------------------- Documentation ----------------------------\n'
+
+	if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; \
+            setenv JAFAR_DIR ${JAFAR_DIR}; \
+            setenv PATH \${PATH}:${DOT_BINDIR} ; \
+            make doc" > ${logDir}/doc.log 2>&1 ; then
+	    echo "html...OK"
+	else
+	    echo "html...ERROR"
+	fi
 
 	echo '\n--------------------- Compilation ----------------------------\n'
 	for m in ${MODULES}; do
