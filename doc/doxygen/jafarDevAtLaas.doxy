@@ -39,7 +39,7 @@ Names of your branches and tags must reflect module version numbers (\ref secMod
 
 You first retrieve a version of the jafar backbone:
 \verbatim
-$ svn co svn+ssh://toto@pollux.laas.fr/svn/jafar/jafarBackbone/trunk jafar/
+$ svn co svn+ssh://toto@svn.laas.fr/svn/jafar/jafarBackbone/trunk jafar/
 \endverbatim
 
 You will get, among other things, the kernel module in the \c jafar/module/ directory.
@@ -47,8 +47,8 @@ You will get, among other things, the kernel module in the \c jafar/module/ dire
 Then retrieve the modules versions you are interested in, cd in the module directory and do some checkouts:
 \verbatim 
 $ cd /home/toto/jafar/modules
-$ svn co svn+ssh://toto@pollux.laas.fr/svn/jafar/jafarModules/trunk/jmath jmath/
-$ svn co svn+ssh://toto@pollux.laas.fr/svn/jafar/jafarModules/tags/image_0.3 image/
+$ svn co svn+ssh://toto@svn.laas.fr/svn/jafar/jafarModules/trunk/jmath jmath/
+$ svn co svn+ssh://toto@svn.laas.fr/svn/jafar/jafarModules/tags/image_0.3 image/
 \endverbatim
 
 \subsection subsecLaasCoUp Commit/Update
@@ -87,7 +87,7 @@ Other options of interest:
 \section secDaily daily script
 
 The \c daily script in \c jafar/bin is run every night. For a given list of modules, it does the following in \c /usr/local/jafar :
-- backup jafar subversion repository to pollux:/usr/local/jafar/svn-backup
+- backup jafar subversion repository to /usr/local/jafar/svn-backup
 - update jafar and the modules to the current version,
 - generate the documentation,
 - launch the \c configure script,
