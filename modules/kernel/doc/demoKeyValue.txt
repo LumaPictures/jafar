@@ -1,0 +1,7 @@
+# this is an example key:value file
+
+key1: 4
+key2: -10.35
+key3: string
+
+
