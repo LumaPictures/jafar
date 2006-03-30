@@ -8,7 +8,7 @@
 
 %{
 
-#include <iostream>
+#include <sstream>
 
 %}
 
@@ -19,8 +19,26 @@ namespace jafar {
     
     /// template print function which calls the output operator<<.
     template<class A>
-    void print(const A& a_) {
-      std::cout << a_ << std::endl;
+    std::string print(const A& a_) {
+      std::ostringstream os;
+      os << a_ << std::endl;
+      return os.str();
+    };
+
+    class A {
+      
+    public:
+      
+      int pipoA() const {return 1;}
+
+    };
+
+    class B : public A {
+
+    public:
+
+      int pipoB() {return 2;}
+
     };
 
   } // namespace helloworld
