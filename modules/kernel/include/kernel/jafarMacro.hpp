@@ -301,7 +301,7 @@ using jafar::debug::DebugStream;
 
 /** shortcut for: 
  * \code
- *   JFR_TRACE_END; 
+ *   JFR_TRACE_END(message); 
  *   JFR_TRACE.
  * \endcode
  */
