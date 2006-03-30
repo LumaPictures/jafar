@@ -22,14 +22,14 @@ DebugStream::DebugStream() :
   debugging()
 {
 #ifndef JFR_NDEBUG
-  (*debugStream) << "D:kernel/DebugStream: debug stream is created." << std::endl;
+  //  (*debugStream) << "D:kernel/DebugStream: debug stream is created." << std::endl;
 #endif
 }
 
 DebugStream::~DebugStream()
 {
 #ifndef JFR_NDEBUG
-  (*debugStream) << "D:kernel/DebugStream: debug stream is destroyed." << std::endl;
+  //  (*debugStream) << "D:kernel/DebugStream: debug stream is destroyed." << std::endl;
 #endif
 }
 
