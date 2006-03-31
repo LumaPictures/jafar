@@ -1,8 +1,8 @@
 #!/bin/sh
 # $Id$
 # This script does the following:
-#   - backup jafar subversion repository to pollux:/usr/local/jafar/svn-backup
-#   - updates jafar copy in pollux:/usr/local/jafar
+#   - backup jafar subversion repository to /usr/local/jafar/svn-backup
+#   - updates jafar copy in /usr/local/jafar
 #   - generate html documentation with doxygen
 #   - compile from scratch several modules
 
@@ -39,7 +39,7 @@ TARGETS="clean lib tcl test-build test"
 
 echo '\n--------------------- svn backup -----------------------------\n'
 
-if ${SSH} pollux "setenv LD_LIBRARY_PATH /usr/local/lib ; ${JAFAR_DIR}/bin/hot-backup.py /svn/jafar /usr/local/jafar/svn-backup" ; then
+if ${SSH} svn.laa.fr "setenv LD_LIBRARY_PATH /usr/local/lib ; ${JAFAR_DIR}/bin/hot-backup.py /svn/jafar /usr/local/jafar/svn-backup" ; then
     echo "repository backup...OK"
 else
     echo "repository backup...ERROR"
@@ -58,9 +58,9 @@ if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; svn up ${JAFAR_DIR}" ; t
 	    ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; \
 		svn up ${JAFAR_DIR}/modules/$m" 
 	else
-	    echo "svn co svn+ssh://pollux.laas.fr/svn/jafar/jafarModules/trunk/${m} ${JAFAR_DIR}/modules/${m}"
+	    echo "svn co svn+ssh://svn.laas.fr/svn/jafar/jafarModules/trunk/${m} ${JAFAR_DIR}/modules/${m}"
 	    ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; \
-		svn co svn+ssh://pollux.laas.fr/svn/jafar/jafarModules/trunk/${m} ${JAFAR_DIR}/modules/${m}"
+		svn co svn+ssh://svn.laas.fr/svn/jafar/jafarModules/trunk/${m} ${JAFAR_DIR}/modules/${m}"
 	fi
     done
 
