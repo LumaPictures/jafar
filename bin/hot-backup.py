@@ -29,10 +29,10 @@ import sys, os, shutil, string, re
 # Global Settings
 
 # Path to svnlook utility
-svnlook = "/usr/local/subversion/bin/svnlook"
+svnlook = "/usr/local/bin/svnlook"
 
 # Path to svnadmin utility
-svnadmin = "/usr/local/subversion/bin/svnadmin"
+svnadmin = "/usr/local/bin/svnadmin"
 
 # Number of backups to keep around (0 for "keep them all")
 num_backups = 10
