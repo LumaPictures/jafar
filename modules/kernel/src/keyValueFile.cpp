@@ -79,18 +79,26 @@ void KeyValueFile::readFile(std::string const& filename) {
 
 }
 
-void KeyValueFile::load(KeyValueFileLoad & loadable, std::string const& filename,
-			std::string const& keyValueSeparator_, char commentPrefix_)
+/*
+ * class KeyValueFileLoad
+ */
+
+void KeyValueFileLoad::load(std::string const& filename,
+			    std::string const& keyValueSeparator_, char commentPrefix_)
 {
   JFR_TRACE_BEGIN;
   KeyValueFile kvf(keyValueSeparator_, commentPrefix_);
   kvf.readFile(filename);
-  loadable.load(kvf);
+  load(kvf);
   JFR_TRACE_END("KeyValueFile:load: loading file " << filename);
 }
 
-void KeyValueFile::save(KeyValueFileSave & loadable, std::string const& filename,
-			std::string const& keyValueSeparator_, char commentPrefix_)
-{
-  // TODO
-}
+/*
+ * class KeyValueFileSave
+ */
+
+// void KeyValueFileSave::save(std::string const& filename,
+// 			    std::string const& keyValueSeparator_, char commentPrefix_)
+// {
+//   // TODO
+// }

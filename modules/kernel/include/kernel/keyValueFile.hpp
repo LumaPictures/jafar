@@ -12,9 +12,7 @@
 namespace jafar {
   namespace kernel {
 
-    // forward declaration
-    class KeyValueFileLoad;
-    class KeyValueFileSave;
+#ifndef SWIG // swig ignores KeyValueFile class
 
     /** Read a file containing simple key value statements.
      *
@@ -64,22 +62,22 @@ namespace jafar {
 	keyValue[key] = ss.str();
       };
 
-      /// This method creates the proper KeyValueFile and call the load method of \a loadable
-      static void load(KeyValueFileLoad & loadable, std::string const& filename,
-		       std::string const& keyValueSeparator_ = ":", char commentPrefix_ = '#');
-
-      /// This method creates the proper KeyValueFile and call the save method of \a loadable
-      static void save(KeyValueFileSave & loadable, std::string const& filename,
-		       std::string const& keyValueSeparator_ = ":", char commentPrefix_ = '#');
-
     }; // class KeyValueFile
 
-    /** An object which can be loaded using the KeyValueFile
-     * mechanism.
+#endif // SWIG
+
+    /** Interface of an object which can be loaded using the
+     * KeyValueFile mechanism.
      *
      * \ingroup kernel
      */
     class KeyValueFileLoad {
+
+    public:
+
+      /// This method creates the proper KeyValueFile and call the load method of \a loadable
+      void load(std::string const& filename,
+		std::string const& keyValueSeparator_ = ":", char commentPrefix_ = '#');
 
     protected:
 
@@ -89,39 +87,39 @@ namespace jafar {
        * KeyValueFile::getItem() method.
        */
       virtual void load(jafar::kernel::KeyValueFile const& keyValueFile) = 0;
-
-      friend class KeyValueFile;
       
     }; // class KeyValueFileLoad
 
 
-    /** An object which can be saved using the KeyValueFile
-     * mechanism.
-     *
-     * \ingroup kernel
-     */
-    class KeyValueFileSave {
+//     /** Interface of an object which can be saved using the
+//      * KeyValueFile mechanism.
+//      *
+//      * \ingroup kernel
+//      */
+//     class KeyValueFileSave {
 
-    protected:
+//     public:
 
-      virtual ~KeyValueFileSave() {};
+//       /// This method creates the proper KeyValueFile and call the save method of \a loadable
+//       static void save(std::string const& filename,
+// 		       std::string const& keyValueSeparator_ = ":", char commentPrefix_ = '#');
 
-      virtual void save(jafar::kernel::KeyValueFile const& keyValueFile) = 0;
+//     protected:
 
-      friend class KeyValueFile;
-      
-    }; // class KeyValueFileLoad
+//       virtual ~KeyValueFileSave() {};
 
-    /** An object which can both be loaded and saved using the
-     * KeyValueFile mechanism.
-     *
-     * \ingroup kernel
-     */
-    class KeyValueFileSaveLoad : public KeyValueFileLoad, public KeyValueFileSave {
+//       virtual void save(jafar::kernel::KeyValueFile const& keyValueFile) = 0;
 
-      friend class KeyValueFile;
-      
-    }; // class KeyValueFileLoad
+//     }; // class KeyValueFileSave
+
+//     /** Interface of an object which can both be loaded and saved
+//      * using the KeyValueFile mechanism.
+//      *
+//      * \ingroup kernel
+//      */
+//     class KeyValueFileSaveLoad : public KeyValueFileLoad, public KeyValueFileSave {
+
+//     }; // class KeyValueFileSaveLoad
 
   } // namespace kernel
 } // namespace jafar

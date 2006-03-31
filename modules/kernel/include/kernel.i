@@ -15,7 +15,6 @@
 #include "kernel/jafarDebug.hpp"
 #include "kernel/dataLog.hpp"
 #include "kernel/timingTools.hpp"
-#include "kernel/keyValueFile.hpp"
 
 %}
 
@@ -37,18 +36,3 @@
 %include "kernel/dataLog.hpp"
 %include "kernel/jafarDebug.hpp"
 %include "kernel/timingTools.hpp"
-
-/*
- * class KeyValueFile
- */
-
-namespace jafar { namespace kernel {
-  class KeyValueFile {
-  public:
-
-    static void load(jafar::kernel::KeyValueFileLoad & loadable, std::string const& filename,
-		  std::string const& keyValueSeparator_ = ":", char commentPrefix_ = '#');
-    
-  };
-}}
-
