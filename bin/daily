@@ -39,7 +39,7 @@ TARGETS="clean lib tcl test-build test"
 
 echo '\n--------------------- svn backup -----------------------------\n'
 
-if ${SSH} svn.laa.fr "setenv LD_LIBRARY_PATH /usr/local/lib ; ${JAFAR_DIR}/bin/hot-backup.py /svn/jafar /usr/local/jafar/svn-backup" ; then
+if ${SSH} svn.laas.fr "setenv LD_LIBRARY_PATH /usr/local/lib ; ${JAFAR_DIR}/bin/hot-backup.py /svn/jafar /usr/local/jafar/svn-backup" ; then
     echo "repository backup...OK"
 else
     echo "repository backup...ERROR"
