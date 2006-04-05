@@ -1,4 +1,4 @@
-#!/usr/local/python/bin/python
+#!/usr/local/bin/python
 # $Id$
 #
 #  hot-backup.py: perform a "hot" backup of a Berkeley DB repository.
