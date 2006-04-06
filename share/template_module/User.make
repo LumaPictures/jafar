@@ -16,6 +16,7 @@ USE_MODULES = kernel
 LIBS += -lkernel 
 
 # CPPFLAGS += -DJFR_NDEBUG
+CPPFLAGS += $(BOOST_CPPFLAGS)
 
 CXXFLAGS += -g -ggdb -Wall
 
