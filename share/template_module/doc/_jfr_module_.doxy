@@ -14,6 +14,10 @@
 
   - 0.1 (_jfr_date_) - Initial version
 
+\section sec_jfr_Module_Requirements Requirements
+
+  Other module or external libraires dependences...
+
 \section sec_jfr_Module_Macro Macro
 
   Extra doc for macro can go here... (you can delete this section if
