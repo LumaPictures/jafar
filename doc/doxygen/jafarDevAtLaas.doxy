@@ -35,6 +35,8 @@ Names of your branches and tags must reflect module version numbers (\ref secMod
 
 \image html repositoryLayout.png "Jafar repository layout"
 
+The repository can be browsed online at this url http://www2.laas.fr/~tlemaire/viewsvn_jafar
+
 \subsection subsecLaasCo Check out of your working copy
 
 You first retrieve a version of the jafar backbone:
