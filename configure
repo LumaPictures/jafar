@@ -465,7 +465,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX LN_S EGREP ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB STRIP ac_ct_STRIP CPP CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL LIBTOOL_DEPS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SHLIB_SUFFIX SWIG SWIG_RUNTIME_LIBS_DIR TCLSH DOT HAVE_DOT HAS_TCL_SUPPORT TCL_CPPFLAGS TCL_EXTRA_CFLAGS TCL_SHLIB_SUFFIX TCL_CC LIB_RUNTIME_DIR TK_LIB_SPEC TCL_LDFLAGS TCL_LIB_SPEC TCL_SHLIB_LDFLAGS TCL_SHLIB_CFLAGS TCL_SHLIB_LD TCL_LIB_FLAGS RUBY RUBY_EXTENSION_BASEDIR RUBY_VERSION SCRIPT_LANGUAGES BOOST_CPPFLAGS BOOST_LDFLAGS BOOST_DATETIME_LIBS BOOST_THREAD_LIBS OPENCV_CPPFLAGS OPENCV_LDFLAGS OPENCV_LIBS BOOST_SANDBOX_CPPFLAGS LAPACK_LDFLAGS LAPACK_LIBS OPENGL_CPPFLAGS OPENGL_LDFLAGS OPENGL_LIBS GDHE_CPPFLAGS GDHE_LDFLAGS GDHE_LIBS BAYESPP_CPPFLAGS BAYESPP_LDFLAGS BAYESPP_LIBS IEEE1394_CPPFLAGS IEEE1394_LDFLAGS IEEE1394_LIBS QUICKTIME_LDFLAGS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX LN_S EGREP ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB STRIP ac_ct_STRIP CPP CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL LIBTOOL_DEPS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SHLIB_SUFFIX SWIG SWIG_RUNTIME_LIBS_DIR TCLSH DOT HAVE_DOT HAS_TCL_SUPPORT TCL_CPPFLAGS TCL_EXTRA_CFLAGS TCL_SHLIB_SUFFIX TCL_CC LIB_RUNTIME_DIR TK_LIB_SPEC TCL_LDFLAGS TCL_LIB_SPEC TCL_SHLIB_LDFLAGS TCL_SHLIB_CFLAGS TCL_SHLIB_LD TCL_LIB_FLAGS RUBY RUBY_EXTENSION_BASEDIR RUBY_VERSION SCRIPT_LANGUAGES BOOST_CPPFLAGS BOOST_LDFLAGS BOOST_DATETIME_LIBS BOOST_THREAD_LIBS OPENCV_CPPFLAGS OPENCV_LDFLAGS OPENCV_LIBS BOOST_SANDBOX_CPPFLAGS LAPACK_LDFLAGS LAPACK_LIBS OPENGL_CPPFLAGS OPENGL_LDFLAGS OPENGL_LIBS GDHE_CPPFLAGS GDHE_LDFLAGS GDHE_LIBS BAYESPP_CPPFLAGS BAYESPP_LDFLAGS BAYESPP_LIBS CGAL_CPPFLAGS CGAL_LDFLAGS CGAL_LIBS IEEE1394_CPPFLAGS IEEE1394_LDFLAGS IEEE1394_LIBS QUICKTIME_LDFLAGS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1153,6 +1153,22 @@ Optional Packages:
       alternatively, you can specify:
         --with-bayespplib=dir : the bayespp package's lib directory
         --with-bayesppinc=dir : the bayespp package's include directory
+
+  --with-cgal
+  --with-cgal=dir
+  --without-cgal
+  --with-cgallib=dir
+  --with-cgalinc=dir
+      CGAL,  Computational Geometry Algorithms Library. default: --with-cgal
+      if --with-cgal or --with-cgal=yes is given: cgal package files will be
+         searched for in some standard directories (the default).
+      if --with-cgal=dir is given, and dir is a directory: cgal package files
+         will be searched for below 'dir' using 'find'.
+      if --with-cgal=no or --without-cgal is given: cgal package will
+         not be used.
+      alternatively, you can specify:
+        --with-cgallib=dir : the cgal package's lib directory
+        --with-cgalinc=dir : the cgal package's include directory
 
   --with-raw1394
   --with-raw1394=dir
@@ -3638,7 +3654,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 3641 "configure"' > conftest.$ac_ext
+  echo '#line 3657 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -4742,7 +4758,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:4745:" \
+echo "$as_me:4761:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -5774,11 +5790,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:5777: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:5793: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:5781: \$? = $ac_status" >&5
+   echo "$as_me:5797: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6006,11 +6022,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6009: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6025: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:6013: \$? = $ac_status" >&5
+   echo "$as_me:6029: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -6073,11 +6089,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:6076: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:6092: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:6080: \$? = $ac_status" >&5
+   echo "$as_me:6096: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8196,7 +8212,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8199 "configure"
+#line 8215 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -8294,7 +8310,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 8297 "configure"
+#line 8313 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -10479,11 +10495,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10482: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10498: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:10486: \$? = $ac_status" >&5
+   echo "$as_me:10502: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -10546,11 +10562,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10549: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10565: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:10553: \$? = $ac_status" >&5
+   echo "$as_me:10569: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -11868,7 +11884,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 11871 "configure"
+#line 11887 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11966,7 +11982,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 11969 "configure"
+#line 11985 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12791,11 +12807,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12794: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12810: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:12798: \$? = $ac_status" >&5
+   echo "$as_me:12814: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -12858,11 +12874,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12861: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12877: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:12865: \$? = $ac_status" >&5
+   echo "$as_me:12881: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -14839,11 +14855,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14842: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14858: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14846: \$? = $ac_status" >&5
+   echo "$as_me:14862: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15071,11 +15087,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15074: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15090: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:15078: \$? = $ac_status" >&5
+   echo "$as_me:15094: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -15138,11 +15154,11 @@ else
    -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:15141: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:15157: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:15145: \$? = $ac_status" >&5
+   echo "$as_me:15161: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -17261,7 +17277,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17264 "configure"
+#line 17280 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -17359,7 +17375,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 17362 "configure"
+#line 17378 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -21441,6 +21457,375 @@ _ACEOF
 
 fi
 
+## check for CGAL ##
+
+
+# Check whether --with-cgal or --without-cgal was given.
+if test "${with_cgal+set}" = set; then
+  withval="$with_cgal"
+
+fi;
+
+# Check whether --with-cgallib or --without-cgallib was given.
+if test "${with_cgallib+set}" = set; then
+  withval="$with_cgallib"
+
+fi;
+
+# Check whether --with-cgalinc or --without-cgalinc was given.
+if test "${with_cgalinc+set}" = set; then
+  withval="$with_cgalinc"
+
+fi;
+
+
+    # default is "no"
+    if test ${with_cgal:-""} = ""; then
+        with_cgal="no"
+    fi
+
+    if test ${with_cgal:-""} != "no"; then
+	found_cgal="yes"
+
+
+    if test "CGAL/config.h" != ""; then
+        echo "$as_me:$LINENO: checking for CGAL/config.h " >&5
+echo $ECHO_N "checking for CGAL/config.h ... $ECHO_C" >&6
+
+        # check whether the include is in the path by default (e.g. /usr/include)
+        include_found=""
+        if test "$with_cgalinc" = "" -a "$with_cgal" = "yes"; then
+            cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <stdio.h>  /* necessary because jpeglib.h fails to include it */
+#include <CGAL/config.h>
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  include_found="in default path"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+include_found=""
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+        fi
+
+        # if not found by default, try searching for it
+        if test "$include_found" = ""; then
+            dirs=""
+            if test "$with_cgalinc" != ""; then
+                dirs="$with_cgalinc"
+            elif test "$with_cgal" != "yes"; then
+                dirs="$with_cgal"
+            else
+                dirs="/usr/local/include /usr/local/gnu/include /usr/local/cgal /usr/local/cgal/include /opt/include /opt/gnu/include /opt/cgal /opt/cgal/include /opt/local/include /opt/local/include/cgal /usr/include /sw /sw/include /sw/cgal /sw/cgal/include \$HOME/ \$HOME/include \$HOME/usr \$HOME/usr/include \$HOME/usr/cgal \$HOME/opt \$HOME/opt/include \$HOME/opt/cgal \$HOME/cgal \$HOME/local \$HOME/local/include \$HOME/local/cgal"
+            fi
+
+            # use find for searching
+
+    if test "$findprog" = ""; then
+        if test "$CYGWIN" = "yes"; then
+          findprog="/usr/bin/find"
+        else
+          findprog="find"
+        fi
+    fi
+
+
+            # first, look for the given header file without directory components..
+            found=""
+            for i in $dirs; do
+                if test -d $i; then
+                    found="$found `$findprog $i -follow -name config.h -print 2> /dev/null`"
+                fi
+            done
+
+            # now, check each found file for relative path prefix.
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*include\)/CGAL/config\.h"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+            if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*\)/CGAL/config\.h"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+            fi
+            include_found=$regExResult
+        fi
+
+        # report the search result and set result variables
+        if test "$include_found" = ""; then
+            with_cgalinc=""
+            echo "$as_me:$LINENO: result: not found in $dirs" >&5
+echo "${ECHO_T}not found in $dirs" >&6
+        else
+            echo "$as_me:$LINENO: result: $include_found" >&5
+echo "${ECHO_T}$include_found" >&6
+            if test "$include_found" != "/usr/include" -a \
+                    "$include_found" != "in default path"; then
+                with_cgalinc="$include_found"
+                cgal_cppflags="-I$include_found"
+            else
+                with_cgalinc=""
+                cgal_cppflags=""
+            fi
+        fi
+    else
+        with_cgalinc=""
+        cgal_cppflags=""
+    fi
+
+	 	if test "x$include_found" = "x"; then
+			found_cgal="no"
+        	fi
+
+
+
+
+    echo "$as_me:$LINENO: checking for libCGAL " >&5
+echo $ECHO_N "checking for libCGAL ... $ECHO_C" >&6
+
+    # check whether the include is in the path by default (e.g. /usr/include)
+    lib_found=""
+    if test "$with_cgallib" = "" -a "$with_cgal" = "yes"; then
+        ac_save_LIBS="$LIBS"
+        LIBS="$LIBS -lCGAL"
+        cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  lib_found="in default path"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+lib_found=""
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+        LIBS=$ac_save_LIBS
+    fi
+
+    # if not found by default, try searching for it
+    if test "$lib_found" = ""; then
+        if test "$libext" = ""; then
+            libext=".a"
+        fi
+
+
+	case $build_os in
+	     cygwin*) SHLIB_SUFFIX='.dll' ;;
+	     darwin*) SHLIB_SUFFIX='.dylib' ;;
+	     hpux*)   SHLIB_SUFFIX='.sl'  ;;
+	     *)	      SHLIB_SUFFIX='.so'  ;;
+	esac
+
+        if test "$solibext" = ""; then
+	    solibext="$SHLIB_SUFFIX"
+        fi
+
+        if test "$libpre" = ""; then
+            libpre="lib"
+        fi
+
+
+    if test "$findprog" = ""; then
+        if test "$CYGWIN" = "yes"; then
+          findprog="/usr/bin/find"
+        else
+          findprog="find"
+        fi
+    fi
+
+
+        dirs=""
+        if test "$with_cgallib" != ""; then
+            dirs=$with_cgallib
+        elif test "$with_cgal" != "yes"; then
+            dirs=$with_cgal
+        else
+            dirs="/usr/local/lib /usr/local/gnu/lib /usr/local/cgal /usr/local/cgal/lib /opt/lib /opt/gnu/lib /opt/cgal /opt/cgal/lib /opt/local/lib /usr/lib /sw /sw/lib /sw/cgal /sw/cgal/lib \$HOME \$HOME/lib \$HOME/cgal \$HOME/cgal/lib \$HOME/usr \$HOME/usr/lib \$HOME/usr/cgal \$HOME/opt \$HOME/opt/lib \$HOME/opt/cgal \$HOME/local \$HOME/local/include \$HOME/local/cgal"
+        fi
+        found=""
+        for i in $dirs; do
+            if test -d $i; then
+                found="$found `$findprog $i -follow -name "${libpre}CGAL$solibext" -print 2> /dev/null; $findprog $i -follow -name "${libpre}CGAL$libext" -print 2> /dev/null`"
+            fi
+        done
+
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*lib\)/${libpre}CGAL$solibext"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+        if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*lib\)/${libpre}CGAL$libext"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+        fi
+        if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*\)/${libpre}CGAL$solibext"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+        fi
+        if test "$regExResult" = ""; then
+
+    regExResult=""
+    if test "$found" != ""; then
+        for i in $found; do
+            regExResult=`expr "$i" : "\(.*\)/${libpre}CGAL$libext"`
+            if test "$regExResult" != ""; then
+                break
+            fi
+        done
+    fi
+
+        fi
+        lib_found=$regExResult
+    fi
+    if test "$lib_found" = ""; then
+        with_cgallib=""
+        echo "$as_me:$LINENO: result: not found in $dirs" >&5
+echo "${ECHO_T}not found in $dirs" >&6
+    else
+        echo "$as_me:$LINENO: result: $lib_found" >&5
+echo "${ECHO_T}$lib_found" >&6
+        if test "$lib_found" != "/usr/lib" -a \
+                "$lib_found" != "in default path"; then
+            with_cgallib="-L$lib_found"
+        else
+            with_cgallib=""
+        fi
+    fi
+
+		if test "x$lib_found" = "x"; then
+            		found_cgal="no"
+        	fi
+
+	with_cgal="yes";
+    else
+	with_cgal="no"
+	{ echo "$as_me:$LINENO: WARNING: Configuring without cgal support " >&5
+echo "$as_me: WARNING: Configuring without cgal support " >&2;}
+    fi
+
+
+if test "x$with_cgal" = "xyes";
+then
+    CGAL_CPPFLAGS="$cgal_cppflags $cgal_cppflags/CGAL/config/$CGAL_OS_COMPILER"
+    CGAL_LDFLAGS="$with_cgallib"
+    CGAL_LIBS="-lCGAL"
+
+
+
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_CGAL 1
+_ACEOF
+
+fi
 
 ## check for dc1394 and raw1384 ##
 
@@ -22551,7 +22936,6 @@ fi
 # Check for compiler characteristics #
 ######################################
 
-
 ###############################
 # Check for library functions #
 ###############################
@@ -23526,6 +23910,9 @@ s,@GDHE_LIBS@,$GDHE_LIBS,;t t
 s,@BAYESPP_CPPFLAGS@,$BAYESPP_CPPFLAGS,;t t
 s,@BAYESPP_LDFLAGS@,$BAYESPP_LDFLAGS,;t t
 s,@BAYESPP_LIBS@,$BAYESPP_LIBS,;t t
+s,@CGAL_CPPFLAGS@,$CGAL_CPPFLAGS,;t t
+s,@CGAL_LDFLAGS@,$CGAL_LDFLAGS,;t t
+s,@CGAL_LIBS@,$CGAL_LIBS,;t t
 s,@IEEE1394_CPPFLAGS@,$IEEE1394_CPPFLAGS,;t t
 s,@IEEE1394_LDFLAGS@,$IEEE1394_LDFLAGS,;t t
 s,@IEEE1394_LIBS@,$IEEE1394_LIBS,;t t
