@@ -192,6 +192,18 @@ then
     AC_DEFINE(HAVE_BAYESPP,1,[Bayes++ library])
 fi
 
+## check for CGAL ##
+MD_FIND_PACKAGE_OPT(cgal, CGAL, CGAL/config.h, [CGAL,  Computational Geometry Algorithms Library])
+if test "x$with_cgal" = "xyes";
+then
+    CGAL_CPPFLAGS="$cgal_cppflags $cgal_cppflags/CGAL/config/$CGAL_OS_COMPILER"
+    CGAL_LDFLAGS="$with_cgallib"
+    CGAL_LIBS="-lCGAL"
+    AC_SUBST(CGAL_CPPFLAGS)
+    AC_SUBST(CGAL_LDFLAGS)
+    AC_SUBST(CGAL_LIBS)
+    AC_DEFINE(HAVE_CGAL,1,[CGAL library])
+fi
 
 ## check for dc1394 and raw1384 ##
 MD_FIND_PACKAGE_OPT(raw1394, raw1394, libraw1394/raw1394.h, [support for raw1394])
@@ -238,7 +250,6 @@ fi
 ######################################
 # Check for compiler characteristics #
 ######################################
-
 
 ###############################
 # Check for library functions #
