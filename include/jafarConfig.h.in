@@ -29,3 +29,6 @@
 
 /* Quicktime support */
 #undef HAVE_QUICKTIME
+
+/* PNL library */
+#undef HAVE_PNL

@@ -192,6 +192,20 @@ then
     AC_DEFINE(HAVE_BAYESPP,1,[Bayes++ library])
 fi
 
+## check for PNL and PNLHigh ##
+MD_FIND_PACKAGE_OPT(pnl,pnl,pnl_dll.hpp,[support for PNL, Intel's Probabilistic Network Library])
+MD_FIND_PACKAGE_OPT(pnlhigh,[],pnlHigh.hpp,[headers for PNLWrapper])
+if test "x$with_pnl" = "xyes" && test "x$with_pnlhigh" = "xyes";
+then
+	PNL_CPPFLAGS="$pnl_cppflags $pnl_cppflags/opencx $pnlhigh_cppflags"
+	PNL_LDFLAGS="$with_pnllib"
+	PNL_LIBS="-lpnl -lhigh"
+	AC_SUBST(PNL_CPPFLAGS)
+	AC_SUBST(PNL_LDFLAGS)
+	AC_SUBST(PNL_LIBS)
+	AC_DEFINE(HAVE_PNL,1,[PNL library])
+fi
+
 ## check for CGAL ##
 MD_FIND_PACKAGE_OPT(cgal, CGAL, CGAL/config.h, [CGAL,  Computational Geometry Algorithms Library])
 if test "x$with_cgal" = "xyes";
