@@ -22,7 +22,7 @@ umask 02
 # compilation host
 targetHost=groucho
 
-SSH='/usr/local/bin/ssh'
+SSH='/usr/bin/ssh'
 
 JAFAR_DIR='/usr/local/jafar'
 
