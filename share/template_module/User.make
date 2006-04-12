@@ -10,7 +10,12 @@ MODULE_VERSION = 0
 MODULE_REVISION = 1 
 
 # modules dependencies
-USE_MODULES = kernel
+REQUIRED_MODULES = kernel 
+OPTIONAL_MODULES = 
+
+# external libraries dependencies
+REQUIRED_EXTLIBS = 
+OPTIONAL_EXTLIBS = 
 
 # LDFLAGS +=
 LIBS += -lkernel 
