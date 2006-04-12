@@ -465,7 +465,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX LN_S EGREP ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB STRIP ac_ct_STRIP CPP CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL LIBTOOL_DEPS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SHLIB_SUFFIX SWIG SWIG_RUNTIME_LIBS_DIR TCLSH DOT HAVE_DOT HAS_TCL_SUPPORT TCL_CPPFLAGS TCL_EXTRA_CFLAGS TCL_SHLIB_SUFFIX TCL_CC LIB_RUNTIME_DIR TK_LIB_SPEC TCL_LDFLAGS TCL_LIB_SPEC TCL_SHLIB_LDFLAGS TCL_SHLIB_CFLAGS TCL_SHLIB_LD TCL_LIB_FLAGS RUBY RUBY_EXTENSION_BASEDIR RUBY_VERSION SCRIPT_LANGUAGES BOOST_CPPFLAGS BOOST_LDFLAGS BOOST_DATETIME_LIBS BOOST_THREAD_LIBS OPENCV_CPPFLAGS OPENCV_LDFLAGS OPENCV_LIBS BOOST_SANDBOX_CPPFLAGS LAPACK_LDFLAGS LAPACK_LIBS OPENGL_CPPFLAGS OPENGL_LDFLAGS OPENGL_LIBS GDHE_CPPFLAGS GDHE_LDFLAGS GDHE_LIBS BAYESPP_CPPFLAGS BAYESPP_LDFLAGS BAYESPP_LIBS PNL_CPPFLAGS PNL_LDFLAGS PNL_LIBS CGAL_CPPFLAGS CGAL_LDFLAGS CGAL_LIBS IEEE1394_CPPFLAGS IEEE1394_LDFLAGS IEEE1394_LIBS QUICKTIME_LDFLAGS LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CXX CXXFLAGS ac_ct_CXX LN_S EGREP ECHO AR ac_ct_AR RANLIB ac_ct_RANLIB STRIP ac_ct_STRIP CPP CXXCPP F77 FFLAGS ac_ct_F77 LIBTOOL LIBTOOL_DEPS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA SHLIB_SUFFIX SWIG SWIG_RUNTIME_LIBS_DIR TCLSH DOT HAVE_DOT HAS_TCL_SUPPORT TCL_CPPFLAGS TCL_EXTRA_CFLAGS TCL_SHLIB_SUFFIX TCL_CC LIB_RUNTIME_DIR TK_LIB_SPEC TCL_LDFLAGS TCL_LIB_SPEC TCL_SHLIB_LDFLAGS TCL_SHLIB_CFLAGS TCL_SHLIB_LD TCL_LIB_FLAGS RUBY RUBY_EXTENSION_BASEDIR RUBY_VERSION SCRIPT_LANGUAGES BOOST_CPPFLAGS BOOST_LDFLAGS BOOST_DATETIME_LIBS BOOST_THREAD_LIBS OPENCV_CPPFLAGS OPENCV_LDFLAGS OPENCV_LIBS BOOST_SANDBOX_CPPFLAGS LAPACK_LDFLAGS LAPACK_LIBS OPENGL_CPPFLAGS OPENGL_LDFLAGS OPENGL_LIBS GDHE_CPPFLAGS GDHE_LDFLAGS GDHE_LIBS BAYESPP_CPPFLAGS BAYESPP_LDFLAGS BAYESPP_LIBS PNL_CPPFLAGS PNL_LDFLAGS PNL_LIBS CGAL_CPPFLAGS CGAL_LDFLAGS CGAL_LIBS IEEE1394_CPPFLAGS IEEE1394_LDFLAGS IEEE1394_LIBS QUICKTIME_LDFLAGS AVAIL_EXTLIBS LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -19266,6 +19266,8 @@ fi
 
 
 
+AVAIL_EXTLIBS=
+
 ## check for boost ##
 
 
@@ -19624,6 +19626,7 @@ then
     BOOST_LDFLAGS="$with_boostlib"
     BOOST_DATETIME_LIBS="-lboost_date_time"
     BOOST_THREAD_LIBS="-lboost_thread"
+    AVAIL_EXTLIBS="boost $AVAIL_EXTLIBS"
 
 
 
@@ -19997,6 +20000,7 @@ then
     OPENCV_CPPFLAGS="$opencv_cppflags"
     OPENCV_LDFLAGS="$with_opencvlib"
     OPENCV_LIBS="-lcxcore -lcv -lcvaux -lhighgui"
+    AVAIL_EXTLIBS="opencv $AVAIL_EXTLIBS"
 
 
 
@@ -20186,6 +20190,7 @@ echo "$as_me: WARNING: Configuring without boost_sandbox support " >&2;}
 if test "x$with_boost_sandbox" = "xyes";
 then
     BOOST_SANDBOX_CPPFLAGS="$boost_sandbox_cppflags"
+    AVAIL_EXTLIBS="boost_sandbox $AVAIL_EXTLIBS"
 
 
 cat >>confdefs.h <<\_ACEOF
@@ -20409,6 +20414,7 @@ if test "x$with_lapack" = "xyes";
 then
     LAPACK_LDFLAGS="$with_lapacklib"
     LAPACK_LIBS="-llapack"
+    AVAIL_EXTLIBS="lapack $AVAIL_EXTLIBS"
 
 
 
@@ -20780,6 +20786,7 @@ then
     OPENGL_CPPFLAGS="$opengl_cppflags"
     OPENGL_LDFLAGS="$with_opengllib"
     OPENGL_LIBS="-lGL"
+    AVAIL_EXTLIBS="opengl $AVAIL_EXTLIBS"
 
 
 
@@ -21152,6 +21159,7 @@ then
     GDHE_CPPFLAGS="$gdhe_cppflags"
     GDHE_LDFLAGS="$with_gdhelib"
     GDHE_LIBS="-lGDHE"
+    AVAIL_EXTLIBS="gdhe $AVAIL_EXTLIBS"
 
 
 
@@ -21524,6 +21532,7 @@ then
     BAYESPP_CPPFLAGS="$bayespp_cppflags"
     BAYESPP_LDFLAGS="$with_bayespplib"
     BAYESPP_LIBS="-lBayesFilterr"
+    AVAIL_EXTLIBS="bayespp $AVAIL_EXTLIBS"
 
 
 
@@ -22071,6 +22080,7 @@ then
 	PNL_CPPFLAGS="$pnl_cppflags $pnl_cppflags/opencx $pnlhigh_cppflags"
 	PNL_LDFLAGS="$with_pnllib"
 	PNL_LIBS="-lpnl -lhigh"
+	AVAIL_EXTLIBS="pnl $AVAIL_EXTLIBS"
 
 
 
@@ -22443,6 +22453,7 @@ then
     CGAL_CPPFLAGS="$cgal_cppflags $cgal_cppflags/CGAL/config/$CGAL_OS_COMPILER"
     CGAL_LDFLAGS="$with_cgallib"
     CGAL_LIBS="-lCGAL"
+    AVAIL_EXTLIBS="cgal $AVAIL_EXTLIBS"
 
 
 
@@ -23171,6 +23182,7 @@ then
     IEEE1394_CPPFLAGS="$raw1394_cppflags $dc1394_cppflags"
     IEEE1394_LDFLAGS="$with_raw1394lib $with_dc1394lib"
     IEEE1394_LIBS="-lraw1394 -ldc1394_control"
+    AVAIL_EXTLIBS="ieee1394 $AVAIL_EXTLIBS"
 
 
 
@@ -23359,6 +23371,7 @@ echo "$as_me: WARNING: Configuring without v4l support " >&2;}
 
 if test "x$with_v4l" = "xyes";
 then
+    AVAIL_EXTLIBS="v4l $AVAIL_EXTLIBS"
 
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_V4L 1
@@ -23545,12 +23558,15 @@ echo "$as_me: WARNING: Configuring without quicktime support " >&2;}
 if test "x$with_quicktime" = "xyes";
 then
     QUICKTIME_LDFLAGS="-Wl,-framework -Wl,Carbon -Wl,-framework -Wl,Quicktime"
+    AVAIL_EXTLIBS="quicktime $AVAIL_EXTLIBS"
 
     cat >>confdefs.h <<\_ACEOF
 #define HAVE_QUICKTIME 1
 _ACEOF
 
 fi
+
+
 
 ##########################
 # Check for header files #
@@ -24555,6 +24571,7 @@ s,@IEEE1394_CPPFLAGS@,$IEEE1394_CPPFLAGS,;t t
 s,@IEEE1394_LDFLAGS@,$IEEE1394_LDFLAGS,;t t
 s,@IEEE1394_LIBS@,$IEEE1394_LIBS,;t t
 s,@QUICKTIME_LDFLAGS@,$QUICKTIME_LDFLAGS,;t t
+s,@AVAIL_EXTLIBS@,$AVAIL_EXTLIBS,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
 CEOF
@@ -25059,6 +25076,7 @@ if test -z $SCRIPT_LANGUAGES; then
 echo "$as_me: WARNING: No scripting language available" >&2;}
 else
     echo "Scripting languages: $SCRIPT_LANGUAGES"
+    echo "Configured with following external libs: $AVAIL_EXTLIBS"
 fi
 echo "Now, you can run - make - in your modules ! :-)"
 

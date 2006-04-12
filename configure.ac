@@ -105,6 +105,8 @@ fi
 
 AC_SUBST(SCRIPT_LANGUAGES)
 
+AVAIL_EXTLIBS=
+
 ## check for boost ##
 MD_FIND_PACKAGE(boost, boost_date_time, boost/version.hpp, [support for boost C++ library])
 if test "x$with_boost" = "xyes";
@@ -113,6 +115,7 @@ then
     BOOST_LDFLAGS="$with_boostlib"
     BOOST_DATETIME_LIBS="-lboost_date_time"
     BOOST_THREAD_LIBS="-lboost_thread"
+    AVAIL_EXTLIBS="boost $AVAIL_EXTLIBS" 
     AC_SUBST(BOOST_CPPFLAGS)
     AC_SUBST(BOOST_LDFLAGS)
     AC_SUBST(BOOST_DATETIME_LIBS)
@@ -127,6 +130,7 @@ then
     OPENCV_CPPFLAGS="$opencv_cppflags"
     OPENCV_LDFLAGS="$with_opencvlib"
     OPENCV_LIBS="-lcxcore -lcv -lcvaux -lhighgui"
+    AVAIL_EXTLIBS="opencv $AVAIL_EXTLIBS"
     AC_SUBST(OPENCV_CPPFLAGS)
     AC_SUBST(OPENCV_LDFLAGS)
     AC_SUBST(OPENCV_LIBS)
@@ -138,6 +142,7 @@ MD_FIND_PACKAGE_OPT(boost_sandbox,[], boost/numeric/bindings/lapack/lapack.h, [s
 if test "x$with_boost_sandbox" = "xyes";
 then
     BOOST_SANDBOX_CPPFLAGS="$boost_sandbox_cppflags"
+    AVAIL_EXTLIBS="boost_sandbox $AVAIL_EXTLIBS"
     AC_SUBST(BOOST_SANDBOX_CPPFLAGS)
     AC_DEFINE(HAVE_BOOST_SANDBOX,1,[boost sandbox library])
 fi
@@ -148,6 +153,7 @@ if test "x$with_lapack" = "xyes";
 then
     LAPACK_LDFLAGS="$with_lapacklib"
     LAPACK_LIBS="-llapack"
+    AVAIL_EXTLIBS="lapack $AVAIL_EXTLIBS"
     AC_SUBST(LAPACK_LDFLAGS)
     AC_SUBST(LAPACK_LIBS)
     AC_DEFINE(HAVE_LAPACK,1,[lapack library])
@@ -160,6 +166,7 @@ then
     OPENGL_CPPFLAGS="$opengl_cppflags"
     OPENGL_LDFLAGS="$with_opengllib"
     OPENGL_LIBS="-lGL"
+    AVAIL_EXTLIBS="opengl $AVAIL_EXTLIBS"
     AC_SUBST(OPENGL_CPPFLAGS)
     AC_SUBST(OPENGL_LDFLAGS)
     AC_SUBST(OPENGL_LIBS)
@@ -173,6 +180,7 @@ then
     GDHE_CPPFLAGS="$gdhe_cppflags"
     GDHE_LDFLAGS="$with_gdhelib"
     GDHE_LIBS="-lGDHE"
+    AVAIL_EXTLIBS="gdhe $AVAIL_EXTLIBS"
     AC_SUBST(GDHE_CPPFLAGS)
     AC_SUBST(GDHE_LDFLAGS)
     AC_SUBST(GDHE_LIBS)
@@ -186,6 +194,7 @@ then
     BAYESPP_CPPFLAGS="$bayespp_cppflags"
     BAYESPP_LDFLAGS="$with_bayespplib"
     BAYESPP_LIBS="-lBayesFilterr"
+    AVAIL_EXTLIBS="bayespp $AVAIL_EXTLIBS"
     AC_SUBST(BAYESPP_CPPFLAGS)
     AC_SUBST(BAYESPP_LDFLAGS)
     AC_SUBST(BAYESPP_LIBS)
@@ -200,6 +209,7 @@ then
 	PNL_CPPFLAGS="$pnl_cppflags $pnl_cppflags/opencx $pnlhigh_cppflags"
 	PNL_LDFLAGS="$with_pnllib"
 	PNL_LIBS="-lpnl -lhigh"
+	AVAIL_EXTLIBS="pnl $AVAIL_EXTLIBS"
 	AC_SUBST(PNL_CPPFLAGS)
 	AC_SUBST(PNL_LDFLAGS)
 	AC_SUBST(PNL_LIBS)
@@ -213,6 +223,7 @@ then
     CGAL_CPPFLAGS="$cgal_cppflags $cgal_cppflags/CGAL/config/$CGAL_OS_COMPILER"
     CGAL_LDFLAGS="$with_cgallib"
     CGAL_LIBS="-lCGAL"
+    AVAIL_EXTLIBS="cgal $AVAIL_EXTLIBS"
     AC_SUBST(CGAL_CPPFLAGS)
     AC_SUBST(CGAL_LDFLAGS)
     AC_SUBST(CGAL_LIBS)
@@ -227,6 +238,7 @@ then
     IEEE1394_CPPFLAGS="$raw1394_cppflags $dc1394_cppflags"
     IEEE1394_LDFLAGS="$with_raw1394lib $with_dc1394lib"
     IEEE1394_LIBS="-lraw1394 -ldc1394_control"
+    AVAIL_EXTLIBS="ieee1394 $AVAIL_EXTLIBS"
     AC_SUBST(IEEE1394_CPPFLAGS)
     AC_SUBST(IEEE1394_LDFLAGS)
     AC_SUBST(IEEE1394_LIBS)
@@ -237,6 +249,7 @@ fi
 MD_FIND_PACKAGE_OPT(v4l, [], linux/videodev.h, [support for v4l (only available on Linux)])
 if test "x$with_v4l" = "xyes";
 then
+    AVAIL_EXTLIBS="v4l $AVAIL_EXTLIBS"
     AC_DEFINE(HAVE_V4L,1,[v4l support])
 fi
 
@@ -245,10 +258,13 @@ MD_FIND_PACKAGE_OPT(quicktime, [], QuickTime/QuickTime.h, [support for QuickTime
 if test "x$with_quicktime" = "xyes";
 then
     QUICKTIME_LDFLAGS="-Wl,-framework -Wl,Carbon -Wl,-framework -Wl,Quicktime"
+    AVAIL_EXTLIBS="quicktime $AVAIL_EXTLIBS"
     AC_SUBST(QUICKTIME_LDFLAGS) 
     AC_DEFINE(HAVE_QUICKTIME,1)
 fi  
 
+
+AC_SUBST(AVAIL_EXTLIBS)
 ##########################
 # Check for header files #
 ##########################
@@ -287,6 +303,7 @@ if test -z $SCRIPT_LANGUAGES; then
     AC_MSG_WARN([No scripting language available])
 else
     echo "Scripting languages: $SCRIPT_LANGUAGES"
+    echo "Configured with following external libs: $AVAIL_EXTLIBS"
 fi
 echo "Now, you can run - make - in your modules ! :-)"
 

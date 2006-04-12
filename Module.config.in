@@ -99,6 +99,7 @@ endif
 ###############################################
 # Add others programs, libraries and includes #
 ###############################################
+AVAIL_EXTLIBS = @AVAIL_EXTLIBS@
 
 # Boost #
 BOOST_CPPFLAGS = @BOOST_CPPFLAGS@

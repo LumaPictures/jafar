@@ -32,7 +32,7 @@ TESTOBJS = $(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.lo,$(notdir $(TESTCPP)))
 # Standard rules
 #################
 
-all: $(USE_MODULES) lib $(SCRIPT_LANGUAGES)
+all: modlib_dep lib $(SCRIPT_LANGUAGES)
 
 # C++ compilation
 ##################
@@ -230,10 +230,36 @@ $(dev_objdir)/%.dep: $(dev_srcdir)/%.c
 	@echo "Making dependencies for $<"
 	-@$(CXX) -MM $(CPPFLAGS) -MT"$(patsubst %.c,$(dev_objdir)/%.lo,$(notdir $<))" -MF$@ $<
 
-# USE_MODULES rules
-####################
-$(USE_MODULES):
-	(cd $(JAFAR_DIR)/modules/$@; $(MAKE))
+
+# modules and external libraries dependancies rules
+###################################################
+modlib_dep : $(REQUIRED_MODULES) $(OPTIONAL_MODULES) $(REQUIRED_EXTLIBS) $(OPTIONAL_EXTLIBS)
+
+$(REQUIRED_MODULES):
+	-@(if test -d $(JAFAR_DIR)/modules/$@; \
+	 then cd $(JAFAR_DIR)/modules/$@; $(MAKE); \
+	 else \
+	 echo "[ERROR] Required module $@ not available. You need to checkout it"; \
+	 exit 1;\
+	 fi;)
+
+$(OPTIONAL_MODULES):
+	-@(if test -d $(JAFAR_DIR)/modules/$@; \
+	 then cd $(JAFAR_DIR)/modules/$@; $(MAKE); \
+	 else \
+	 echo "[WARNING] Optional module $@ not available. Some functionalities might be disable"; \
+	 fi;)
+
+$(REQUIRED_EXTLIBS) :
+ifeq ($(findstring $@,$(AVAIL_EXTLIBS)),)
+	-@echo "[ERROR] Required library $@ not available. Please rerun the configure script"
+	-@exit 1
+endif
+
+$(OPTIONAL_EXTLIBS) :
+ifeq ($(findstring $@,$(AVAIL_EXTLIBS)),)
+	-@echo "[WARNING] Optional library $@ not available. Some functionalities might be disable"
+endif
 
 
 # libtool and configure rules
