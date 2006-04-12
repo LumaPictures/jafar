@@ -21,6 +21,9 @@
 /* GDHE */
 #undef HAVE_GDHE
 
+/* CGAL library */
+#undef HAVE_CGAL
+
 /* IEEE1394 support */
 #undef HAVE_IEEE1394
 
