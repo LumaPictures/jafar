@@ -22379,7 +22379,7 @@ echo "${ECHO_T}not found in $dirs" >&6
 echo "${ECHO_T}$lib_found" >&6
         if test "$lib_found" != "/usr/lib" -a \
                 "$lib_found" != "in default path"; then
-            with_cgallib="-L$lib_found -R$lib_found"
+            with_cgallib="-L$lib_found"
         else
             with_cgallib=""
         fi
