@@ -101,6 +101,9 @@ endif
 ###############################################
 AVAIL_EXTLIBS = @AVAIL_EXTLIBS@
 
+# Awk (used in Module.rules)
+AWK = @AWK@
+
 # Boost #
 BOOST_CPPFLAGS = @BOOST_CPPFLAGS@
 BOOST_LDFLAGS = @BOOST_LDFLAGS@

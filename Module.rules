@@ -251,14 +251,24 @@ $(OPTIONAL_MODULES):
 	fi;)
 
 $(REQUIRED_EXTLIBS) :
-ifeq ($(findstring $@,$(AVAIL_EXTLIBS)),"")
-	@echo "[ERROR] Required library $@ not available. Enable this library in the configure script"
-	@exit -1
+ifneq ($(AWK),)
+	@(if test 0 -eq `echo "$(AVAIL_EXTLIBS)" | awk '{print index($$0,"$@")}'`; \
+	then \
+	echo "[ERROR] Required library $@ not available. Rerun the configure script with the $@ option (after installing the library on your system if needed)"; \
+	exit 1;\
+	fi;)
+else
+	@echo "[WARNING] Awk not install on your system. No external libraries dependencies checking"
 endif
 
 $(OPTIONAL_EXTLIBS) :
-ifeq ($(findstring $@,$(AVAIL_EXTLIBS)),"")
-	@echo "[WARNING] Optional library $@ not available. Some functionalities might be disable"
+ifneq ($(AWK),)
+	@(if test 0 -eq `echo "$(AVAIL_EXTLIBS)" | awk '{print index($$0,"$@")}'`; \
+	then \
+	echo "[WARNING] Required library $@ not available. Some functionalities might be disable"; \
+	fi;)
+else
+	@echo "[WARNING] Awk not install on your system. No external libraries dependencies checking"
 endif
 
 
@@ -270,7 +280,7 @@ libtool: $(LIBTOOL_DEPS)
 
 # For an explanation of the following Makefile rules, see node
 # `Automatic Remaking' in GNU Autoconf documentation.
-Makefile.module: Makefile.module.in User.make config.status
+Module.config: Module.config.in User.make config.status
 	CONFIG_FILES=$@ CONFIG_HEADERS= ./config.status
 
 config.status: configure
