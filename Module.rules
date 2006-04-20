@@ -32,7 +32,7 @@ TESTOBJS = $(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.lo,$(notdir $(TESTCPP)))
 # Standard rules
 #################
 
-all: modlib_dep lib $(SCRIPT_LANGUAGES)
+all: module_dep lib $(SCRIPT_LANGUAGES)
 
 # C++ compilation
 ##################
@@ -233,7 +233,7 @@ $(dev_objdir)/%.dep: $(dev_srcdir)/%.c
 
 # modules and external libraries dependancies rules
 ###################################################
-modlib_dep : $(REQUIRED_MODULES) $(OPTIONAL_MODULES) $(REQUIRED_EXTLIBS) $(OPTIONAL_EXTLIBS)
+module_dep : $(REQUIRED_MODULES) $(OPTIONAL_MODULES) $(REQUIRED_EXTLIBS) $(OPTIONAL_EXTLIBS)
 
 $(REQUIRED_MODULES):
 	@(if test -d $(JAFAR_DIR)/modules/$@; \
@@ -254,7 +254,8 @@ $(REQUIRED_EXTLIBS) :
 ifneq ($(AWK),)
 	@(if test 0 -eq `echo "$(AVAIL_EXTLIBS)" | awk '{print index($$0,"$@")}'`; \
 	then \
-	echo "[ERROR] Required library $@ not available. Rerun the configure script with the $@ option (after installing the library on your system if needed)"; \
+	echo "[ERROR] Required library $@ not available."; \
+	echo "Enable this library in the configure script."; \
 	exit 1;\
 	fi;)
 else
@@ -265,7 +266,8 @@ $(OPTIONAL_EXTLIBS) :
 ifneq ($(AWK),)
 	@(if test 0 -eq `echo "$(AVAIL_EXTLIBS)" | awk '{print index($$0,"$@")}'`; \
 	then \
-	echo "[WARNING] Required library $@ not available. Some functionalities might be disable"; \
+	echo "[WARNING] Optional library $@ not available."; \
+	echo "Some functionalities are disabled, you can enable this library in the configure script."; \
 	fi;)
 else
 	@echo "[WARNING] Awk not install on your system. No external libraries dependencies checking"
