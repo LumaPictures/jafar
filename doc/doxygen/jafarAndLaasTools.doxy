@@ -46,8 +46,43 @@ Do not forget to add \c myStruct.hpp to \c pipo.i. If OpenGL is enabled (see \re
 
 \subsection subsecLaasToolsGenomModule Using a Jafar module from GenoM
 
+Currently, the best way is to produce by hand a limited pure C interface to your jafar module. Such an example can be found in module slam in files dalaExecWrapper.{h,cpp}. Then this is trivial to call these C functions from within your GenoM module.
+
 \subsection subsecLaasToolsGenomError Jafar errors to GenoM
 
+\warning This is not a good solution, exceptions must be converted to GenoM errors and propagated to the whole system.
+
+The minimum to do is to catch all exceptions that can be thrown by the jafar module and display the debug messages. These two macros can do the job:
+
+\code
+
+#define EXCEPTION_STOP_BEGIN			\
+  try { ((void)0)
+
+#define EXCEPTION_STOP_END						\
+  }									\
+  catch(jafar::kernel::Exception& e) {					\
+    std::ostringstream m;						\
+    m << "EXCEPTION_STOP";						\
+    e.addTrace(_JFR_MODULE_, __FILE__, __LINE__, m.str());		\
+    DebugStream::instance() << e << jafar::debug::endl;			\
+  }									\
+  catch(std::exception& e) {						\
+    DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
+    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
+    DebugStream::instance() << "std::exception" << jafar::debug::endl	\
+			    << "EXCEPTION_STOP" << jafar::debug::endl;	\
+    DebugStream::instance() << e.what() << jafar::debug::endl;		\
+  }									\
+  catch(...) {								\
+    DebugStream::setup(_JFR_MODULE_, DebugStream::Trace);		\
+    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
+    DebugStream::instance() << "unknown exception"			\
+			    << jafar::debug::endl			\
+			    << "EXCEPTION_STOP" << jafar::debug::endl;	\
+  } ((void)0)
+
+\endcode
 
 */
 
