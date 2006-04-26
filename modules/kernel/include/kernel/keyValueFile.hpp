@@ -39,6 +39,15 @@ namespace jafar {
       /// Parse file \a filename for key:value pairs.
       void readFile(std::string const& filename);
 
+      /** Write file \a filename with key:value pairs. The current
+       * date is added in comment at the top of the file. 
+       *
+       * \warning There is no control on the write process, the keys
+       * are written in lexical order.
+       * 
+       */
+      void writeFile(std::string const& filename);
+
       /// get the \a value of item \a key.
       template<class T>
       void getItem(std::string const& key, T& value) const {
@@ -52,15 +61,15 @@ namespace jafar {
 
 	std::istringstream ss(it->second);
 	ss >> value;
-      };
+      }
 
       /// set the \a value of item \a key.     
       template<class T>
-      void setItem(std::string const& key, T& value) const {
+      void setItem(std::string const& key, T& value) {
 	std::ostringstream ss;
 	ss << value;
 	keyValue[key] = ss.str();
-      };
+      }
 
     }; // class KeyValueFile
 
@@ -75,7 +84,11 @@ namespace jafar {
 
     public:
 
-      /// This method creates the proper KeyValueFile and call the load method of \a loadable
+      /** This method automates the process:
+       * - creates an instance of KeyValueFile,
+       * - call KeyValueFile::readFile()
+       * - call the virtual load method
+       */
       void load(std::string const& filename,
 		std::string const& keyValueSeparator_ = ":", char commentPrefix_ = '#');
 
@@ -91,35 +104,42 @@ namespace jafar {
     }; // class KeyValueFileLoad
 
 
-//     /** Interface of an object which can be saved using the
-//      * KeyValueFile mechanism.
-//      *
-//      * \ingroup kernel
-//      */
-//     class KeyValueFileSave {
+    /** Interface of an object which can be saved using the
+     * KeyValueFile mechanism.
+     *
+     * \ingroup kernel
+     */
+    class KeyValueFileSave {
 
-//     public:
+    public:
 
-//       /// This method creates the proper KeyValueFile and call the save method of \a loadable
-//       static void save(std::string const& filename,
-// 		       std::string const& keyValueSeparator_ = ":", char commentPrefix_ = '#');
+      /** This method automates the process:
+       * - creates an instance of KeyValueFile,
+       * - call the virtual save method
+       * - call KeyValueFile::writeFile()
+       */
+      void save(std::string const& filename,
+		std::string const& keyValueSeparator_ = ":", char commentPrefix_ = '#');
 
-//     protected:
+    protected:
 
-//       virtual ~KeyValueFileSave() {};
+      virtual ~KeyValueFileSave() {};
 
-//       virtual void save(jafar::kernel::KeyValueFile const& keyValueFile) = 0;
+      /** Implement this method calling repeatedly
+       * KeyValueFile::setItem() method.
+       */
+      virtual void save(jafar::kernel::KeyValueFile& keyValueFile) = 0;
 
-//     }; // class KeyValueFileSave
+    }; // class KeyValueFileSave
 
-//     /** Interface of an object which can both be loaded and saved
-//      * using the KeyValueFile mechanism.
-//      *
-//      * \ingroup kernel
-//      */
-//     class KeyValueFileSaveLoad : public KeyValueFileLoad, public KeyValueFileSave {
+    /** Interface of an object which can both be loaded and saved
+     * using the KeyValueFile mechanism.
+     *
+     * \ingroup kernel
+     */
+    class KeyValueFileSaveLoad : public KeyValueFileLoad, public KeyValueFileSave {
 
-//     }; // class KeyValueFileSaveLoad
+    }; // class KeyValueFileSaveLoad
 
   } // namespace kernel
 } // namespace jafar
