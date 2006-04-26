@@ -99,7 +99,7 @@ namespace jafar {
       /** Implement this method calling repeatedly
        * KeyValueFile::getItem() method.
        */
-      virtual void load(jafar::kernel::KeyValueFile const& keyValueFile) = 0;
+      virtual void loadKeyValueFile(jafar::kernel::KeyValueFile const& keyValueFile) = 0;
       
     }; // class KeyValueFileLoad
 
@@ -128,7 +128,7 @@ namespace jafar {
       /** Implement this method calling repeatedly
        * KeyValueFile::setItem() method.
        */
-      virtual void save(jafar::kernel::KeyValueFile& keyValueFile) = 0;
+      virtual void saveKeyValueFile(jafar::kernel::KeyValueFile& keyValueFile) = 0;
 
     }; // class KeyValueFileSave
 

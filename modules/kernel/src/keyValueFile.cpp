@@ -104,7 +104,7 @@ void KeyValueFileLoad::load(std::string const& filename,
   JFR_TRACE_BEGIN;
   KeyValueFile kvf(keyValueSeparator_, commentPrefix_);
   kvf.readFile(filename);
-  load(kvf);
+  loadKeyValueFile(kvf);
   JFR_TRACE_END("KeyValueFile:load: loading file " << filename);
 }
 
@@ -117,7 +117,7 @@ void KeyValueFileSave::save(std::string const& filename,
 {
   JFR_TRACE_BEGIN;
   KeyValueFile kvf(keyValueSeparator_, commentPrefix_);
-  save(kvf);
+  saveKeyValueFile(kvf);
   kvf.writeFile(filename);
   JFR_TRACE_END("KeyValueFile:load: loading file " << filename);
 }
