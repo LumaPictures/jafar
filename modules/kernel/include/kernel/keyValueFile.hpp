@@ -61,6 +61,11 @@ namespace jafar {
 
 	std::istringstream ss(it->second);
 	ss >> value;
+
+	JFR_IO_STREAM(ss, 
+		      "KeyValueFile::getItem: invalid value parsing:" << std::endl << 
+		      "key: " << key << std::endl <<
+		      "value: " << it->second); 
       }
 
       /// set the \a value of item \a key.     
