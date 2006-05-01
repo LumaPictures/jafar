@@ -5907,7 +5907,6 @@ AC_DEFUN([MD_SHLIB_SUFFIX],[
 ])
 
 
-
 dnl MD_EXTRACT_REGEX(list, regEx)
 dnl variable $regExResult returns the first entry in 'list' that matches the
 dnl regular expression 'regEx', using the 'expr' utility
@@ -6194,6 +6193,43 @@ AC_DEFUN([MD_FIND_PACKAGE_OPT],
     fi
 
 ])dnl
+
+dnl check for optional framework (only on MacOS X)
+dnl MD_CHECK_FRAMEWORK($1=NAME, $2=INCLUDES, $3=help)
+
+AC_DEFUN([MD_CHECK_FRAMEWORK], [
+   AC_ARG_WITH([$1], [
+  --with-$1
+	$3. ])
+
+
+    # default is "no"
+    if test ${with_[$1]:-""} = ""; then
+        with_[$1]="no"
+    fi
+
+    if test ${with_[$1]:-""} != "no"; then
+        AC_MSG_CHECKING([for $1 ])
+        ac_Framework="no";
+        saved_LIBS="$LIBS"
+        LIBS="$LIBS -framework $1"
+        AC_TRY_LINK(
+            [#include <$2>], [int main(void) { return 0; }], 
+            [$ac_Framework= "yes"], []
+        )
+        LIBS="$saved_LIBS"
+        ifelse([$ac_Framework],[yes],
+        [with_[$1]="yes"],
+	[AC_MSG_WARN(  Configuring without [$1] support )]
+        )
+    else
+	with_[$1]="no"
+	AC_MSG_WARN(  Configuring without [$1] support )
+    fi
+])
+
+
+
 
 
 

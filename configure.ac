@@ -150,6 +150,7 @@ fi
 
 ## check for lapack ##
 MD_FIND_PACKAGE_OPT(lapack, lapack,[], [support for Linear Algebra Package (LAPACK)])
+MD_FIND_PACKAGE_OPT(accelerate, [], Accelerate/Accelerate.h, [support for LAPACK through Accelerate Framework (only available on MacOSX)])
 if test "x$with_lapack" = "xyes";
 then
     LAPACK_LDFLAGS="$with_lapacklib"
@@ -159,6 +160,16 @@ then
     AC_SUBST(LAPACK_LIBS)
     AC_DEFINE(HAVE_LAPACK,1,[lapack library])
 fi
+if test "x$with_accelerate" = "xyes";
+then
+    LAPACK_LIBS="-Wl,-framework -Wl,Accelerate"
+    LAPACK_LDFLAGS="-faltivec"
+    AVAIL_EXTLIBS="lapack $AVAIL_EXTLIBS"
+    AC_SUBST(LAPACK_LDFLAGS)
+    AC_SUBST(LAPACK_LIBS)
+    AC_DEFINE(HAVE_LAPACK,1,[lapack library])
+fi
+
 
 ## check for openGL ##
 MD_FIND_PACKAGE_OPT(opengl, GL, GL/gl.h, [support for openGL])
