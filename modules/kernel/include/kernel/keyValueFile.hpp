@@ -3,6 +3,7 @@
 #ifndef KERNEL_KEY_VALUE_FILE_HPP
 #define KERNEL_KEY_VALUE_FILE_HPP
 
+#include <typeinfo>
 #include <string>
 #include <sstream>
 #include <map>
@@ -65,7 +66,8 @@ namespace jafar {
 	JFR_IO_STREAM(ss, 
 		      "KeyValueFile::getItem: invalid value parsing:" << std::endl << 
 		      "key: " << key << std::endl <<
-		      "value: " << it->second); 
+		      "value: " << it->second << std::endl <<
+		      "value-type: " << typeid(T).name());
       }
 
       /// set the \a value of item \a key.     
