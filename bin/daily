@@ -32,7 +32,7 @@ DOT_BINDIR='/usr/local/graphviz/bin'
 configureCmd='./configure --with-opencv=/usr/local/opencv --with-swig=/home/tlemaire/usr/i386-linux/bin'
 
 # modules to be checked
-MODULES="kernel helloworld image display jmath geom hpm gfm model3d stereo filter slam facetsmap camera pfdesc omnivis locpano sas"
+MODULES="kernel helloworld image display jmath geom hpm gfm model3d stereo filter slam facetsmap camera omnivis locpano sas"
 
 # makefile targets to be executed
 TARGETS="clean lib tcl test-build test"
