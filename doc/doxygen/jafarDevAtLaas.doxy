@@ -19,11 +19,14 @@ $ svn help ci
 \subsection subsecLaasSvnRep Svn repository layout
 
 The layout of the repository follows the general guidelines given in
-the subversion documentation: at the top of the repository, there are two directories:
-    - \c jafarBackbone contains the common files of jafar, including the kernel module.
-    - \c jafarModules is dedicated to modules development, exept for the kernel module.
+the subversion documentation: at the top of the repository, there are three directories:
+    - \c jafarBackbone contains the common files of jafar, including the kernel and helloworld modules.
+    - \c jafarModules is dedicated to modules development (exept kernel and helloworld).
+    - \c jafarThirdParty constains snapshots of external libraries
+    which are used by some modules, generally these libraries are not
+    widely available.
 
-Each one of these two directories contains three subdirectories :
+Each one of \c jafarBackbone and \c jafarModules contains three subdirectories :
     - \c trunk/ holds the main development files,
     - \c branches/ holds alternative development branches,
     - \c tags/ holds tagged version.
