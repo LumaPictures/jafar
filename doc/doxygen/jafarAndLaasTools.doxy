@@ -5,7 +5,7 @@
 
 \section secLaasToolsGdhe Jafar, OpenGL and GDHE
 
-\link http://softs.laas.fr/openrobots/tools/gdhe.php GDHE \endlink is a client/server application for 3D display using OpenGL, GDHE also provides a tcl interface. When using GDHE tcl interface, objects can be drawn using basic tcl procedures provided by GDHE, for complex objects it can be convenient to define them directly with OpenGL. 
+<a href="http://softs.laas.fr/openrobots/tools/gdhe.php">GDHE</a> is a client/server application for 3D display using OpenGL, GDHE also provides a tcl interface. When using GDHE tcl interface, objects can be drawn using basic tcl procedures provided by GDHE, for complex objects it can be convenient to define them directly with OpenGL. 
 
 \subsection subsecLaasToolsGdhe User defined OpenGL objects
 

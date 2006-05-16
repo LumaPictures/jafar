@@ -9,13 +9,13 @@
 Developers are encouraged to carefully use the C++ Standard Template
 Library as it can really make life easier. Some recommended documentations:
 
-     - \link http://gcc.gnu.org/onlinedocs/libstdc++/documentation.html GNU C++ standard library documentation \endlink
-     - \link http://gcc.gnu.org/onlinedocs/libstdc++/libstdc++-html-USERS-3.4/index.html libstdc++-v3 Source Documentation \endlink
-     - \link http://www.sgi.com/tech/stl SGI Standard Template Library Programmer's Guide \endlink
-     - \link http://www.dinkumware.com/refxcpp.html Dinkum C++ Library Reference Manual \endlink
-     - A huge C++ course in french \link http://c.ftp-developpez.com/downloads/cpp/cours_cpp-1.40.6-html.zip zipped html \endlink, \link ftp://ftp2.developpez.biz/developpo/c/cours_cpp-1.40.4-pdf.zip zipped pdf \endlink, \link http://c.developpez.com/tutcpp online version \endlink
-     - \link http://www.developpez.biz/download/stl.pdf A STL course in french \endlink
-     -  Seems to be a great C ++ course (english) but in html  : \link ftp://ftp2.developpez.biz/developpo/cpp/bruce-eckel/TICPP-2nd-ed-Vol-one.zip volume one \endlink, \link ftp://ftp2.developpez.biz/developpo/cpp/bruce-eckel/TICPP-2nd-ed-Vol-two.zip volume two \endlink
+     - <a href="http://gcc.gnu.org/onlinedocs/libstdc++/documentation.html">GNU C++ standard library documentation</a>
+     - <a href="http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/index.html">libstdc++-v3 Source Documentation</a>
+     - <a href="http://www.sgi.com/tech/stl SGI Standard">Template Library Programmer's Guide</a>
+     - <a href="http://www.dinkumware.com/refxcpp.html">Dinkum C++ Library Reference Manual</a>
+     - A huge C++ course in french <a href="http://c.ftp-developpez.com/downloads/cpp/cours_cpp-1.40.6-html.zip">zipped html</a>, <a href="ftp://ftp2.developpez.biz/developpo/c/cours_cpp-1.40.4-pdf.zip">zipped pdf</a>, <a href="http://c.developpez.com/tutcpp">online version</a>
+     - <a href="http://www.developpez.biz/download/stl.pdf"> A STL course in french</a>
+     -  Seems to be a great C ++ course (english) in html: <a href="ftp://ftp2.developpez.biz/developpo/cpp/bruce-eckel/TICPP-2nd-ed-Vol-one.zip">volume one</a>, <a href="ftp://ftp2.developpez.biz/developpo/cpp/bruce-eckel/TICPP-2nd-ed-Vol-two.zip">volume two</a>
 
 \section secDevTcl Tool Command Language (Tcl/Tk)
 
@@ -39,7 +39,7 @@ along with relevant links to get to know them:
 
     - Subversion: 
         - http://subversion.tigris.org 
-        - on-line book: http://svnbook.red-bean.com/en/1.1/index.html
+        - on-line book: http://svnbook.red-bean.com
 
     - SWIG (Simple Wrapper Interface Generator): http://www.swig.org
 
@@ -47,7 +47,7 @@ along with relevant links to get to know them:
 
     - Boost (set of libraries): 
         - http://www.boost.org/
-        - \link http://www.crystalclearsoftware.com/cgi-bin/boost_wiki/wiki.pl?BOOST_WIKI boost wiki \endlink
+        - <a href="http://www.crystalclearsoftware.com/cgi-bin/boost_wiki/wiki.pl?BOOST_WIKI">boost wiki</a>
 
     - Autoconf, Automake and Libtool: 
         - on-line autobook: http://sources.redhat.com/autobook/ 
