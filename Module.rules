@@ -32,7 +32,7 @@ TESTOBJS = $(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.lo,$(notdir $(TESTCPP)))
 # Standard rules
 #################
 
-all: module_dep lib $(SCRIPT_LANGUAGES)
+all: lib $(SCRIPT_LANGUAGES)
 
 # C++ compilation
 ##################
@@ -177,7 +177,7 @@ $(libdir)/lib$(MODULE).la: $(dev_libdir)/lib$(MODULE).la
 
 lib-install : $(libdir)/lib$(MODULE).la $(HEADERS) $(SWIG_LIBS)
 
-lib : dirs lib-install
+lib : module_dep dirs lib-install
 
 
 # build dirs
