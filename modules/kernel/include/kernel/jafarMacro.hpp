@@ -317,7 +317,9 @@ using jafar::debug::DebugStream;
 #  ifndef JFR_QUIET
 #    define JFR_WARNING(message)					\
   {									\
-    std::cerr << "W:"  << message << std::endl;				\
+    std::cerr << "W: " << _JFR_MODULE_ << "/"				\
+	      << __FILE__ << ":" << __LINE__ << ": "			\
+	      << message << std::endl;					\
   }
 #  else // JFR_QUIET
 #    define JFR_WARNING(message) ((void)0)
