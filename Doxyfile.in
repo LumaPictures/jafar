@@ -101,7 +101,7 @@ EXAMPLE_PATTERNS       = *.hpp \
                          */doc/* \
                          */include/*.i
 EXAMPLE_RECURSIVE      = NO
-IMAGE_PATH             = doc/doxygen
+IMAGE_PATH             = doc/doxygen/images
 INPUT_FILTER           = 
 FILTER_PATTERNS        = 
 FILTER_SOURCE_FILES    = NO
