@@ -247,7 +247,7 @@ $(OPTIONAL_MODULES):
 	@(if test -d $(JAFAR_DIR)/modules/$@; \
 	then cd $(JAFAR_DIR)/modules/$@; $(MAKE); \
 	else \
-	echo "[WARNING] Optional module $@ not available. Some functionalities might be disable"; \
+	echo "[WARNING] Optional module $@ not available. Some functionalities might be disabled"; \
 	fi;)
 
 $(REQUIRED_EXTLIBS) :
@@ -267,7 +267,7 @@ ifneq ($(AWK),)
 	@(if test 0 -eq `echo "$(AVAIL_EXTLIBS)" | awk '{print index($$0,"$@")}'`; \
 	then \
 	echo "[WARNING] Optional library $@ not available."; \
-	echo "Some functionalities are disabled, you can enable this library in the configure script."; \
+	echo "Some functionalities might be disabled, you can enable this library in the configure script."; \
 	fi;)
 else
 	@echo "[WARNING] Awk not install on your system. No external libraries dependencies checking"
