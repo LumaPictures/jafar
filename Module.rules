@@ -237,7 +237,7 @@ module_dep : $(REQUIRED_MODULES) $(OPTIONAL_MODULES) $(REQUIRED_EXTLIBS) $(OPTIO
 
 $(REQUIRED_MODULES):
 	@(if test -d $(JAFAR_DIR)/modules/$@; \
-	then cd $(JAFAR_DIR)/modules/$@; $(MAKE); \
+	then cd $(JAFAR_DIR)/modules/$@; $(MAKE) lib; \
 	else \
 	echo "[ERROR] Required module $@ not available. You need to checkout this module"; \
 	exit 1;\
@@ -245,7 +245,7 @@ $(REQUIRED_MODULES):
 
 $(OPTIONAL_MODULES):
 	@(if test -d $(JAFAR_DIR)/modules/$@; \
-	then cd $(JAFAR_DIR)/modules/$@; $(MAKE); \
+	then cd $(JAFAR_DIR)/modules/$@; $(MAKE) lib; \
 	else \
 	echo "[WARNING] Optional module $@ not available. Some functionalities might be disabled"; \
 	fi;)
