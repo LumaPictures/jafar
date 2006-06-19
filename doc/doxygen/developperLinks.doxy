@@ -11,7 +11,7 @@ Library as it can really make life easier. Some recommended documentations:
 
      - <a href="http://gcc.gnu.org/onlinedocs/libstdc++/documentation.html">GNU C++ standard library documentation</a>
      - <a href="http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/index.html">libstdc++-v3 Source Documentation</a>
-     - <a href="http://www.sgi.com/tech/stl SGI Standard">Template Library Programmer's Guide</a>
+     - <a href="http://www.sgi.com/tech/stl/">SGI Standard Template Library Programmer's Guide</a>
      - <a href="http://www.dinkumware.com/refxcpp.html">Dinkum C++ Library Reference Manual</a>
      - A huge C++ course in french <a href="http://c.ftp-developpez.com/downloads/cpp/cours_cpp-1.40.6-html.zip">zipped html</a>, <a href="ftp://ftp2.developpez.biz/developpo/c/cours_cpp-1.40.4-pdf.zip">zipped pdf</a>, <a href="http://c.developpez.com/tutcpp">online version</a>
      - <a href="http://www.developpez.biz/download/stl.pdf"> A STL course in french</a>
