@@ -3,8 +3,6 @@
 #ifndef KERNEL_TIMINGTOOLS_HPP
 #define KERNEL_TIMINGTOOLS_HPP
 
-#include <stack>
-
 #include "boost/date_time/posix_time/posix_time.hpp"
 // we could use a better singleton here...
 #include "boost/pool/detail/singleton.hpp"
@@ -81,7 +79,7 @@ namespace jafar {
 	  return boost::details::pool::singleton_default<TicTocChrono>::instance(); 
 	}
 
-	// necessary because because the constructor is private
+	// necessary because the constructor is private
 	friend class boost::details::pool::singleton_default<TicTocChrono>;
 
 	friend void jafar::kernel::tic();
@@ -92,7 +90,7 @@ namespace jafar {
 
 #endif // SWIG
     
-    /** Class for generate framerate data
+    /** Class to generate framerate data.
      *
      * @ingroup kernel
      */
