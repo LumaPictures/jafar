@@ -20,7 +20,7 @@ rm -f ${logDir}/*.log
 umask 02
 
 # compilation host
-targetHost=groucho
+targetHost=jolimont
 
 SSH='/usr/bin/ssh'
 
@@ -77,7 +77,7 @@ if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; svn up ${JAFAR_DIR}" ; t
 
 	if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; \
             setenv JAFAR_DIR ${JAFAR_DIR}; \
-            setenv PATH /home/tlemaire/usr/i386-linux/bin:\${PATH}:${DOT_BINDIR} ; \
+            setenv PATH \${PATH}:${DOT_BINDIR} ; \
             make doc" > ${logDir}/doc.log 2>&1 ; then
 	    echo "html...OK"
 	else
