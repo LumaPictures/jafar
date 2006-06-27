@@ -15,7 +15,7 @@ Library as it can really make life easier. Some recommended documentations:
      - <a href="http://www.dinkumware.com/refxcpp.html">Dinkum C++ Library Reference Manual</a>
      - A huge C++ course in french <a href="http://c.ftp-developpez.com/downloads/cpp/cours_cpp-1.40.6-html.zip">zipped html</a>, <a href="ftp://ftp2.developpez.biz/developpo/c/cours_cpp-1.40.4-pdf.zip">zipped pdf</a>, <a href="http://c.developpez.com/tutcpp">online version</a>
      - <a href="http://www.developpez.biz/download/stl.pdf"> A STL course in french</a>
-     -  Seems to be a great C ++ course (english) in html: <a href="ftp://ftp2.developpez.biz/developpo/cpp/bruce-eckel/TICPP-2nd-ed-Vol-one.zip">volume one</a>, <a href="ftp://ftp2.developpez.biz/developpo/cpp/bruce-eckel/TICPP-2nd-ed-Vol-two.zip">volume two</a>
+     -  Seems to be a great C ++ course (english) in two volumes : <a href="ftp://ftp2.developpez.biz/developpo/cpp/bruce-eckel/TICPP-2nd-ed-Vol-one.zip">vol.1 in html</a>, <a href="http://www.planetpdf.com/codecuts/pdfs/eckel/TIC2Vone.zip">vol.1 in Pdf</a>, <a href="<a href="ftp://ftp2.developpez.biz/developpo/cpp/bruce-eckel/TICPP-2nd-ed-Vol-two.zip">vol.2 in html</a>, <a href="http://www.planetpdf.com/codecuts/pdfs/eckel/TIC2Vtwo.zip">vol.2 in Pdf</a>
 
 \section secDevTcl Tool Command Language (Tcl/Tk)
 
