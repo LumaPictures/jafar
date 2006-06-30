@@ -20,7 +20,7 @@ rm -f ${logDir}/*.log
 umask 02
 
 # compilation host
-targetHost=jolimont
+targetHost=arenes
 
 SSH='/usr/bin/ssh'
 
