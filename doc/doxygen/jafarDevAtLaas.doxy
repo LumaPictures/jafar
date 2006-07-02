@@ -87,16 +87,21 @@ $ svn-add-module helloworld
 
 \section secConfigure Typical configure option at laas on a linux workstation
 
-In order to get a recent swig, some modules (\e jmath...) relie on recent swig features:
+Some modules (\e jmath...) relie on recent swig features. In order to get a recent swig:
 
 \verbatim
 $ ./configure --with-swig=/home/tlemaire/usr/i386-linux/bin
 \endverbatim
 
 Other options of interest:
-  - \c --with-opencv=/usr/local/opencv: to use openCv library required by module image
-  - \c --with-boost_sandbox=/home/tlemaire/usr/i386-linux/local/boost-sandbox \c --with-lapack: to use lapack algebra function from within uBlas
+  - \c --with-opencv=/usr/local/opencv: to use openCV library required by module image
+  - \c --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox \c --with-lapack: to use lapack algebra function from within uBlas
   - \c --with-opengl: to develop openGL 3D display function, to be used with gdhe (\ref secLaasToolsGdhe)
+
+\warning openCV (currently 0.9.7) headers emmits annoying warnings about \e aliasing when compiled with gcc 4.1. One is adviced to turn off strict aliasing optimisation in gcc:
+\verbatim
+env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure [...]
+\endverbatim
 
 \section secDaily daily script
 
