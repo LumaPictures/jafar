@@ -6,8 +6,8 @@
 #   - generate html documentation with doxygen
 #   - compile from scratch several modules
 
-MAILTO=jafar-source
-#MAILTO=tlemaire
+MAILTO=jafar-source@laas.fr
+#MAILTO=tlemaire@laas.fr
 
 output=/tmp/jafar.daily
 rm -f $output
@@ -19,19 +19,18 @@ rm -f ${logDir}/*.log
 (
 umask 02
 
-# compilation host
-targetHost=arenes
-
 SSH='/usr/bin/ssh'
 
 JAFAR_DIR='/usr/local/jafar'
 
 DOT_BINDIR='/usr/local/graphviz/bin'
+PATH=${PATH}:${DOT_BINDIR};
 
 # configure command
 configureCmd='env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure --with-opencv=/usr/local/opencv --with-swig=/home/tlemaire/usr/i386-linux/bin --with-lapack --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox'
 
 # modules to be checked
+#MODULES="kernel helloworld jmath"
 MODULES="kernel helloworld jmath image display geom hpm gfm model3d stereo vme filter slam facetsmap camera omnivis locpano sas"
 
 # makefile targets to be executed
@@ -48,67 +47,52 @@ fi
 echo '\n--------------------- svn update -----------------------------\n'
 
 echo 'Jafar backbone...'
+svn up ${JAFAR_DIR}
 
-if ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; svn up ${JAFAR_DIR}" ; then
-
-    for m in ${MODULES}; do
-	echo ""
-	echo "Module ${m}..."
-	if test -d ${JAFAR_DIR}/modules/$m ; then
-	    ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; \
-		svn up ${JAFAR_DIR}/modules/$m" 
-	else
-	    echo "svn co svn+ssh://svn.laas.fr/svn/jafar/jafarModules/trunk/${m} ${JAFAR_DIR}/modules/${m}"
-	    ${SSH} ${targetHost} "setenv JAFAR_DIR ${JAFAR_DIR}; \
-		svn co svn+ssh://svn.laas.fr/svn/jafar/jafarModules/trunk/${m} ${JAFAR_DIR}/modules/${m}"
-	fi
-    done
-
-    echo '\n---------------------- Configure -----------------------------\n'
-
-    if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; \
-	setenv JAFAR_DIR ${JAFAR_DIR}; \
-    setenv PATH \${PATH}:${DOT_BINDIR}; \
-	${configureCmd}" > ${logDir}/configure.log 2>&1; then
-	
-	echo "${configureCmd}...OK"
-
-	echo '\n------------------- Documentation ----------------------------\n'
-
-	if ${SSH} ${targetHost} "cd ${JAFAR_DIR}; \
-            setenv JAFAR_DIR ${JAFAR_DIR}; \
-            setenv PATH \${PATH}:${DOT_BINDIR} ; \
-            make doc" > ${logDir}/doc.log 2>&1 ; then
-	    echo "html...OK"
-	else
-	    echo "html...ERROR"
-	fi
-
-	echo '\n--------------------- Compilation ----------------------------\n'
-	for m in ${MODULES}; do
-	    echo "** module ${m}"
-
-	    for t in ${TARGETS}; do
-		if ${SSH} ${targetHost} "cd /usr/local/jafar/modules/${m}; \
-		    setenv JAFAR_DIR ${JAFAR_DIR}; \
-		    make ${t}" > ${logDir}/${m}.${t}.log 2>&1; then
-		    echo "${t}...OK"
-		else
-		    echo "${t}...ERROR"
-		fi
-
-	    done
-	    echo '\n'
-	done
+for m in ${MODULES}; do
+    echo ""
+    echo "Module ${m}..."
+    if test -d ${JAFAR_DIR}/modules/$m ; then
+	svn up ${JAFAR_DIR}/modules/$m
     else
-	echo "${configureCmd}...ERROR"	
+	echo "svn co svn+ssh://svn.laas.fr/svn/jafar/jafarModules/trunk/${m} ${JAFAR_DIR}/modules/${m}"
+	svn co svn+ssh://svn.laas.fr/svn/jafar/jafarModules/trunk/${m} ${JAFAR_DIR}/modules/${m}
     fi
+done
+
+cd ${JAFAR_DIR}
+
+echo '\n---------------------- Configure -----------------------------\n'
+
+if ${configureCmd} > ${logDir}/configure.log 2>&1; then
+    echo "${configureCmd}...OK"
+
+    echo '\n------------------- Documentation ----------------------------\n'
+    
+    if make doc > ${logDir}/doc.log 2>&1 ; then
+	echo "html...OK"
+    else
+	echo "html...ERROR"
+    fi
+
+    echo '\n--------------------- Compilation ----------------------------\n'
+    for m in ${MODULES}; do
+	echo "** module ${m}"
+	cd ${JAFAR_DIR}/modules/${m}
+	for t in ${TARGETS}; do
+	    if make ${t} > ${logDir}/${m}.${t}.log 2>&1; then
+		echo "${t}...OK"
+	    else
+		echo "${t}...ERROR"
+	    fi
+	done
+	echo '\n'
+    done
 else
-    echo 'ERROR: svn update failed'
+    echo "${configureCmd}...ERROR"	
 fi
 echo '\n------------------------ End ---------------------------------\n'
 ) > $output 2>&1
 mailx -s 'Daily Jafar report' $MAILTO < $output
 rm -f $output
 exit 0
-
