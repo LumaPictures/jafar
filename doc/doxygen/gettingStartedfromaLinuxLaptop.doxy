@@ -2,116 +2,93 @@
 
 /** \page pageGettingStartedfromaLinuxLaptop An extensive guideline to start with Jafar on a Linux laptop
 
-\b Warning: This page is partially broken.
 
-The main difficulty in using Jafar on a Linux laptop is that you need some external librairies probably not already installed on your system. We are going to cope with this. The install procedure is very simple and can be resume in these few steps :
+The main difficulty in using Jafar on a Linux laptop is that you need some external libraries probably not already installed on your system. We are going to cope with this. The install procedure is very simple and can be resume in these few steps :
 
-  - check which librairies you need
-  - install or update the librairies
+  - check which libraries you need
+  - install or update the libraries
   - install Jafar
 
 We provide an extensive guideline because we assume unix system may be unfamiliar to you. If it don't, a very quick reading will be probably sufficient.
 
 \section secExtlib External Libraries
 
-To use Jafar you need of these external librairies:
+To use Jafar you need the latest stable version of each of these external libraries :
 
-  - <a href=http://www.boost.org/>Boost</a> 1.31.0
-  - <a href=http://www.intel.com/research/mrl/research/opencv/>OpenCV</a> 0.9.6
-  - <a href=http://www.swig.org/>swig</a> 1.3.22
-  - <a href=http://subversion.tigris.org>subversion</a> 1.1.0
+  - <a href=http://www.boost.org >Boost</a> 
+  - <a href=http://www.intel.com/technology/computing/opencv/index.htm >OpenCV</a>
+  - <a href=http://www.swig.org >swig</a>
+  - <a href=http://subversion.tigris.org >subversion</a>
 
-Unfortunately, there is not yet any .rpm provided for them. So you have to compile them by yourself. Don't worry, it is quite easy and here is a extensive guideline to achieve this. 
+<em>Depending of your linux distribution some may be already installed or available in package.
+You will have to check if the version you may already have is the latest in checking each webpage of these projects. Then you will have to download and install each of them not up to date, or installed.</em>
 
 Few notations :
 
-   - ####  represent the version number of each librairies
-   - \c ~/libsjafar \c is the repository on you laptop where you put the librairies source archives. I suggest you to use this name, it will make you easier to copy/paste the following commands.
+   - ####  represent the version number of each libraries
+   - \c ~/libsjafar \c is the repository on you laptop where you put the libraries source archives. I suggest you to use this name, it will make you easier to copy/paste the following commands.
 
 
 
 
 
-\section secCheckLibs Checking for librairies already installed
+\section secCheckLibs Checking for libraries already installed
 
-You need to look for any previously intalled version of these librairies on your system. We described a quite generic method based on Fedora (Red Hat) hierarchy of the system. If you don't have one you will have to look for previous versions in other location that ones described... If you don't understand this ask for someone !
+You need to look for any previously intalled version of these libraries on your system. We described a quite generic method based on Fedora (Red Hat) hierarchy of the system. If you don't have one you may have to look in others locations that ones described... If you don't understand this ask for someone !
 
 \subsection subsecBoost Boost
 
 Type :
-\verbatim yourLaptop[~] > ls /usr/lib/libboost_date_time.so.*
-/usr/lib/libboost_date_time.so.1@ /usr/lib/libboost_date_time.so.1.31.0*
+\verbatim yourLaptop[~] > locate libboost_date_time
+/usr/lib/libboost_date_time.a
+/usr/lib/libboost_date_time.so.1.32.0
+/usr/lib/libboost_date_time.so
+/usr/lib/libboost_date_time.so.1
 \endverbatim
 
-In this case, you have the 1.31.0 version of Boost librairy. Check if this version is the same one than the recommended one the top of this document. If it is, you don't have to install Boost. <em> So skip every step dealing with Boost in this procedure. </em>  
-Otherwise, if you have an older version <em>install Boost using no --prefix option. </em>If you don't have Boost at all just follow exactly the procedure dealing with Boost.
+In this case, you have the 1.32.0 version of Boost library. <em>Check if this version is the latest (more or less). If not, or if you find nothing you will have to install it.</em>
 
 
 \subsection subsecOpenCV OpenCV
 
 Type:
-\verbatim yourLaptop[~] > ls /usr/lib/libcv.so.*
-/usr/local/opencv/lib/libcv.so.0@  /usr/local/opencv/lib/libcv.so.0.9.6*
+\verbatim yourLaptop[~] > locate libcv.so
+/usr/local/opencv/lib/libcv.so.0@  /usr/local/opencv/lib/libcv.so.0.9.7*
 \endverbatim
 
-In this case, you have the 0.9.6 version of OpenCV librairy. Check if this version is the same one than the recommended one the top of this procedure. If it is, you don't have to install OpenCV. <em>So skip every step dealing with OpenCV in this procedure. </em>
-Otherwise, if you have an older version <em> install OpenCV using no --prefix option. </em>If you don't have OpenCV at all just follow exactly the procedure dealing with OpenCV.
+In this case, you have the 0.9.7 version of OpenCV library. <em>Check if this version is the latest (more or less). If not, or if you find nothing you will have to install it.</em>
 
 
 \subsection subsecSwig swig
 
 Type:
 \verbatim yourLaptop[~] > swig -version
-SWIG Version 1.3.22
+SWIG Version 1.3.29
 \endverbatim
 
-In this case, you have the 1.3.22 version of swig librairy. Check if this version is the same one than the recommended one the top of this procedure. If it is, you don't have to install swig. <em>So skip every step dealing with swig in this procedure. </em>
-Otherwise, if you have an older version type :
-
-\verbatim yourLaptop[~] > which swig
-A_PATH/bin/swig
-\endverbatim
-
-<em>You have to install swig in the directory A_PATH. So you will have to do a </em>\c configure --\c prefix=A_PATH  
-
-If you don't have swig at all just follow exactly the procedure dealing with swig.
+In this case, you have the 1.3.29 version of swig library. <em>Check if this version is the latest (more or less). If not, or if you find nothing you will have to install it.</em>
 
 
 \subsection subsecSubversion subversion
 
 Type:
 \verbatim yourLaptop[~] > svn --version
-svn, version 1.1.0 (r11180)
+svn, version 1.3.2 (r19776)
 \endverbatim
 
-In this case, you have the 1.1.0 version of subversion librairy. Check if this version is the same one than the recommended one the top of this procedure. If it is, you don't have to install subversion. <em>So skip every step dealing with subversion in this procedure.</em>
-Otherwise, if you have an older version type :
-
-\verbatim yourLaptop[~] > where subversion
-A_PATH/bin/svn
-\endverbatim
-
-<em>You have to install subversion in the directory A_PATH. So you will have to do a </em>\c configure \c --prefix=A_PATH
-
-If you don't have subversion at all just follow exactly the procedure dealing with subversion.
+In this case, you have the 1.3.2 version of subversion library. <em>Check if this version is the latest (more or less). If not, or if you find nothing you will have to install it.</em>
 
 
 
 \section secGetSources Getting the needed sources
 
-Now, getting the sources you need. You may copy the archived sources from the directory /home/sbosch/libsjafar/ on file server pollux to you laptop with this command :  
-\verbatim 
-yourLaptop[~] > ssh pollux 
-yourLaptop[~] > scp -r /home/sbosch/libsjafar yourName@yourLaptop:.
-\endverbatim
-
-You may also download them from their respective website:
+Now, get the libraries sources you need from their respective website:
 
    - Boost
 http://sourceforge.net/project/showfiles.php?group_id=7586
 download the newest \e boost####.\e tar.gz in boost package and the newest \e boost-jam####.\e tar.gz in boost-jam package
 
-   - OpenCV :
+   - OpenCV
 http://sourceforge.net/project/showfiles.php?group_id=22870
 download the newest \e opencv####.\e tar.gz in opencv-linux package
  
@@ -124,7 +101,7 @@ http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=260
 download the newest \e subversion####.\e tar.gz
 
 
-Reaches the directory where you stored the archived sources and uncompress all of them :
+Reach the directory where you stored the archived sources and uncompress all of them :
 \verbatim yourLaptop[~] > cd ~/libsjafar/
  yourLaptop[~] > tar -zxvf boost####.tar.gz
  yourLaptop[~] > tar -zxvf boost-jam####.tar.gz
@@ -142,9 +119,9 @@ You may supress all archives :
 
 
 
-\section secLibInstall Librairies compilation/install
+\section secLibInstall Libraries compilation/install
 
-Now you can create the directories where these librairies will be installed <strong>when these directories doesn't exist</strong>. For swig and subversion if you have to install them in <em>A_PATH </em>replace <em>/usr/local/ </em>by <em>A_PATH.</em>
+Now you can create the directories where these libraries will be installed <strong>when these directories doesn't exist</strong>. For swig and subversion if you have to install them in <em>A_PATH </em>replace <em>/usr/local/ </em>by <em>A_PATH.</em>
 \verbatim yourLaptop[libjafar] > sudo mkdir /usr/local/boost-####
  yourLaptop[libjafar] > sudo mkdir /usr/local/opencv-####
  yourLaptop[libjafar] > sudo mkdir /usr/local/swig-####
@@ -192,7 +169,7 @@ Then compile it and run the install :
  yourLaptop[opencv####] > sudo make install
 \endverbatim
 
-That's done too. The same procedure is shared for the last two librairies.
+That's done too. The same procedure is shared for the last two libraries.
 
 
 \subsection subsecSwig How to install swig
@@ -232,67 +209,31 @@ Open you .login :
 \verbatim yourLaptop[~] > xemacs/vim/gedit/ATextEditor ~/.login
 \endverbatim
 
-And add these lines :
+And add these lines (only if you compile these librairies of course..) :
 
-\verbatim 	#
-	# Boost
+\verbatim
 	#
-        setenv TMP_PATH ${TMP_PATH}:"/usr/local/boost/"
-#        setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:"/usr/local/boost/lib/"
-	
+	# Subversion
 	#
-	# OpenCV
-	#
-        setenv TMP_PATH ${TMP_PATH}:"/usr/local/opencv/"
-#        setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:"/usr/local/opencv/lib"
+        setenv TMP_PATH "/usr/local/subversion/bin":${TMP_PATH}
 
 	#
 	# Swig
 	#
-#        setenv TMP_PATH ${TMP_PATH}:"/usr/local/swig/"
         setenv TMP_PATH "/usr/local/swig/bin":${TMP_PATH}
-
-	#
-	# Subversion
-	#
-#        setenv TMP_PATH ${TMP_PATH}:"/usr/local/subversion/"
-        setenv TMP_PATH "/usr/local/subversion/bin":${TMP_PATH}
-
-	#
-	# Jafar
-	#
-        setenv JAFAR_DIR "/home/sbosch/jafar"
 \endverbatim
 
 Source it :
 \verbatim yourLaptop[~] > source ~/.login
 \endverbatim
-You have done with the librairies.
+You have done with the libraries.
 
 
 
 
 \section secInstallJafar Installing Jafar
 
-Go in your home directory and checkout jafar:
-\verbatim yourLaptop[~] > svn co svn+ssh://yourName@pollux.laas.fr/home/tlemaire/svnroot_jafar/trunk jafar
-\endverbatim
-
-Go in kernel module and edit User.make :
-
-\verbatim yourLaptop[~] > cd ~/jafar/modules/kernel/
- yourLaptop[kernel] > xemacs User.make&
-\endverbatim
-
-You need to set :
-\verbatim # configure option
-CONF_OPT = --with-boost\
-	   --with-opencv
-\endverbatim
-
-Then type \c make. It will automatically run a \c configure, then a \c make. If you don't see any warning about OpenCV or Boost your jafar is ready to be used.
-
-
-
+Check this webpage :
+\ref pageInstall
 
 */
