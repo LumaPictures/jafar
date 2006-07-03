@@ -13,7 +13,7 @@ At LAAS we use subversion to version control the jafar tree.
 
 \code
 umask 2
-\endocode
+\endcode
 
 \subsection subsecLaasSvnAbout About Subversion
 
