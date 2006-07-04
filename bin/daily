@@ -36,7 +36,9 @@ MODULES="kernel helloworld jmath image display geom hpm gfm model3d stereo vme f
 # makefile targets to be executed
 TARGETS="clean lib tcl test-build test"
 
-echo '\n--------------------- svn backup -----------------------------\n'
+echo ''
+echo '--------------------- svn backup -----------------------------'
+echo ''
 
 if ${SSH} svn.laas.fr "setenv LD_LIBRARY_PATH /usr/local/lib ; ${JAFAR_DIR}/bin/hot-backup.py /svn/jafar /usr/local/jafar/svn-backup" ; then
     echo "repository backup...OK"
@@ -44,7 +46,9 @@ else
     echo "repository backup...ERROR"
 fi
 
-echo '\n--------------------- svn update -----------------------------\n'
+echo ''
+echo '--------------------- svn update -----------------------------'
+echo ''
 
 echo 'Jafar backbone...'
 svn up ${JAFAR_DIR}
@@ -62,12 +66,16 @@ done
 
 cd ${JAFAR_DIR}
 
-echo '\n---------------------- Configure -----------------------------\n'
+echo ''
+echo '---------------------- Configure -----------------------------'
+echo ''
 
 if ${configureCmd} > ${logDir}/configure.log 2>&1; then
     echo "${configureCmd}...OK"
 
-    echo '\n------------------- Documentation ----------------------------\n'
+    echo ''
+    echo '------------------- Documentation ----------------------------'
+    echo ''
     
     if make doc > ${logDir}/doc.log 2>&1 ; then
 	echo "html...OK"
@@ -75,7 +83,9 @@ if ${configureCmd} > ${logDir}/configure.log 2>&1; then
 	echo "html...ERROR"
     fi
 
-    echo '\n--------------------- Compilation ----------------------------\n'
+    echo ''
+    echo '--------------------- Compilation ----------------------------'
+    echo ''
     for m in ${MODULES}; do
 	echo "** module ${m}"
 	cd ${JAFAR_DIR}/modules/${m}
@@ -86,12 +96,14 @@ if ${configureCmd} > ${logDir}/configure.log 2>&1; then
 		echo "${t}...ERROR"
 	    fi
 	done
-	echo '\n'
+	echo ''
     done
 else
     echo "${configureCmd}...ERROR"	
 fi
-echo '\n------------------------ End ---------------------------------\n'
+echo ''
+echo '------------------------ End ---------------------------------'
+echo ''
 ) > $output 2>&1
 mailx -s 'Daily Jafar report' $MAILTO < $output
 rm -f $output
