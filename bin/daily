@@ -19,28 +19,27 @@ rm -f ${logDir}/*.log
 (
 umask 02
 
-SSH='/usr/bin/ssh'
+ssh='/usr/bin/ssh'
 
-JAFAR_DIR='/usr/local/jafar'
+export JAFAR_DIR='/usr/local/jafar'
 
-DOT_BINDIR='/usr/local/graphviz/bin'
-PATH=${PATH}:${DOT_BINDIR};
+dot_bindir='/usr/local/graphviz/bin'
+export PATH=${PATH}:${dot_bindir};
 
 # configure command
-configureCmd='env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure --with-opencv=/usr/local/opencv --with-swig=/home/tlemaire/usr/i386-linux/bin --with-lapack --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox'
+configureCmd='CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure --with-opencv=/usr/local/opencv --with-swig=/home/tlemaire/usr/i386-linux/bin --with-lapack --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox'
 
 # modules to be checked
-#MODULES="kernel helloworld jmath"
-MODULES="kernel helloworld jmath image display geom hpm gfm model3d stereo vme filter slam facetsmap camera omnivis locpano sas"
+modules="kernel helloworld jmath image display geom hpm gfm model3d stereo vme filter slam facetsmap camera omnivis locpano sas"
 
 # makefile targets to be executed
-TARGETS="clean lib tcl test-build test"
+targets="clean lib tcl test-build test"
 
 echo ''
 echo '--------------------- svn backup -----------------------------'
 echo ''
 
-if ${SSH} svn.laas.fr "setenv LD_LIBRARY_PATH /usr/local/lib ; ${JAFAR_DIR}/bin/hot-backup.py /svn/jafar /usr/local/jafar/svn-backup" ; then
+if ${ssh} svn.laas.fr "setenv LD_LIBRARY_PATH /usr/local/lib ; ${JAFAR_DIR}/bin/hot-backup.py /svn/jafar /usr/local/jafar/svn-backup" ; then
     echo "repository backup...OK"
 else
     echo "repository backup...ERROR"
@@ -53,7 +52,7 @@ echo ''
 echo 'Jafar backbone...'
 svn up ${JAFAR_DIR}
 
-for m in ${MODULES}; do
+for m in ${modules}; do
     echo ""
     echo "Module ${m}..."
     if test -d ${JAFAR_DIR}/modules/$m ; then
@@ -86,10 +85,10 @@ if ${configureCmd} > ${logDir}/configure.log 2>&1; then
     echo ''
     echo '--------------------- Compilation ----------------------------'
     echo ''
-    for m in ${MODULES}; do
+    for m in ${modules}; do
 	echo "** module ${m}"
 	cd ${JAFAR_DIR}/modules/${m}
-	for t in ${TARGETS}; do
+	for t in ${targets}; do
 	    if make ${t} > ${logDir}/${m}.${t}.log 2>&1; then
 		echo "${t}...OK"
 	    else
