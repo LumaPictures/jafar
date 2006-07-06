@@ -126,60 +126,6 @@ Some of the Jafar modules depend on external libraries. If you are working on th
 
 If you are developping on your Linux laptop you should refer to \ref pageGettingStartedfromaLinuxLaptop. For MacOSX users the \ref pageFaq should be of high interest.
 
-\section secLaasSolaris About Solaris workstation
-
-Jafar uses tcl8.4, so you MUST use this same version for your tcl
-shell. If rtclsh and rwish, or eltclsh and elwish are not compiled
-with tcl8.4 you CANNOT use them.
-
-tcl8.4 is installed in /usr/local/tcl-8.4, the corresponding shell is
-in /usr/local/tcl-8.4/bin/tclsh8.4. Do not use tclsh, use tclsh8.4.
-
-A corresponding version of tclreadline (for solaris) can be found at
-/home/tlemaire/usr/sparc-solaris. Add to your .login:
-
-\verbatim
-#
-# TCL/TK
-#
-setenv TCL_TK_HOME "/usr/local/tcl-8.4"
-setenv PATH "${TCL_TK_HOME}/bin:${PATH}"
-setenv MANPATH "${MANPATH}:${TCL_TK_HOME}/man"
-setenv LD_LIBRARY_PATH "${TCL_TK_HOME}/lib:${LD_LIBRARY_PATH}"
-
-#
-# Swig
-#
-setenv PATH "${PATH}:/usr/local/swig/bin"
-
-#
-# Boost
-#
-setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:/usr/local/boost/lib"
-
-#
-# jafar
-#
-setenv JAFAR_DIR ${HOME}/jafar
-setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${JAFAR_DIR}/lib/sparc-solaris2.9"
-alias cdj cd ~/jafar
-alias jfr tclsh8.4
-alias jfr_configure ./configure --with-boost=/home/tlemaire/usr/sparc-solaris/local/boost
-\endverbatim
-
-and your .tclshrc:
-
-\verbatim
-source $env(JAFAR_DIR)/share/initJafar.tcl
-
-source /home/tlemaire/usr/sparc-solaris/lib/tclreadline2.1.0/tclreadlineInit.tcl
-
-if {$tcl_interactive} {
-      package require tclreadline 
-      ::tclreadline::Loop
-}
-\endverbatim
-
 \section secLaasMailingList Mailing list
 
 There are two mailing list related to jafar, both hosted on http://sympa.laas.fr
