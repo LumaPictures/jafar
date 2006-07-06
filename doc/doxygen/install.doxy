@@ -59,28 +59,29 @@ to add the \c source command into your .tclshrc file for example.
 We also recommend you use a completion system within your shell:
 
   - eltclsh: http://softs.laas.fr/openrobots/tools/eltclsh.php
-  - tclreadline: http://tclreadline.sourceforge.net
-
-For using with tclreadline, the file \c $JAFAR_DIR/share/tclreadlineJafar.tcl setups the tclreadline package for jafar.
+  - tclreadline: http://tclreadline.sourceforge.net (this software seems to be unmaintained since 1999)
 
 Also, <a href="http://incrtcl.sourceforge.net">[incr tcl]</a> object oriented extention to tcl can be very usefull. 
 
 A typical \c .tclshrc looks like:
 \verbatim
+# load and setup incr-tcl
 package require Itcl
 namespace import ::itcl::*
 
+# setup jafar
 source $env(JAFAR_DIR)/share/initJafar.tcl
 
+# define user defined macros locations
 kernel::addHashedDirectory "/home/thomas/myJafarMacros/"
 kernel::rehash
 
-source $env(JAFAR_DIR)/share/tclreadlineJafar.tcl
 \endverbatim
 
 \section secInstallSpecific Specific instructions
 
   - LAAS users should also refer to \ref pageJafarDevAtLaas
   - \ref pageGettingStartedfromaLinuxLaptop
+  - \ref pageFaq
 
 */
