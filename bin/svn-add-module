@@ -31,7 +31,6 @@ WARNING: No repository URL given on command line, will use
 WARNING: ${URL}
 EOF
 fi
-URL=${URL}/${MODULE}
 
 # Check if the module directory is already a svn checkout
 # Note: svn info does not fail (i.e. returns a non-zero status code)
