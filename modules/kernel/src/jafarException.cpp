@@ -81,14 +81,16 @@ string JafarException::exceptionIdToString(ExceptionId id_) throw() {
     return "JafarException::PRECONDITION";
   case POSTCONDITION:
     return "JafarException::POSTCONDITION";
-  case INVARIANT:
-    return "JafarException::INVARIANT";
+  case INVALID_PARAM:
+    return "JafarException::INVALID_PARAM";
   case RUN_TIME:
     return "JafarException::RUN_TIME";
   case IO_STREAM:
     return "JafarException::IO_STREAM";
   case NUMERIC:
     return "JafarException::NUMERIC";
+  case INVARIANT:
+    return "JafarException::INVARIANT";
   default:
     std::stringstream s;
     s << id_;

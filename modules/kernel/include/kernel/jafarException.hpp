@@ -74,13 +74,14 @@ namespace jafar {
 
       /// This enumeration defines exceptions id of JafarException
       enum ExceptionId {
-	ASSERT,            /**< assertion not met */
-        PRECONDITION,      /**< precondition not met */
-        POSTCONDITION,     /**< postcondition not met */
-        INVARIANT,         /**< invariant not respected */
+	ASSERT,            /**< assertion not met                                   */
+        PRECONDITION,      /**< precondition not met                                */
+        POSTCONDITION,     /**< postcondition not met                               */
+        INVARIANT,         /**< invariant not respected                             */
         RUN_TIME,          /**< run time error, the programm should not end up here */
-        IO_STREAM,         /**< input/output error when using a c++ stream */ 
-	NUMERIC            /**< numeric error */
+        IO_STREAM,         /**< input/output error when using a c++ stream          */ 
+	NUMERIC,           /**< numeric error                                       */
+	INVALID_PARAM      /**< invalid parameter value                             */
       };
 
       /** Constructor. You should not use this constructor directly,
@@ -106,6 +107,43 @@ namespace jafar {
       static std::string exceptionIdToString(ExceptionId id_) throw();      
 
     };
+
+    /** Special exception class for invalid parameter error. This class
+     * contains the value of the parameter.
+     *
+     * \ingroup kernel
+     */
+    template<typename T>
+    class InvalidParamException : public JafarException {
+
+    public:
+
+      InvalidParamException(const T& value, const std::string& message_,
+			    const std::string& module_, const std::string& file_, int line_) : 
+	JafarException(INVALID_PARAM, message_, module_, file_, line_),
+	m_value(value) {}
+
+      /// Returns the invalid value of the parameter.
+      T value() const {return m_value;}
+
+    private:
+      
+      T m_value;
+
+    };
+
+    /** Actually throws an InvalidParamException. This trick is needed because
+     * of the template parameter.
+     *
+     * \ingroup kernel
+     */
+    template <typename T>
+    void throwInvalidParamException(const T& value, const std::string& message_,
+				    const std::string& module_, const std::string& file_, int line_) 
+    {
+      throw InvalidParamException<T>(value, message_,
+				     module_, file_, line_);
+    }
 
   } // namespace kernel
 } // namespace jafar

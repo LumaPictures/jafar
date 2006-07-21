@@ -113,6 +113,18 @@
 			   _JFR_MODULE_, __FILE__, __LINE__);		\
     }
 
+/** If \a predicate is \c FALSE throw a jafar::kernel::InvalidParamException
+ */
+#  define JFR_CHECK_PARAM(predicate, param)				\
+  if (!(predicate)) {							\
+    std::ostringstream s;						\
+    s << "invalid parameter " << #param << "=" << param;		\
+    s << " (" << #predicate << ")";					\
+    jafar::kernel::throwInvalidParamException(param, s.str(),		\
+					      _JFR_MODULE_,		\
+					      __FILE__, __LINE__);	\
+  }
+
 
 /** When JFR_NDEBUG is defined, contract programming checks, debug
  * messages and trace information are disabled.
