@@ -138,6 +138,35 @@ then
     AC_DEFINE(HAVE_OPENCV,1,[openCV library])
 fi
 
+## check for VXL VCL##
+MD_FIND_PACKAGE_OPT(vxlvcl, vcl, vcl_compiler.h, [support for the VXL/VCL library])
+if test "x$with_vxlvcl" = "xyes";
+then
+    VXL_VCL_CPPFLAGS="$vxlvcl_cppflags"
+    VXL_VCL_LDFLAGS="$with_vxlvcllib"
+    VXL_VCL_LIBS="-lvcl"
+    AVAIL_EXTLIBS="vxlvcl $AVAIL_EXTLIBS"
+    AC_SUBST(VXL_VCL_CPPFLAGS)
+    AC_SUBST(VXL_VCL_LDFLAGS)
+    AC_SUBST(VXL_VCL_LIBS)
+    AC_DEFINE(HAVE_VXLVCL,1,[VXL/VCL library])
+fi
+
+## check for VIL VXL ##
+MD_FIND_PACKAGE_OPT(vxlvil, vil, vil/vil_image_view.h, [support for the VXL/VIL library])
+if test "x$with_vxlvil" = "xyes" -a "x$with_vxlvcl" = "xyes";
+then
+    VXL_VIL_CPPFLAGS="$vxlvil_cppflags $VXL_VCL_CPPFLAGS"
+    VXL_VIL_LDFLAGS="$with_vxlvillib $VXL_VCL_LDFLAGS"
+    VXL_VIL_LIBS="-lvil $VXL_VCL_LIBS"
+    AVAIL_EXTLIBS="vxlvil $AVAIL_EXTLIBS"
+    AC_SUBST(VXL_VIL_CPPFLAGS)
+    AC_SUBST(VXL_VIL_LDFLAGS)
+    AC_SUBST(VXL_VIL_LIBS)
+    AC_DEFINE(HAVE_VXLVIL,1,[VXL/VIL library])
+fi
+
+
 ## check for boost-sandbox ##
 MD_FIND_PACKAGE_OPT(boost_sandbox,[], boost/numeric/bindings/lapack/lapack.h, [support for ublas lapack bindings from boost sandbox])
 if test "x$with_boost_sandbox" = "xyes";

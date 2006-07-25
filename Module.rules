@@ -75,10 +75,11 @@ $(RUBY_WRAPPER_CPP): $(SWIG_INPUT) $(DEV_HEADERS) $(SWIG_JAFAR_HEADERS)
 	@echo "    * Generating ruby wrappers with SWIG *"
 	@echo "    *************************************"
 	@echo ""
-	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_RUBY) $(CPPFLAGS) -o $(RUBY_WRAPPER_CPP) $(dev_includedir)/$(MODULE).i || ( rm -f $(RUBY_WRAPPER_CPP) && exit 1 )
+	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_RUBY) $(CPPFLAGS) -I/usr/include -o $(RUBY_WRAPPER_CPP) $(dev_includedir)/$(MODULE).i || ( rm -f $(RUBY_WRAPPER_CPP) && exit 1 )
 
 $(dev_objdir)/ruby/Makefile: $(dev_srcdir)/ruby/extconf.rb
 	-@mkdir -p $(dev_objdir)/ruby
+	echo $(CPPFLAGS)
 	cd $(dev_objdir)/ruby && $(RUBY) $(dev_srcdir)/ruby/extconf.rb \
 		--with-ruby="$(RUBY)" --with-cppflags="$(CPPFLAGS) $(CXXFLAGS)" \
 		--with-ldflags="$(LDFLAGS) $(LIBS) -l$(MODULE) -lstdc++ -Wl,-rpath -Wl,$(libdir)"
@@ -153,6 +154,23 @@ tcl-clean:
 
 endif
 
+# ruby module generation using SWIG
+###################################
+
+$(dev_objdir)/ruby/$(MODULE)_wrap.lo : $(dev_includedir)/$(MODULE).i $(dev_includedir)/$(MODULE)Tools.i $(DEV_HEADERS)
+	@echo ""
+	@echo "    **************************************"
+	@echo "    * Generating ruby wrappers with SWIG *"
+	@echo "    **************************************"
+	@echo ""
+	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_RUBY) $(CPPFLAGS) -I/usr/include -o $(dev_srcdir)/ruby/$(MODULE)_wrap.cpp $<
+	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) $(RUBY_CPPFLAGS) -o $@ $(dev_srcdir)/ruby/$(MODULE)_wrap.cpp
+
+
+$(dev_libdir)/lib$(MODULE)_ruby.so : $(dev_objdir)/ruby/$(MODULE)_wrap.lo $(dev_libdir)/lib$(MODULE).la
+	$(LTLD) $(LDFLAGS) $(RUBY_LDFLAGS)
+
+ruby-lib : $(dev_libdir)/lib$(MODULE)_ruby.so
 
 # module library
 #################
