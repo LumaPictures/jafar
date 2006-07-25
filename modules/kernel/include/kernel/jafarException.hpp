@@ -9,6 +9,8 @@
 
 #include <iostream>
 
+#include "kernel/jafarMacro.hpp"
+
 namespace jafar {
 
   namespace kernel {
@@ -44,7 +46,7 @@ namespace jafar {
       /// @deprecated
       Exception(const std::string& message_, 
                 const std::string& module_, const std::string& id_, 
-                const std::string& file_, int line_) throw();
+                const std::string& file_, int line_) throw() JAFAR_DEPRECATED;
 
       virtual ~Exception() throw();
 

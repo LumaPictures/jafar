@@ -12,6 +12,43 @@
 #include <string>
 #include <sstream>
 
+/**
+ * The JAFAR_DEPRECATED macro can be used to trigger compile-time warnings when a deprecated
+ * functions are used.
+ * 
+ * For non-inline functions, the macro has to be inserted at the end of the declaration like in :
+ * @code
+ * DeprecatedConstructor() JAFAR_DEPRECATED;
+ * void deprecatedFunction() const JAFAR_DEPRECATED;
+ * @endcode
+ * 
+ * For inline functions, the macro has to be inserted before the declartion but after virtual or
+ * static keywoard, like in :
+ * @code
+ * JAFAR_DEPRECATED void deprecatedInline() { ... }
+ * virtual JAFAR_DEPRECATED int depreactedInline() { ... }
+ * static JAFAR_DEPRECATED char* deprecatedInline() { ... }
+ * @endcode
+ * 
+ * You can declare a class or struct to be deprecated :
+ * @code
+ * class JAFAR_DEPRECATED deprecatedClass { };
+ * struct JAFAR_DEPRECATED deprecatedStruct { };
+ * @endcode
+ */
+#ifndef JAFAR_DEPRECATED
+#if __GNUC__ - 0 > 3 || (__GNUC__ - 0 == 3 && __GNUC_MINOR__ - 0 >= 2)
+  /* gcc >= 3.2 */
+# define JAFAR_DEPRECATED __attribute__ ((deprecated))
+#elif defined(_MSC_VER) && (_MSC_VER >= 1300)
+  /* msvc >= 7 */
+# define JAFAR_DEPRECATED __declspec(deprecated)
+#else
+# define JAFAR_DEPRECATED
+#endif
+#endif
+
+// Must be include after the declaration of the JAFAR_DEPRECATED
 #include "kernel/jafarException.hpp"
 
 /** Throw \a ExceptionName with ID \a id along with \a message. The
