@@ -43,10 +43,9 @@ namespace jafar {
 
     protected:
 
-      /// @deprecated
       Exception(const std::string& message_, 
                 const std::string& module_, const std::string& id_, 
-                const std::string& file_, int line_) throw() JAFAR_DEPRECATED;
+                const std::string& file_, int line_) throw();
 
       virtual ~Exception() throw();
 
