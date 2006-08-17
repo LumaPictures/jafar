@@ -152,7 +152,7 @@
 
 /** If \a predicate is \c FALSE throw a jafar::kernel::InvalidParamException
  */
-#  define JFR_CHECK_PARAM(predicate, param)				\
+#define JFR_CHECK_PARAM(predicate, param)				\
   if (!(predicate)) {							\
     std::ostringstream s;						\
     s << "invalid parameter " << #param << "=" << param;		\
