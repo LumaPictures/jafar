@@ -81,8 +81,8 @@ $(dev_objdir)/ruby/Makefile: $(dev_srcdir)/ruby/extconf.rb
 	-@mkdir -p $(dev_objdir)/ruby
 	echo $(CPPFLAGS)
 	cd $(dev_objdir)/ruby && $(RUBY) $(dev_srcdir)/ruby/extconf.rb \
-		--with-ruby="$(RUBY)" --with-cppflags="$(CPPFLAGS) $(CXXFLAGS)" \
-		--with-ldflags="$(LDFLAGS) $(LIBS) -l$(MODULE) -lstdc++ -Wl,-rpath -Wl,$(libdir)"
+		--with-ruby='$(RUBY)' --with-cppflags='$(CPPFLAGS) $(CXXFLAGS)' \
+		--with-ldflags='$(LDFLAGS) $(LIBS) -l$(MODULE) -lstdc++ -Wl,-rpath -Wl,$(libdir)'
 
 # Install all macros but $(MODULE).rb in $(rubylibdir)/$(MODULE)
 $(rubylibdir)/$(MODULE)/%.rb: $(dev_macrodir)/%.rb
