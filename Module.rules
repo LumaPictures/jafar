@@ -52,7 +52,7 @@ SWIG_JAFAR_HEADERS = $(JAFAR_DIR)/swig/jafar.i $(JAFAR_DIR)/swig/jafarRuby.i
 
 RUBY_USER_SCRIPTS = $(patsubst %.rb, $(rubylibdir)/$(MODULE)/%.rb, $(notdir $(wildcard $(dev_macrodir)/*.rb)))
 RUBY_MAIN_SCRIPT  = $(rubylibdir)/$(MODULE).rb
-RUBY_OTHER_SCRIPTS = $(filter-out $(RUBY_MAIN_SCRIPT),$(RUBY_USER_SCRIPTS))
+RUBY_OTHER_SCRIPTS = $(filter-out $(rubylibdir)/$(MODULE)/$(MODULE).rb,$(RUBY_USER_SCRIPTS))
 RUBY_WRAPPER_CPP=$(dev_srcdir)/ruby/$(MODULE)_wrap.cpp
 
 ruby: $(rubylibdir)/$(MODULE)/$(RUBY_EXTLIB) $(RUBY_OTHER_SCRIPTS) $(RUBY_MAIN_SCRIPT)
