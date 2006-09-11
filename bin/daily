@@ -27,7 +27,7 @@ dot_bindir='/usr/local/graphviz/bin'
 export PATH=${PATH}:${dot_bindir};
 
 # configure command
-configureCmd=env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure '--enable-lang=tcl ruby' --with-opencv=/usr/local/opencv --with-swig=/home/tlemaire/usr/i386-linux/bin --with-lapack --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox
+configureCmd="env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure \"--enable-lang=tcl ruby\" --with-opencv=/usr/local/opencv --with-swig=/home/tlemaire/usr/i386-linux/bin --with-lapack --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox"
 
 # modules to be checked
 modules="kernel helloworld jmath image display geom hpm gfm model3d stereo vme filter slam facetsmap camera omnivis locpano sas klt bundle"
