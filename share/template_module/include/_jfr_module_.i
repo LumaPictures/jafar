@@ -9,7 +9,10 @@
 %module _jfr_module_
 
 %{
-  /* 
+/* ruby defines ALLOC which conflicts with boost */ 
+#undef ALLOC
+  
+/* 
    * headers necessary to compile the wrapper
    */
 
