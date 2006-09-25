@@ -81,6 +81,10 @@ AC_CONFIG_FILES(Doxyfile)
 # Check for libraries #
 #######################
 
+dnl extra include and extra libs
+MD_EXTRA_INCLUDES
+MD_EXTRA_LIBS
+
 AC_ARG_ENABLE(lang, AC_HELP_STRING([--enable-lang=lang], 
                         [space-separated list of scripting languages to use (default: tcl, available: ruby, tcl)]),
              [REQUIRED_SCRIPT_LANGUAGES=$enableval], [REQUIRED_SCRIPT_LANGUAGES=""])
@@ -330,12 +334,6 @@ AC_SUBST(AVAIL_EXTLIBS)
 # Check for system services #
 #############################
 AC_C_BIGENDIAN
-
-################################
-# extra include and extra libs #
-################################
-MD_EXTRA_INCLUDES
-MD_EXTRA_LIBS
 
 AC_CONFIG_FILES(Module.config)
 AC_OUTPUT
