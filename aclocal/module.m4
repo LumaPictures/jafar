@@ -91,7 +91,7 @@ AC_DEFUN([MD_FIND_LIBRARY],
         elif test "$with_[$1]" != "yes"; then
             dirs=$with_[$1]
         else
-            dirs="/usr/local/lib /usr/local/gnu/lib /usr/local/[$1] /usr/local/[$1]/lib /opt/lib /opt/gnu/lib /opt/[$1] /opt/[$1]/lib /opt/local/lib /usr/lib /sw /sw/lib /sw/[$1] /sw/[$1]/lib \$HOME \$HOME/lib \$HOME/[$1] \$HOME/[$1]/lib \$HOME/usr \$HOME/usr/lib \$HOME/usr/[$1] \$HOME/opt \$HOME/opt/lib \$HOME/opt/[$1] \$HOME/local \$HOME/local/include \$HOME/local/[$1]"
+            dirs="${exec_prefix}/lib $extra_lib /usr/local/lib /usr/local/gnu/lib /usr/local/[$1] /usr/local/[$1]/lib /opt/lib /opt/gnu/lib /opt/[$1] /opt/[$1]/lib /opt/local/lib /usr/lib /sw /sw/lib /sw/[$1] /sw/[$1]/lib \$HOME \$HOME/lib \$HOME/[$1] \$HOME/[$1]/lib \$HOME/usr \$HOME/usr/lib \$HOME/usr/[$1] \$HOME/opt \$HOME/opt/lib \$HOME/opt/[$1] \$HOME/local \$HOME/local/include \$HOME/local/[$1]"
         fi
         found=""
         for i in $dirs; do
@@ -155,7 +155,7 @@ AC_DEFUN([MD_FIND_INCLUDE],
             elif test "$with_[$1]" != "yes"; then
                 dirs="$with_[$1]"
             else
-                dirs="/usr/local/include /usr/local/gnu/include /usr/local/[$1] /usr/local/[$1]/include /opt/include /opt/gnu/include /opt/[$1] /opt/[$1]/include /opt/local/include /opt/local/include/[$1] /usr/include /sw /sw/include /sw/[$1] /sw/[$1]/include \$HOME/ \$HOME/include \$HOME/usr \$HOME/usr/include \$HOME/usr/[$1] \$HOME/opt \$HOME/opt/include \$HOME/opt/[$1] \$HOME/[$1] \$HOME/local \$HOME/local/include \$HOME/local/[$1]"
+                dirs="${prefix}/include $extra_include /usr/local/include /usr/local/gnu/include /usr/local/[$1] /usr/local/[$1]/include /opt/include /opt/gnu/include /opt/[$1] /opt/[$1]/include /opt/local/include /opt/local/include/[$1] /usr/include /sw /sw/include /sw/[$1] /sw/[$1]/include \$HOME/ \$HOME/include \$HOME/usr \$HOME/usr/include \$HOME/usr/[$1] \$HOME/opt \$HOME/opt/include \$HOME/opt/[$1] \$HOME/[$1] \$HOME/local \$HOME/local/include \$HOME/local/[$1]"
             fi
 
             # use find for searching

@@ -32,6 +32,7 @@ AC_DEFUN([MD_CHECK_TCLTK],[
     has_tcl=yes
     
     MD_USER_FIND_FILE(tcl, [tclConfig.sh], [${exec_prefix}/lib \
+	    $extra_lib \
             /usr/local/lib/tcl8.4 \
             /usr/local/tcl-8.4/lib \
             /usr/local/tcl-8.3/lib \
@@ -52,25 +53,25 @@ AC_DEFUN([MD_CHECK_TCLTK],[
         test -z "$tcl_test_include" && tcl_test_include=tcl.h
         MD_FIND_FILE([$tcl_test_include], [$TCL_PREFIX/include/tcl$TCL_VERSION \
                 $TCL_PREFIX/include \
+		$extra_include \
                 /usr/local/include/tcl$TCL_VERSION \
                 /usr/local/include \
                 /usr/include \
                 /sw/include \ 
                 /opt/local/include \
-                /Library/Frameworks/Tcl.framework/Headers \
-                $extra_include], 
+                /Library/Frameworks/Tcl.framework/Headers], 
             [ac_tcl_includes="$md_found_dir"], [has_tcl=no])
     fi
 
     if test "$has_tcl" = "yes"; then
         test -z "$tcl_test_lib" && tcl_test_lib="${TCL_LIB_FILE}"
         MD_FIND_FILE([$tcl_test_lib], [$TCL_PREFIX/lib \
+		    $extra_lib \
                     /usr/local/lib \
                     /usr/lib \
                     /sw/lib \ 
                     /opt/local/lib \
-                    /Library/Frameworks/Tcl.framework \
-                    $extra_lib],
+                    /Library/Frameworks/Tcl.framework],
                 [ac_tcl_libs=$md_found_dir
                     LIB_RUNTIME_DIR=$ac_tcl_libs
                 ], [has_tcl=no])
@@ -79,6 +80,7 @@ AC_DEFUN([MD_CHECK_TCLTK],[
     if test "$has_tcl" = "yes"; then
         has_tk=yes
         MD_USER_FIND_FILE([tk], [tkConfig.sh], [${TCL_PREFIX}/lib \
+ 		$extra_lib \
                 ${exec_prefix}/lib \
                 /usr/local/lib/tk$TCL_VERSION \
                 /usr/local/tk$TCL_VERSION \
@@ -104,6 +106,7 @@ AC_DEFUN([MD_CHECK_TCLTK],[
         MD_FIND_FILE([$tk_test_include], [$TK_PREFIX/include/tk$TK_VERSION	\
                 $TK_PREFIX/include 			\
                 $ac_tcl_includes			\
+		$extra_include				\
                 /usr/local/include/tk$TK_VERSION 	\
                 /usr/local/include 			\
                 /usr/include 				\
@@ -111,8 +114,7 @@ AC_DEFUN([MD_CHECK_TCLTK],[
                 /sw/include 			\
                 /opt/local/include/tk$TK_VERSION \
                 /opt/local/include \
-                /Library/Frameworks/Tk.framework/Headers \
-                $extra_include],
+                /Library/Frameworks/Tk.framework/Headers],
             [ac_tk_includes=$md_found_dir], [has_tk=no])
     fi
 
