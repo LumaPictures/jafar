@@ -49,6 +49,9 @@ along with relevant links to get to know them:
         - http://www.boost.org/
         - <a href="http://www.crystalclearsoftware.com/cgi-bin/boost_wiki/wiki.pl?BOOST_WIKI">boost wiki</a>
 
+    - OpenGL:
+        - the Redbook: http://glprogramming.com/red/
+
     - Autoconf, Automake and Libtool: 
         - on-line autobook: http://sources.redhat.com/autobook/ 
         - autoconf macro archive: http://ac-archive.sourceforge.net/
