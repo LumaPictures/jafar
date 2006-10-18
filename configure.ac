@@ -142,34 +142,55 @@ then
     AC_DEFINE(HAVE_OPENCV,1,[openCV library])
 fi
 
-## check for VXL VCL##
-MD_FIND_PACKAGE_OPT(vxlvcl, vcl, vcl_compiler.h, [support for the VXL/VCL library])
-if test "x$with_vxlvcl" = "xyes";
-then
-    VXL_VCL_CPPFLAGS="$vxlvcl_cppflags"
-    VXL_VCL_LDFLAGS="$with_vxlvcllib"
-    VXL_VCL_LIBS="-lvcl"
-    AVAIL_EXTLIBS="vxlvcl $AVAIL_EXTLIBS"
-    AC_SUBST(VXL_VCL_CPPFLAGS)
-    AC_SUBST(VXL_VCL_LDFLAGS)
-    AC_SUBST(VXL_VCL_LIBS)
-    AC_DEFINE(HAVE_VXLVCL,1,[VXL/VCL library])
+## check for Qt4 ##
+PKG_CHECK_MODULES(QT4, QtCore QtGui >= 4.1.0, HAVE_QT4="yes", HAVE_QT4="no")
+if test "x$HAVE_QT4" = "xyes"; then
+  dnl Check needed because in some cases the QtGui includedir
+  dnl doesn't contain the subsystem dir.
+  QT_INCLUDE_DIR=`$PKG_CONFIG --variable=includedir QtGui`
+  EXTRA_QT_INCLUDE_DIR="$QT_INCLUDE_DIR/Qt"
+  AC_CHECK_FILE([$QT_INCLUDE_DIR/QWidget],
+  AC_MSG_NOTICE([No extra QT_INCLUDE_DIR needed]),
+  AC_CHECK_FILE([$EXTRA_QT_INCLUDE_DIR/QWidget],
+    QT4_CPPFLAGS="$QT4_CPPFLAGS -I$EXTRA_QT_INCLUDE_DIR",
+    AC_MSG_WARN([QWidget not found])))
+    AC_CHECK_PROG(MOC, [moc], [moc])
+    AC_CHECK_PROG(MOC, [moc-qt4], [moc-qt4])
 fi
-
-## check for VIL VXL ##
-MD_FIND_PACKAGE_OPT(vxlvil, vil, vil/vil_image_view.h, [support for the VXL/VIL library])
-if test "x$with_vxlvil" = "xyes" -a "x$with_vxlvcl" = "xyes";
-then
-    VXL_VIL_CPPFLAGS="$vxlvil_cppflags $VXL_VCL_CPPFLAGS"
-    VXL_VIL_LDFLAGS="$with_vxlvillib $VXL_VCL_LDFLAGS"
-    VXL_VIL_LIBS="-lvil $VXL_VCL_LIBS"
-    AVAIL_EXTLIBS="vxlvil $AVAIL_EXTLIBS"
-    AC_SUBST(VXL_VIL_CPPFLAGS)
-    AC_SUBST(VXL_VIL_LDFLAGS)
-    AC_SUBST(VXL_VIL_LIBS)
-    AC_DEFINE(HAVE_VXLVIL,1,[VXL/VIL library])
+if test "x$HAVE_QT4" = "xno"; then
+  AC_MSG_NOTICE([Looking for QT4_CPPFLAGS and QT4_LIBS without pkg-config])
+  case "$host_os" in
+    darwin*)
+      AC_ARG_WITH([qt4dir],
+        [AS_HELP_STRING([--with-qt4dir=DIR],
+        [Qt4 installation directory used for OS-X.
+        For other systems use pkg-config.])],
+        [QT4DIR=$withval]
+        )
+      if test x"$QT4DIR" = x ; then
+        AC_MSG_WARN([*** No path for Qt4 --with-qt4dir option given])
+      fi
+      AC_MSG_RESULT([QT4DIR... $QT4DIR])
+      AC_CHECK_PROG(MOC, [moc], [$QT4DIR/bin/moc], [], $QT4DIR/bin)
+      if test x"$MOC" = x; then
+        AC_MSG_WARN([*** This is not the right Qt installation])
+      fi
+      QT4_CPPFLAGS="-F$QT4DIR/lib -I$QT4DIR/lib/QtCore.framework/Headers"
+      QT4_CPPFLAGS="$QT4_CPPFLAGS -I$QT4DIR/lib/QtGui.framework/Headers"
+      QT4_LIBS="-Xlinker -F$QT4DIR/lib -Xlinker -framework -Xlinker QtCore"
+      QT4_LIBS="$QT4_LIBS -Xlinker -framework -Xlinker QtGui"
+      ;;
+    *)
+      AC_MSG_WARN([*** Please check PKG_CONFIG_PATH or the version
+      of your installed Qt4 installation.])
+      ;;
+  esac
 fi
-
+AC_MSG_NOTICE([Set QT4_CPPFLAGS... $QT4_CPPFLAGS])
+AC_SUBST(QT4_CPPFLAGS)
+AC_SUBST(QT4_LIBS)
+QT4_LDFLAGS=""
+AC_SUBST(QT4_LDFLAGS)
 
 ## check for boost-sandbox ##
 MD_FIND_PACKAGE_OPT(boost_sandbox,[], boost/numeric/bindings/lapack/lapack.h, [support for ublas lapack bindings from boost sandbox])
