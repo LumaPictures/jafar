@@ -2,6 +2,7 @@
 require 'Qt'
 
 Qt::Application.new(ARGV)
+Qt::Application.setQuitOnLastWindowClosed(false)
 
 class Handler < Qt::Object
   slots "pass_thread(void)"
@@ -18,7 +19,7 @@ Thread.abort_on_exception = true
 Thread.new do
     timer.start(0)
     $qApp.exec
-    STDERR.puts "blaaaa"
+    STDERR.puts "WARNING: The graphical application has been closed ! You need to restart the jafar shell !"
 end
 
 
