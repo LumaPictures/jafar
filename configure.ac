@@ -154,8 +154,9 @@ if test "x$HAVE_QT4" = "xyes"; then
   AC_CHECK_FILE([$EXTRA_QT_INCLUDE_DIR/QWidget],
     QT4_CPPFLAGS="$QT4_CPPFLAGS -I$EXTRA_QT_INCLUDE_DIR",
     AC_MSG_WARN([QWidget not found])))
-    AC_CHECK_PROG(MOC, [moc], [moc])
-    AC_CHECK_PROG(MOC, [moc-qt4], [moc-qt4])
+  AC_CHECK_PROG(MOC, [moc], [moc])
+  AC_CHECK_PROG(MOC, [moc-qt4], [moc-qt4])
+  AVAIL_EXTLIBS="qt4 $AVAIL_EXTLIBS"  
 fi
 if test "x$HAVE_QT4" = "xno"; then
   AC_MSG_NOTICE([Looking for QT4_CPPFLAGS and QT4_LIBS without pkg-config])
