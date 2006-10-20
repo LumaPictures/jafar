@@ -29,6 +29,8 @@ require 'irb/completion.rb'
 
 IRB.setup(nil)
 
+include Jafar
+
 ws  = IRB::WorkSpace.new(binding)
 irb = IRB::Irb.new(ws)
 IRB.conf[:MAIN_CONTEXT] = irb.context
