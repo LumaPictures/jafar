@@ -35,3 +35,6 @@
 
 /* PNL library */
 #undef HAVE_PNL
+
+/* Calife Camera Library */
+#undef HAVE_CALIFECAMERA

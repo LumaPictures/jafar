@@ -193,6 +193,17 @@ AC_SUBST(QT4_LIBS)
 QT4_LDFLAGS=""
 AC_SUBST(QT4_LDFLAGS)
 
+## check for libcamera ##
+PKG_CHECK_MODULES(CALIFECAMERA, calife-camera >= 0.1, HAVE_CALIFE_CAMERA="yes", HAVE_CALIFE_CAMERA="no")
+if test "x$HAVE_CALIFE_CAMERA" = "xyes"; then
+    AC_MSG_NOTICE([Set CALIFECAMERA_CPPFLAGS... $CALIFECAMERA_CPPFLAGS])
+    AC_SUBST(CALIFECAMERA_CPPFLAGS)
+    AC_SUBST(CALIFECAMERA_LDFLAGS)
+    AC_SUBST(CALIFECAMERA_LIBS)
+    AC_DEFINE(HAVE_CALIFECAMERA,1,[camera library])
+    AVAIL_EXTLIBS="califecamera $AVAIL_EXTLIBS"  
+fi
+
 ## check for boost-sandbox ##
 MD_FIND_PACKAGE_OPT(boost_sandbox,[], boost/numeric/bindings/lapack/lapack.h, [support for ublas lapack bindings from boost sandbox])
 if test "x$with_boost_sandbox" = "xyes";
