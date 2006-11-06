@@ -53,9 +53,9 @@ def checkoutModule(name)
   else
     puts "Checkout module : |#{name}|"
     url="svn+ssh://#{ENV['USER']}@svn.laas.fr/svn/jafar/jafarModules/trunk/#{name}"
-    status = `svn co #{url} 2>/dev/null`
-    if(status.index("Checked out revision"))
-      
+    `svn co #{url} 2>/dev/null`
+    
+    if( File.exist?(name) )
       return checkoutDependency(name)
     else
       puts "An error has occured when checkouting module : #{name}, please check that it exists"
