@@ -66,7 +66,7 @@ end
 
 if(checkoutModule(ARGV[0]))
   puts "Module #{ARGV[0]} and all its dependencies have been successfully"
-  puts "installed, you can now run make in the directory module/#{ARGV[0]}"
+  puts "installed, you can now run make in the directory modules/#{ARGV[0]}"
   if(@optionalpackages != "")
     puts ""
     puts "Optional dependencies that you may want to install : #{@optionalpackages}"
