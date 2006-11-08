@@ -31,7 +31,7 @@ export PATH=${doxygen_bindir}:${dot_bindir}:${PATH};
 configureCmd="env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure --enable-lang='tcl ruby' --with-opencv=/usr/local/opencv --with-swig=/home/tlemaire/usr/i386-linux/bin --with-lapack --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox"
 
 # modules to be checked
-modules="kernel helloworld jmath image display geom hpm gfm model3d stereo vme filter slam facetsmap camera omnivis locpano sas klt bundle"
+modules="kernel helloworld jmath image camera display geom hpm gfm model3d stereo vme filter slam facetsmap locpano sas klt bundle"
 
 # makefile targets to be executed
 targets="clean lib tcl ruby test-build test"
