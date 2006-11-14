@@ -28,7 +28,7 @@ doxygen_bindir='/home/tlemaire/usr/i386-linux/bin/'
 export PATH=${doxygen_bindir}:${dot_bindir}:${PATH};
 
 # configure command
-configureCmd="env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure --enable-lang='tcl ruby' --with-opencv=/usr/local/opencv --with-swig=/home/tlemaire/usr/i386-linux/bin --with-lapack --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox"
+configureCmd="env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure --enable-lang='tcl ruby' --with-opencv=/usr/local/opencv --with-swig=/usr/local/swig/bin --with-lapack --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox"
 
 # modules to be checked
 modules="kernel helloworld jmath datareader image camera display geom hpm gfm model3d stereo vme locpano filter slam facetsmap sas klt bundle"
