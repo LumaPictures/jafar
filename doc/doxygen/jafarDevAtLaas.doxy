@@ -98,7 +98,7 @@ Other options of interest:
   - \c --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox \c --with-lapack: to use lapack algebra function from within uBlas
   - \c --with-opengl: to develop openGL 3D display function, to be used with gdhe (\ref secLaasToolsGdhe)
 
-\warning openCV (currently 0.9.7) headers emmits annoying warnings about \e aliasing when compiled with gcc 4.1. One is adviced to turn off strict aliasing optimisation in gcc:
+\warning openCV (currently 1.0.0) headers emmits annoying warnings about \e aliasing when compiled with gcc 4.1. One is adviced to turn off strict aliasing optimisation in gcc:
 \verbatim
 env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure [...]
 \endverbatim
