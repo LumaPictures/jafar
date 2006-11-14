@@ -90,7 +90,7 @@ $ svn-add-module helloworld
 Some modules (\e jmath...) relie on recent swig features. In order to get a recent swig:
 
 \verbatim
-$ ./configure --with-swig=/home/tlemaire/usr/i386-linux/bin
+$ ./configure --with-swig=/usr/local/swig/bin
 \endverbatim
 
 Other options of interest:
