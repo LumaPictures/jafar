@@ -8,7 +8,7 @@ At LAAS we use subversion to version control the jafar tree.
 
 \section subsecLaasSvnBeforeYouStart Before you start
 
-- You must be in the \b h2 user group to use the svn repository (even for a simple checkout). To get into this group, send a request to sysadmin@laas.fr.
+- You must be in the \b robots user group to use the svn repository (even for a simple checkout). To get into this group, send a request to sysadmin@laas.fr.
 - You must have a umask equal to 2, edit your ~/.tcshrc and add the following:
 
 \code
@@ -17,7 +17,7 @@ umask 2
 
 \subsection subsecLaasSvnAbout About Subversion
 
-Subversion is quite similar to CVS, most of the commands \c cvs \c command are now \c svn \c command. http://svnbook.red-bean.com/svnbook-1.0/apa.html will help you moving from CVS to subversion. You also can start with the \c help command.
+Subversion is quite similar to CVS, most of the commands \c cvs \c command are now \c svn \c command. http://svnbook.red-bean.com/nightly/en/svn.forcvs.html will help you moving from CVS to subversion. You also can start with the \c help command.
 
 \verbatim
 $ svn help
