@@ -13,7 +13,7 @@
 
 m4_include([aclocal/libtool.m4])
 m4_include([aclocal/module.m4])
+m4_include([aclocal/pkg.m4])
 m4_include([aclocal/ruby.m4])
 m4_include([aclocal/swig.m4])
 m4_include([aclocal/tcl.m4])
-m4_include([aclocal/pkg.m4])

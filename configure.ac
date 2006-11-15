@@ -308,40 +308,6 @@ then
     AC_DEFINE(HAVE_CGAL,1,[CGAL library])
 fi
 
-## check for dc1394 and raw1384 ##
-MD_FIND_PACKAGE_OPT(raw1394, raw1394, libraw1394/raw1394.h, [support for raw1394])
-MD_FIND_PACKAGE_OPT(dc1394, dc1394_control, libdc1394/dc1394_control.h, [support for dc1394])
-if test "x$with_dc1394" = "xyes" && test "x$with_raw1394" = "xyes";
-then
-    IEEE1394_CPPFLAGS="$raw1394_cppflags $dc1394_cppflags"
-    IEEE1394_LDFLAGS="$with_raw1394lib $with_dc1394lib"
-    IEEE1394_LIBS="-lraw1394 -ldc1394_control"
-    AVAIL_EXTLIBS="ieee1394 $AVAIL_EXTLIBS"
-    AC_SUBST(IEEE1394_CPPFLAGS)
-    AC_SUBST(IEEE1394_LDFLAGS)
-    AC_SUBST(IEEE1394_LIBS)
-    AC_DEFINE(HAVE_IEEE1394,1,[IEEE1394 support])
-fi
-
-## check for video4linux ##
-MD_FIND_PACKAGE_OPT(v4l, [], linux/videodev.h, [support for v4l (only available on Linux)])
-if test "x$with_v4l" = "xyes";
-then
-    AVAIL_EXTLIBS="v4l $AVAIL_EXTLIBS"
-    AC_DEFINE(HAVE_V4L,1,[v4l support])
-fi
-
-## check for quicktime
-MD_FIND_PACKAGE_OPT(quicktime, [], QuickTime/QuickTime.h, [support for QuickTime (only available on MacOSX)])
-if test "x$with_quicktime" = "xyes";
-then
-    QUICKTIME_LDFLAGS="-Wl,-framework -Wl,Carbon -Wl,-framework -Wl,Quicktime"
-    AVAIL_EXTLIBS="quicktime $AVAIL_EXTLIBS"
-    AC_SUBST(QUICKTIME_LDFLAGS) 
-    AC_DEFINE(HAVE_QUICKTIME,1)
-fi  
-
-
 AC_SUBST(AVAIL_EXTLIBS)
 ##########################
 # Check for header files #
