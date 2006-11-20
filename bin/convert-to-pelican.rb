@@ -88,6 +88,7 @@ def fromOldPelican(dirsrc, dirdst, compress)
     puts "Copying and converting images"
     Dir.mkdir("#{dirdst}/images")
     for i in startn..endn
+      numb = genNumber(i,3)
       filename = "#{dirsrc}/images/image.#{numb}.g"
       print "\r#{i-startn}/#{endn-startn}"
       $stdout.flush
