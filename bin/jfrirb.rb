@@ -22,6 +22,7 @@ Thread.new do
     STDERR.puts "WARNING: The graphical application has been closed ! You need to restart the jafar shell !"
 end
 
+ENV["IRBRC"] = ".jrbrc"
 
 # launch irb
 require 'irb'
