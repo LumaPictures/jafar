@@ -23,9 +23,8 @@ ssh='/usr/bin/ssh'
 
 export JAFAR_DIR='/usr/local/jafar'
 
-dot_bindir='/usr/local/graphviz/bin'
 doxygen_bindir='/home/tlemaire/usr/i386-linux/bin/'
-export PATH=${doxygen_bindir}:${dot_bindir}:${PATH};
+export PATH=${doxygen_bindir}:${PATH};
 
 # configure command
 configureCmd="env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure --enable-lang='tcl ruby' --with-opencv=/usr/local/opencv --with-swig=/usr/local/swig/bin --with-lapack --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox"
