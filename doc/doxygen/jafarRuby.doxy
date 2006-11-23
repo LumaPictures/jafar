@@ -1,0 +1,93 @@
+/** \page pageJafarRuby Ruby and Jafar
+
+\section secConfiguringRuby Configure your environnement for Ruby
+
+\subsection subsecBuildRuby Enabling building of Ruby binding in jafar
+The first step is to enable the building of Ruby module in jafar. It is done using --enable-lang="ruby" at configure time:
+\code
+cd $JAFAR_DIR
+./configure --enable-lang="ruby" --all-my-others-cool-parameters
+cd -
+\endcode
+
+Then you need to issue a build command in your modules.
+\code
+cd $JAFAR_DIR
+make
+cd -
+\endcode
+
+\subsection subsecEnvVariable Environnement variable
+You need to define RUBYLIB for ruby to find your modules.
+In bash:
+\code
+export RUBYLIB="$JAFR_DIR/lib/i686-linux-gnu/ruby/1.8/"
+\endcode
+
+\section secRubyShells The Ruby shell
+
+\subsection subsecIRB
+
+The standard ruby shell is called 'irb', if you have follow the instruction above, you can now start to use ruby and jafar together, after starting irb, you can type the following code:
+\code
+require 'jafar/kernel' # load the module kernel of jafar
+include Jafar # equivalent of using namespace in C++, you won't need to start all your command with Jafar::
+\endcode
+
+Note, that there is allready a <i>Kernel</i> module in the Core library of Ruby. So to access the function in the <i>Kernel</i> module of Jafar, you need to give the full path. For instance:
+\code
+Jafar::Kernel::DebugStream.moduleOff("gfm") # it will disable the debugging in gfm
+Kernel::DebugStream.moduleOff("gfm") # will throw an error telling that DebugStream is not a member of the Kernel module
+\endcode
+
+The configuration file of the IRB is $HOME/.irbrc.
+
+\subsection subsecJRB The jafar Ruby Shells
+
+Those shells are needed if you want to use the module <i>qdisplay</i>. There are two possibilities:
+ - the <i>jfrirb</i> shell
+ - the <i>jrb</i> shell
+
+\subsubsection subsubsecJFRIRB jfrirb
+This shell require the Qt4 ruby bindings available on <a href="http://rubyforge.org/projects/korundum">rubyforge</a>. Then you launch it using the command <i>$JAFAR_DIR/bin/jfrirb.rb</i>.
+
+\subsubsection subsubsecJRB jrb
+This shell is independant of the Qt4 ruby bindings, and can be downloaded from <a href="http://www.laas.fr/~cberger/jafar/">here</a>. You will find up-to-date information about the shell on the webpage.
+
+\subsubsection subsubsecJRBRC Configuration file
+
+The configuration file of the jrb and jfrirb shells is $HOME/.jrbrc. For instance mine looks like this:
+
+\code
+def reload()
+  load 'jafar/image.rb'
+  load 'jafar/qdisplay.rb'
+  load 'jafar/gfm.rb'
+  load 'jafar/preprocessing.rb'
+  load 'jafar/geom.rb'
+  load 'jafar/datareader.rb'
+  load 'jafar/facetsmap.rb'
+  load 'jafar/viewer3d.rb'
+end
+
+reload()
+
+# Define the default data series for the datareader
+Jafar::Datareader::DataReader.setDefaultSeriesName("2005_11_bouclage_newspec")
+Jafar::Datareader::DataReader.setDefaultSerieNumber(11)
+\endcode
+
+\section secLinks Usefull links about ruby
+
+The official ruby site is <a href="http://www.ruby-lang.org">www.ruby-lang.org</a>.
+
+\subsection subsecDocumentation Documentation about ruby
+ - <a href="http://www.ruby-lang.org/en/documentation/">the documentation page on ruby-lange.org</a>
+ - <a href="http://www.ruby-lang.org/en/documentation/quickstart/">The fastest way introduction to ruby</a>
+ - <a href="http://www.ruby-doc.org/docs/ProgrammingRuby/">Online book "Programming Ruby"</a> the reference book about ruby
+ - <a href="http://www.ruby-doc.org/">http://www.ruby-doc.org/</a>: a site including a few reference API documention about ruby standard library : <a href="http://www.ruby-doc.org/core/">the core library documentation</a> and <a href="http://www.ruby-doc.org/stdlib/">the standard library</a>
+\subsection subsecLinksRessources Ressources
+ - <a href="http://rubyforge.org">rubyforge.org</a> this site is directory of nearly all ruby scripts, programs or modules available
+ - <a href="http://rubygems.org/">rubygems.org</a> a package management system to easily install ruby scripts, programs or modules
+
+*/
