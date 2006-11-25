@@ -294,20 +294,6 @@ then
 	AC_DEFINE(HAVE_PNL,1,[PNL library])
 fi
 
-## check for CGAL ##
-MD_FIND_PACKAGE_OPT(cgal, CGAL, CGAL/config.h, [CGAL,  Computational Geometry Algorithms Library])
-if test "x$with_cgal" = "xyes";
-then
-    CGAL_CPPFLAGS="$cgal_cppflags $cgal_cppflags/CGAL/config/$CGAL_OS_COMPILER"
-    CGAL_LDFLAGS="$with_cgallib"
-    CGAL_LIBS="-lCGAL"
-    AVAIL_EXTLIBS="cgal $AVAIL_EXTLIBS"
-    AC_SUBST(CGAL_CPPFLAGS)
-    AC_SUBST(CGAL_LDFLAGS)
-    AC_SUBST(CGAL_LIBS)
-    AC_DEFINE(HAVE_CGAL,1,[CGAL library])
-fi
-
 AC_SUBST(AVAIL_EXTLIBS)
 ##########################
 # Check for header files #
