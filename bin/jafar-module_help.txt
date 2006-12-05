@@ -1,4 +1,4 @@
-Usage: jafar-module [OPTIONS] [MODULE] [EXTRA FILES]
+Usage: jafar-module [OPTIONS] [MODULE]
 
 Jafar tool to create a new module or update an existing module.
 
