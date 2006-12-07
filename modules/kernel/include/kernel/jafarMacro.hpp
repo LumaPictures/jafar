@@ -245,6 +245,43 @@ using jafar::debug::DebugStream;
 			      << jafar::debug::endl;			\
     }
 
+
+/** Tell the debug stream to start a new line of debug
+ * \code
+ *  JFR_DEBUG_BEGIN()
+ *  JFR_DEBUG_SEND("The values of i are "
+ *  for(int i = 0; i < 3; i ++)
+ *    JFR_DEBUG_SEND( i << " "); 
+ *  JFR_DEBUG_END()
+ * 
+ * output:
+ *  D:pipo/test.cpp:55: The value of i are 0 1 2
+ * \endcode
+ */
+#define JFR_DEBUG_BEGIN() \
+{                          \
+    DebugStream::setup(_JFR_MODULE_, DebugStream::Debug); \
+    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__); \
+}
+
+/**
+ * Use after a call to JFR_DEBUG_BEGIN() to send \a message to
+ * the debug stream
+ */
+#define JFR_DEBUG_SEND(message) \
+{                                \
+    DebugStream::instance() << message; \
+}
+
+/**
+ * Use when you want to close a line of debug
+ */
+#define JFR_DEBUG_END() \
+{                        \
+    DebugStream::instance() << jafar::debug::endl; \
+}
+
+
 /** Send \a message to the debug stream with level
  * DebugStream::Debug. \c operator<< can be used to format the
  * message.
@@ -258,10 +295,9 @@ using jafar::debug::DebugStream;
  */
 #define JFR_DEBUG(message)						\
   {									\
-    DebugStream::setup(_JFR_MODULE_, DebugStream::Debug);		\
-    DebugStream::sendLocation(_JFR_MODULE_, __FILE__, __LINE__);	\
-    DebugStream::instance() << message					\
-			    << jafar::debug::endl;			\
+    JFR_DEBUG_BEGIN()       \
+    JFR_DEBUG_SEND(message)     \
+    JFR_DEBUG_END()     \
   }
 
 
@@ -373,6 +409,10 @@ using jafar::debug::DebugStream;
 #  else // JFR_QUIET
 #    define JFR_WARNING(message) ((void)0)
 #  endif // JFR_QUIET
+
+#  define JFR_DEBUG_BEGIN()  ((void)0)
+#  define JFR_DEBUG_SEND(message)  ((void)0)
+#  define JFR_DEBUG_END()  ((void)0)
 
 #  define JFR_DEBUG(message) ((void)0)
 #  define JFR_VDEBUG(message) ((void)0)
