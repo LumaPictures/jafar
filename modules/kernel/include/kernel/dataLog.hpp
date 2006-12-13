@@ -18,6 +18,9 @@ namespace jafar {
     /** Interface DataLoggable. Objects which send data to a
      * DataLogger have to implement this interface.
      *
+     * \todo fuse writeLogHeader() and writeLogData(), this would ensure that
+     * header and data does actually match.
+     *
      * \ingroup kernel
      */
     class DataLoggable {
