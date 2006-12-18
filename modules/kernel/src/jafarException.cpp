@@ -26,6 +26,7 @@ Exception::Exception(const string& message_,
   std::stringstream s;
   s << "\n** Exception from jafar module " << module_ << endl;
   s << "Id: " << id_ << endl;
+  s << "Message: " << message_ << endl;
   _what = s.str();
   addTrace(module_, file_, line_, message_);
 }
