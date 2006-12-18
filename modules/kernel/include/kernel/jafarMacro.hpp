@@ -395,6 +395,7 @@ using jafar::debug::DebugStream;
   JFR_TRACE_BEGIN
 
 #else // JFR_NDEBUG
+#  define JFR_ASSERT(predicate, message) ((void)0)
 #  define JFR_PRECOND(predicate, message) ((void)0)
 #  define JFR_POSTCOND(predicate, message) ((void)0)
 #  define JFR_INVARIANT(predicate, message) ((void)0)
