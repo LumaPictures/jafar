@@ -52,7 +52,12 @@ def checkoutModule(name)
     return checkoutDependency(name)
   else
     puts "Checkout module : |#{name}|"
-    url="svn+ssh://#{ENV['USER']}@svn.laas.fr/svn/jafar/jafarModules/trunk/#{name}"
+    if( ENV['SVN_LAAS_USER'] != "")
+	svnuser = ENV['SVN_LAAS_USER']
+    else
+        svnuser = ENV['USER']
+    end
+    url="svn+ssh://#{svnuser}@svn.laas.fr/svn/jafar/jafarModules/trunk/#{name}"
     `svn co #{url} 2>/dev/null`
     
     if( File.exist?(name) )
