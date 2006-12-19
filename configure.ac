@@ -60,7 +60,7 @@ SWIG_ENABLE_CXX
 ## Check for a Tcl shell ##
 AC_PATH_PROG([TCLSH], [tclsh eltclsh])
 if test -z "$TCLSH"; then
-  AC_MSG_ERROR([Cannot find a Tcl shell])
+  AC_MSG_WARN([Cannot find a Tcl shell])
 fi
 AC_SUBST(TCLSH)
 AC_CONFIG_FILES([bin/jafar-module], [chmod +x bin/jafar-module])
