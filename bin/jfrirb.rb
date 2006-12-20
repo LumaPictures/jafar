@@ -26,7 +26,7 @@ ENV["IRBRC"] = ".jrbrc"
 
 # launch irb
 require 'irb'
-require 'irb/completion.rb'
+require 'jafar/kernel/completion.rb'
 
 IRB.setup(nil)
 
