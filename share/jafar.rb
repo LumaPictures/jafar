@@ -1,3 +1,5 @@
+require 'rbconfig'
+
 module Jafar
     TOPDIR = ENV['JAFAR_DIR'] || File.expand_path('..', File.dirname(__FILE__))
     class << self
@@ -30,7 +32,7 @@ end
 Jafar.system_type = Jafar.detect_system_type
 
 puts ""
-puts "Welcome to jafar !         (c) 2004-2005 LAAS-CNRS"
+puts "Welcome to jafar !         (c) 2004-2006 LAAS-CNRS"
 puts "jafar_dir: #{Jafar::TOPDIR}"
 puts ""
 
