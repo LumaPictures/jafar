@@ -38,7 +38,7 @@ the subversion documentation: at the top of the repository, there are three dire
 Each one of \c jafarBackbone and \c jafarModules contains three subdirectories :
     - \c trunk/ holds the main development files,
     - \c branches/ holds alternative development branches,
-    - \c tags/ holds tagged version.
+    - \c tags/ holds tagged versions.
 
 Be aware that in subversion the difference between a \e branch and a \e tag does not exist any more, a tag becomes a branche once some one has commited on it.
 

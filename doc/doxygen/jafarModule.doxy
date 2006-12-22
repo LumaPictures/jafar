@@ -10,7 +10,7 @@ related to the same algorithm, or group of algorithms. A jafar module
 is constituted by:
 
     - source code and headers,
-    - configure scripts and and a makefile,
+    - a piece of makefile,
     - errors definition (\ref pageJafarError),
     - swig wrapped interface definition (\ref secModuleSwig),
     - documentation (\ref secModuleDocumentation).
