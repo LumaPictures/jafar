@@ -58,12 +58,17 @@ $ svn co svn+ssh://toto@svn.laas.fr/svn/jafar/jafarBackbone/trunk jafar/
 
 You will get, among other things, the kernel module in the \c jafar/module/ directory.
 
-Then retrieve the modules versions you are interested in, cd in the module directory and do some checkouts:
-\verbatim 
-$ cd /home/toto/jafar/modules
-$ svn co svn+ssh://toto@svn.laas.fr/svn/jafar/jafarModules/trunk/jmath jmath/
-$ svn co svn+ssh://toto@svn.laas.fr/svn/jafar/jafarModules/tags/image_0.3 image/
+
+\subsection secInstallingModule Installing module
+To retrieve the modules versions you are interested in, cd in the module directory and do some checkouts:
+\verbatim
+$ cd $JAFAR_DIR/modules
+$ ../bin/jafar-co-module.rb [modulename]
 \endverbatim
+
+The \c jafar-co-module.rb scripts checkout all the required dependencies. And at the end, return you with a list of suggested packages.
+
+If you are using the script from your personnal computer, and that your personnal login is different from the laas login, you need to set the environnement variable SVN_LAAS_USER to your laas login before using the script.
 
 \subsection subsecLaasCoUp Commit/Update
 
@@ -133,4 +138,20 @@ There are two mailing list related to jafar, both hosted on http://sympa.laas.fr
   - jafar@laas.fr is for discussion about Jafar, 
   - jafar-source@laas.fr distributes commit mails from subversion
   repository,
+
+\section secDistributePackage Distributing Jafar outside the laas
+
+If you want to distribute jafar outside the laas. You first need to retrieve the jafar backbone:
+\verbatim
+$ svn co svn+ssh://toto@svn.laas.fr/svn/jafar/jafarBackbone/trunk jafar/
+\endverbatim
+
+Then using the \c jafar-co-module.rb script like in \ref secInstallingModule, you retrieve the modules you want to distribute, and the script extract all the dependences you need.
+
+Then you need to remove the subversion information, as follow:
+\verbatim
+$ find . -type d -name \.svn -exec rm -rf {} \;
+\endverbatim
+Don't worry about the error message thrown by this command, for some reasons the command try to see if the file is available after you have delete it.
+
 */
