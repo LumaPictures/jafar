@@ -68,7 +68,7 @@ $ ../bin/jafar-co-module.rb [modulename]
 
 The \c jafar-co-module.rb scripts checkout all the required dependencies. And at the end, return you with a list of suggested packages.
 
-If you are using the script from your personnal computer, and that your personnal login is different from the laas login, you need to set the environnement variable SVN_LAAS_USER to your laas login before using the script.
+If you are using the script from your personnal computer, and that your personnal login is different from the LAAS login, you need to set the environnement variable SVN_LAAS_USER to your LAAS login before using the script.
 
 \subsection subsecLaasCoUp Commit/Update
 
@@ -90,7 +90,7 @@ $ cd /home/toto/jafar/modules
 $ svn-add-module helloworld
 \endverbatim
 
-\section secConfigure Typical configure option at laas on a linux workstation
+\section secConfigure Typical configure option at LAAS on a linux workstation
 
 Some modules (\e jmath...) relie on recent swig features. In order to get a recent swig:
 
@@ -139,9 +139,9 @@ There are two mailing list related to jafar, both hosted on http://sympa.laas.fr
   - jafar-source@laas.fr distributes commit mails from subversion
   repository,
 
-\section secDistributePackage Distributing Jafar outside the laas
+\section secDistributePackage Distributing Jafar outside LAAS
 
-If you want to distribute jafar outside the laas. You first need to retrieve the jafar backbone:
+If you want to distribute jafar outside LAAS. You first need to retrieve the jafar backbone:
 \verbatim
 $ svn co svn+ssh://toto@svn.laas.fr/svn/jafar/jafarBackbone/trunk jafar/
 \endverbatim
