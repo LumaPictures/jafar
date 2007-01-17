@@ -89,5 +89,7 @@ The official ruby site is <a href="http://www.ruby-lang.org">www.ruby-lang.org</
 \subsection subsecLinksRessources Ressources
  - <a href="http://rubyforge.org">rubyforge.org</a> this site contains nearly all ruby scripts, programs or modules available
  - <a href="http://rubygems.org/">rubygems.org</a> a package management system to easily install ruby scripts, programs or modules
+\subsection subsecLinksIRB About IRB
+ - <a href="http://blog.nicksieger.com/articles/2006/04/23/tweaking-irb">tweaking irb</a>: completion, session saving and history
 
 */
