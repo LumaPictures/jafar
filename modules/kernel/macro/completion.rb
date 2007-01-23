@@ -180,11 +180,20 @@ module Kernel
     }
     
     CompletionProc = proc { |input|
-      res = IrbCompletionProc.call(input)
-      if(res.size() == 0)
-        return Readline::FILENAME_COMPLETION_PROC.call(input)
+      begin
+        res = IrbCompletionProc.call(input)
+      rescue Exception
+        res = []
       end
-      return res
+      begin
+        resfiles = Readline::FILENAME_COMPLETION_PROC.call(input)
+      rescue Exception
+        resfiles = []
+      end
+      if(resfiles == nil)
+        resfiles = []
+      end
+      return res + resfiles
     }
 
     Operators = ["%", "&", "*", "**", "+",  "-",  "/",
