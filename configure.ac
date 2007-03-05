@@ -204,6 +204,17 @@ if test "x$HAVE_CALIFE_CAMERA" = "xyes"; then
     AVAIL_EXTLIBS="califecamera $AVAIL_EXTLIBS"  
 fi
 
+## check for libstereopixel ##
+PKG_CHECK_MODULES(STEREOPIXEL, calife-stereopixel >= 0.1, HAVE_STEREOPIXEL="yes", HAVE_STEREOPIXEL="no")
+if test "x$HAVE_STEREOPIXEL" = "xyes"; then
+    AC_MSG_NOTICE([Set STEREOPIXEL_CPPFLAGS... $STEREOPIXEL_CPPFLAGS])
+    AC_SUBST(STEREOPIXEL_CPPFLAGS)
+    AC_SUBST(STEREOPIXEL_LDFLAGS)
+    AC_SUBST(STEREOPIXEL_LIBS)
+    AC_DEFINE(HAVE_STEREOPIXEL,1,[stereopixel library])
+    AVAIL_EXTLIBS="stereopixel $AVAIL_EXTLIBS"  
+fi
+
 ## check for boost-sandbox ##
 MD_FIND_PACKAGE_OPT(boost_sandbox,[], boost/numeric/bindings/lapack/lapack.h, [support for ublas lapack bindings from boost sandbox])
 if test "x$with_boost_sandbox" = "xyes";
