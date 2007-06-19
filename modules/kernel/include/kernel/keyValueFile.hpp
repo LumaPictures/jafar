@@ -1,5 +1,3 @@
-/* $Id$ */
-
 #ifndef KERNEL_KEY_VALUE_FILE_HPP
 #define KERNEL_KEY_VALUE_FILE_HPP
 
@@ -16,8 +14,6 @@ namespace jafar {
 #ifndef SWIG // swig ignores KeyValueFile class
 
     /** Read a file containing simple key value statements.
-     *
-     * \todo add support for a write function
      *
      * \ingroup kernel
      */
