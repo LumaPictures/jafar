@@ -25,8 +25,12 @@ fi
 
 URL=$2
 if test -z "$URL"; then
-    URL="svn+ssh://$USER@svn.laas.fr/svn/jafar/jafarModules/trunk/$MODULE"
-    cat <<EOF
+  SVNUSER=$USER
+  if test "$SVN_LAAS_USER"; then
+    SVNUSER=$SVN_LAAS_USER
+  fi
+  URL="svn+ssh://$SVNUSER@svn.laas.fr/svn/jafar/jafarModules/trunk/$MODULE"
+  cat <<EOF
 WARNING: No repository URL given on command line, will use
 WARNING: ${URL}
 EOF
