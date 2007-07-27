@@ -1,12 +1,13 @@
 #!/usr/bin/ruby
 
 class Builder
-  def initialize()
+  def initialize(option)
     f = File.new("#{ENV['JAFAR_DIR']}/Module.config")
     moduleConfig = f.read
     scriptLanguages = moduleConfig[/SCRIPT_LANGUAGES = .*/]
     @scriptLanguages = scriptLanguages.split(/=/)[1]
     @buildedModule = []
+    @option = option
   end
 
   def buildModule(name)
@@ -52,7 +53,7 @@ private
     end
     if(not @buildedModule.include?(name))
       @buildedModule << name
-      return system("cd #{moduleDir(name)};make dirs lib-install #{@scriptLanguages}")
+      return system("cd #{moduleDir(name)};make #{@option} dirs lib-install #{@scriptLanguages}")
     end
     return true
   end
@@ -61,6 +62,18 @@ private
   end
 end
 
+puts ARGV.size
+usefastbuild = true
+ARGV.each() { |x|
+  if(x[0].chr != '-')
+    usefastbuild = false
+  end
+}
 
-b = Builder.new
-exit(b.buildModule(File.basename(Dir.pwd)))
+if(usefastbuild)
+  b = Builder.new(ARGV.join(" "))
+  exit(b.buildModule(File.basename(Dir.pwd)))
+else
+  puts "make #{ARGV.join(" ")}"
+  system("make #{ARGV.join(" ")}")
+end
