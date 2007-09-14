@@ -9,6 +9,11 @@
 #ifndef KERNEL_JAFAR_MACRO
 #define KERNEL_JAFAR_MACRO
 
+// Define _JFR_MODULE_ when using a jafar library outside the jafar build system
+#ifndef _JFR_MODULE_
+#define _JFR_MODULE_ "jafar"
+#endif
+
 #include <string>
 #include <sstream>
 
