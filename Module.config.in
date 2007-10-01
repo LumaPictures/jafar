@@ -92,7 +92,7 @@ endif
 ifneq ($(findstring ruby,$(SCRIPT_LANGUAGES)),)
     RUBY=@RUBY@
     RUBY_VERSION=@RUBY_VERSION@
-    SWIGFLAGS_RUBY = -noexcept -ruby -prefix "Jafar::" -I@RUBY_EXTENSION_BASEDIR@ 
+    SWIGFLAGS_RUBY = -noexcept -ruby -prefix "jafar::" -I@RUBY_EXTENSION_BASEDIR@ 
     rubylibdir = $(libdir)/ruby/$(RUBY_VERSION)/jafar
 endif
 
