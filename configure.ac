@@ -193,6 +193,17 @@ AC_SUBST(QT4_LIBS)
 QT4_LDFLAGS=""
 AC_SUBST(QT4_LDFLAGS)
 
+## check for libcalife##
+PKG_CHECK_MODULES(CALIFE, calife >= 0.1, HAVE_CALIFE="yes", HAVE_CALIFE="no")
+if test "x$HAVE_CALIFE" = "xyes"; then
+    AC_MSG_NOTICE([Set CALIFE_CPPFLAGS... $CALIFE_CPPFLAGS])
+    AC_SUBST(CALIFE_CPPFLAGS)
+    AC_SUBST(CALIFE_LDFLAGS)
+    AC_SUBST(CALIFE_LIBS)
+    AC_DEFINE(HAVE_CALIFE,1,[calife library])
+    AVAIL_EXTLIBS="calife $AVAIL_EXTLIBS"
+fi
+
 ## check for libcamera ##
 PKG_CHECK_MODULES(CALIFECAMERA, calife-camera >= 0.1, HAVE_CALIFE_CAMERA="yes", HAVE_CALIFE_CAMERA="no")
 if test "x$HAVE_CALIFE_CAMERA" = "xyes"; then
@@ -213,6 +224,28 @@ if test "x$HAVE_STEREOPIXEL" = "xyes"; then
     AC_SUBST(STEREOPIXEL_LIBS)
     AC_DEFINE(HAVE_STEREOPIXEL,1,[stereopixel library])
     AVAIL_EXTLIBS="stereopixel $AVAIL_EXTLIBS"  
+fi
+
+## check for libdtm##
+PKG_CHECK_MODULES(DTM, calife-dtm >= 0.1, HAVE_DTM="yes", HAVE_DTM="no")
+if test "x$HAVE_DTM" = "xyes"; then
+    AC_MSG_NOTICE([Set DTM_CPPFLAGS... $DTM_CPPFLAGS])
+    AC_SUBST(DTM_CPPFLAGS)
+    AC_SUBST(DTM_LDFLAGS)
+    AC_SUBST(DTM_LIBS)
+    AC_DEFINE(HAVE_DTM,1,[dtm library])
+    AVAIL_EXTLIBS="dtm $AVAIL_EXTLIBS"
+fi
+
+## check for libp3d##
+PKG_CHECK_MODULES(P3D, calife-p3d >= 0.1, HAVE_P3D="yes", HAVE_P3D="no")
+if test "x$HAVE_P3D" = "xyes"; then
+    AC_MSG_NOTICE([Set P3D_CPPFLAGS... $P3D_CPPFLAGS])
+    AC_SUBST(P3D_CPPFLAGS)
+    AC_SUBST(P3D_LDFLAGS)
+    AC_SUBST(P3D_LIBS)
+    AC_DEFINE(HAVE_P3D,1,[p3d library])
+    AVAIL_EXTLIBS="p3d $AVAIL_EXTLIBS"
 fi
 
 ## check for boost-sandbox ##
