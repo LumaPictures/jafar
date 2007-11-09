@@ -52,7 +52,7 @@ def checkoutModule(name)
     return checkoutDependency(name)
   else
     puts "Checkout module : |#{name}|"
-    if( ENV['SVN_LAAS_USER'] != "")
+    if( ENV['SVN_LAAS_USER'] != "" and not ENV['SVN_LAAS_USER'].nil?)
 	svnuser = ENV['SVN_LAAS_USER']
     else
         svnuser = ENV['USER']
