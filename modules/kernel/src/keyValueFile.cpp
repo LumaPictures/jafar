@@ -18,6 +18,13 @@ KeyValueFile::KeyValueFile(std::string const& keyValueSeparator_, char commentPr
   commentPrefix(commentPrefix_)
 {}
 
+bool KeyValueFile::hasKey(std::string const& key) const
+{
+  KeyValueMap::const_iterator it = keyValue.find(key);
+  return it != keyValue.end();
+}
+
+
 void KeyValueFile::readFile(std::string const& filename) {
   using namespace std;
 
@@ -121,3 +128,4 @@ void KeyValueFileSave::save(std::string const& filename,
   kvf.writeFile(filename);
   JFR_TRACE_END("KeyValueFile:load: loading file " << filename);
 }
+

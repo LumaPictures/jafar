@@ -44,6 +44,8 @@ namespace jafar {
        * 
        */
       void writeFile(std::string const& filename);
+      
+      bool hasKey(std::string const& key) const;
 
       /// get the \a value of item \a key.
       template<class T>
