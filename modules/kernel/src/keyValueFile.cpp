@@ -48,7 +48,7 @@ void KeyValueFile::readFile(std::string const& filename) {
 
     // this is an empty line
     // or a comment
-    if (line.size() == 0 || line.at(0) == commentPrefix)
+    if (line.size() == 0 || line.at(0) == commentPrefix || ( line.size() == 1 && line.at(0) == 13 ) )
       continue;
 	  
     tokenizer tokens(line, sep);
