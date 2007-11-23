@@ -18,6 +18,126 @@
 #include <sstream>
 
 /**
+ * This macro defines the member used to store the value of a parameter.
+ * 
+ * There is no reason to use that macro directly, you will want to use
+ * JFR_DEFINE_PARAM_RW, JFR_DEFINE_PARAM_RO or JFR_DEFINE_PARAM_WO
+ * 
+ * @param type the type of the parameter
+ * @param name the name of the parameter (the name of the variable is
+ *             prefixed with m_)
+ */
+#define JFR_DEFINE_PARAM_VAR(type, name) \
+  private: \
+      type m_##name;
+
+/**
+ * This macro defines the function used to return the value of a parameter.
+ * There is no reason to use that macro directly, you will want to use
+ * JFR_DEFINE_PARAM_RW, JFR_DEFINE_PARAM_RO or JFR_DEFINE_PARAM_WO
+ * @param type the type of the parameter
+ * @param name the name of the parameter
+ */
+#define JFR_DEFINE_PARAM_GETTER(type, name) \
+  public: \
+     inline type name() const { return m_##name; }
+
+/**
+ * This macro defines the function used to set the value of a parameter.
+ * There is no reason to use that macro directly, you will want to use
+ * JFR_DEFINE_PARAM_RW, JFR_DEFINE_PARAM_RO or JFR_DEFINE_PARAM_WO
+ * @param type the type of the parameter
+ * @param name the name of the parameter
+ * @param settername the name of the setter (if the parameter is called
+ * myParameter, the setter is ususally called setMyParamter)
+ */
+#define JFR_DEFINE_PARAM_SETTER(type, name, settername ) \
+  public: \
+     inline void settername(type v) { m_##name = v; }
+
+/**
+ * This macro defines a parameter that can be read and write.
+ * 
+ * Exemple of use:
+ * @code
+ *  class MyClass {
+ *    JFR_DEFINE_PARAM_RW( double, myParam, setMyParam);
+ *  };
+ *  MyClass instance;
+ *  instance.setMyParam(10.0);
+ *  JFR_DEBUG(instance.myParam())
+ * @endcode
+ * 
+ * @param type the type of the parameter
+ * @param name the name of the parameter
+ * @param settername the name of the setter (if the parameter is called
+ * myParameter, the setter is ususally called setMyParamter)
+ */
+#define JFR_DEFINE_PARAM_RW( type, name, settername ) \
+  JFR_DEFINE_PARAM_GETTER(type, name) \
+  JFR_DEFINE_PARAM_SETTER(type, name, settername ) \
+  JFR_DEFINE_PARAM_VAR(type,name)
+
+/**
+ * This macro defines a parameter that can be read, but not set.
+ * 
+ * Exemple of use:
+ * @code
+ *  class MyClass {
+ *    public:
+ *      MyClass( ) : m_myParam(10.0) { }
+ *    JFR_DEFINE_PARAM_RO( double, myParam)
+ *  };
+ *  MyClass instance;
+ *  JFR_DEBUG(instance.myParam())
+ * @endcode
+ * 
+ * Or if you want a personal setter
+ * @code
+ *  class MyClass {
+ *    JFR_DEFINE_PARAM_RO( double, myParam)
+ *    public:
+ *      MyClass( ) : m_myParam(0.0) { }
+ *    public:
+ *      void setMyParam(double p)
+ *      {
+ *        if(p < 5.0) m_myParam = p;
+ *      }
+ *  };
+ *  MyClass instance;
+ *  instance.setMyParam(10.0);
+ *  JFR_DEBUG(instance.myParam()); // will return 0.0
+ * @endcode
+ * 
+ * @param type the type of the parameter
+ * @param name the name of the parameter
+ */
+#define JFR_DEFINE_PARAM_RO( type, name) \
+  JFR_DEFINE_PARAM_GETTER(type, name) \
+  JFR_DEFINE_PARAM_VAR(type,name)
+
+/**
+ * This macro defines a parameter that can only be written.
+ * 
+ * Exemple of use:
+ * @code
+ *  class MyClass {
+ *    JFR_DEFINE_PARAM_WO( double, myParam, setMyParam)
+ *  };
+ *  MyClass instance;
+ *  instance.setMyParam(10.0);
+ * @endcode
+ * 
+ * @param type the type of the parameter
+ * @param name the name of the parameter
+ * @param settername the name of the setter (if the parameter is called
+ * myParameter, the setter is ususally called setMyParamter)
+ */
+#define JFR_PARAM_WO( type, name, settername ) \
+  JFR_DEFINE_PARAM_SETTER(type, name, settername ) \
+  JFR_DEFINE_PARAM_VAR(type,name)
+
+/**
  * The JAFAR_DEPRECATED macro can be used to trigger compile-time warnings when a deprecated
  * functions are used.
  * 
