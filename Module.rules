@@ -38,10 +38,10 @@ all: lib $(SCRIPT_LANGUAGES)
 ##################
 
 $(dev_objdir)/%.lo: $(dev_srcdir)/%.c
-	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) -o $@ $<
+	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) $(CPPFLAGS_MODULE) -o $@ $<
 
 $(dev_objdir)/%.lo: $(dev_srcdir)/%.cpp
-	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) -o $@ $<
+	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS) $(CPPFLAGS_MODULE) -o $@ $<
 
 # ruby module generation using swig
 ###################################

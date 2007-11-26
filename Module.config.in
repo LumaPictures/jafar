@@ -37,6 +37,7 @@ dev_testdir  = $(dev_dir)/test_suite
 CC = @CC@
 CFLAGS = @CFLAGS@
 CPPFLAGS = @CPPFLAGS@
+CPPFLAGS_MODULE =
 CXX = @CXX@
 CXXFLAGS = @CXXFLAGS@
 
