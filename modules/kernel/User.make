@@ -24,7 +24,4 @@ CPPFLAGS += $(BOOST_CPPFLAGS)
 #CPPFLAGS += -DJFR_NDEBUG
 
 CXXFLAGS += -g -ggdb -Wall
-
-
-
-
+CPPFLAGS_MODULE = -pedantic -pedantic-errors -Werror 
