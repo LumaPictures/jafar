@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'Qt'
+require 'Qt4'
 
 Qt::Application.new(ARGV)
 Qt::Application.setQuitOnLastWindowClosed(false)
