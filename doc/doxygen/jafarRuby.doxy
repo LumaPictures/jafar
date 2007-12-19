@@ -21,7 +21,11 @@ cd -
 You need to define RUBYLIB for ruby to find your modules.
 In bash:
 \code
-export RUBYLIB="$JAFR_DIR/lib/i686-linux-gnu/ruby/1.8/"
+export RUBYLIB="$JAFAR_DIR/lib/i686-linux-gnu/ruby/1.8/"
+\endcode
+In tcsh:
+\code
+setenv RUBYLIB "$JAFAR_DIR/lib/i686-linux-gnu/ruby/1.8/"
 \endcode
 
 \section secRubyShells The Ruby shell
