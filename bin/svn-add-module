@@ -54,7 +54,7 @@ else
     # The non-svn directory is renamed to ${MODULE}_bak
     svn mkdir -m "new module $MODULE" $URL
     svn co $URL ${MODULE}_tmp
-    cp -a ${MODULE}/* ${MODULE}_tmp
+    cp -pR ${MODULE}/* ${MODULE}_tmp
     mv ${MODULE} ${MODULE}_bak
     mv ${MODULE}_tmp ${MODULE}
 fi
