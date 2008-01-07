@@ -8,6 +8,7 @@ class Builder
     @scriptLanguages = scriptLanguages.split(/=/)[1]
     @buildedModule = []
     @option = option
+		getMake()
   end
 
   def buildModule(name)
@@ -53,12 +54,30 @@ private
     end
     if(not @buildedModule.include?(name))
       @buildedModule << name
-      return system("cd #{moduleDir(name)};make #{@option} dirs lib-install #{@scriptLanguages}")
+      return system("cd #{moduleDir(name)};#{@make} #{@option} dirs lib-install #{@scriptLanguages}")
     end
     return true
   end
   def moduleDir(name)
     return "#{ENV['JAFAR_DIR']}/modules/#{name}/"
+  end
+  def getMake()
+    make_array = ["make", "gmake"]
+		
+		# check that make --version returns 0
+		# GNU Make is probably the only make which understand long options so ...
+		# If it is not the case, we will need something smarter to find which make is really GNU Make
+		
+		make_array.each do |make|
+      if (system("#{make} --version 1>/dev/null 2>/dev/null"))
+					puts "Will use #{make} as GNU Make"
+					@make = make
+					return
+			end
+		end
+
+		STDERR.puts "It seems you don't have GNU Make on your system"
+		@make = "" # Probably need to send some exception XXX
   end
 end
 
@@ -74,6 +93,6 @@ if(usefastbuild)
   b = Builder.new(ARGV.join(" "))
   exit(b.buildModule(File.basename(Dir.pwd)))
 else
-  puts "make #{ARGV.join(" ")}"
-  system("make #{ARGV.join(" ")}")
+  puts "#{@make} #{ARGV.join(" ")}"
+  system("#{@make} #{ARGV.join(" ")}")
 end
