@@ -1,6 +1,7 @@
 /* $Id$ */
 
-#if (defined(__MACH__) && defined(__APPLE__))
+#if (defined(__MACH__) ||  defined(__APPLE__) || defined(__NetBSD__) \
+		|| defined(__OpenBSD__) || defined(__FreeBSD__))
 #include <libgen.h>
 #endif
 
@@ -41,7 +42,12 @@ void Exception::addTrace(std::string const& module_, std::string const& file_, i
   std::stringstream s;
 
 #ifndef JFR_DEBUG_FULL_PATH
+#ifdef __NetBSD__
+  s << module_ << "/" << basename(const_cast<char*> (file_.c_str())) << ":" << line_ 
+			   << ":\n  " << message_;
+#else
   s << module_ << "/" << basename(file_.c_str()) << ":" << line_ << ":\n  " << message_;
+#endif
 #else
   s << file_ << ":" << line_ << ":\n  " << message_;
 #endif

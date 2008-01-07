@@ -1,6 +1,7 @@
 /* $Id$ */
 
-#if (defined(__MACH__) && defined(__APPLE__))
+#if (defined(__MACH__) ||  defined(__APPLE__) || defined(__NetBSD__) \
+		|| defined(__OpenBSD__) || defined(__FreeBSD__))
 #include <libgen.h>
 #endif
 
@@ -63,7 +64,11 @@ void DebugStream::sendLocation(std::string const& module_, char const* file_, in
   DebugStream& dbg = instance();
   if (dbg.isDebugging()) {
 #ifndef JFR_DEBUG_FULL_PATH
+#ifdef __NetBSD__
+    dbg << module_ << "/" << basename(const_cast<char*> (file_)) << ":" << line_ << ": ";
+#else
     dbg << module_ << "/" << basename(file_) << ":" << line_ << ": ";
+#endif
 #else
     dbg << file_ << ":" << line_ << ": ";
 #endif
