@@ -1,8 +1,0 @@
- \
- /home/peer/jafar/jafar/modules/lines/objs/i686-linux-gnu/linesException.lo:  \
- /home/peer/jafar/jafar/modules/lines/src/linesException.cpp \
-  /home/peer/jafar/jafar/modules/lines/include/lines/linesException.hpp \
-  /home/peer/jafar/jafar/include/kernel/jafarException.hpp \
-  /home/peer/jafar/jafar/include/kernel/jafarMacro.hpp \
-  /home/peer/jafar/jafar/include/kernel/jafarException.hpp \
-  /home/peer/jafar/jafar/include/kernel/jafarDebug.hpp
