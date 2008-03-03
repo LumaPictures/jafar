@@ -42,7 +42,7 @@ void Exception::addTrace(std::string const& module_, std::string const& file_, i
   std::stringstream s;
 
 #ifndef JFR_DEBUG_FULL_PATH
-#ifdef __NetBSD__
+#if (defined(__NetBSD__) || defined(__APPLE__))
   s << module_ << "/" << basename(const_cast<char*> (file_.c_str())) << ":" << line_ 
 			   << ":\n  " << message_;
 #else

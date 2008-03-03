@@ -64,7 +64,7 @@ void DebugStream::sendLocation(std::string const& module_, char const* file_, in
   DebugStream& dbg = instance();
   if (dbg.isDebugging()) {
 #ifndef JFR_DEBUG_FULL_PATH
-#ifdef __NetBSD__
+#if (defined(__NetBSD__) || defined(__APPLE__))
     dbg << module_ << "/" << basename(const_cast<char*> (file_)) << ":" << line_ << ": ";
 #else
     dbg << module_ << "/" << basename(file_) << ":" << line_ << ": ";
