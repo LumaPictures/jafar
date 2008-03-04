@@ -7,7 +7,8 @@ AC_DEFUN([MD_CHECK_RUBY], [
     if test "$md_ruby_support" = "yes"; then
         [RUBY_EXTENSION_BASEDIR=`$RUBY -rrbconfig -e "puts Config::MAKEFILE_CONFIG['topdir']"`]
         [RUBY_VERSION=`$RUBY -rrbconfig -e "puts Config::CONFIG['ruby_version']"`]
-        
+        [RUBY_EXTLIB_SUFFIX=`$RUBY -rrbconfig -e "puts Config::CONFIG['DLEXT']"`]
+
         md_ruby_cppflags=$CPPFLAGS
         CPPFLAGS="$CPPFLAGS -I$RUBY_EXTENSION_BASEDIR"
         AC_CHECK_HEADER([ruby.h], [], [md_ruby_support=no])
@@ -17,6 +18,7 @@ AC_DEFUN([MD_CHECK_RUBY], [
         HAS_RUBY_SUPPORT=yes
         AC_SUBST(RUBY_EXTENSION_BASEDIR)
         AC_SUBST(RUBY_VERSION)
+		AC_SUBST(RUBY_EXTLIB_SUFFIX)
         ifelse([$1], [], [], [$1])
     ], [
         AC_MSG_WARN([Ruby support disabled])

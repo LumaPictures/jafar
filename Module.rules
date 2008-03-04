@@ -46,7 +46,7 @@ $(dev_objdir)/%.lo: $(dev_srcdir)/%.cpp
 # ruby module generation using swig
 ###################################
 ifneq ($(findstring ruby,$(SCRIPT_LANGUAGES)),)
-RUBY_EXTLIB=$(MODULE)$(SHLIB_SUFFIX)
+RUBY_EXTLIB="$(MODULE).$(RUBY_EXTLIB_SUFFIX)"
 SWIG_INPUT = $(wildcard $(dev_includedir)/*.i)
 SWIG_JAFAR_HEADERS = $(JAFAR_DIR)/swig/jafar.i $(JAFAR_DIR)/swig/jafarRuby.i
 
