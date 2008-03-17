@@ -31,7 +31,18 @@ dnl MD_CHECK_TCLTK([if-found], [if-not_found])
 AC_DEFUN([MD_CHECK_TCLTK],[
     has_tcl=yes
     
-    MD_USER_FIND_FILE(tcl, [tclConfig.sh], [ /usr/lib ], [file=$md_found_file], [has_tcl=no])
+    MD_USER_FIND_FILE(tcl, [tclConfig.sh], [${exec_prefix}/lib \
+	    $extra_lib \
+            /usr/local/lib/tcl8.4 \
+            /usr/local/tcl-8.4/lib \
+            /usr/local/tcl-8.3/lib \
+            /usr/local/tcl-8.4 \
+            /usr/local/lib \
+            /usr/pkg/lib \
+            /usr/lib/tcl8.4 \
+            /usr/lib \
+            /sw/lib \ 
+            /opt/local/lib], [file=$md_found_file], [has_tcl=no])
 
     if test "$has_tcl" = "yes"; then
         . $file
