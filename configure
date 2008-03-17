@@ -869,6 +869,7 @@ SCRIPT_LANGUAGES
 BOOST_CPPFLAGS
 BOOST_LDFLAGS
 BOOST_DATETIME_LIBS
+BOOST_FILESYSTEM_LIBS
 BOOST_THREAD_LIBS
 OPENCV_CPPFLAGS
 OPENCV_LDFLAGS
@@ -19379,18 +19380,7 @@ if test -z "$REQUIRED_SCRIPT_LANGUAGES" || (echo "$REQUIRED_SCRIPT_LANGUAGES" | 
 if test "${with_tcl+set}" = set; then
   withval=$with_tcl; md_find_path="$withval"
 else
-  md_find_path="${exec_prefix}/lib \
-	    $extra_lib \
-            /usr/local/lib/tcl8.4 \
-            /usr/local/tcl-8.4/lib \
-            /usr/local/tcl-8.3/lib \
-            /usr/local/tcl-8.4 \
-            /usr/local/lib \
-            /usr/pkg/lib \
-            /usr/lib/tcl8.4 \
-            /usr/lib \
-            /sw/lib \
-            /opt/local/lib"
+  md_find_path=" /usr/lib "
 fi
 
 
@@ -20236,8 +20226,10 @@ then
     BOOST_CPPFLAGS="$boost_cppflags"
     BOOST_LDFLAGS="$with_boostlib"
     BOOST_DATETIME_LIBS="-lboost_date_time"
+    BOOST_FILESYSTEM_LIBS="-lboost_filesystem"
     BOOST_THREAD_LIBS="-lboost_thread"
     AVAIL_EXTLIBS="boost $AVAIL_EXTLIBS"
+
 
 
 
@@ -24731,6 +24723,7 @@ for ac_last_try in false false false false false :; do
 BOOST_CPPFLAGS!$BOOST_CPPFLAGS$ac_delim
 BOOST_LDFLAGS!$BOOST_LDFLAGS$ac_delim
 BOOST_DATETIME_LIBS!$BOOST_DATETIME_LIBS$ac_delim
+BOOST_FILESYSTEM_LIBS!$BOOST_FILESYSTEM_LIBS$ac_delim
 BOOST_THREAD_LIBS!$BOOST_THREAD_LIBS$ac_delim
 OPENCV_CPPFLAGS!$OPENCV_CPPFLAGS$ac_delim
 OPENCV_LDFLAGS!$OPENCV_LDFLAGS$ac_delim

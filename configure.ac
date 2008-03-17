@@ -119,11 +119,13 @@ then
     BOOST_CPPFLAGS="$boost_cppflags"
     BOOST_LDFLAGS="$with_boostlib"
     BOOST_DATETIME_LIBS="-lboost_date_time"
+    BOOST_FILESYSTEM_LIBS="-lboost_filesystem"
     BOOST_THREAD_LIBS="-lboost_thread"
     AVAIL_EXTLIBS="boost $AVAIL_EXTLIBS" 
     AC_SUBST(BOOST_CPPFLAGS)
     AC_SUBST(BOOST_LDFLAGS)
     AC_SUBST(BOOST_DATETIME_LIBS)
+    AC_SUBST(BOOST_FILESYSTEM_LIBS)
     AC_SUBST(BOOST_THREAD_LIBS)
     AC_DEFINE(HAVE_BOOST,1,[boost library])
 fi
