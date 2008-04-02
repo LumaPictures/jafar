@@ -32,7 +32,7 @@ export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:'/home/adegroot/i386-linux/lib/pkgconf
 configureCmd="env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure --enable-lang='tcl ruby' --with-opencv=/usr/local/opencv --with-swig=/usr/local/swig/bin --with-lapack --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox --with-opengl"
 
 # modules to be checked
-modules="kernel helloworld jmath datareader image camera preprocessing stereopixel qdisplay display viewer3d geom hpm gfm sift surf tracker vme locpano filter slam facetsmap sas klt bundle quasidense textures homography spaf spafsimulator spafgraph spafdb p3d stereosimu dtm calife premodeler bundler objlocalizer lines model3d"
+modules="kernel helloworld jmath datareader image camera preprocessing stereopixel qdisplay display viewer3d geom hpm gfm sift surf tracker vme locpano filter slam facetsmap sas klt bundle quasidense textures homography spaf spafsimulator spafgraph spafdb p3d stereosimu dtm calife premodeler bundler objlocalizer lines model3d stereo delaunay"
 
 # makefile targets to be executed
 targets="clean lib tcl ruby test-build test"
