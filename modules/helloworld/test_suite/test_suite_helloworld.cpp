@@ -1,7 +1,9 @@
 /* $Id$ */
 
 // boost unit test includes
-#include <boost/test/unit_test.hpp>
+#define BOOST_TEST_MAIN 
+#define BOOST_TEST_DYN_LINK 
+#include <boost/test/auto_unit_test.hpp>
 using boost::unit_test_framework::test_suite;
 using boost::unit_test_framework::test_case;
 
@@ -13,6 +15,15 @@ using boost::unit_test_framework::test_case;
 
 using namespace jafar::helloworld;
 
+BOOST_AUTO_TEST_CASE ( test_hello_world )
+{
+	test_HelloWorld thw;
+
+	thw.test_init();
+	thw.test_setHello();
+	thw.test_clearHello();
+}
+
 /*
  * standard init_unit_test_suite function
  */
@@ -23,10 +34,5 @@ init_unit_test_suite( int, char* [] ) {
   // we set the debug level to Warning
   jafar::debug::DebugStream::setDefaultLevel(jafar::debug::DebugStream::Warning);
 
-  // module helloworld test suite
-  test_suite* test= BOOST_TEST_SUITE( "helloworld module test suite" );
-
-  test->add( new test_suite_HelloWorld() );
-
-  return test;
+  return 0;
 }
