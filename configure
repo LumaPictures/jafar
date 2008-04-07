@@ -20283,9 +20283,9 @@ fi
 	found_opencv="yes"
 
 
-    if test "opencv/cxcore.h" != ""; then
-        { echo "$as_me:$LINENO: checking for opencv/cxcore.h " >&5
-echo $ECHO_N "checking for opencv/cxcore.h ... $ECHO_C" >&6; }
+    if test "cxcore.h" != ""; then
+        { echo "$as_me:$LINENO: checking for cxcore.h " >&5
+echo $ECHO_N "checking for cxcore.h ... $ECHO_C" >&6; }
 
         # check whether the include is in the path by default (e.g. /usr/include)
         include_found=""
@@ -20297,7 +20297,7 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 #include <stdio.h>  /* necessary because jpeglib.h fails to include it */
-#include <opencv/cxcore.h>
+#include <cxcore.h>
 
 int
 main ()
@@ -20370,7 +20370,7 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
     regExResult=""
     if test "$found" != ""; then
         for i in $found; do
-            regExResult=`expr "$i" : "\(.*include\)/opencv/cxcore\.h"`
+            regExResult=`expr "$i" : "\(.*include\)/cxcore\.h"`
             if test "$regExResult" != ""; then
                 break
             fi
@@ -20382,7 +20382,7 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
     regExResult=""
     if test "$found" != ""; then
         for i in $found; do
-            regExResult=`expr "$i" : "\(.*\)/opencv/cxcore\.h"`
+            regExResult=`expr "$i" : "\(.*\)/cxcore\.h"`
             if test "$regExResult" != ""; then
                 break
             fi

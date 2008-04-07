@@ -131,7 +131,7 @@ then
 fi
 
 ## check for openCV ##
-MD_FIND_PACKAGE_OPT(opencv, cxcore, opencv/cxcore.h, [support for openCV library])
+MD_FIND_PACKAGE_OPT(opencv, cxcore, cxcore.h, [support for openCV library])
 if test "x$with_opencv" = "xyes";
 then
     OPENCV_CPPFLAGS="$opencv_cppflags"
