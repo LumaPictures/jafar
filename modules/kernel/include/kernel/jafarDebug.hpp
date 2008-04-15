@@ -7,6 +7,8 @@
 #include <fstream>
 #include <string>
 #include <map>
+#include <list>
+#include <vector>
 
 // we could use a better singleton here...
 #include "boost/pool/detail/singleton.hpp"
@@ -197,6 +199,58 @@ namespace jafar {
 	debugStream.stream() << std::endl;
 
       return debugStream;
+    }
+
+    template< typename _Type_ >
+    std::ostream& operator<<(std::ostream& s, const std::list<_Type_*>& gr)
+    {
+      s << " ( ";
+      for( typename std::list<_Type_*>::const_iterator it = gr.begin(); it != gr.end(); ++it )
+      {
+        if( it != gr.begin() ) s << " , ";
+        s << **it;
+      }
+      s << " ) ";
+      return s;
+    }
+
+    template< typename _Type_ >
+    std::ostream& operator<<(std::ostream& s, const std::list<_Type_>& gr)
+    {
+      s << " ( ";
+      for( typename std::list<_Type_>::const_iterator it = gr.begin(); it != gr.end(); ++it )
+      {
+        if( it != gr.begin() ) s << " , ";
+        s << *it;
+      }
+      s << " ) ";
+      return s;
+    }
+    
+    template< typename _Type_ >
+    std::ostream& operator<<(std::ostream& s, const std::vector<_Type_*>& gr)
+    {
+      s << " ( ";
+      for( typename std::vector<_Type_*>::const_iterator it = gr.begin(); it != gr.end(); ++it )
+      {
+        if( it != gr.begin() ) s << " , ";
+        s << **it;
+      }
+      s << " ) ";
+      return s;
+    }
+    
+    template< typename _Type_ >
+    std::ostream& operator<<(std::ostream& s, const std::vector<_Type_>& gr)
+    {
+      s << " ( ";
+      for( typename std::vector<_Type_>::const_iterator it = gr.begin(); it != gr.end(); ++it )
+      {
+        if( it != gr.begin() ) s << " , ";
+        s << *it;
+      }
+      s << " ) ";
+      return s;
     }
 
 #endif // SWIG
