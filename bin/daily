@@ -23,14 +23,11 @@ ssh='/usr/bin/ssh'
 
 export JAFAR_DIR='/usr/local/jafar'
 
-doxygen_bindir='/home/tlemaire/usr/i386-linux/bin/'
-export PATH=${doxygen_bindir}:${PATH};
-
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:'/home/adegroot/i386-linux/lib/pkgconfig';
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:'/home/adegroot/i386-linux/lib'
 
 # configure command
-configureCmd="env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure --enable-lang='tcl ruby' --with-opencv --with-opencvinc=/usr/local/opencv/include/opencv --with-opencvlib=/usr/local/opencv/lib --with-swig=/usr/local/swig/bin --with-lapack --with-boost=/home/adegroot/i386-linux --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox --with-opengl"
+configureCmd="env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure --enable-lang='tcl ruby'  --with-lapack --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox --with-opencv --with-opencvinc=/usr/include/opencv --with-opencvlib=/usr/lib --with-opengl"
 
 # modules to be checked
 modules="kernel helloworld jmath datareader image camera preprocessing stereopixel qdisplay display viewer3d geom hpm gfm sift surf tracker vme locpano filter slam facetsmap sas klt bundle quasidense textures homography spaf spafsimulator spafgraph spafdb p3d stereosimu dtm calife premodeler bundler objlocalizer lines model3d stereo delaunay"
