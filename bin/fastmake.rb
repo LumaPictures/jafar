@@ -29,7 +29,6 @@ class Builder
     @scriptLanguages = scriptLanguages.split(/=/)[1]
     @buildedModule = []
     @option = option
-		getMake()
   end
 
   def buildModule(name)
