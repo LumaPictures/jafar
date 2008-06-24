@@ -23,7 +23,11 @@ namespace jafar {
        */
       enum ExceptionId {
 	KEYVALUEFILE_UNKNOWN_KEY, /**< KeyValueFile: unknown key           */
-	KEYVALUEFILE_INVALID_LINE /**< KeyValueFile: invalide line in file */
+	KEYVALUEFILE_INVALID_LINE, /**< KeyValueFile: invalide line in file */
+        CSVFILE_INVALID_LINE,/**< CSVFile: invalide line in file */
+	CSVFILE_UNKNOWN_COLUMN_NAME, /**< CSVFile: unknown column name */
+	CSVFILE_UNKNOWN_LINE, /**< CSVFile: unknown line in file */
+        CSVFILE_UNKNOWN_COLUMN /**< CSVFile: unknown column in file */
       };
 
       /** Constructor. You should not use this constructor directly,
