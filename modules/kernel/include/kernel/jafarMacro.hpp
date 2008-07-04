@@ -425,6 +425,15 @@ using jafar::debug::DebugStream;
     JFR_DEBUG_END()     \
   }
 
+/**
+ * Send \a message to the debug stream with level
+ * DebugStream::Debug, if the condition \a test
+ * is true. \c operator<< can be used to format the
+ * message.
+ */
+#define JFR_DEBUG_COND(test, message) \
+  if( (test) ) JFR_DEBUG( message);
+
 
 /** Send \a message to the debug stream with level
  * DebugStream::VerboseDebug. \c operator<< can be used to format the
@@ -541,6 +550,7 @@ using jafar::debug::DebugStream;
 #  define JFR_DEBUG_END()  ((void)0)
 
 #  define JFR_DEBUG(message) ((void)0)
+#  define JFR_DEBUG_COND(test, message) ((void)0)
 #  define JFR_VDEBUG(message) ((void)0)
 #  define JFR_VVDEBUG(message) ((void)0)
 #  define JFR_TRACE ((void)0)
