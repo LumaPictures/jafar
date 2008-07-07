@@ -136,7 +136,7 @@ namespace jafar {
       /** Implement this method calling repeatedly
        * CSVFile::getItem() method.
        */
-      virtual void loadCSVFile(jafar::kernel::CSVFile const& csvFile, uint nbLines) = 0;
+      virtual void loadCSVFile(jafar::kernel::CSVFile const& csvFile, uint nbLines, uint nbColumns) = 0;
       
     }; // class CSVFileLoad
 
@@ -165,7 +165,7 @@ namespace jafar {
       /** Implement this method calling repeatedly
        * CSVFile::setItem() method.
        */
-      virtual void saveCSVFile(jafar::kernel::CSVFile& csvFile, uint nbLines) = 0;
+      virtual void saveCSVFile(jafar::kernel::CSVFile& csvFile) = 0;
 
     }; // class CSVFileSave
 

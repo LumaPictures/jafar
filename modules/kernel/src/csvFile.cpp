@@ -124,7 +124,7 @@ void CSVFileLoad::load(std::string const& filename,
   JFR_TRACE_BEGIN;
   CSVFile csvf(separator_, commentPrefix_);
   csvf.readFile(filename);
-  loadCSVFile(csvf, csvf.nbOfLines());
+  loadCSVFile(csvf, csvf.nbOfLines(), csvf.nbOfColumns());
   JFR_TRACE_END("CSVFile:load: loaded file " << filename);
 }
 
@@ -136,7 +136,7 @@ void CSVFileSave::save(std::string const& filename,
                        char commentPrefix_) {
   JFR_TRACE_BEGIN;
   CSVFile csvf(separator_, commentPrefix_);
-  saveCSVFile(csvf, csvf.nbOfLines());
+  saveCSVFile(csvf);
   csvf.writeFile(filename);
   JFR_TRACE_END("CSVFile:load: saved file " << filename);
 }
