@@ -98,9 +98,9 @@ namespace jafar {
       
     public:
 
-      typedef enum TypeUpdate{
-	ontime,
-	onframe
+      enum TypeUpdate{
+          ontime,
+          onframe
       };
 
       /** Constructor
