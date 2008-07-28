@@ -124,7 +124,7 @@ void CSVFileLoad::load(std::string const& filename,
   JFR_TRACE_BEGIN;
   CSVFile csvf(separator_, commentPrefix_);
   csvf.readFile(filename);
-  loadCSVFile(csvf, csvf.nbOfLines(), csvf.nbOfColumns());
+  loadCSVFile(csvf);
   JFR_TRACE_END("CSVFile:load: loaded file " << filename);
 }
 

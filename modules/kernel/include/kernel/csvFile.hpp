@@ -17,7 +17,7 @@ namespace jafar {
      */
     class CSVFile {
 
-    private:
+      private:
 
       /// columns separator, default to " ".
       std::string separator;
@@ -31,7 +31,7 @@ namespace jafar {
       /// matrix used to save values
       stringMatrix fileMatrix;
 
-    public:
+      public:
 
       CSVFile(std::string const& separator_ = " ", char commentPrefix_ = '#');
 
@@ -56,25 +56,25 @@ namespace jafar {
         void getItem(const int& line, const int& columnNumber, T& value) const {
 
         JFR_PRED_ERROR(line >= 0 && line <= fileMatrix.size1(),
-		       KernelException,
-		       KernelException::CSVFILE_UNKNOWN_LINE,
-		       "CSVFile:getItem: unknown line: " << line);
+                       KernelException,
+                       KernelException::CSVFILE_UNKNOWN_LINE,
+                       "CSVFile:getItem: unknown line: " << line);
         
-	JFR_PRED_ERROR(columnNumber >= 0 && columnNumber <= fileMatrix.size2(),
-		       KernelException,
-		       KernelException::CSVFILE_UNKNOWN_COLUMN,
-		       "CSVFile:getItem: unknown column: " << columnNumber);
+        JFR_PRED_ERROR(columnNumber >= 0 && columnNumber <= fileMatrix.size2(),
+                       KernelException,
+                       KernelException::CSVFILE_UNKNOWN_COLUMN,
+                       "CSVFile:getItem: unknown column: " << columnNumber);
 
-	std::istringstream ss(fileMatrix(line, columnNumber));
-	ss >> value;
+        std::istringstream ss(fileMatrix(line, columnNumber));
+        ss >> value;
 
-	JFR_IO_STREAM(ss, 
-		      "CSVFile::getItem: invalid value parsing:" << std::endl << 
-		      "line: " << line << std::endl <<
-		      "column: " << columnNumber << std::endl <<
-		      "value: " <<  fileMatrix(line, columnNumber) << std::endl <<
-		      "value-type: " << typeid(T).name());
-      }
+        JFR_IO_STREAM(ss, 
+                      "CSVFile::getItem: invalid value parsing:" << std::endl << 
+                      "line: " << line << std::endl <<
+                      "column: " << columnNumber << std::endl <<
+                      "value: " <<  fileMatrix(line, columnNumber) << std::endl <<
+                      "value-type: " << typeid(T).name());
+      }	
 
       /// get the \a value of item \a columnName at \a line.
       template<class T>
@@ -119,7 +119,7 @@ namespace jafar {
      */
     class CSVFileLoad {
 
-    public:
+      public:
 
       /** This method automates the process:
        * - creates an instance of CSVFile,
@@ -129,14 +129,14 @@ namespace jafar {
       void load(std::string const& filename,
 		std::string const& separator_ = " ", char commentPrefix_ = '#');
 
-    protected:
+      protected:
 
       virtual ~CSVFileLoad() {};
 
       /** Implement this method calling repeatedly
        * CSVFile::getItem() method.
        */
-      virtual void loadCSVFile(jafar::kernel::CSVFile const& csvFile, uint nbLines, uint nbColumns) = 0;
+      virtual void loadCSVFile(jafar::kernel::CSVFile& csvFile) = 0;
       
     }; // class CSVFileLoad
 
@@ -148,7 +148,7 @@ namespace jafar {
      */
     class CSVFileSave {
 
-    public:
+      public:
 
       /** This method automates the process:
        * - creates an instance of CSVFile,
@@ -158,7 +158,7 @@ namespace jafar {
       void save(std::string const& filename,
 		std::string const& separator_ = " ", char commentPrefix_ = '#');
 
-    protected:
+      protected:
 
       virtual ~CSVFileSave() {};
 
