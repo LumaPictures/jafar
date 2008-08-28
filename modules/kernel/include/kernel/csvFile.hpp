@@ -33,7 +33,7 @@ namespace jafar {
 
       public:
 
-      CSVFile(std::string const& separator_ = " ", char commentPrefix_ = '#');
+      CSVFile(std::string const& separator_ = " ", char commentPrefix_ = '#', bool withColumnsNames_ = false);
 
       /// Parse file \a filename for comma separated values lines.
       void readFile(std::string const& filename);
@@ -55,17 +55,17 @@ namespace jafar {
       template<class T>
         void getItem(const int& line, const int& columnNumber, T& value) const {
 
-        JFR_PRED_ERROR(line >= 0 && line <= fileMatrix.size1(),
+        JFR_PRED_ERROR(line >= 0 && line < fileMatrix.size1(),
                        KernelException,
                        KernelException::CSVFILE_UNKNOWN_LINE,
                        "CSVFile:getItem: unknown line: " << line);
         
-        JFR_PRED_ERROR(columnNumber >= 0 && columnNumber <= fileMatrix.size2(),
+        JFR_PRED_ERROR(columnNumber >= 0 && columnNumber < fileMatrix.size2(),
                        KernelException,
                        KernelException::CSVFILE_UNKNOWN_COLUMN,
                        "CSVFile:getItem: unknown column: " << columnNumber);
-
         std::istringstream ss(fileMatrix(line, columnNumber));
+
         ss >> value;
 
         JFR_IO_STREAM(ss, 
@@ -92,6 +92,12 @@ namespace jafar {
       /// set the \a value at \a column and \a line.     
       template<class T>
         void setItem(int line, const int& column, T& value) {
+        if (fileMatrix.size1() < line+1) {
+          fileMatrix.resize((line+1), fileMatrix.size2(), true);
+        }
+        if (fileMatrix.size2() < column+1) {
+          fileMatrix.resize(fileMatrix.size1(), (column+1), true);
+        }
 	std::ostringstream ss;
 	ss << value;
         fileMatrix(line, column) = ss.str();
