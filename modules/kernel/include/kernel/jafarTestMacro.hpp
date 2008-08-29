@@ -43,4 +43,26 @@
  */
 #define JFR_CHECK_MAT_EQUAL(a,b) BOOST_CHECK_MESSAGE( jmath::ublasExtra::trace( ublas::prod( ((a) - (b)), ublas::trans((a)-(b)) ) ) < EPSILON, (a) << " != " << (b) );
 
+/**
+ * Use this macro instead of BOOST_AUTO_TEST_CASE to define a test in case you want
+ * jafar exception to be catched and display.
+ * 
+ * You need to call \ref JAFAR_AUTO_TEST_CASE_END after to finish the creation of
+ * the test case. Exceptions will be reported as Boost.Test classical error.
+ */
+#define JAFAR_AUTO_TEST_CASE_BEGIN( _TEST_NAME_ ) \
+  BOOST_AUTO_TEST_CASE( _TEST_NAME_ ) \
+  { \
+    try
+
+/**
+ * Finalize a test that was created with \ref JAFAR_AUTO_TEST_CASE_BEGIN .
+ */
+#define JAFAR_AUTO_TEST_CASE_END() \
+  catch( jafar::kernel::JafarException ex ) \
+  { \
+    BOOST_CHECK_MESSAGE(false, ex ); \
+  } \
+}
+
 #endif
