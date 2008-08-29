@@ -61,7 +61,14 @@
 #define JAFAR_AUTO_TEST_CASE_END() \
   catch( jafar::kernel::JafarException ex ) \
   { \
+    std::cout << "** jafar::kernel::JafarException: **" << std::endl; \
+    std::cout << ex << std::endl; \
     BOOST_CHECK_MESSAGE(false, ex ); \
+  } \
+  catch (std::exception& ex) { \
+    std::cout << "** std::exception: **" << std::endl; \
+    std::cout << ex.what() << std::endl; \
+    BOOST_CHECK_MESSAGE(false, ex.what() ); \
   } \
 }
 
