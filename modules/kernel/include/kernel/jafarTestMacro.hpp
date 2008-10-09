@@ -11,6 +11,11 @@
 #define EPSILON 1e-6
 
 /**
+ * This macro check if a value is true
+ */
+#define JFR_CHECK(a) BOOST_CHECK_MESSAGE( (a) , (a) << " is not true");
+
+/**
  * This macro check if a value is nearly null ( fabs(a) \< EPSILON )
  */
 #define JFR_CHECK_NULL(a) BOOST_CHECK_MESSAGE(fabs(a) < EPSILON, (a) << " is not null");
