@@ -145,7 +145,7 @@ then
 fi
 
 ## check for Qt4 ##
-PKG_CHECK_MODULES(QT4, QtCore QtGui QtSvg >= 4.2.0, HAVE_QT4="yes", HAVE_QT4="no")
+PKG_CHECK_MODULES(QT4, QtCore QtGui QtSvg QtOpenGL >= 4.2.0, HAVE_QT4="yes", HAVE_QT4="no")
 if test "x$HAVE_QT4" = "xyes"; then
   dnl Check needed because in some cases the QtGui includedir
   dnl doesn't contain the subsystem dir.
@@ -194,6 +194,18 @@ AC_SUBST(QT4_CPPFLAGS)
 AC_SUBST(QT4_LIBS)
 QT4_LDFLAGS=""
 AC_SUBST(QT4_LDFLAGS)
+
+## Check for Ogre
+PKG_CHECK_MODULES(OGRE, OGRE >= 1.4, HAVE_OGRE="yes", HAVE_OGRE="no")
+if test "x$HAVE_OGRE" = "xyes"; then
+    AC_MSG_NOTICE([Set OGRE_CPPFLAGS... $OGRE_CPPFLAGS])
+    AC_SUBST(OGRE_CPPFLAGS)
+    AC_SUBST(OGRE_LDFLAGS)
+    AC_SUBST(OGRE_LIBS)
+    AC_DEFINE(HAVE_OGRE,1,[Ogre library])
+    AVAIL_EXTLIBS="ogre $AVAIL_EXTLIBS"
+fi
+
 
 ## Check for t3d 
 PKG_CHECK_MODULES(T3D, t3d >= 2.5, HAVE_T3D="yes", HAVE_T3D="no")
