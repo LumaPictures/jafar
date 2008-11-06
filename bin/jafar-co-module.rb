@@ -4,6 +4,7 @@ if(ARGV.size != 1)
   puts "jafar-co-module.rb [modulename]"
   puts "This scripts will attempt to checkout"
   puts "a specific module and its dependencies"
+  puts "You need to use your LAAS password !"
   exit
 end
 
