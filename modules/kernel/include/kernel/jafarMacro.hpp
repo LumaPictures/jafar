@@ -17,6 +17,69 @@
 #include <string>
 #include <sstream>
 
+namespace jafar {
+  namespace kernel {
+    namespace details {
+
+      struct ForeachInfoBase {};
+  
+      template<typename T>
+      struct ForeachInfo : public ForeachInfoBase {
+        inline ForeachInfo( const T& t ) : it( t.begin() ), end( t.end() ), count(0)
+        {
+        }
+        inline bool finished() const
+        {
+          return it == end;
+        }
+        inline void next() const
+        {
+          count = 0;
+          ++it;
+        }
+        mutable typename T::const_iterator it, end;
+        mutable int count;
+      };
+      template <typename T>
+      inline ForeachInfo<T> CreateForeachInfo(const T& t)
+      {
+        return ForeachInfo<T>( t );
+      }
+  
+      template <typename T>
+      inline const ForeachInfo<T> *getForeachInfo(const ForeachInfoBase *base, const T *)
+      {
+        return static_cast<const ForeachInfo<T> *>(base); 
+      }
+      template <typename T>
+      inline T* getForeachType(const T &) { return 0; }
+    }
+  }
+}
+
+/**
+ * This macro allow to easily loop over all the elements of a vector, without writing the annoying iterators.
+ * @code
+ * std::vector\< int \> vec;
+ * JFR_FOREACH( int var, vec )
+ * {
+ *  JFR_DEBUG( var );
+ * }
+ * std::vector\< CoolObject \> coolObjects;
+ * JFR_FOREACH( CoolObject& coolObject, coolObjects )
+ * {
+ *  coolObject.soSomethingCool();
+ * }
+ * @endcode
+ */
+#define JFR_FOREACH(var, cont ) \
+  for( const jafar::kernel::details::ForeachInfoBase&  contInfo = jafar::kernel::details::CreateForeachInfo( cont ); \
+       not jafar::kernel::details::getForeachInfo( &contInfo, true ? 0 : jafar::kernel::details::getForeachType(cont) )->finished(); \
+       jafar::kernel::details::getForeachInfo( &contInfo, true ? 0 : jafar::kernel::details::getForeachType(cont) )->next() ) \
+    for( var = *jafar::kernel::details::getForeachInfo( &contInfo, true ? 0 : jafar::kernel::details::getForeachType(cont) )->it; \
+         jafar::kernel::details::getForeachInfo( &contInfo, true ? 0 : jafar::kernel::details::getForeachType(cont) )->count < 1; \
+         ++jafar::kernel::details::getForeachInfo( &contInfo, true ? 0 : jafar::kernel::details::getForeachType(cont) )->count )
+
 /**
  * This macro defines the member used to store the value of a parameter.
  * 
