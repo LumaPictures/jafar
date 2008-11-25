@@ -70,7 +70,7 @@ namespace jafar {
 
       /// set the \a value of item \a key.     
       template<class T>
-      void setItem(std::string const& key, T& value) {
+      void setItem(std::string const& key, const T& value) {
 	std::ostringstream ss;
 	ss << value;
 	keyValue[key] = ss.str();
