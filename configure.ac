@@ -261,6 +261,17 @@ if test "x$HAVE_P3D" = "xyes"; then
     AVAIL_EXTLIBS="p3d $AVAIL_EXTLIBS"
 fi
 
+## check for OpenSceneGraph##
+PKG_CHECK_MODULES(OSG, openscenegraph >= 2.0, HAVE_OSG="yes", HAVE_OSG="no")
+if test "x$HAVE_OSG" = "xyes"; then
+    AC_MSG_NOTICE([Set OSG_CPPFLAGS... $OSG_CPPFLAGS])
+    AC_SUBST(OSG_CPPFLAGS)
+    AC_SUBST(OSG_LDFLAGS)
+    AC_SUBST(OSG_LIBS)
+    AC_DEFINE(HAVE_OSG,1,[openscenegraph library])
+    AVAIL_EXTLIBS="osg $AVAIL_EXTLIBS"
+fi
+
 ## check for boost-sandbox ##
 MD_FIND_PACKAGE_OPT(boost_sandbox,[], boost/numeric/bindings/lapack/lapack.h, [support for ublas lapack bindings from boost sandbox])
 if test "x$with_boost_sandbox" = "xyes";
