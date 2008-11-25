@@ -77,7 +77,7 @@ $(RUBY_WRAPPER_CPP): $(SWIG_INPUT) $(DEV_HEADERS) $(SWIG_JAFAR_HEADERS)
 	@echo ""
 	$(SWIG) $(SWIGFLAGS) $(SWIGFLAGS_RUBY) $(CPPFLAGS) -I/usr/include -o $(RUBY_WRAPPER_CPP) $(dev_includedir)/$(MODULE).i || ( rm -f $(RUBY_WRAPPER_CPP) && exit 1 )
 
-$(dev_objdir)/ruby/Makefile: $(dev_srcdir)/ruby/extconf.rb
+$(dev_objdir)/ruby/Makefile: $(dev_srcdir)/ruby/extconf.rb User.make
 	-@mkdir -p $(dev_objdir)/ruby
 	cd $(dev_objdir)/ruby && $(RUBY) $(dev_srcdir)/ruby/extconf.rb \
 		--with-ruby='$(RUBY)' --with-cppflags='$(CPPFLAGS) $(CXXFLAGS)' \
