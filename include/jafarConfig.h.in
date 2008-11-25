@@ -38,3 +38,6 @@
 
 /* Calife Camera Library */
 #undef HAVE_CALIFECAMERA
+
+/* OpenSceneGraph */
+#undef HAVE_OSG
