@@ -17,7 +17,7 @@ timer.connect(timer, SIGNAL("timeout()"), handler, SLOT("pass_thread()"))
 
 Thread.abort_on_exception = true
 Thread.new do
-    timer.start(0)
+    timer.start(10)
     $qApp.exec
     STDERR.puts "WARNING: The graphical application has been closed ! You need to restart the jafar shell !"
 end
