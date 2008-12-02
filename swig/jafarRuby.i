@@ -70,6 +70,16 @@ JAFAR_RUBY_EXCEPTION(Kernel,     Exception);
     JAFAR_CATCH_ALL_EXCEPTIONS
 %enddef
 
+/**
+ * This macro allow to transform a std::vector or std::list, as returned by a 
+ * function to a ruby array.
+ * For instance:
+ * std::list< CoolObject> is mapped to a [ CoolObject#1 CoolObject#2 ... ]
+ *
+ * @param vectorclassname is the full name of the vector/list (ie std::list< CoolObject>)
+ * @param classname is a ruby VALUE which contains the Ruby Class corresponding to CoolObject
+ *                  (one can use rb_cObject to get a standard object)
+ */
 %define STATIC_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, classname)
 %typemap(out) vectorclassname &, const vectorclassname & {
  VALUE arr = rb_ary_new2($1->size());
@@ -87,11 +97,24 @@ JAFAR_RUBY_EXCEPTION(Kernel,     Exception);
 }
 %enddef
 
+/**
+ * @param classname is a string containing the name of the class
+ */
+%define STATIC_VECTOR_TO_RUBY_ARRAY_KLASS_NAME(vectorclassname, classname)
+STATIC_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, rb_eval_string(classname) )
+%enddef
 
+/**
+ * @param classname is the name of the C++ class (no namespace)
+ */
 %define STATIC_VECTOR_TO_RUBY_ARRAY(vectorclassname, classname)
 STATIC_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, c ## classname.klass )
 %enddef
 
+/**
+ * This macro allow to transform a ruby array to a std::vector or std::list to give
+ * as argument to a function.
+ */
 %define RUBY_ARRAY_TO_STATIC_VECTOR(vectorclassname, classname)
 %typemap(in) vectorclassname, vectorclassname const, vectorclassname &, const vectorclassname &, vectorclassname const& {
  Check_Type($input, T_ARRAY);
@@ -109,6 +132,10 @@ STATIC_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, c ## classname.klass )
 }
 %enddef
 
+/**
+ * This macro allow to transform a ruby array to a std::vector or std::list (using
+ * pointers) to give as argument to a function.
+ */
 %define RUBY_ARRAY_TO_PTR_VECTOR(vectorclassname, classname)
 %typemap(in) vectorclassname, vectorclassname const, vectorclassname &, const vectorclassname &, vectorclassname const& {
  Check_Type($input, T_ARRAY);
