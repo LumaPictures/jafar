@@ -70,6 +70,16 @@ JAFAR_RUBY_EXCEPTION(Kernel,     Exception);
     JAFAR_CATCH_ALL_EXCEPTIONS
 %enddef
 
+%{
+
+template< class _T_>
+void jafar_ruby_delete_object( _T_* obj )
+{
+  delete obj;
+}
+
+%}
+
 /**
  * This macro allow to transform a std::vector or std::list, as returned by a 
  * function to a ruby array.
@@ -80,19 +90,19 @@ JAFAR_RUBY_EXCEPTION(Kernel,     Exception);
  * @param classname is a ruby VALUE which contains the Ruby Class corresponding to CoolObject
  *                  (one can use rb_cObject to get a standard object)
  */
-%define STATIC_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, classname)
+%define STATIC_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, fullclassname, classname)
 %typemap(out) vectorclassname &, const vectorclassname & {
  VALUE arr = rb_ary_new2($1->size());
  vectorclassname::iterator i = $1->begin(), iend = $1->end();
  for ( ; i!=iend; i++ )
- rb_ary_push(arr, Data_Wrap_Struct(classname, 0, 0, &*i));
+ rb_ary_push(arr, Data_Wrap_Struct(classname, 0, VOIDFUNC( (void(*)(fullclassname*))jafar_ruby_delete_object<fullclassname> ), new fullclassname( *i)) );
  $result = arr;
 }
-%typemap(out) vectorclassname, const vectorclassname {
+%typemap(out) vectorclassname, fullclassname, const vectorclassname {
  VALUE arr = rb_ary_new2($1.size());
  vectorclassname::iterator i = $1.begin(), iend = $1.end();
  for ( ; i!=iend; i++ )
- rb_ary_push(arr, Data_Wrap_Struct(classname, 0, 0, &*i));
+ rb_ary_push(arr, Data_Wrap_Struct(classname, 0, VOIDFUNC( (void(*)(fullclassname*))jafar_ruby_delete_object<fullclassname> ), new fullclassname( *i) ));
  $result = arr;
 }
 %enddef
@@ -100,15 +110,52 @@ JAFAR_RUBY_EXCEPTION(Kernel,     Exception);
 /**
  * @param classname is a string containing the name of the class
  */
-%define STATIC_VECTOR_TO_RUBY_ARRAY_KLASS_NAME(vectorclassname, classname)
-STATIC_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, rb_eval_string(classname) )
+%define STATIC_VECTOR_TO_RUBY_ARRAY_KLASS_NAME(vectorclassname, fullclassname, classname)
+STATIC_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, fullclassname, rb_eval_string(classname) )
 %enddef
 
 /**
  * @param classname is the name of the C++ class (no namespace)
  */
-%define STATIC_VECTOR_TO_RUBY_ARRAY(vectorclassname, classname)
-STATIC_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, c ## classname.klass )
+%define STATIC_VECTOR_TO_RUBY_ARRAY(vectorclassname, fullclassname, classname)
+STATIC_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, fullclassname, c ## classname.klass )
+%enddef
+
+
+/**
+ * This macro is used to check the type of arguments before passing it to a C/C++ function. It's usefull
+ * in case of overloaded function, otherwise swig is unable to correctly guessed which function to call
+ * @param classname is a ruby VALUE which contains the Ruby Class corresponding to content of the vector
+ *                  (one can use rb_cObject to get a standard object)
+ */
+%define RUBY_ARRAY_TYPE_CHECK_RB_KLASS(vectorclassname, classname)
+%typemap(typecheck) vectorclassname, vectorclassname const, vectorclassname &, const vectorclassname &, vectorclassname const& {
+  Check_Type($input, T_ARRAY);
+  int len = RARRAY($input)->len;
+  $1 = 1;
+  for (int i=0; i!=len; i++) {
+    VALUE inst = rb_ary_entry($input, i);
+    if( not rb_obj_is_kind_of( inst,  classname) )
+    {
+      $1 = 0;
+      break;
+    }
+  }
+}
+%enddef
+
+/**
+ * @param classname is a string containing the name of the class
+ */
+%define RUBY_ARRAY_TYPE_CHECK_KLASS_NAME(vectorclassname, classname)
+RUBY_ARRAY_TYPE_CHECK_RB_KLASS(vectorclassname, rb_eval_string(classname) )
+%enddef
+
+/**
+ * @param classname is the name of the C++ class (no namespace)
+ */
+%define RUBY_ARRAY_TYPE_CHECK(vectorclassname, classname)
+RUBY_ARRAY_TYPE_CHECK_RB_KLASS(vectorclassname, c ## classname.klass )
 %enddef
 
 /**
