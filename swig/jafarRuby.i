@@ -121,6 +121,46 @@ STATIC_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, fullclassname, rb_eval_str
 STATIC_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, fullclassname, c ## classname.klass )
 %enddef
 
+/**
+ * This macro allow to transform a std::vector or std::list, as returned by a 
+ * function to a ruby array.
+ * For instance:
+ * std::list< CoolObject*> is mapped to a [ CoolObject#1 CoolObject#2 ... ]
+ *
+ * @param vectorclassname is the full name of the vector/list (ie std::list< CoolObject*>)
+ * @param classname is a ruby VALUE which contains the Ruby Class corresponding to CoolObject
+ *                  (one can use rb_cObject to get a standard object)
+ */
+%define PTR_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, fullclassname, classname)
+%typemap(out) vectorclassname &, const vectorclassname & {
+ VALUE arr = rb_ary_new2($1->size());
+ vectorclassname::iterator i = $1->begin(), iend = $1->end();
+ for ( ; i!=iend; i++ )
+ rb_ary_push(arr, Data_Wrap_Struct(classname, 0, 0, *i) );
+ $result = arr;
+}
+%typemap(out) vectorclassname, fullclassname, const vectorclassname {
+ VALUE arr = rb_ary_new2($1.size());
+ vectorclassname::iterator i = $1.begin(), iend = $1.end();
+ for ( ; i!=iend; i++ )
+ rb_ary_push(arr, Data_Wrap_Struct(classname, 0, 0, *i ));
+ $result = arr;
+}
+%enddef
+
+/**
+ * @param classname is a string containing the name of the class
+ */
+%define PTR_VECTOR_TO_RUBY_ARRAY_KLASS_NAME(vectorclassname, fullclassname, classname)
+PTR_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, fullclassname, rb_eval_string(classname) )
+%enddef
+
+/**
+ * @param classname is the name of the C++ class (no namespace)
+ */
+%define PTR_VECTOR_TO_RUBY_ARRAY(vectorclassname, fullclassname, classname)
+PTR_VECTOR_TO_RUBY_ARRAY_RB_KLASS(vectorclassname, fullclassname, c ## classname.klass )
+%enddef
 
 /**
  * This macro is used to check the type of arguments before passing it to a C/C++ function. It's usefull
