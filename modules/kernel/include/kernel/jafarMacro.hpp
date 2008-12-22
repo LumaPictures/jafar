@@ -80,6 +80,7 @@ namespace jafar {
          jafar::kernel::details::getForeachInfo( &contInfo, true ? 0 : jafar::kernel::details::getForeachType(cont) )->count < 1; \
          ++jafar::kernel::details::getForeachInfo( &contInfo, true ? 0 : jafar::kernel::details::getForeachType(cont) )->count )
 
+
 /**
  * This macro defines the member used to store the value of a parameter.
  * 
@@ -238,6 +239,19 @@ namespace jafar {
 
 // Must be include after the declaration of the JAFAR_DEPRECATED
 #include "kernel/jafarException.hpp"
+
+/**
+ * Display a variable name in a flow and its value.
+ * 
+ * For instance:
+ * @code
+ * int a = 1;
+ * JFR_DEBUG( JFR_PP_VAR( a ) );
+ * @endcode
+ * will display "a = 1 ".
+ */
+#define JFR_PP_VAR( var ) #var << " = " << var << " "
+
 
 /** Throw \a ExceptionName with ID \a id along with \a message. The
  * constructor of the class \a ExceptionName must have signature
