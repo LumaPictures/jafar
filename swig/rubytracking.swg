@@ -70,7 +70,7 @@ SWIGRUNTIME VALUE SWIG_RubyInstanceFor(void* ptr) {
   /* Now lookup the value stored in the global hash table */
 
   std::map<void*, VALUE>::iterator it = swig_ruby_trackings->find( ptr );
-  if ( it != swig_ruby_trackings->end()) {
+  if ( it == swig_ruby_trackings->end()) {
     return Qnil;
   }
   return it->second;
