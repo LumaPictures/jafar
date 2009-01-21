@@ -98,7 +98,7 @@ void jafar_ruby_delete_object( _T_* obj )
  rb_ary_push(arr, Data_Wrap_Struct(classname, 0, VOIDFUNC( (void(*)(fullclassname*))jafar_ruby_delete_object<fullclassname> ), new fullclassname( *i)) );
  $result = arr;
 }
-%typemap(out) vectorclassname, fullclassname, const vectorclassname {
+%typemap(out) vectorclassname, const vectorclassname {
  VALUE arr = rb_ary_new2($1.size());
  vectorclassname::iterator i = $1.begin(), iend = $1.end();
  for ( ; i!=iend; i++ )
