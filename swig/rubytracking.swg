@@ -31,7 +31,7 @@
 /* Global Ruby hash table to store Trackings from C/C++
    structs to Ruby Objects. 
 */
-static std::map<void*, VALUE>* swig_ruby_trackings = 0;
+extern std::map<void*, VALUE>* swig_ruby_trackings = 0;
 
 /* Setup a Ruby hash table to store Trackings */
 SWIGRUNTIME void SWIG_RubyInitializeTrackings(void) {
