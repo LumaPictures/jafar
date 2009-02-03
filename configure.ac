@@ -362,6 +362,20 @@ then
 	AC_DEFINE(HAVE_PNL,1,[PNL library])
 fi
 
+## check for gdal ##
+MD_FIND_PACKAGE_OPT(gdal, gdal1.5.0, gdal.h, [support for gdal])
+if test "x$with_gdal" = "xyes";
+then
+    GDAL_CPPFLAGS="$gdal_cppflags"
+    GDAL_LDFLAGS="$with_gdallib"
+    GDAL_LIBS="-lgdal1.5.0"
+    AVAIL_EXTLIBS="gdal $AVAIL_EXTLIBS"
+    AC_SUBST(GDAL_CPPFLAGS)
+    AC_SUBST(GDAL_LDFLAGS)
+    AC_SUBST(GDAL_LIBS)
+    AC_DEFINE(HAVE_OGDAL,1,[gdal library])
+fi
+
 AC_SUBST(AVAIL_EXTLIBS)
 ##########################
 # Check for header files #
