@@ -20,9 +20,9 @@ namespace jafar {
       private:
 
       /// columns separator, default to " ".
-      std::string separator;
+      std::string m_separator;
       /// prefixes comment line
-      char commentPrefix;
+      char m_commentPrefix;
       /// indicates if columns names are given
       bool withColumnsNames;
       /// map column name to an integer
@@ -30,6 +30,9 @@ namespace jafar {
       typedef boost::numeric::ublas::matrix<std::string> stringMatrix;
       /// matrix used to save values
       stringMatrix fileMatrix;
+      uint lineNumber;
+      uint dataLineNumber;
+      uint columnNumber;
 
       public:
 
@@ -46,11 +49,19 @@ namespace jafar {
       /// \Warning It must use the same separator as the data.
       void hasColumnsNames(const bool& _withColumnsNames);
       /// indicates whether this \a columnName exists 
-      bool hasColumn(std::string const& columnName);
+      bool hasColumn(std::string const& columnName) const;
       /// returns the number of lines loaded
-      uint nbOfLines();
+      uint nbOfLines() const;
       /// returns the number of columns per line
-      uint nbOfColumns();
+      uint nbOfColumns() const;
+      /// returns the values separator
+      inline std::string separator() const {
+        return m_separator;
+      }
+      /// returns the comment line prefix
+      inline char commentPrefix() const {
+        return m_commentPrefix;
+      }
       /// get the \a value at \a columnNumber at \a line.
       template<class T>
         void getItem(const int& line, const int& columnNumber, T& value) const {
@@ -91,7 +102,7 @@ namespace jafar {
 
       /// set the \a value at \a column and \a line.     
       template<class T>
-        void setItem(int line, const int& column, T& value) {
+        void setItem(int line, int column, T value) {
         if (fileMatrix.size1() < line+1) {
           fileMatrix.resize((line+1), fileMatrix.size2(), true);
         }
@@ -105,7 +116,7 @@ namespace jafar {
 
       /// set the \a value of item \a column at \a line.     
       template<class T>
-        void setItem(const int& line, const std::string& colName, T& value) const {
+        void setItem(const int& line, const std::string& colName, T& value) {
         std::map<std::string,int>::const_iterator iter = columnNames.find(colName);
 	JFR_PRED_ERROR(iter != columnNames.end(),
 		       KernelException,
