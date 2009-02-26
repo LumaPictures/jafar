@@ -630,7 +630,7 @@ using jafar::debug::DebugStream;
 #  define JFR_DEBUG_COND(test, message) ((void)0)
 #  define JFR_VDEBUG(message) ((void)0)
 #  define JFR_VVDEBUG(message) ((void)0)
-#  define JFR_TRACE ((void)0)
+#  define JFR_TRACE(exception, message) ((void)0)
 #  define JFR_TRACE_BEGIN ((void)0)
 #  define JFR_TRACE_POINT ((void)0)
 #  define JFR_TRACE_END(message) ((void)0)
