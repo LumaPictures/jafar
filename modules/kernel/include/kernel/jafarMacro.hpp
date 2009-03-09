@@ -364,14 +364,14 @@ namespace jafar {
 					      __FILE__, __LINE__);	\
   }
 
+#include "kernel/jafarDebug.hpp"
+using jafar::debug::DebugStream;
+
 
 /** When JFR_NDEBUG is defined, contract programming checks, debug
  * messages and trace information are disabled.
  */
 #ifndef JFR_NDEBUG
-
-#include "kernel/jafarDebug.hpp"
-using jafar::debug::DebugStream;
 
 /** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
  * with ID \c ASSERT, along with \a message.

@@ -46,7 +46,11 @@ void Exception::addTrace(std::string const& module_, std::string const& file_, i
   s << module_ << "/" << basename(const_cast<char*> (file_.c_str())) << ":" << line_ 
 			   << ":\n  " << message_;
 #else
+#ifdef WIN32
+    s << module_ << "/" << (file_.c_str()) << ":" << line_ << ":\n  " << message_;
+#else
   s << module_ << "/" << basename(file_.c_str()) << ":" << line_ << ":\n  " << message_;
+#endif
 #endif
 #else
   s << file_ << ":" << line_ << ":\n  " << message_;
