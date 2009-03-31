@@ -101,7 +101,7 @@ namespace jafar {
       /// write current date as a comment
       void writeCurrentDate();
 
-      /// add \a loggable_ to be logged by this logger.
+      /// add \a loggable_ to be logged by this logger. The log header is printed at this moment, so you should use this function when all objects have been created.
       void addLoggable(DataLoggable& loggable_);
 
       /// remove \a loggable_
