@@ -41,3 +41,9 @@
 
 /* OpenSceneGraph */
 #undef HAVE_OSG
+
+/* T3D */
+#undef HAVE_T3D
+
+/* Stereopixel */
+#undef HAVE_STEREOPIXEL
