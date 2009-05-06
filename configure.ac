@@ -405,7 +405,7 @@ AC_C_BIGENDIAN
 AC_CONFIG_FILES(Module.config)
 AC_OUTPUT
 
-if test -z $SCRIPT_LANGUAGES; then
+if test -z "$SCRIPT_LANGUAGES"; then
     AC_MSG_WARN([No scripting language available])
 else
     echo "Scripting languages: $SCRIPT_LANGUAGES"
