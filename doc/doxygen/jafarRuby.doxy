@@ -46,17 +46,26 @@ Kernel::DebugStream.moduleOff("gfm") # will throw an error telling that DebugStr
 
 The configuration file of the IRB is $HOME/.irbrc.
 
-\subsection subsecJRB The jafar Ruby Shells
+\subsection subsecJRB The jafar Ruby Shell
 
-Those shells are needed if you want to use the module <i>qdisplay</i>. There are two possibilities:
- - the <i>jfrirb</i> shell
- - the <i>jrb</i> shell
+If you want to use the module <i>qdisplay</i>. You need to use the <i>jfrirb</i> shell.
 
 \subsubsection subsubsecJFRIRB jfrirb
-This shell requires the Qt4 ruby bindings available at <a href="http://rubyforge.org/projects/korundum">rubyforge</a>. Then you launch it using the command <i>$JAFAR_DIR/bin/jfrirb.rb</i>.
+This shell requires the Qt4 ruby bindings:
 
-\subsubsection subsubsecJRB jrb
-This shell is independant of the Qt4 ruby bindings, and can be downloaded from <a href="http://www.laas.fr/~cberger/jafar/">here</a>. You will find up-to-date information about the shell on the webpage.
+On debian/ubuntu:
+\code
+apt-get install libqt4-ruby
+\endcode
+
+On Fedora Core:
+\code
+yum install QtRuby
+\endcode
+
+From source:
+Download them from <a href="http://rubyforge.org/projects/korundum">rubyforge</a>.
+
 
 \subsubsection subsubsecJRBRC Configuration file
 
