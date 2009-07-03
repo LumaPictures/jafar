@@ -16,6 +16,39 @@ using std::endl;
 
 using namespace jafar::kernel;
 
+		#include <stdlib.h>
+		#include <execinfo.h>
+		std::string get_trace ()
+		{
+			void *array[15];
+			size_t size;
+			char **strings;
+			size_t i;
+		
+			size = backtrace (array, 15);
+			strings = backtrace_symbols (array, size);
+			
+			std::stringstream tracelog;
+			tracelog << "System trace:\n";
+			for(i = 0; i < size; i++)
+					tracelog << strings[i] << "\n";
+			tracelog << std::flush;
+
+/*
+			printf ("Obtained %zd stack frames.\n", size);
+		
+			for (i = 0; i < size; i++)
+					printf ("%s\n", strings[i]);
+*/		
+			free (strings);
+			return tracelog.str();
+		}
+
+		void print_trace()
+		{
+			std::cout << get_trace();
+		}
+
 /*
  * class Exception
  */

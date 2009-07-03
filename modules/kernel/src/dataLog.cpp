@@ -33,6 +33,7 @@ DataLogger::DataLogger(std::string const& logFilename_,
 		       char separator_, 
 		       char commentPrefix_) :
   logStream(logFilename_.c_str()),
+  logStarted(false),
   separator(separator_),
   commentPrefix(commentPrefix_),
   nbColumns(0),
@@ -76,6 +77,12 @@ void DataLogger::addSlaveLogger(DataLogger& logger_)
 
 void DataLogger::log()
 {
+	if (!logStarted)
+	{
+		logStream << logHeaderLine.str() << std::endl;
+		logStarted = true;
+	}
+
   // ask loggables to log their data in turn
   for (LoggablesList::const_iterator it = loggables.begin() ; it != loggables.end() ; ++it) {
     (**it).writeLogData(*this);
@@ -90,10 +97,27 @@ void DataLogger::log()
 }
 
 
+void DataLogger::logStats()
+{
+  // ask loggables to log their data in turn
+  for (LoggablesList::const_iterator it = loggables.begin() ; it != loggables.end() ; ++it) {
+    (**it).writeLogStats(*this);
+  }
+  logStream << std::endl;
+  JFR_IO_STREAM(logStream, "DataLogger::log");
+
+  // dispatch the log() event to the slaves
+  for (LoggersList::iterator it = slaves.begin() ; it != slaves.end() ; ++it) {
+    (**it).logStats();
+  }
+}
+
+
 void DataLogger::writeLegend(std::string const& legend_)
 {
   nbColumns++;
   logStream << commentPrefix << " " << nbColumns  << ":" << legend_ << std::endl;
+  logHeaderLine << legend_ << separator;
   JFR_IO_STREAM(logStream,
 		"DataLogger::writeLegend: error while writting :\n" << legend_);
 }
@@ -107,6 +131,7 @@ void DataLogger::writeLegendTokens(std::string const& legendTokens_, std::string
   for (tokenizer::iterator it = tokens.begin(); it != tokens.end(); ++it) {
     nbColumns++;
     logStream << nbColumns << ":" << *it << separator;
+    logHeaderLine << *it << separator;
   }
   logStream << std::endl;
   JFR_IO_STREAM(logStream,

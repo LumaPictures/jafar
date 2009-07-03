@@ -15,6 +15,10 @@ namespace jafar {
 
   namespace kernel {
 
+
+     /* Obtain a backtrace and print it to stdout. */
+     void print_trace();
+
     /** Base class for all exceptions defined in jafar. It cannot be
      * instanciated, instead use exceptions classes defined in each
      * module. Have a look at the module \ref helloworld to see an example.

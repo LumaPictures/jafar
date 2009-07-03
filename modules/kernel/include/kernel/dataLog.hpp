@@ -4,6 +4,7 @@
 #define KERNEL_DATA_LOG_HPP
 
 #include <string>
+#include <sstream>
 #include <fstream>
 #include <list>
 
@@ -55,6 +56,11 @@ namespace jafar {
        */
       virtual void writeLogData(DataLogger& log) const = 0;
 
+      /** write stats at the end of the log
+       */
+      virtual void writeLogStats(DataLogger& log) const {}
+
+
       friend class DataLogger;
 
     }; // class Loggable
@@ -68,6 +74,8 @@ namespace jafar {
     private:
 
       std::ofstream logStream;
+      std::ostringstream logHeaderLine;
+      bool logStarted;
 
       /// default separator is whitespace
       char separator;
@@ -91,7 +99,7 @@ namespace jafar {
        * @param commentPrefix_ string which starts a comment line
        */
       DataLogger(std::string const& logFilename_, 
-		 char separator_ = ' ', 
+		 char separator_ = '\t', 
 		 char commentPrefix_ = '#');
 
 
@@ -114,6 +122,8 @@ namespace jafar {
 
       /// this method triggers a log.
       void log();
+      /// this method triggers a log of stats.
+      void logStats();
 
       /** This method writes a line of legend. Example:
        * 
