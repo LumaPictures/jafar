@@ -229,7 +229,7 @@ if test "x$HAVE_LIBCAMERA" = "xyes"; then
 fi
 
 ## check for libstereopixel ##
-PKG_CHECK_MODULES(STEREOPIXEL, libstereopixel >= 1.2, HAVE_STEREOPIXEL="yes", HAVE_STEREOPIXEL="no")
+PKG_CHECK_MODULES(STEREOPIXEL, libstereopixel >= 1.3, HAVE_STEREOPIXEL="yes", HAVE_STEREOPIXEL="no")
 if test "x$HAVE_STEREOPIXEL" = "xyes"; then
     AC_MSG_NOTICE([Set STEREOPIXEL_CPPFLAGS... $STEREOPIXEL_CPPFLAGS])
     AC_SUBST(STEREOPIXEL_CPPFLAGS)

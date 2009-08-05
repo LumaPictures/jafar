@@ -21860,23 +21860,23 @@ fi
   else
      PKG_CONFIG_MIN_VERSION=0.9.0
      if $PKG_CONFIG --atleast-pkgconfig-version $PKG_CONFIG_MIN_VERSION; then
-        { $as_echo "$as_me:$LINENO: checking for libstereopixel >= 1.2" >&5
-$as_echo_n "checking for libstereopixel >= 1.2... " >&6; }
+        { $as_echo "$as_me:$LINENO: checking for libstereopixel >= 1.3" >&5
+$as_echo_n "checking for libstereopixel >= 1.3... " >&6; }
 
-        if $PKG_CONFIG --exists "libstereopixel >= 1.2" ; then
+        if $PKG_CONFIG --exists "libstereopixel >= 1.3" ; then
             { $as_echo "$as_me:$LINENO: result: yes" >&5
 $as_echo "yes" >&6; }
             succeeded=yes
 
             { $as_echo "$as_me:$LINENO: checking STEREOPIXEL_CPPFLAGS" >&5
 $as_echo_n "checking STEREOPIXEL_CPPFLAGS... " >&6; }
-            STEREOPIXEL_CPPFLAGS=`$PKG_CONFIG --cflags "libstereopixel >= 1.2"`
+            STEREOPIXEL_CPPFLAGS=`$PKG_CONFIG --cflags "libstereopixel >= 1.3"`
             { $as_echo "$as_me:$LINENO: result: $STEREOPIXEL_CPPFLAGS" >&5
 $as_echo "$STEREOPIXEL_CPPFLAGS" >&6; }
 
             { $as_echo "$as_me:$LINENO: checking STEREOPIXEL_LIBS" >&5
 $as_echo_n "checking STEREOPIXEL_LIBS... " >&6; }
-            STEREOPIXEL_LIBS=`$PKG_CONFIG --libs "libstereopixel >= 1.2"`
+            STEREOPIXEL_LIBS=`$PKG_CONFIG --libs "libstereopixel >= 1.3"`
             { $as_echo "$as_me:$LINENO: result: $STEREOPIXEL_LIBS" >&5
 $as_echo "$STEREOPIXEL_LIBS" >&6; }
         else
@@ -21884,7 +21884,7 @@ $as_echo "$STEREOPIXEL_LIBS" >&6; }
             STEREOPIXEL_LIBS=""
 ## If we have a custom action on failure, don't print errors, but
 ## do set a variable so people can do so.
-            STEREOPIXEL_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libstereopixel >= 1.2"`
+            STEREOPIXEL_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libstereopixel >= 1.3"`
 
         fi
 
