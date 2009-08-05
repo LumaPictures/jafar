@@ -1,9 +1,12 @@
+/* $Id$ */
+
 /*!
   \addtogroup kernel Module kernel
 
 \version 0.2
 
-\author thomas.lemaire@laas.fr
+\author 
+  thomas.lemaire@laas.fr
 
 This module defines some jafar common tools such as standard
 exceptions, debug message facility, data logging facility,...
