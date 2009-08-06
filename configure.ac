@@ -240,7 +240,7 @@ if test "x$HAVE_STEREOPIXEL" = "xyes"; then
 fi
 
 ## check for libdtm##
-PKG_CHECK_MODULES(DTM, libdtm >= 1.0, HAVE_DTM="yes", HAVE_DTM="no")
+PKG_CHECK_MODULES(DTM, libdtm >= 1.1, HAVE_DTM="yes", HAVE_DTM="no")
 if test "x$HAVE_DTM" = "xyes"; then
     AC_MSG_NOTICE([Set DTM_CPPFLAGS... $DTM_CPPFLAGS])
     AC_SUBST(DTM_CPPFLAGS)
@@ -251,7 +251,7 @@ if test "x$HAVE_DTM" = "xyes"; then
 fi
 
 ## check for libp3d##
-PKG_CHECK_MODULES(P3D, libp3d >= 1.0, HAVE_P3D="yes", HAVE_P3D="no")
+PKG_CHECK_MODULES(P3D, libp3d >= 1.1, HAVE_P3D="yes", HAVE_P3D="no")
 if test "x$HAVE_P3D" = "xyes"; then
     AC_MSG_NOTICE([Set P3D_CPPFLAGS... $P3D_CPPFLAGS])
     AC_SUBST(P3D_CPPFLAGS)
