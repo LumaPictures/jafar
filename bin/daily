@@ -30,7 +30,7 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:'/home/adegroot/openrobots/lib'
 configureCmd="env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure --enable-lang='tcl ruby'  --with-lapack --with-boost_sandbox=/home/adegroot/openrobots/include/boost --with-opencv --with-opencvinc=/usr/include/opencv --with-opencvlib=/usr/lib --with-opengl"
 
 # modules to be checked
-modules="kernel helloworld jmath datareader image camera preprocessing stereopixel qdisplay display viewer3d geom hpm gfm sift surf tracker vme locpano filter slam facetsmap sas klt bundle quasidense textures homography spaf spafsimulator spafgraph spafdb splamf p3d stereosimu dtm calife premodeler bundler objlocalizer lines model3d stereo delaunay learner"
+modules="kernel helloworld jmath datareader image camera preprocessing stereopixel qdisplay display viewer3d geom hpm gfm sift surf  vme locpano filter slam facetsmap sas klt bundle quasidense textures homography spaf spafsimulator spafgraph spafdb splamf p3d stereosimu dtm calife premodeler bundler objlocalizer lines model3d stereo delaunay learner"
 
 # makefile targets to be executed
 targets="clean lib tcl ruby test-build test"
