@@ -15,6 +15,7 @@
 #include "kernel/jafarDebug.hpp"
 #include "kernel/dataLog.hpp"
 #include "kernel/timingTools.hpp"
+#include "kernel/IdMaker.hpp"
 
 %}
 
@@ -36,3 +37,4 @@
 %include "kernel/dataLog.hpp"
 %include "kernel/jafarDebug.hpp"
 %include "kernel/timingTools.hpp"
+%include "kernel/IdMaker.hpp"
