@@ -10,10 +10,10 @@ namespace jafar {
      * This class allows to create an unique id.
      * The current implementation increment a counter, and will fail when getId() > MAX_UINT
      */
-    class IdMaker {
+    class IdFactory {
       public:
-        IdMaker();
-        ~IdMaker();
+        IdFactory();
+        ~IdFactory();
       public:
         /// Call this to get an unique id
         unsigned int getId();
