@@ -13,12 +13,12 @@ IdMaker::~IdMaker()
 
 unsigned int IdMaker::getId()
 {
-  return m_lastId++;
+  return ++m_lastId;
 }
 
 void IdMaker::releaseId(unsigned int id)
 {
-  if(id == m_lastId -1 )
+  if(id == m_lastId )
   {
     --m_lastId;
   }
