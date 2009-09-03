@@ -376,6 +376,20 @@ then
     AC_DEFINE(HAVE_OGDAL,1,[gdal library])
 fi
 
+## check for gsl ##
+MD_FIND_PACKAGE_OPT(gsl, gsl, gsl_sys.h, [support for gsl])
+if test "x$with_gsl" = "xyes";
+then
+    GSL_CPPFLAGS="$gsl_cppflags"
+    GSL_LDFLAGS="$with_gsllib"
+    GSL_LIBS="-lgsl"
+    AVAIL_EXTLIBS="gsl $AVAIL_EXTLIBS"
+    AC_SUBST(GSL_CPPFLAGS)
+    AC_SUBST(GSL_LDFLAGS)
+    AC_SUBST(GSL_LIBS)
+    AC_DEFINE(HAVE_OGSL,1,[gsl library])
+fi
+
 AC_SUBST(AVAIL_EXTLIBS)
 ##########################
 # Check for header files #
