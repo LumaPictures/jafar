@@ -794,9 +794,6 @@ ac_includes_default="\
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 AVAIL_EXTLIBS
-GSL_LIBS
-GSL_LDFLAGS
-GSL_CPPFLAGS
 GDAL_LIBS
 GDAL_LDFLAGS
 GDAL_CPPFLAGS
@@ -995,9 +992,6 @@ with_pnlhighinc
 with_gdal
 with_gdallib
 with_gdalinc
-with_gsl
-with_gsllib
-with_gslinc
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1833,22 +1827,6 @@ Optional Packages:
       alternatively, you can specify:
         --with-gdallib=dir : the gdal package's lib directory
         --with-gdalinc=dir : the gdal package's include directory
-
-  --with-gsl
-  --with-gsl=dir
-  --without-gsl
-  --with-gsllib=dir
-  --with-gslinc=dir
-      support for gsl. default: --with-gsl
-      if --with-gsl or --with-gsl=yes is given: gsl package files will be
-         searched for in some standard directories (the default).
-      if --with-gsl=dir is given, and dir is a directory: gsl package files
-         will be searched for below 'dir' using 'find'.
-      if --with-gsl=no or --without-gsl is given: gsl package will
-         not be used.
-      alternatively, you can specify:
-        --with-gsllib=dir : the gsl package's lib directory
-        --with-gslinc=dir : the gsl package's include directory
 
 Some influential environment variables:
   CC          C compiler command
@@ -4504,7 +4482,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4507 "configure"' > conftest.$ac_ext
+  echo '#line 4485 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -7112,11 +7090,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7115: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7093: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7119: \$? = $ac_status" >&5
+   echo "$as_me:7097: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -7402,11 +7380,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7405: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7383: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:7409: \$? = $ac_status" >&5
+   echo "$as_me:7387: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -7506,11 +7484,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:7509: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:7487: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:7513: \$? = $ac_status" >&5
+   echo "$as_me:7491: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -9919,7 +9897,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 9922 "configure"
+#line 9900 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -10019,7 +9997,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 10022 "configure"
+#line 10000 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12432,11 +12410,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12435: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12413: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:12439: \$? = $ac_status" >&5
+   echo "$as_me:12417: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -12536,11 +12514,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:12539: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:12517: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:12543: \$? = $ac_status" >&5
+   echo "$as_me:12521: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -14134,11 +14112,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14137: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14115: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14141: \$? = $ac_status" >&5
+   echo "$as_me:14119: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -14238,11 +14216,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14241: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14219: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14245: \$? = $ac_status" >&5
+   echo "$as_me:14223: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -16470,11 +16448,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16473: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16451: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:16477: \$? = $ac_status" >&5
+   echo "$as_me:16455: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -16760,11 +16738,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16763: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16741: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:16767: \$? = $ac_status" >&5
+   echo "$as_me:16745: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -16864,11 +16842,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:16867: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:16845: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:16871: \$? = $ac_status" >&5
+   echo "$as_me:16849: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -24894,377 +24872,6 @@ then
 
 cat >>confdefs.h <<\_ACEOF
 #define HAVE_OGDAL 1
-_ACEOF
-
-fi
-
-## check for gsl ##
-
-
-# Check whether --with-gsl was given.
-if test "${with_gsl+set}" = set; then
-  withval=$with_gsl;
-fi
-
-
-# Check whether --with-gsllib was given.
-if test "${with_gsllib+set}" = set; then
-  withval=$with_gsllib;
-fi
-
-
-# Check whether --with-gslinc was given.
-if test "${with_gslinc+set}" = set; then
-  withval=$with_gslinc;
-fi
-
-
-
-    # default is "no"
-    if test ${with_gsl:-""} = ""; then
-        with_gsl="no"
-    fi
-
-    if test ${with_gsl:-""} != "no"; then
-	found_gsl="yes"
-
-
-    if test "gsl_sys.h" != ""; then
-        { $as_echo "$as_me:$LINENO: checking for gsl_sys.h " >&5
-$as_echo_n "checking for gsl_sys.h ... " >&6; }
-
-        # check whether the include is in the path by default (e.g. /usr/include)
-        include_found=""
-        if test "$with_gslinc" = "" -a "$with_gsl" = "yes"; then
-            cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <stdio.h>  /* necessary because jpeglib.h fails to include it */
-#include <gsl_sys.h>
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (ac_try="$ac_compile"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
-$as_echo "$ac_try_echo") >&5
-  (eval "$ac_compile") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && {
-	 test -z "$ac_cxx_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest.$ac_objext; then
-  include_found="in default path"
-else
-  $as_echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	include_found=""
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-        fi
-
-        # if not found by default, try searching for it
-        if test "$include_found" = ""; then
-            dirs=""
-            if test "$with_gslinc" != ""; then
-                dirs="$with_gslinc"
-            elif test "$with_gsl" != "yes"; then
-                dirs="$with_gsl"
-            else
-                dirs="${prefix}/include $extra_include /usr/local/include /usr/local/gnu/include /usr/local/gsl /usr/local/gsl/include /opt/include /opt/gnu/include /opt/gsl /opt/gsl/include /opt/local/include /opt/local/include/gsl /usr/include /sw /sw/include /sw/gsl /sw/gsl/include \$HOME/ \$HOME/include \$HOME/usr \$HOME/usr/include \$HOME/usr/gsl \$HOME/opt \$HOME/opt/include \$HOME/opt/gsl \$HOME/gsl \$HOME/local \$HOME/local/include \$HOME/local/gsl"
-            fi
-
-            # use find for searching
-
-    if test "$findprog" = ""; then
-        if test "$CYGWIN" = "yes"; then
-          findprog="/usr/bin/find"
-        else
-          findprog="find"
-        fi
-    fi
-
-
-            # first, look for the given header file without directory components..
-            found=""
-            for i in $dirs; do
-                if test -d $i; then
-                    found="$found `$findprog $i -follow -name gsl_sys.h -print 2> /dev/null`"
-                fi
-            done
-
-            # now, check each found file for relative path prefix.
-
-    regExResult=""
-    if test "$found" != ""; then
-        for i in $found; do
-            regExResult=`expr "$i" : "\(.*include\)/gsl_sys\.h"`
-            if test "$regExResult" != ""; then
-                break
-            fi
-        done
-    fi
-
-            if test "$regExResult" = ""; then
-
-    regExResult=""
-    if test "$found" != ""; then
-        for i in $found; do
-            regExResult=`expr "$i" : "\(.*\)/gsl_sys\.h"`
-            if test "$regExResult" != ""; then
-                break
-            fi
-        done
-    fi
-
-            fi
-            include_found=$regExResult
-        fi
-
-        # report the search result and set result variables
-        if test "$include_found" = ""; then
-            with_gslinc=""
-            { $as_echo "$as_me:$LINENO: result: not found in $dirs" >&5
-$as_echo "not found in $dirs" >&6; }
-        else
-            { $as_echo "$as_me:$LINENO: result: $include_found" >&5
-$as_echo "$include_found" >&6; }
-            if test "$include_found" != "/usr/include" -a \
-                    "$include_found" != "in default path"; then
-                with_gslinc="$include_found"
-                gsl_cppflags="-I$include_found"
-            else
-                with_gslinc=""
-                gsl_cppflags=""
-            fi
-        fi
-    else
-        with_gslinc=""
-        gsl_cppflags=""
-    fi
-
-	 	if test "x$include_found" = "x"; then
-			found_gsl="no"
-        	fi
-
-
-
-
-    { $as_echo "$as_me:$LINENO: checking for libgsl " >&5
-$as_echo_n "checking for libgsl ... " >&6; }
-
-    # check whether the include is in the path by default (e.g. /usr/include)
-    lib_found=""
-    if test "$with_gsllib" = "" -a "$with_gsl" = "yes"; then
-        ac_save_LIBS="$LIBS"
-        LIBS="$LIBS -lgsl"
-        cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval ac_try_echo="\"\$as_me:$LINENO: $ac_try_echo\""
-$as_echo "$ac_try_echo") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && {
-	 test -z "$ac_cxx_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest$ac_exeext && {
-	 test "$cross_compiling" = yes ||
-	 $as_test_x conftest$ac_exeext
-       }; then
-  lib_found="in default path"
-else
-  $as_echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	lib_found=""
-fi
-
-rm -rf conftest.dSYM
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-        LIBS=$ac_save_LIBS
-    fi
-
-    # if not found by default, try searching for it
-    if test "$lib_found" = ""; then
-        if test "$libext" = ""; then
-            libext=".a"
-        fi
-
-
-	case $build_os in
-	     cygwin*) SHLIB_SUFFIX='.dll' ;;
-	     darwin*) SHLIB_SUFFIX='.dylib' ;;
-	     hpux*)   SHLIB_SUFFIX='.sl'  ;;
-	     *)	      SHLIB_SUFFIX='.so'  ;;
-	esac
-
-        if test "$solibext" = ""; then
-	    solibext="$SHLIB_SUFFIX"
-        fi
-
-        if test "$libpre" = ""; then
-            libpre="lib"
-        fi
-
-
-    if test "$findprog" = ""; then
-        if test "$CYGWIN" = "yes"; then
-          findprog="/usr/bin/find"
-        else
-          findprog="find"
-        fi
-    fi
-
-
-        dirs=""
-        if test "$with_gsllib" != ""; then
-            dirs=$with_gsllib
-        elif test "$with_gsl" != "yes"; then
-            dirs=$with_gsl
-        else
-            dirs="${exec_prefix}/lib $extra_lib /usr/local/lib /usr/local/gnu/lib /usr/local/gsl /usr/local/gsl/lib /opt/lib /opt/gnu/lib /opt/gsl /opt/gsl/lib /opt/local/lib /usr/lib /sw /sw/lib /sw/gsl /sw/gsl/lib \$HOME \$HOME/lib \$HOME/gsl \$HOME/gsl/lib \$HOME/usr \$HOME/usr/lib \$HOME/usr/gsl \$HOME/opt \$HOME/opt/lib \$HOME/opt/gsl \$HOME/local \$HOME/local/include \$HOME/local/gsl"
-        fi
-        found=""
-        for i in $dirs; do
-            if test -d $i; then
-                found="$found `$findprog $i -follow -name "${libpre}gsl$solibext" -print 2> /dev/null; $findprog $i -follow -name "${libpre}gsl$libext" -print 2> /dev/null`"
-            fi
-        done
-
-
-    regExResult=""
-    if test "$found" != ""; then
-        for i in $found; do
-            regExResult=`expr "$i" : "\(.*lib\)/${libpre}gsl$solibext"`
-            if test "$regExResult" != ""; then
-                break
-            fi
-        done
-    fi
-
-        if test "$regExResult" = ""; then
-
-    regExResult=""
-    if test "$found" != ""; then
-        for i in $found; do
-            regExResult=`expr "$i" : "\(.*lib\)/${libpre}gsl$libext"`
-            if test "$regExResult" != ""; then
-                break
-            fi
-        done
-    fi
-
-        fi
-        if test "$regExResult" = ""; then
-
-    regExResult=""
-    if test "$found" != ""; then
-        for i in $found; do
-            regExResult=`expr "$i" : "\(.*\)/${libpre}gsl$solibext"`
-            if test "$regExResult" != ""; then
-                break
-            fi
-        done
-    fi
-
-        fi
-        if test "$regExResult" = ""; then
-
-    regExResult=""
-    if test "$found" != ""; then
-        for i in $found; do
-            regExResult=`expr "$i" : "\(.*\)/${libpre}gsl$libext"`
-            if test "$regExResult" != ""; then
-                break
-            fi
-        done
-    fi
-
-        fi
-        lib_found=$regExResult
-    fi
-    if test "$lib_found" = ""; then
-        with_gsllib=""
-        { $as_echo "$as_me:$LINENO: result: not found in $dirs" >&5
-$as_echo "not found in $dirs" >&6; }
-    else
-        { $as_echo "$as_me:$LINENO: result: $lib_found" >&5
-$as_echo "$lib_found" >&6; }
-        if test "$lib_found" != "/usr/lib" -a \
-                "$lib_found" != "in default path"; then
-            with_gsllib="-L$lib_found"
-        else
-            with_gsllib=""
-        fi
-    fi
-
-		if test "x$lib_found" = "x"; then
-            		found_gsl="no"
-        	fi
-
-	with_gsl="yes";
-    else
-	with_gsl="no"
-	{ $as_echo "$as_me:$LINENO: WARNING: Configuring without gsl support " >&5
-$as_echo "$as_me: WARNING: Configuring without gsl support " >&2;}
-    fi
-
-
-if test "x$with_gsl" = "xyes";
-then
-    GSL_CPPFLAGS="$gsl_cppflags"
-    GSL_LDFLAGS="$with_gsllib"
-    GSL_LIBS="-lgsl"
-    AVAIL_EXTLIBS="gsl $AVAIL_EXTLIBS"
-
-
-
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_OGSL 1
 _ACEOF
 
 fi
