@@ -50,6 +50,7 @@ void HelloWorld::printHello()
   else {
     JFR_ERROR(HelloworldException, HelloworldException::EMPTY_HELLO, "hello is not initialized");
   }
+
 }
 
 bool  HelloWorld::checkHello(const string& hello_) {
