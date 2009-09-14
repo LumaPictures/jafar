@@ -13,3 +13,4 @@ $(MODULESDIR):
 doc:
 	doxygen
 	cp $(JAFAR_DIR)/doc/doxygen/images/LAASsmall.png $(JAFAR_DIR)/doc/html/LAASsmall.png 
+
