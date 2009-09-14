@@ -45,6 +45,8 @@ CPPFLAGS += \
 	-I$(dev_includedir) -I$(includedir) \
 	-D_JFR_MODULE_=\"$(MODULE)\"
 
+GCJ = @GCJ@
+
 # libtools #
 LIBTOOL=	@LIBTOOL@
 LTCXX=		$(LIBTOOL) --quiet --mode=compile $(CXX)
