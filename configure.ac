@@ -41,7 +41,7 @@ AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_LN_S
 AC_PROG_AWK
-AC_PROG_GCJ
+AM_PROG_GCJ
 
 ## check for libtool ##
 LD_TWOLEVEL_NAMESPACE="1"
@@ -389,6 +389,20 @@ then
     AC_SUBST(GSL_LDFLAGS)
     AC_SUBST(GSL_LIBS)
     AC_DEFINE(HAVE_OGSL,1,[gsl library])
+fi
+
+## check for gcj ##
+MD_FIND_PACKAGE_OPT(gcj, gcj, gcj_sys.h, [support for gcj])
+if test "x$with_gcj" = "xyes";
+then
+    GCJ_CPPFLAGS="$gcj_cppflags"
+    GCJ_LDFLAGS="$with_gcjlib"
+    GCJ_LIBS="-lgcj"
+    AVAIL_EXTLIBS="gcj $AVAIL_EXTLIBS"
+    AC_SUBST(GCJ_CPPFLAGS)
+    AC_SUBST(GCJ_LDFLAGS)
+    AC_SUBST(GCJ_LIBS)
+    AC_DEFINE(HAVE_OGCJ,1,[gcj library])
 fi
 
 AC_SUBST(AVAIL_EXTLIBS)
