@@ -40,6 +40,7 @@ AC_DEFUN([MD_CHECK_TCLTK],[
             /usr/local/lib \
             /usr/pkg/lib \
             /usr/lib/tcl8.4 \
+            /usr/lib/tcl8.5 \
             /usr/lib \
             /sw/lib \ 
             /opt/local/lib], [file=$md_found_file], [has_tcl=no])
