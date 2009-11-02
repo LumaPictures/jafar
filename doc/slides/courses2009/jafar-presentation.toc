@@ -1,0 +1,21 @@
+\beamer@endinputifotherversion {3.07pt}
+\beamer@sectionintoc {2}{Jafar}{3}{0}{1}
+\beamer@subsectionintoc {2}{1}{Jafar, what is it?}{4}{0}{1}
+\beamer@subsectionintoc {2}{2}{Installing Jafar}{6}{0}{1}
+\beamer@subsectionintoc {2}{3}{Jafar structure}{6}{0}{1}
+\beamer@sectionintoc {3}{Jafar's module}{16}{0}{2}
+\beamer@subsectionintoc {3}{1}{What is a jafar's module?}{17}{0}{2}
+\beamer@subsectionintoc {3}{2}{First steps}{22}{0}{2}
+\beamer@sectionintoc {4}{Modules}{38}{0}{3}
+\beamer@subsectionintoc {4}{1}{kernel}{39}{0}{3}
+\beamer@subsectionintoc {4}{2}{jmath}{49}{0}{3}
+\beamer@subsectionintoc {4}{3}{geom}{70}{0}{3}
+\beamer@subsectionintoc {4}{4}{image}{83}{0}{3}
+\beamer@subsectionintoc {4}{5}{camera}{87}{0}{3}
+\beamer@subsectionintoc {4}{6}{datareader}{88}{0}{3}
+\beamer@subsectionintoc {4}{7}{qdisplay}{94}{0}{3}
+\beamer@sectionintoc {5}{Jafar spirit}{97}{0}{4}
+\beamer@subsectionintoc {5}{1}{Modular}{98}{0}{4}
+\beamer@subsectionintoc {5}{2}{Collaborative}{108}{0}{4}
+\beamer@subsectionintoc {5}{3}{Howto}{118}{0}{4}
+\beamer@sectionintoc {6}{Conclusion}{128}{0}{5}

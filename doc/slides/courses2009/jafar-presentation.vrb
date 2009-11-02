@@ -1,0 +1,2 @@
+\frametitle {Lets document MyFirstClass}
+  \lstinputlisting{first_documented.hpp}
