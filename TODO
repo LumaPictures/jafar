@@ -22,6 +22,8 @@ seraient ajoute dans le package tcl.
 * configure
 
  - ajouter les options pour OpenCV --------- fait
+ - take into account the fact tha no more libboostX.so are provided, only libboostX-mt.so
+ - look for the boost .pc file?
 
 * module kernel
 
@@ -51,9 +53,15 @@ autres bus error
 
 * Subversion
 
-  - script pour aider a l'ajout d'un module sous svn
+  - script pour aider a l'ajout d'un module sous svn -------- fait
   - method http d'acces au repository
 
 * Bugzilla
 
   - a definir
+
+* robotpkg
+
+  - choose a stable version per module for packaging	
+  - create a release target for the modules
+  - do create a category in the doxyfile to be used by release target?
