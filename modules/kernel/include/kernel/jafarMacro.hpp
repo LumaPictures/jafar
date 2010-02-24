@@ -275,12 +275,14 @@ namespace jafar {
  * user defined exceptions.
  */
 #define JFR_PRED_ERROR(predicate, ExceptionName, id, message)		\
+{ \
   if (!(predicate)) {							\
     std::ostringstream s;						\
     s << message;							\
     s << " (" << #predicate << ")";					\
     throw ExceptionName(id, s.str(), __FILE__, __LINE__);		\
-  }
+  } \
+} 
 
 /** Throw a \c JafarException with id RUN_TIME.
  */
@@ -297,6 +299,7 @@ namespace jafar {
  *  RUN_TIME.
  */
 #define JFR_PRED_RUN_TIME(predicate, message)				\
+{ \
   if (!(predicate)) {							\
     using jafar::kernel::JafarException;				\
     std::ostringstream s;						\
@@ -304,7 +307,8 @@ namespace jafar {
     s << " (" << #predicate << ")";					\
     throw JafarException(JafarException::RUN_TIME,			\
 			 s.str(),_JFR_MODULE_, __FILE__, __LINE__);	\
-  }
+  } \
+} 
 
 /** If \a predicate is \c FALSE, throw a IO_STREAM
  * jafar::kernel::JafarException.  
@@ -323,6 +327,7 @@ namespace jafar {
  * \endcode
  */
 #define JFR_IO_STREAM(predicate, message)				\
+{ \
   if (!(predicate))							\
     {									\
       using jafar::kernel::JafarException;				\
@@ -330,7 +335,8 @@ namespace jafar {
       s << message;							\
       throw JafarException(JafarException::IO_STREAM,			\
 			   s.str(), _JFR_MODULE_, __FILE__, __LINE__);	\
-    }
+  } \
+} 
 
 /** If \a predicate is \c FALSE, throw a NUMERIC
  * jafar::kernel::JafarException.  
@@ -341,6 +347,7 @@ namespace jafar {
  * \endcode
  */
 #define JFR_NUMERIC(predicate, message)					\
+{ \
   if (!(predicate))							\
     {									\
       using jafar::kernel::JafarException;				\
@@ -350,11 +357,13 @@ namespace jafar {
       throw JafarException(JafarException::NUMERIC,			\
 			   s.str(),					\
 			   _JFR_MODULE_, __FILE__, __LINE__);		\
-    }
+  } \
+} 
 
 /** If \a predicate is \c FALSE throw a jafar::kernel::InvalidParamException
  */
 #define JFR_CHECK_PARAM(predicate, param)				\
+{ \
   if (!(predicate)) {							\
     std::ostringstream s;						\
     s << "invalid parameter " << #param << "=" << param;		\
@@ -362,7 +371,8 @@ namespace jafar {
     jafar::kernel::throwInvalidParamException(param, s.str(),		\
 					      _JFR_MODULE_,		\
 					      __FILE__, __LINE__);	\
-  }
+  } \
+} 
 
 #include "kernel/jafarDebug.hpp"
 using jafar::debug::DebugStream;
@@ -377,6 +387,7 @@ using jafar::debug::DebugStream;
  * with ID \c ASSERT, along with \a message.
  */
 #  define JFR_ASSERT(predicate, message)				\
+{ \
   if (!(predicate)) {							\
     using jafar::kernel::JafarException;				\
     std::ostringstream s;						\
@@ -384,13 +395,15 @@ using jafar::debug::DebugStream;
     s << " (" << #predicate << ")";					\
     throw JafarException(JafarException::ASSERT,			\
 			 s.str(),_JFR_MODULE_, __FILE__, __LINE__);	\
-  }
+  } \
+} 
 
 
 /** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
  * with ID \c PRECONDITION, along with \a message.
  */
 #  define JFR_PRECOND(predicate, message)				\
+{ \
   if (!(predicate)) {							\
     using jafar::kernel::JafarException;				\
     std::ostringstream s;						\
@@ -398,13 +411,15 @@ using jafar::debug::DebugStream;
     s << " (" << #predicate << ")";					\
     throw JafarException(JafarException::PRECONDITION,			\
 			 s.str(),_JFR_MODULE_, __FILE__, __LINE__);	\
-  }
+  } \
+} 
   
 
 /** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
  * with ID \c POSTCONDITION, along with \a message.
  */
 #  define JFR_POSTCOND(predicate, message)				\
+{ \
   if (!(predicate)) {							\
     using jafar::kernel::JafarException;				\
     std::ostringstream s;						\
@@ -412,12 +427,14 @@ using jafar::debug::DebugStream;
     s << " (" << #predicate << ")";					\
     throw JafarException(JafarException::POSTCONDITION,			\
 			 s.str(),_JFR_MODULE_, __FILE__, __LINE__);	\
-  }
+  } \
+} 
 
 /** If \a predicate is \c FALSE throw a jafar::kernel::JafarException
  * with ID \c INVARIANT, along with \a message.
  */
 #  define JFR_INVARIANT(predicate, message)				\
+{ \
   if (!(predicate)) {							\
     using jafar::kernel::JafarException;				\
     std::ostringstream s;						\
@@ -425,7 +442,8 @@ using jafar::debug::DebugStream;
     s << " (" << #predicate << ")";					\
     throw JafarException(JafarException::INVARIANT,			\
 			 s.str(),_JFR_MODULE_, __FILE__, __LINE__);	\
-  }
+  } \
+} 
 
 /** Send \a message to the debug stream with level
  * DebugStream::Warning. \c operator<< can be used to format the
@@ -509,7 +527,9 @@ using jafar::debug::DebugStream;
  * message.
  */
 #define JFR_DEBUG_COND(test, message) \
-  if( (test) ) JFR_DEBUG( message);
+{ \
+  if( (test) ) JFR_DEBUG( message); \
+}
 
 
 /** Send \a message to the debug stream with level
@@ -561,7 +581,7 @@ using jafar::debug::DebugStream;
     s << message;							\
     exception.addTrace(_JFR_MODULE_, __FILE__, __LINE__, s.str());	\
   }
-
+#if 0
 /** Begin a trace block. A trace block helps the developer to known
  * the call stack followed up by any exception thrown in the
  * block. This block must end with a JFR_TRACE_END.
@@ -594,7 +614,14 @@ using jafar::debug::DebugStream;
 			    << message << jafar::debug::endl;		\
     throw;                                                              \
   } ((void)0)
+#else
+#  define JFR_TRACE_BEGIN
 
+/** End a trace block. Append \a message to the trace.
+ */
+#  define JFR_TRACE_END(message)
+
+#endif
 /** shortcut for: 
  * \code
  *   JFR_TRACE_END(message); 

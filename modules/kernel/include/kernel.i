@@ -19,6 +19,25 @@
 
 %}
 
+%inline %{
+
+  namespace jafar {namespace kernel {
+
+void srand(unsigned int seed)
+{ std::srand(seed); }
+
+int *new_int(int ivalue) {
+  int *i = new int(ivalue);
+  return i;
+}
+int get_int(int *i) {
+  return *i;
+}
+
+
+}}
+%}
+
 %include "jafar.i"
 
 /*
@@ -38,3 +57,4 @@
 %include "kernel/jafarDebug.hpp"
 %include "kernel/timingTools.hpp"
 %include "kernel/IdFactory.hpp"
+

@@ -17,7 +17,7 @@ namespace jafar {
 
 
      /* Obtain a backtrace and print it to stdout. */
-     void print_trace();
+     void print_system_trace();
 
     /** Base class for all exceptions defined in jafar. It cannot be
      * instanciated, instead use exceptions classes defined in each

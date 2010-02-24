@@ -18,6 +18,7 @@ using namespace jafar::debug;
 DebugStream::DebugStream() : 
   debugStream(&std::cerr),
   fileStream(),
+  fsOpen(false),
   modulesLevel(),
   defaultLevel(Debug),
   debugging()
@@ -82,14 +83,16 @@ void DebugStream::sendLocation(std::string const& module_, char const* file_, in
 void DebugStream::setOutputFile(std::string const& filename_) 
 {
   DebugStream& dbg = instance();
-  dbg.fileStream.close();
+  if (dbg.fsOpen) dbg.fileStream.close();
   dbg.fileStream.open(filename_.c_str());
+  dbg.fsOpen = true;
   JFR_IO_STREAM(dbg.fileStream, "DebugStream::setOutputFile: impossible to send debug to file " << filename_);
   dbg.debugStream = &dbg.fileStream;
 }
 
 void DebugStream::setDefaultStream() {
   DebugStream& dbg = instance();
-  dbg.fileStream.close();
+  if (dbg.fsOpen) dbg.fileStream.close();
+  dbg.fsOpen = false;
   dbg.debugStream = &std::cerr;
 }

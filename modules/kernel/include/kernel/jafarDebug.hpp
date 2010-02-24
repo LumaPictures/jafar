@@ -132,6 +132,7 @@ namespace jafar {
 
       /// file stream used when sending the debug to a file.
       std::ofstream fileStream;
+      bool fsOpen;
 
       std::map<std::string, Level> modulesLevel;
 

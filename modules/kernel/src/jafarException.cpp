@@ -17,9 +17,12 @@ using std::endl;
 using namespace jafar::kernel;
 
 		#include <stdlib.h>
+#ifndef WIN32
 		#include <execinfo.h>
-		std::string get_trace ()
+#endif
+		std::string get_system_trace ()
 		{
+#ifndef WIN32
 			void *array[15];
 			size_t size;
 			char **strings;
@@ -42,11 +45,14 @@ using namespace jafar::kernel;
 */		
 			free (strings);
 			return tracelog.str();
+#else
+			return "";
+#endif
 		}
 
-		void print_trace()
+		void print_system_trace()
 		{
-			std::cout << get_trace();
+			std::cout << get_system_trace();
 		}
 
 /*

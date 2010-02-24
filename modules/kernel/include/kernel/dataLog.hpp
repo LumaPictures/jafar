@@ -7,6 +7,7 @@
 #include <sstream>
 #include <fstream>
 #include <list>
+#include <iomanip>
 
 namespace jafar {
 
@@ -147,6 +148,12 @@ namespace jafar {
       template <typename T>
       void writeData(T const& d) {
 	logStream << d << separator;
+      }
+      void writeData(unsigned int const& d) { // because even if it is unsigned, we sometimes put -1 inside
+	logStream << ((int&)d) << separator;
+      }
+      void writeNewLine() {
+	logStream << std::endl;
       }
 
       /// write a NaN to the log
