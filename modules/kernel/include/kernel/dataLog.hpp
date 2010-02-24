@@ -149,9 +149,6 @@ namespace jafar {
       void writeData(T const& d) {
 	logStream << d << separator;
       }
-      void writeData(unsigned int const& d) { // because even if it is unsigned, we sometimes put -1 inside
-	logStream << ((int&)d) << separator;
-      }
       void writeNewLine() {
 	logStream << std::endl;
       }
