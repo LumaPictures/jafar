@@ -38,7 +38,7 @@ namespace jafar {
           foo.cpp:25: the given message
           \endverbatim
        */
-      const std::string& what() const throw();
+      virtual std::string what() const throw();
 
       /** Append \a message_ to exception message.
        * @see JFR_TRACE, JFR_TRACE_POINT, JFR_TRACE_END, JFR_TRACE_MESSAGE

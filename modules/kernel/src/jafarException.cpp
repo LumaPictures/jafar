@@ -73,8 +73,16 @@ Exception::Exception(const string& message_,
 
 Exception::~Exception() throw() {}
 
-const string& Exception::what() const throw() {
-  return _what;
+string Exception::what() const throw() {
+  std::ostringstream oss;
+  std::list<std::string>::const_iterator it;
+
+  oss << _what << std::endl;
+
+  for (it = trace.begin(); it != trace.end(); ++it)
+	  oss << *it << std::endl;
+
+  return oss.str();
 }
 
 void Exception::addTrace(std::string const& module_, std::string const& file_, int line_, const std::string& message_) {
