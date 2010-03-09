@@ -30,9 +30,9 @@ namespace jafar {
       typedef boost::numeric::ublas::matrix<std::string> stringMatrix;
       /// matrix used to save values
       stringMatrix fileMatrix;
-      uint lineNumber;
-      uint dataLineNumber;
-      uint columnNumber;
+      size_t lineNumber;
+      size_t dataLineNumber;
+      size_t columnNumber;
 
       public:
 
@@ -51,9 +51,9 @@ namespace jafar {
       /// indicates whether this \a columnName exists 
       bool hasColumn(std::string const& columnName) const;
       /// returns the number of lines loaded
-      uint nbOfLines() const;
+      size_t nbOfLines() const;
       /// returns the number of columns per line
-      uint nbOfColumns() const;
+      size_t nbOfColumns() const;
       /// returns the values separator
       inline std::string separator() const {
         return m_separator;

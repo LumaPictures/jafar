@@ -32,12 +32,12 @@ bool CSVFile::hasColumn(const std::string& _columnName) const {
   return it != columnNames.end();
 }
 
-uint CSVFile::nbOfLines() const {
+size_t CSVFile::nbOfLines() const {
 //   return fileMatrix.size1();
   return dataLineNumber;
 }
 
-uint CSVFile::nbOfColumns() const {
+size_t CSVFile::nbOfColumns() const {
   return fileMatrix.size2();
 }
 
@@ -51,7 +51,7 @@ void CSVFile::readFile(std::string const& filename) {
   // tokenizer
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
   boost::char_separator<char> sep(m_separator.c_str());
-  uint maxNbTokens = 0;
+  size_t maxNbTokens = 0;
   // reading the lines
   while(getline(file,line)) {
     // this is an empty line or a comment
@@ -117,8 +117,8 @@ void CSVFile::writeFile(std::string const& filename) {
   file << boost::posix_time::to_simple_string(boost::posix_time::second_clock::local_time());
   file << std::endl;
   file << std::endl;
-  for (uint line = 0; line < fileMatrix.size1(); ++line) {
-    for (uint col = 0; col < (fileMatrix.size2()-1); ++col) {
+  for (size_t line = 0; line < fileMatrix.size1(); ++line) {
+    for (size_t col = 0; col < (fileMatrix.size2()-1); ++col) {
       file << fileMatrix(line, col) << m_separator;
     }
     //writes the last column of line and inserts a break
