@@ -33,6 +33,7 @@ TESTOBJS = $(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.lo,$(notdir $(TESTCPP)))
 #################
 
 all: lib $(SCRIPT_LANGUAGES)
+mod: lib-mod $(SCRIPT_LANGUAGES)
 
 # C++ compilation
 ##################
@@ -197,6 +198,7 @@ $(libdir)/lib$(MODULE).la: $(dev_libdir)/lib$(MODULE).la
 lib-install : $(libdir)/lib$(MODULE).la $(HEADERS) $(SWIG_LIBS)
 
 lib : module_dep dirs lib-install
+lib-mod : dirs lib-install
 
 
 # build dirs
@@ -316,14 +318,8 @@ stamp-h: config.h.in config.status ./config/user.ac
 # unit test rules
 ##################
 
-test: test-build
-#	@echo ""
-#	@echo "    **************************************"
-#	@echo "    * Running tests for module $(MODULE) *"
-#	@echo "    **************************************"
-#	@echo ""
-	@$(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
-
+test: test-build test-run-mod
+test-mod: test-build-mod test-run-mod
 
 $(dev_testdir)/$(BUILD)/%.dep: $(dev_testdir)/%.cpp
 	-@mkdir -p $(dev_testdir)/$(BUILD)
@@ -337,11 +333,24 @@ $(dev_testdir)/$(BUILD)/%.lo: $(dev_testdir)/%.cpp $(dev_testdir)/$(BUILD)/%.dep
 	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS)  $(BOOST_CPPFLAGS) -o $@ $<
 
 test-build: dirs lib $(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
+test-build-mod: lib-mod $(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
+
+test-run: module_dep 
+	$(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
+test-run-mod: 
+	$(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
 
 $(dev_testdir)/$(BUILD)/test_suite_$(MODULE): $(TESTOBJS)
 	-@mkdir -p $(dev_testdir)/$(BUILD)
 	@echo "link"
 	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -lboost_unit_test_framework -o $@ $^
+
+test_suite_%: $(dev_testdir)/$(BUILD)/test_suite_%.lo $(dev_testdir)/$(BUILD)/test_suite_$(MODULE).lo
+	-@mkdir -p $(dev_testdir)/$(BUILD)
+	@echo "link"
+	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -lboost_unit_test_framework -o $(dev_testdir)/$(BUILD)/$@ $^
+	@echo "run"
+	$(dev_testdir)/$(BUILD)/$@
 
 .PHONY: $(USE_MODULES)
 
