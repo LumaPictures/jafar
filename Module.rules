@@ -33,7 +33,6 @@ TESTOBJS = $(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.lo,$(notdir $(TESTCPP)))
 #################
 
 all: lib $(SCRIPT_LANGUAGES)
-mod: lib-mod $(SCRIPT_LANGUAGES)
 
 # C++ compilation
 ##################
@@ -200,6 +199,9 @@ lib-install : $(libdir)/lib$(MODULE).la $(HEADERS) $(SWIG_LIBS)
 lib : module_dep dirs lib-install
 lib-mod : dirs lib-install
 
+make-lib:
+	@make lib
+
 
 # build dirs
 #############
@@ -319,7 +321,7 @@ stamp-h: config.h.in config.status ./config/user.ac
 ##################
 
 test: test-build test-run-mod
-test-mod: test-build-mod test-run-mod
+test-mod: make-lib test-build-mod test-run-mod
 
 $(dev_testdir)/$(BUILD)/%.dep: $(dev_testdir)/%.cpp
 	-@mkdir -p $(dev_testdir)/$(BUILD)
@@ -345,10 +347,10 @@ $(dev_testdir)/$(BUILD)/test_suite_$(MODULE): $(TESTOBJS)
 	@echo "link"
 	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -lboost_unit_test_framework -o $@ $^
 
-test_suite_%: $(dev_testdir)/$(BUILD)/test_suite_%.lo $(dev_testdir)/$(BUILD)/test_suite_$(MODULE).lo
+test_suite_%: make-lib $(dev_testdir)/$(BUILD)/test_suite_%.lo $(dev_testdir)/$(BUILD)/test_suite_$(MODULE).lo
 	-@mkdir -p $(dev_testdir)/$(BUILD)
 	@echo "link"
-	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -lboost_unit_test_framework -o $(dev_testdir)/$(BUILD)/$@ $^
+	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -lboost_unit_test_framework -o $(dev_testdir)/$(BUILD)/$@ $(subst make-lib,,$^)
 	@echo "run"
 	$(dev_testdir)/$(BUILD)/$@
 
