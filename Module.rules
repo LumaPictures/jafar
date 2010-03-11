@@ -345,12 +345,12 @@ test-run-mod:
 $(dev_testdir)/$(BUILD)/test_suite_$(MODULE): $(TESTOBJS)
 	-@mkdir -p $(dev_testdir)/$(BUILD)
 	@echo "link"
-	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) $(LIBS) -lboost_unit_test_framework -o $@ $^
+	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -lboost_unit_test_framework -o $@ $^
 
 test_%: make-lib $(dev_testdir)/$(BUILD)/test_%.lo $(dev_testdir)/$(BUILD)/test_suite_$(MODULE).lo
 	-@mkdir -p $(dev_testdir)/$(BUILD)
 	@echo "link"
-	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) $(LIBS) -lboost_unit_test_framework -o $(dev_testdir)/$(BUILD)/$@ $(subst make-lib,,$^)
+	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -lboost_unit_test_framework -o $(dev_testdir)/$(BUILD)/$@ $(subst make-lib,,$^)
 	@echo "run"
 	$(dev_testdir)/$(BUILD)/$@
 
