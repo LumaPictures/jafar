@@ -3,7 +3,7 @@
 
 using namespace jafar::kernel;
 
-IdFactory::IdFactory() : m_lastId(1)
+IdFactory::IdFactory() : m_lastId(0)
 {
 }
 
