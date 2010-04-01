@@ -6,6 +6,8 @@ all: $(MODULESDIR) doc
 
 clean: $(MODULESDIR)
 
+test: $(MODULESDIR)
+
 .PHONY: $(MODULESDIR) doc
 $(MODULESDIR):
 	(cd $@; $(MAKE) $(MAKECMDGOALS))

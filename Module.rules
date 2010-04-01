@@ -63,7 +63,7 @@ $(dev_objdir)/ruby/$(MODULE)_wrap.dep: $(dev_includedir)/$(MODULE).i
 	@echo "Making dependencies for $< (ruby)"
 	-@mkdir -p $(dev_srcdir)/ruby
 	-@$(SWIG) -MM $(SWIGFLAGS) $(SWIGFLAGS_RUBY) $(CPPFLAGS) -I/usr/include -o $(RUBY_WRAPPER_CPP) $(dev_includedir)/$(MODULE).i > /dev/null
-	-@mkdir -p $(dev_objdir)/tcl
+	-@mkdir -p $(dev_objdir)/ruby
 	-@mv $(dev_srcdir)/ruby/$(MODULE)_wrap.d $(dev_objdir)/ruby/$(MODULE)_wrap.dep
 
 $(dev_objdir)/ruby/$(RUBY_EXTLIB): $(RUBY_WRAPPER_CPP) $(dev_objdir)/ruby/Makefile $(dev_libdir)/lib$(MODULE).la
