@@ -14,5 +14,7 @@ $(MODULESDIR):
 
 doc:
 	doxygen
-	cp $(JAFAR_DIR)/doc/doxygen/images/LAASsmall.png $(JAFAR_DIR)/doc/html/LAASsmall.png 
+	for m in $(MODULESDIR); do \
+	cp $$m/doc/images/* $(JAFAR_DIR)/doc/html/; \
+	done
 
