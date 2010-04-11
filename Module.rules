@@ -32,7 +32,23 @@ TESTOBJS = $(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.lo,$(notdir $(TESTCPP)))
 # Standard rules
 #################
 
-all: lib $(SCRIPT_LANGUAGES)
+.PHONY: all lib macro
+
+all: 
+	+(cd $(JAFAR_DIR); $(MAKE) all_$(MODULE))
+all-mod: script-mod-a
+all-mod-a: script-mod-a
+mod: all-mod
+all-old: lib-old $(SCRIPT_LANGUAGES)
+
+script:
+	+(cd $(JAFAR_DIR); $(MAKE) script_$(MODULE))
+script-mod: make-lib $(SCRIPT_LANGUAGES)
+script-mod-a: 
+	+$(MAKE) lib-mod 
+	+$(MAKE)	$(SCRIPT_LANGUAGES)
+
+macro: $(addsuffix -macro,$(SCRIPT_LANGUAGES))
 
 # C++ compilation
 ##################
@@ -55,7 +71,10 @@ RUBY_MAIN_SCRIPT  = $(rubylibdir)/$(MODULE).rb
 RUBY_OTHER_SCRIPTS = $(filter-out $(rubylibdir)/$(MODULE)/$(MODULE).rb,$(RUBY_USER_SCRIPTS))
 RUBY_WRAPPER_CPP=$(dev_srcdir)/ruby/$(MODULE)_wrap.cpp
 
-ruby: $(rubylibdir)/$(MODULE)/$(RUBY_EXTLIB) $(RUBY_OTHER_SCRIPTS) $(RUBY_MAIN_SCRIPT)
+ruby: $(rubylibdir)/$(MODULE)/$(RUBY_EXTLIB) ruby-macro
+ruby-mod: ruby
+ruby-mod-a: ruby
+ruby-macro: $(RUBY_OTHER_SCRIPTS) $(RUBY_MAIN_SCRIPT)
 
 # wrapper dependencies
 SRCS_DEP += $(dev_objdir)/ruby/$(MODULE)_wrap.dep
@@ -66,7 +85,10 @@ $(dev_objdir)/ruby/$(MODULE)_wrap.dep: $(dev_includedir)/$(MODULE).i
 	-@mkdir -p $(dev_objdir)/ruby
 	-@mv $(dev_srcdir)/ruby/$(MODULE)_wrap.d $(dev_objdir)/ruby/$(MODULE)_wrap.dep
 
-$(dev_objdir)/ruby/$(RUBY_EXTLIB): $(RUBY_WRAPPER_CPP) $(dev_objdir)/ruby/Makefile $(dev_libdir)/lib$(MODULE).la
+#$(dev_objdir)/ruby/$(RUBY_EXTLIB): $(RUBY_WRAPPER_CPP) $(dev_objdir)/ruby/Makefile $(dev_libdir)/lib$(MODULE).la
+$(dev_objdir)/ruby/$(RUBY_EXTLIB): $(RUBY_WRAPPER_CPP)
+	$(MAKE) $(dev_objdir)/ruby/Makefile 
+	$(MAKE) $(dev_libdir)/lib$(MODULE).la
 	$(MAKE) -C $(dev_objdir)/ruby
 
 $(RUBY_WRAPPER_CPP): $(SWIG_INPUT) $(DEV_HEADERS) $(SWIG_JAFAR_HEADERS)
@@ -108,6 +130,9 @@ endif
 ###################################
 ifneq ($(findstring tcl,$(SCRIPT_LANGUAGES)),)
 tcl: $(tclpkgdir)/pkgIndex.tcl
+tcl-mod: tcl
+tcl-mod-a: tcl
+tcl-macro: $(MACROS)
 
 MACROS = $(patsubst %.tcl, $(tclpkgdir)/%.tcl, $(notdir $(wildcard $(dev_macrodir)/*.tcl)))
 SWIG_INPUT = $(wildcard $(dev_includedir)/*.i)
@@ -123,7 +148,7 @@ $(dev_objdir)/tcl/$(MODULE)_wrap.dep: $(dev_includedir)/$(MODULE).i
 	-@mv $(dev_srcdir)/tcl/$(MODULE)_wrap.d $(dev_objdir)/tcl/$(MODULE)_wrap.dep
 
 
-$(tclpkgdir)/pkgIndex.tcl : $(tclpkgdir)/$(MODULE)$(SHLIB_SUFFIX) $(MACROS)
+$(tclpkgdir)/pkgIndex.tcl : $(tclpkgdir)/$(MODULE)$(SHLIB_SUFFIX) tcl-macro
 	$(JAFAR_DIR)/bin/pkg_mkIndex $(tclpkgdir) $(MODULE)
 
 $(dev_objdir)/tcl/$(MODULE)_wrap.lo : $(SWIG_INPUT) $(DEV_HEADERS)
@@ -196,11 +221,15 @@ $(libdir)/lib$(MODULE).la: $(dev_libdir)/lib$(MODULE).la
 
 lib-install : $(libdir)/lib$(MODULE).la $(HEADERS) $(SWIG_LIBS)
 
-lib : module_dep dirs lib-install
-lib-mod : dirs lib-install
+lib-old : module_dep dirs lib-install
+lib :
+	+(cd $(JAFAR_DIR); $(MAKE) lib_$(MODULE))
+lib-mod : extlibs_dep dirs 
+	+$(MAKE) lib-install
+lib-mod-a : lib-mod
 
 make-lib:
-	@make lib
+	+$(MAKE) lib
 
 
 # build dirs
@@ -220,6 +249,12 @@ dirs :
 # clean rules
 ##############
 clean: clean-build clean-headers clean-test
+clean-mod: clean
+clean-mod-a: clean
+
+#clean-deps: module_dep clean
+clean-deps:
+	(cd $(JAFAR_DIR); $(MAKE) clean_$(MODULE))
 
 clean-build: clean-objs clean-headers clean-dep
 	$(LIBTOOL) --mode=clean rm -f $(dev_libdir)/lib$(MODULE).la
@@ -257,10 +292,12 @@ $(dev_objdir)/%.dep: $(dev_srcdir)/%.c
 # modules and external libraries dependancies rules
 ###################################################
 module_dep : $(REQUIRED_MODULES) $(OPTIONAL_MODULES) $(REQUIRED_EXTLIBS) $(OPTIONAL_EXTLIBS)
+extlibs_dep : $(REQUIRED_EXTLIBS) $(OPTIONAL_EXTLIBS)
 
 $(REQUIRED_MODULES):
 	@(if test -d $(JAFAR_DIR)/modules/$@; \
-	then cd $(JAFAR_DIR)/modules/$@; $(MAKE) $(MAKECMDGOALS); \
+	then echo make goal $(MAKECMDGOALS); \
+	cd $(JAFAR_DIR)/modules/$@; $(MAKE) $(MAKECMDGOALS); \
 	else \
 	echo "[ERROR] Required module $@ not available. You need to checkout this module"; \
 	exit 1;\
@@ -320,8 +357,20 @@ stamp-h: config.h.in config.status ./config/user.ac
 # unit test rules
 ##################
 
-test: test-build test-run-mod
-test-mod: make-lib test-build-mod test-run-mod
+#test: test-build test-run-mod
+#test-mod: make-lib test-build-mod test-run-mod
+
+test:
+	(cd $(JAFAR_DIR); $(MAKE) test_$(MODULE))
+#test-mod: make-lib test-build-mod-a test-run-mod
+test-mod: 
+	$(MAKE) lib 
+	$(MAKE) test-build-mod-a 
+	$(MAKE) test-run-mod
+#test-mod-a: test-build-mod test-run-mod
+test-mod-a: 
+	$(MAKE) test-build-mod 
+	$(MAKE) test-run-mod
 
 $(dev_testdir)/$(BUILD)/%.dep: $(dev_testdir)/%.cpp
 	-@mkdir -p $(dev_testdir)/$(BUILD)
@@ -334,12 +383,14 @@ $(dev_testdir)/$(BUILD)/%.lo: $(dev_testdir)/%.cpp $(dev_testdir)/$(BUILD)/%.dep
 	@echo "compile $@"
 	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS)  $(BOOST_CPPFLAGS) -o $@ $<
 
-test-build: dirs lib $(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
-test-build-mod: lib-mod $(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
+#test-build: lib $(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
+test-build-mod: lib-mod 
+	+$(MAKE) $(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
+test-build-mod-a: $(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
 
-test-run: module_dep 
-	$(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
-test-run-mod: 
+#test-run: module_dep
+#	$(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
+test-run-mod:
 	$(dev_testdir)/$(BUILD)/test_suite_$(MODULE)
 
 $(dev_testdir)/$(BUILD)/test_suite_$(MODULE): $(TESTOBJS)
@@ -359,7 +410,7 @@ test_%: make-lib $(dev_testdir)/$(BUILD)/test_%.lo $(dev_testdir)/$(BUILD)/test_
 # include dep files
 ####################
 
-ifeq ($(findstring $(MAKECMDGOALS),clean),)
+ifeq ($(findstring clean,$(MAKECMDGOALS)),)
 -include $(SRCS_DEP)
 endif
 
