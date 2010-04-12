@@ -28,8 +28,8 @@ while [[ finished -eq 0 ]]; do
 		mdeps="`cat ${JAFAR_DIR}/modules/$m/User.make | grep REQUIRED_MODULES | cut -d"=" -f2` $mdeps"
 		odeps="`cat ${JAFAR_DIR}/modules/$m/User.make | grep OPTIONAL_MODULES | cut -d"=" -f2` $odeps"
 	done
-	mdeps=`echo $mdeps | perl -p -e "s/ /\n/g" | awk '!x[$0]++'`
-	odeps=`echo $odeps | perl -p -e "s/ /\n/g" | awk '!x[$0]++'`
+	mdeps=`echo $mdeps | awk '{n=split($0,mods," "); for(i=1;i<=n;i++) { if (!x[mods[i]]++) print mods[i];}}'`
+	odeps=`echo $odeps | awk '{n=split($0,mods," "); for(i=1;i<=n;i++) { if (!x[mods[i]]++) print mods[i];}}'`
 
 	newdeps=""
 	for m in $mdeps; do
@@ -61,7 +61,7 @@ done
 
 # and now remove duplicate dependencies
 
-modules=`echo $modules | perl -p -e "s/ /\n/g" | awk '!x[$0]++'`
+modules=`echo $modules | awk '{n=split($0,mods," "); for(i=1;i<=n;i++) { if (!x[mods[i]]++) print mods[i];}}'`
 
 # check if module present
 cleanmodules=""
