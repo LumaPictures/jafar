@@ -46,7 +46,11 @@ script:
 script-mod: make-lib $(SCRIPT_LANGUAGES)
 script-mod-a: 
 	+$(MAKE) lib-mod 
-	+$(MAKE)	$(SCRIPT_LANGUAGES)
+ifeq ($(strip $(SCRIPT_LANGUAGES)),)
+else
+	+$(MAKE) $(SCRIPT_LANGUAGES)
+endif
+
 
 macro: $(addsuffix -macro,$(SCRIPT_LANGUAGES))
 
