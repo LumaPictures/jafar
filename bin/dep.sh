@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 # input: list of modules you wish to process
 # output: list of all modules needed sorted by order of dependency
 
-echo "dep.sh running: $@" >&2
+#echo "dep.sh running: $@" >&2
 
 # first, a small filter
 
