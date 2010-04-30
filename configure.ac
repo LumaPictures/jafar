@@ -146,7 +146,7 @@ then
 fi
 
 ## check for Qt4 ##
-PKG_CHECK_MODULES(QT4, QtCore QtGui QtSvg QtOpenGL QtXml >= 4.4.0, HAVE_QT4="yes", HAVE_QT4="no")
+PKG_CHECK_MODULES(QT4, QtCore QtGui QtSvg QtOpenGL QtNetwork QtXml >= 4.4.0, HAVE_QT4="yes", HAVE_QT4="no")
 if test "x$HAVE_QT4" = "xyes"; then
   dnl Check needed because in some cases the QtGui includedir
   dnl doesn't contain the subsystem dir.
