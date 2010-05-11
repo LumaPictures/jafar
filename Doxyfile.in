@@ -606,7 +606,7 @@ INPUT_ENCODING         = UTF-8
 
 FILE_PATTERNS          = */include/*/*.hpp \
                          */include/*/*.h \
-                         */include/*.i \
+#                         */include/*.i \
                          */macro/*.tcl \
                          */doc/*.doxy \
                          */doc/*.tcl \
