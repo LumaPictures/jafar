@@ -12,30 +12,12 @@
 
 #include <string>
 
+#include "kernel/jafarMacro.hpp"
 #include "kernel/jafarDebug.hpp"
 #include "kernel/dataLog.hpp"
 #include "kernel/timingTools.hpp"
 #include "kernel/IdFactory.hpp"
 
-%}
-
-%inline %{
-
-  namespace jafar {namespace kernel {
-
-void srand(unsigned int seed)
-{ std::srand(seed); }
-
-int *new_int(int ivalue) {
-  int *i = new int(ivalue);
-  return i;
-}
-int get_int(int *i) {
-  return *i;
-}
-
-
-}}
 %}
 
 %include "jafar.i"
@@ -57,4 +39,8 @@ int get_int(int *i) {
 %include "kernel/jafarDebug.hpp"
 %include "kernel/timingTools.hpp"
 %include "kernel/IdFactory.hpp"
+
+%template(IdFactoryNone) jafar::kernel::IdFactory<unsigned, jafar::kernel::IdCollectorNone>;
+%template(IdFactoryList) jafar::kernel::IdFactory<unsigned, jafar::kernel::IdCollectorList>;
+%template(IdFactorySet) jafar::kernel::IdFactory<unsigned, jafar::kernel::IdCollectorSet>;
 

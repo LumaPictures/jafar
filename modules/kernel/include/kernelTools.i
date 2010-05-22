@@ -44,6 +44,17 @@ namespace jafar {
       return jafar::kernel::detail::TicTocChrono::instance().chrono.elapsed();
     };
 
+		void srand(unsigned int seed)
+			{ std::srand(seed); }
+
+		int *new_int(int ivalue) {
+			int *i = new int(ivalue);
+			return i;
+		}
+		int get_int(int *i) {
+			return *i;
+		}
+
   } // namespace kernel
 } // namespace jafar
 
