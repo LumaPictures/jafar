@@ -364,12 +364,12 @@ then
 fi
 
 ## check for gdal ##
-MD_FIND_PACKAGE_OPT(gdal, gdal1.5.0, gdal.h, [support for gdal])
+MD_FIND_PACKAGE_OPT(gdal, gdal, gdal.h, [support for gdal])
 if test "x$with_gdal" = "xyes";
 then
     GDAL_CPPFLAGS="$gdal_cppflags"
     GDAL_LDFLAGS="$with_gdallib"
-    GDAL_LIBS="-lgdal1.5.0"
+    GDAL_LIBS="-lgdal"
     AVAIL_EXTLIBS="gdal $AVAIL_EXTLIBS"
     AC_SUBST(GDAL_CPPFLAGS)
     AC_SUBST(GDAL_LDFLAGS)
