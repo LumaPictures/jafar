@@ -232,9 +232,9 @@ endif(EXISTS ${RUBY_INCLUDE_PATH} AND
       EXISTS ${RUBY_EXECUTABLE} AND 
       EXISTS ${RUBY_LIBRARY})
 
-if(NOT TCL_FOUND AND NOT ${RUBY_FOUND})
+if(NOT TCL_FOUND AND NOT RUBY_FOUND)
   message(FATAL_ERROR "no scripting language available please install one")
-endif(NOT TCL_FOUND AND NOT ${RUBY_FOUND})
+endif(NOT TCL_FOUND AND NOT RUBY_FOUND)
 
 #------------------------------------------------------------------------------
 # Jafar CMake modules:
@@ -258,11 +258,11 @@ find_package(Doxygen)
 configure_file(${CMAKE_SOURCE_DIR}/include/jafarConfig.h.in
                ${INCLUDES_INSTALL_DIR}/jafarConfig.h)
 
-configure_file(${Jafar_SOURCE_DIR}/doc/Doxyfile.in
-               ${Jafar_SOURCE_DIR}/doc/Doxyfile)
+configure_file(${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile.in
+               ${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile)
 
 add_custom_target(doc
-  ${DOXYGEN_EXECUTABLE} ${Jafar_SOURCE_DIR}/doc/Doxyfile
+  ${DOXYGEN_EXECUTABLE} ${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile
 )
 
 add_custom_command(
