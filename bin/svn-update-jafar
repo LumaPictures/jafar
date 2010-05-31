@@ -11,7 +11,7 @@ svn up
 
 cd "modules"
 
-for m in *; do
+for m in $(ls | grep -v CMakeLists.txt); do
     echo ""
     echo "Module ${m}..."
     cd "${m}"
