@@ -184,6 +184,10 @@ macro(BUILD_JAFAR_MODULE modulename)
 
   string(REGEX REPLACE "[ ]+" ";" THIS_PROJECT_DEPENDS_ALL_LIST "${THIS_PROJECT_DEPENDS_ALL}")
   set(THIS_PROJECT_INCLUDES_ALL_LIST ${THIS_PROJECT_DEPENDS_ALL_LIST})
+  message(STATUS "this project includes all list ${THIS_PROJECT_INCLUDES_ALL_LIST}")
+  foreach(inc ${THIS_PROJECT_INCLUDES_ALL_LIST})
+    include_directories(${JAFAR_MODULES_PARENT_DIR}/${inc}/include)
+  endforeach(inc)
 
   # check required external libraries dependencies
   list(LENGTH THIS_MODULE_REQUIRED_EXTLIBS NB_EXTLIBS)
