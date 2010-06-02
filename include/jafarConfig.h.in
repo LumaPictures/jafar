@@ -1,49 +1,49 @@
 /* jafarConfig.h.in  */
 
 /* boost library */
-#undef HAVE_BOOST
+#cmakedefine HAVE_BOOST
 
 /* boost sandbox library */
-#undef HAVE_BOOST_SANDBOX
+#cmakedefine HAVE_BOOST_SANDBOX
 
 /* lapack library */
-#undef HAVE_LAPACK
+#cmakedefine HAVE_LAPACK
 
 /* Bayes++ library */
-#undef HAVE_BAYESPP
+#cmakedefine HAVE_BAYESPP
 
 /* openCV library */
-#undef HAVE_OPENCV
+#cmakedefine HAVE_OPENCV
 
 /* opengl library */
-#undef HAVE_OPENGL
+#cmakedefine HAVE_OPENGL
 
 /* GDHE */
-#undef HAVE_GDHE
+#cmakedefine HAVE_GDHE
 
 /* CGAL library */
-#undef HAVE_CGAL
+#cmakedefine HAVE_CGAL
 
 /* IEEE1394 support */
-#undef HAVE_IEEE1394
+#cmakedefine HAVE_IEEE1394
 
 /* v4l support */
-#undef HAVE_V4L
+#cmakedefine HAVE_V4L
 
 /* Quicktime support */
-#undef HAVE_QUICKTIME
+#cmakedefine HAVE_QUICKTIME
 
 /* PNL library */
-#undef HAVE_PNL
+#cmakedefine HAVE_PNL
 
 /* Calife Camera Library */
-#undef HAVE_CALIFECAMERA
+#cmakedefine HAVE_CALIFECAMERA
 
 /* OpenSceneGraph */
-#undef HAVE_OSG
+#cmakedefine HAVE_OSG
 
 /* T3D */
-#undef HAVE_T3D
+#cmakedefine HAVE_T3D
 
 /* Stereopixel */
-#undef HAVE_STEREOPIXEL
+#cmakedefine HAVE_STEREOPIXEL
