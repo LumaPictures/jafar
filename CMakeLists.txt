@@ -114,7 +114,7 @@ endif(OpenCV_FOUND)
 ###
 # openscenegraph
 ###
-find_package(OpenSceneGraph 2.0.0)
+find_package(OpenSceneGraph 2.0.0 REQUIRED osgViewer osgGA)
 set(HAVE_OSG OPENSCENEGRAPH_FOUND)
 if(OPENSCENEGRAPH_FOUND)
   include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
