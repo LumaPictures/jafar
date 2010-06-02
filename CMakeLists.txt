@@ -194,7 +194,9 @@ endif(BLAS_FOUND)
 include(FindInternalLibrary)
 
 foreach(internal
+	dtm
     images3d
+	p3d
     t3d
     gdhe
     stereopixel)
