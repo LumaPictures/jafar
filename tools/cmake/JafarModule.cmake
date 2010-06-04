@@ -288,9 +288,9 @@ macro(BUILD_JAFAR_MODULE modulename)
   endif(QT_WRAPPING_REQUIRED)
 
   # add headers
+  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
   include_directories(${INCLUDES_INSTALL_DIR})
   set(LIBS ${LIBS} ${LIBRARIES_INSTALL_DIR})
-  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
   if(QT_WRAPPING_REQUIRED)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR})
   endif(QT_WRAPPING_REQUIRED)
