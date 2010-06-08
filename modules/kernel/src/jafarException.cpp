@@ -20,7 +20,7 @@ using namespace jafar::kernel;
 #ifndef WIN32
 		#include <execinfo.h>
 #endif
-		std::string get_system_trace ()
+		std::string jafar::kernel::get_system_trace ()
 		{
 #ifndef WIN32
 			void *array[15];
@@ -32,9 +32,8 @@ using namespace jafar::kernel;
 			strings = backtrace_symbols (array, size);
 			
 			std::stringstream tracelog;
-			tracelog << "System trace:\n";
 			for(i = 0; i < size; i++)
-					tracelog << strings[i] << "\n";
+					tracelog << strings[i] << std::endl;
 			tracelog << std::flush;
 
 /*
@@ -52,7 +51,7 @@ using namespace jafar::kernel;
 
 		void print_system_trace()
 		{
-			std::cout << get_system_trace();
+			std::cout << "System trace:" << std::endl << jafar::kernel::get_system_trace();
 		}
 
 /*

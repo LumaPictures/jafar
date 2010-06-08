@@ -17,6 +17,7 @@ namespace jafar {
 
 
      /* Obtain a backtrace and print it to stdout. */
+     std::string get_system_trace ();
      void print_system_trace();
 
     /** Base class for all exceptions defined in jafar. It cannot be
