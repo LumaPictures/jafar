@@ -291,12 +291,6 @@ macro(BUILD_JAFAR_MODULE modulename)
   include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
   include_directories(${INCLUDES_INSTALL_DIR})
   set(LIBS ${LIBS} ${LIBRARIES_INSTALL_DIR})
-  if(QT_WRAPPING_REQUIRED)
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-  endif(QT_WRAPPING_REQUIRED)
-  if(EXISTS ${EXTRA_INCLUDES})
-    include_directories(${EXTRA_INCLUDES})
-  endif(EXISTS ${EXTRA_INCLUDES})
 
   # add sources
   file(GLOB module_sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
@@ -342,6 +336,7 @@ macro(BUILD_JAFAR_MODULE modulename)
   #   LINK_FLAGS "${THIS_MODULE_LDFLAGS}"
   #   COMPILER_FLAGS "${ALL_COMPILER_FLAGS}")
   target_link_libraries(test_suite_${MODULENAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${MODULENAME})
+  message(STATUS "---> linking test_suite_${MODULENAME} to ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} and ${MODULENAME}")
   set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME})
   add_test(test_suite_${MODULENAME} test_suite/${BUILDNAME}/test_suite_${MODULENAME})
 
