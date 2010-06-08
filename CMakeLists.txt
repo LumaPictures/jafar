@@ -18,7 +18,7 @@ cmake_minimum_required(VERSION 2.6.4 FATAL_ERROR)
 
 project(Jafar CXX C)
 
-set(CMAKE_SKIP_RPATH 1)
+#set(CMAKE_SKIP_RPATH 1)
 #set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Byuilding type, choose either Debug or Release")
 #set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE LIST)
 
@@ -114,7 +114,8 @@ endif(OpenCV_FOUND)
 ###
 # openscenegraph
 ###
-find_package(OpenSceneGraph 2.0.0 REQUIRED osgViewer osgGA)
+#find_package(OpenSceneGraph 2.0.0 REQUIRED osgViewer osgGA)
+find_package(OpenSceneGraph 2.0.0)
 set(HAVE_OSG OPENSCENEGRAPH_FOUND)
 if(OPENSCENEGRAPH_FOUND)
   include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
