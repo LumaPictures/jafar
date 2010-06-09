@@ -40,7 +40,7 @@
 %include "kernel/timingTools.hpp"
 %include "kernel/IdFactory.hpp"
 
-%template(IdFactoryNone) jafar::kernel::IdFactory<unsigned, jafar::kernel::IdCollectorNone>;
-%template(IdFactoryList) jafar::kernel::IdFactory<unsigned, jafar::kernel::IdCollectorList>;
-%template(IdFactorySet) jafar::kernel::IdFactory<unsigned, jafar::kernel::IdCollectorSet>;
+%template(IdFactoryNone) jafar::kernel::IdFactory<unsigned int, jafar::kernel::IdCollectorNone>;
+%template(IdFactoryList) jafar::kernel::IdFactory<unsigned int, jafar::kernel::IdCollectorList>;
+%template(IdFactorySet) jafar::kernel::IdFactory<unsigned int, jafar::kernel::IdCollectorSet>;
 

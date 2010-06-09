@@ -14,13 +14,14 @@ using std::string;
 using std::cerr;
 using std::endl;
 
-using namespace jafar::kernel;
+namespace jafar {
+namespace kernel {
 
 		#include <stdlib.h>
 #ifndef WIN32
 		#include <execinfo.h>
 #endif
-		std::string jafar::kernel::get_system_trace ()
+		std::string get_system_trace ()
 		{
 #ifndef WIN32
 			void *array[15];
@@ -105,7 +106,7 @@ void Exception::addTrace(std::string const& module_, std::string const& file_, i
   trace.push_back(s.str());
 }
 
-std::ostream& jafar::kernel::operator <<(std::ostream& s, const Exception& e) {
+std::ostream& operator <<(std::ostream& s, const Exception& e) {
   s << e._what;
   s << "trace:" << endl;
   for (std::list<string>::const_iterator it = e.trace.begin() ; it != e.trace.end() ; it++) {
@@ -155,4 +156,4 @@ string JafarException::exceptionIdToString(ExceptionId id_) throw() {
   }
 }
 
-
+}}
