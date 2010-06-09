@@ -227,9 +227,15 @@ if(ENABLE_TCL)
     include_directories(${TCL_INCLUDE_PATH})
   endif(TCL_FOUND)
 else(ENABLE_TCL)
-  set(TCL_FOUND OFF)
+  set(TCL_FOUND FALSE)
 endif(ENABLE_TCL)
 
+if(NOT TCL_FOUND AND ENABLE_TCL )
+  message(FATAL_ERROR "tcl is required as scripting language but is not available")
+endif(NOT TCL_FOUND AND ENABLE_TCL)
+
+set(ENABLE_RUBY ON CACHE OPTION "enable ruby scripting language")
+if(ENABLE_RUBY)
 find_package(Ruby)
 set(RUBY_FOUND FALSE)
 if(EXISTS ${RUBY_INCLUDE_PATH} AND 
@@ -240,10 +246,14 @@ if(EXISTS ${RUBY_INCLUDE_PATH} AND
 endif(EXISTS ${RUBY_INCLUDE_PATH} AND 
       EXISTS ${RUBY_EXECUTABLE} AND 
       EXISTS ${RUBY_LIBRARY})
+  endif(RUBY_FOUND)
+else(ENABLE_RUBY)
+  set(RUBY_FOUND FALSE)
+endif(ENABLE_RUBY)
 
-if(NOT TCL_FOUND AND NOT RUBY_FOUND)
-  message(FATAL_ERROR "no scripting language available please install one")
-endif(NOT TCL_FOUND AND NOT RUBY_FOUND)
+if(NOT RUBY_FOUND AND ENABLE_RUBY )
+  message(FATAL_ERROR "ruby is required as scripting language but is not available")
+endif(NOT RUBY_FOUND AND ENABLE_RUBY)
 
 #------------------------------------------------------------------------------
 # Jafar CMake modules:

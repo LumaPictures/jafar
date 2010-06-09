@@ -344,13 +344,13 @@ macro(BUILD_JAFAR_MODULE modulename)
   # building wrapped libraries in available script languages
   #------------------------------------------------------------------------------
   # wrap module to ruby
-  if(RUBY_FOUND)
+  if(ENABLE_RUBY)
     wrap_jafar_module_to_ruby(${modulename})
-  endif(RUBY_FOUND)
+  endif(ENABLE_RUBY)
 
   # wrap module to tcl
-  if(TCL_FOUND)
+  if(ENABLE_TCL)
     wrap_jafar_module_to_tcl(${modulename})
-  endif(TCL_FOUND)
+  endif(ENABLE_TCL)
 
 endmacro(BUILD_JAFAR_MODULE)
