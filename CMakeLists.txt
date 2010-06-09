@@ -69,7 +69,7 @@ message(STATUS "Install lib dir: " ${LIBRARIES_INSTALL_DIR})
 
 include(CheckIncludeFile)
 
-find_package(Boost 1.34 REQUIRED COMPONENTS date_time serialization unit_test_framework thread graph)
+find_package(Boost 1.40 REQUIRED COMPONENTS date_time serialization unit_test_framework thread graph)
 set(BOOST_FOUND ${Boost_FOUND})
 include_directories(${Boost_INCLUDE_DIRS})
 message(STATUS "boost libraries "${Boost_LIBRARIES})
