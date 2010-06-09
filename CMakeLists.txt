@@ -236,17 +236,16 @@ endif(NOT TCL_FOUND AND ENABLE_TCL)
 
 set(ENABLE_RUBY ON CACHE OPTION "enable ruby scripting language")
 if(ENABLE_RUBY)
-find_package(Ruby)
-set(RUBY_FOUND FALSE)
-if(EXISTS ${RUBY_INCLUDE_PATH} AND 
-   EXISTS ${RUBY_EXECUTABLE} AND 
-   EXISTS ${RUBY_LIBRARY})
-  set(RUBY_FOUND ON)
-  include_directories(${RUBY_INCLUDE_PATH})
-endif(EXISTS ${RUBY_INCLUDE_PATH} AND 
+  find_package(Ruby)
+  set(RUBY_FOUND FALSE)
+  if(EXISTS ${RUBY_INCLUDE_PATH} AND 
       EXISTS ${RUBY_EXECUTABLE} AND 
       EXISTS ${RUBY_LIBRARY})
-  endif(RUBY_FOUND)
+    set(RUBY_FOUND ON)
+    include_directories(${RUBY_INCLUDE_PATH})
+  endif(EXISTS ${RUBY_INCLUDE_PATH} AND 
+        EXISTS ${RUBY_EXECUTABLE} AND 
+        EXISTS ${RUBY_LIBRARY})
 else(ENABLE_RUBY)
   set(RUBY_FOUND FALSE)
 endif(ENABLE_RUBY)
