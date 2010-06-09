@@ -219,11 +219,16 @@ endforeach(internal)
 # Scripting languages
 #------------------------------------------------------------------------------
 
-find_package(TCL)
-if(TCL_FOUND)
-  list(APPEND AVAILABLE_LANGUAGES tcl)
-  include_directories(${TCL_INCLUDE_PATH})
-endif(TCL_FOUND)
+set(ENABLE_TCL ON CACHE OPTION "enable tcl scripting language")
+if(ENABLE_TCL)
+  find_package(TCL)
+  if(TCL_FOUND)
+    list(APPEND AVAILABLE_LANGUAGES tcl)
+    include_directories(${TCL_INCLUDE_PATH})
+  endif(TCL_FOUND)
+else(ENABLE_TCL)
+  set(TCL_FOUND OFF)
+endif(ENABLE_TCL)
 
 find_package(Ruby)
 set(RUBY_FOUND FALSE)
