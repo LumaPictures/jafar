@@ -27,7 +27,8 @@ namespace jafar {
         CSVFILE_INVALID_LINE, /**< CSVFile: invalide line in file */
 	CSVFILE_UNKNOWN_COLUMN_NAME, /**< CSVFile: unknown column name */
 	CSVFILE_UNKNOWN_LINE, /**< CSVFile: unknown line in file */
-        CSVFILE_UNKNOWN_COLUMN /**< CSVFile: unknown column in file */
+        CSVFILE_UNKNOWN_COLUMN, /**< CSVFile: unknown column in file */
+        THREAD_ERROR /**< Thread error */
       };
 
       /** Constructor. You should not use this constructor directly,
