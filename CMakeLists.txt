@@ -158,12 +158,9 @@ if(GDAL_FOUND)
   set(LIBS_MAP_GDAL "GDAL")
 endif(GDAL_FOUND)
 
-# include(FindCGAL)
-# find_package(CGAL)
-# include_directories(${OPENGL_INCLUDE_DIR})
-# set(LIBS ${LIBS} ${OPENGL_LIBRARIES})
-# check_include_file(GL/gl.h HAVE_OPENGL)
-
+###
+# Subversion to play around
+###
 find_package(Subversion REQUIRED)
 
 ##
@@ -196,11 +193,12 @@ include(FindInternalLibrary)
 
 foreach(internal
 	dtm
-    images3d
+	images3d
 	p3d
-    t3d
-    gdhe
-    stereopixel)
+	t3d
+	gdhe
+	stereopixel
+	sift)
   find_internal_library("${internal}")
   string(TOUPPER "HAVE_${internal}" HAVE_INTERNAL)
   string(TOUPPER "${internal}_FOUND" INTERNAL_FOUND)
