@@ -345,7 +345,7 @@ macro(BUILD_JAFAR_MODULE modulename)
     foreach(source ${demo_sources})
       get_filename_component(demo ${source} NAME_WE)
       add_executable(${MODULENAME}_${demo} ${source})
-      target_link_libraries(${MODULENAME}_${demo} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${MODULENAME})
+      target_link_libraries(${MODULENAME}_${demo} ${MODULENAME})
       set_target_properties(${MODULENAME}_${demo} PROPERTIES RUNTIME_OUTPUT_DIRECTORY demo_suite/${BUILDNAME}
 	                                                     OUTPUT_NAME ${demo})
     endforeach(source)
