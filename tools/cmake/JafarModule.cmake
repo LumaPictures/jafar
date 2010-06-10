@@ -184,7 +184,7 @@ macro(BUILD_JAFAR_MODULE modulename)
 
   string(REGEX REPLACE "[ ]+" ";" THIS_PROJECT_DEPENDS_ALL_LIST "${THIS_PROJECT_DEPENDS_ALL}")
   set(THIS_PROJECT_INCLUDES_ALL_LIST ${THIS_PROJECT_DEPENDS_ALL_LIST})
-  message(STATUS "this project includes all list ${THIS_PROJECT_INCLUDES_ALL_LIST}")
+  message(STATUS "- project ${modulename} dependencies ${THIS_PROJECT_INCLUDES_ALL_LIST}")
   foreach(inc ${THIS_PROJECT_INCLUDES_ALL_LIST})
     include_directories(${JAFAR_MODULES_PARENT_DIR}/${inc}/include)
   endforeach(inc)
@@ -208,7 +208,6 @@ macro(BUILD_JAFAR_MODULE modulename)
 	  if(${THIS_LIB_FOUND})
 	    set(LIB_EXACT_NAME_LIBRARIES "${LIB_EXACT_NAME}_LIBRARIES")
 	    list(APPEND THIS_PROJECT_DEPENDS_ALL_LIST ${${LIB_EXACT_NAME_LIBRARIES}})
-	    message("${LIB_EXACT_NAME}_LIBRARIES ${${LIB_EXACT_NAME_LIBRARIES}}")
 	  else(${EXTLIB_FOUND})
 	    message(FATAL_ERROR "this module requires ${extlib} but it wasn't found, please install it and rerun cmake on top of jafar!")
 	  endif(${THIS_LIB_FOUND})
@@ -244,7 +243,6 @@ macro(BUILD_JAFAR_MODULE modulename)
 
   string(TOLOWER "${modulename}" MODULENAME)
   string(TOLOWER "jafar_module_${MODULENAME}" JAFAR_MODULE_PROJECT)
-  message(STATUS "THIS_PROJECT_DEPENDS_ALL_LIST ${THIS_PROJECT_DEPENDS_ALL_LIST}")
 
   #------------------------------------------------------------------------------
   # instantiate module project and targets: library, test and wrappers
@@ -277,7 +275,7 @@ macro(BUILD_JAFAR_MODULE modulename)
   # find_module_internal_libraries(${modulename} EXTRA_LIBRARIES_PATHS EXTRA_LIBRARIES_NAMES)
   # string(TOUPPER "${modulename}_internal_libraries" THIS_MODULE_INTERNAL_LIBRARIES)
   # message(STATUS "${THIS_MODULE_INTERNAL_LIBRARIES} ${${THIS_MODULE_INTERNAL_LIBRARIES}}")
-  message(STATUS "compiling flags ${ALL_COMPILER_FLAGS}")
+  message(STATUS "- compiling flags ${ALL_COMPILER_FLAGS}")
 
   #  set_target_properties(${MODULENAME} PROPERTIES LINK_FLAGS_RELEASE )
   # set(THIS_PROJECT_DEPENDS_ALL_LIST ${THIS_PROJECT_DEPENDS_ALL_LIST} ${${THIS_MODULE_INTERNAL_LIBRARIES}})
@@ -336,9 +334,22 @@ macro(BUILD_JAFAR_MODULE modulename)
   #   LINK_FLAGS "${THIS_MODULE_LDFLAGS}"
   #   COMPILER_FLAGS "${ALL_COMPILER_FLAGS}")
   target_link_libraries(test_suite_${MODULENAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${MODULENAME})
-  message(STATUS "---> linking test_suite_${MODULENAME} to ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} and ${MODULENAME}")
   set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME})
   add_test(test_suite_${MODULENAME} test_suite/${BUILDNAME}/test_suite_${MODULENAME})
+
+  #------------------------------------------------------------------------------
+  # building demos for module
+  #------------------------------------------------------------------------------
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/demo_suite)
+    file(GLOB demo_sources ${CMAKE_CURRENT_SOURCE_DIR}/demo_suite/*.cpp)
+    foreach(source ${demo_sources})
+      get_filename_component(demo ${source} NAME_WE)
+      add_executable(${MODULENAME}_${demo} ${source})
+      target_link_libraries(${MODULENAME}_${demo} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${MODULENAME})
+      set_target_properties(${MODULENAME}_${demo} PROPERTIES RUNTIME_OUTPUT_DIRECTORY demo_suite/${BUILDNAME}
+	                                                     OUTPUT_NAME ${demo})
+    endforeach(source)
+  endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/demo_suite)
 
   #------------------------------------------------------------------------------
   # building wrapped libraries in available script languages
