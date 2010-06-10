@@ -10,7 +10,7 @@ build_jafar_module(kernel
   REVISION 2
   #REQUIRED_MODULES
   #OPTIONAL_MODULES
-  REQUIRED_EXTLIBS boost_date_time
+  REQUIRED_EXTLIBS boost_date_time boost_thread
   #OPTIONAL_EXTLIBS
   CXXFLAGS -g -ggdb -Wall
   CPPFLAGS -Wno-long-long -pedantic -pedantic-errors -Werror 
