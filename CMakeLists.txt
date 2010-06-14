@@ -51,6 +51,14 @@ set(LIBRARIES_INSTALL_DIR
     "${Jafar_BINARY_DIR}/lib/${BUILDNAME}"
     CACHE PATH "Destination path under CMAKE_INSTALL_PREFIX for libraries")
 
+set(INCLUDES_OUTPUT_DIR 
+    "${Jafar_SOURCE_DIR}/include"
+    CACHE PATH "Destination path under CMAKE_OUTPUT_PREFIX for header files")
+
+set(LIBRARIES_OUTPUT_DIR
+    "${Jafar_SOURCE_DIR}/lib/${BUILDNAME}"
+    CACHE PATH "Destination path under CMAKE_OUTPUT_PREFIX for libraries")
+
 set(JAFAR_MODULES_PARENT_DIR 
     "${Jafar_SOURCE_DIR}/modules"
     CACHE PATH "Where to find Jafar modules")
@@ -58,6 +66,9 @@ mark_as_advanced(JAFAR_MODULES_PARENT_DIR)
 
 message(STATUS "Install include dir: " ${INCLUDES_INSTALL_DIR})
 message(STATUS "Install lib dir: " ${LIBRARIES_INSTALL_DIR})
+if(NOT EXISTS ${LIBRARIES_OUTPUT_DIR})
+  execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${LIBRARIES_OUTPUT_DIR})
+endif(NOT EXISTS ${LIBRARIES_OUTPUT_DIR})
 # set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${LIBRARIES_INSTALL_DIR})
 # set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${LIBRARIES_INSTALL_DIR})
 # set(CMAKE_INCLUDE_OUTPUT_DIRECTORY ${INCLUDES_INSTALL_DIR})
@@ -241,6 +252,11 @@ if(ENABLE_RUBY)
       EXISTS ${RUBY_LIBRARY})
     set(RUBY_FOUND ON)
     include_directories(${RUBY_INCLUDE_PATH})
+    exec_program(${RUBY_EXECUTABLE}
+      ARGS --version
+      OUTPUT_VARIABLE RUBY_VERSION)
+    string(REGEX MATCH "[0-9]+\\.[0-9]+" RUBY_VERSION "${RUBY_VERSION}")
+    message(STATUS "ruby version ${RUBY_VERSION}")
   endif(EXISTS ${RUBY_INCLUDE_PATH} AND 
         EXISTS ${RUBY_EXECUTABLE} AND 
         EXISTS ${RUBY_LIBRARY})
