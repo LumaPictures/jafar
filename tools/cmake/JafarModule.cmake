@@ -26,18 +26,39 @@ macro(WRAP_JAFAR_MODULE_TO_RUBY jafar_modulename)
    )
   add_library(${jafar_modulename}_ruby_wrap SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/ruby/${jafar_modulename}_wrap.cpp)
   target_link_libraries(${jafar_modulename}_ruby_wrap ${jafar_modulename} stdc++ ${RUBY_LIBRARY})
-  set_target_properties(${jafar_modulename}_ruby_wrap PROPERTIES OUTPUT_NAME ${jafar_modulename} 
-                                                                 LIBRARY_OUTPUT_DIRECTORY ${Jafar_SOURCE_DIR}/lib/${BUILDNAME}/ruby/jafar/${jafar_modulename}
-								 LINK_FLAGS "${THIS_MODULE_LDFLAGS}")
-
-  file(GLOB ruby_macros macro/*.rb)
-  install(TARGETS ${jafar_modulename}_ruby_wrap DESTINATION ${LIBRARIES_INSTALL_DIR}/ruby/jafar/${jafar_modulename})
+  set_target_properties(${jafar_modulename}_ruby_wrap 
+    PROPERTIES OUTPUT_NAME ${jafar_modulename} 
+               LIBRARY_OUTPUT_DIRECTORY ${LIBRARIES_OUTPUT_DIR}/ruby/${RUBY_VERSION}/jafar/${jafar_modulename}
+	       LINK_FLAGS "${THIS_MODULE_LDFLAGS}")
+  file(GLOB ruby_macros ${CMAKE_CURRENT_SOURCE_DIR}/macro/*.rb)
   foreach(macro ${ruby_macros})
     get_filename_component(MACRO_NAME ${macro} NAME_WE)
     if(${MACRO_NAME} STREQUAL ${jafar_modulename})
-      install(FILES ${macro} DESTINATION ${LIBRARIES_INSTALL_DIR}/ruby/jafar)
+      add_custom_command(
+	TARGET ${jafar_modulename}_ruby_wrap
+	POST_BUILD
+	COMMAND ${CMAKE_COMMAND}
+	ARGS -E copy_if_different ${macro} ${LIBRARIES_OUTPUT_DIR}/ruby/${RUBY_VERSION}/jafar/${MACRO_NAME}.rb
+	)
     else(${MACRO_NAME} STREQUAL ${jafar_modulename})
-      install(FILES ${macro} DESTINATION ${LIBRARIES_INSTALL_DIR}/ruby/jafar/${jafar_modulename})
+      add_custom_command(
+	TARGET ${jafar_modulename}_ruby_wrap
+	POST_BUILD
+	COMMAND ${CMAKE_COMMAND}
+	ARGS -E copy_if_different ${macro} ${LIBRARIES_OUTPUT_DIR}/ruby/${RUBY_VERSION}/jafar/${jafar_modulename}/${MACRO_NAME}.rb
+	)
+    endif(${MACRO_NAME} STREQUAL ${jafar_modulename})
+  endforeach(macro)
+
+# install instructions for ruby library and macros
+  install(TARGETS ${jafar_modulename}_ruby_wrap DESTINATION ${LIBRARIES_INSTALL_DIR}/ruby/${RUBY_VERSION}/jafar/${jafar_modulename})
+  file(GLOB ruby_macros macro/*.rb)
+  foreach(macro ${ruby_macros})
+    get_filename_component(MACRO_NAME ${macro} NAME_WE)
+    if(${MACRO_NAME} STREQUAL ${jafar_modulename})
+      install(FILES ${macro} DESTINATION ${LIBRARIES_INSTALL_DIR}/ruby/${RUBY_VERSION}/jafar)
+    else(${MACRO_NAME} STREQUAL ${jafar_modulename})
+      install(FILES ${macro} DESTINATION ${LIBRARIES_INSTALL_DIR}/ruby/${RUBY_VERSION}/jafar/${jafar_modulename})
     endif(${MACRO_NAME} STREQUAL ${jafar_modulename})
   endforeach(macro ${ruby_macros})
 
@@ -79,11 +100,12 @@ macro(WRAP_JAFAR_MODULE_TO_TCL jafar_modulename)
    )
   add_library(${jafar_modulename}_tcl_wrap SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/tcl/${jafar_modulename}_wrap.cpp)
   target_link_libraries(${jafar_modulename}_tcl_wrap ${jafar_modulename} stdc++ ${TCL_LIBRARY} ${TK_LIBRARY})
-  set_target_properties(${jafar_modulename}_tcl_wrap PROPERTIES OUTPUT_NAME ${jafar_modulename} 
-                                                                PREFIX ""
-								LIBRARY_OUTPUT_DIRECTORY ${Jafar_SOURCE_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename})
-  install(TARGETS ${jafar_modulename}_tcl_wrap DESTINATION ${Jafar_BINARY_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename})
+  set_target_properties(${jafar_modulename}_tcl_wrap 
+    PROPERTIES OUTPUT_NAME ${jafar_modulename} 
+               PREFIX ""
+	       LIBRARY_OUTPUT_DIRECTORY ${Jafar_SOURCE_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename})
   file(GLOB tcl_macros ${CMAKE_CURRENT_SOURCE_DIR}/macro/*.tcl)
+# copy macros
   foreach(macro ${tcl_macros})
     get_filename_component(MACRO_NAME ${macro} NAME)
     add_custom_command(
@@ -93,12 +115,16 @@ macro(WRAP_JAFAR_MODULE_TO_TCL jafar_modulename)
       ARGS -E copy ${macro} ${Jafar_SOURCE_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename}/${MACRO_NAME} 
       )
   endforeach(macro)
+# generate tcl package
   add_custom_command(
     TARGET ${jafar_modulename}_tcl_wrap
     POST_BUILD
     COMMAND ${TCL_TCLSH} ARGS ${Jafar_SOURCE_DIR}/tools/swig/makePkg.tcl ${Jafar_SOURCE_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename}
     WORKING_DIRECTORY ${Jafar_SOURCE_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename}
   )
+
+# install instructions for tcl library and macros
+  install(TARGETS ${jafar_modulename}_tcl_wrap DESTINATION ${Jafar_BINARY_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename})
 #  install(FILES ${tcl_macros} DESTINATION ${Jafar_BINARY_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename})
   file(GLOB tcl_files ${Jafar_SOURCE_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename}/*)
   install(FILES ${tcl_files} DESTINATION ${Jafar_BINARY_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename})
@@ -110,23 +136,20 @@ endmacro(WRAP_JAFAR_MODULE_TO_TCL)
 macro(GENERATE_QT_FILES JAFAR_MODULENAME)
   #include qt specific macros
   include(${QT_USE_FILE})
+
   string(TOUPPER "${JAFAR_MODULENAME}_WRAPPED_HEADERS" QTUI_H_SRC)
   string(TOUPPER "${JAFAR_MODULENAME}_WRAPPED_CPPS" QT_MOC_SRCS)
-
 
   #generate headers from ui files
   file(GLOB UI_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.ui)
   QT4_WRAP_UI(${QTUI_H_SRC} ${UI_FILES})
-#  message (STATUS "${QTUI_H_SRC} ${${QTUI_H_SRC}}")
 
   # generate moc files from headers contining \"Q_OBJECT\"
   file(GLOB HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/${JAFAR_MODULENAME}/*.hpp")
   foreach(header ${HEADERS})
     file(STRINGS ${header} Q_OBJECT_STRING REGEX "^[ ]*Q_OBJECT[ ]*$")
     if(NOT("${Q_OBJECT_STRING}" STREQUAL ""))
-      # set(HEADERS_TO_MOC ${HEADERS_TO_MOC} ${header})
       get_filename_component(HEADER_NAME ${header} NAME_WE)
-#      MESSAGE(STATUS "HEADER_NAME "${HEADER_NAME})
       execute_process(COMMAND ${QT_MOC_EXECUTABLE} ${header} -o ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc
 #	INPUT_FILE ${header} 
 #	OUTPUT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc
@@ -136,8 +159,6 @@ macro(GENERATE_QT_FILES JAFAR_MODULENAME)
   endforeach(header)
 
 #  QT4_WRAP_CPP(${QT_MOC_SRCS} ${HEADERS_TO_MOC})
-
-#  message(STATUS "${QT_MOC_SRCS} ${${QT_MOC_SRCS}}")
 
 endmacro(GENERATE_QT_FILES)
 
@@ -156,9 +177,7 @@ macro(BUILD_JAFAR_MODULE modulename)
     ""
     ${ARGN}
     )
-  # Export JAFAR_${MODULENAME}_DEPENDS
-  # string(TOUPPER "JAFAR_${modulename}_DEPENDS" THIS_MODULE_LIBNAME_DEPENDS)
-  # set(${THIS_MODULE_LIBNAME_DEPENDS} ${THIS_MODULE_REQUIRED_MODULES})
+  # include headers from required modules
   foreach(required_module ${THIS_MODULE_REQUIRED_MODULES})
     include_directories(${JAFAR_MODULES_PARENT_DIR}/${required_module}/include)
   endforeach(required_module)
@@ -255,32 +274,9 @@ macro(BUILD_JAFAR_MODULE modulename)
   #read all the project properties
   set(FULL_VERSION "${THIS_MODULE_VERSION}.${THIS_MODULE_REVISION}")
   set(ALL_COMPILER_FLAGS ${THIS_MODULE_CXXFLAGS} ${THIS_MODULE_CPPFLAGS} "-D_JFR_MODULE_=\\\"${MODULENAME}\\\"")
-  # string(REGEX MATCHALL "-I.*;" EXTRA_INCLUDES "${ALL_COMPILER_FLAGS}")
-  # string(REGEX REPLACE "-I" "" EXTRA_INCLUDES "${EXTRA_INCLUDES}")
-  # string(REGEX REPLACE ";" "" EXTRA_INCLUDES "${EXTRA_INCLUDES}")
-  # message(STATUS EXTRA_INCLUDES " ${EXTRA_INCLUDES}")
-
-  # string(REGEX MATCHALL "-L.*;" EXTRA_LIBRARIES_PATHS "${THIS_MODULE_LDFLAGS}")
-  # string(REGEX REPLACE "-L" "" EXTRA_LIBRARIES_PATHS "${EXTRA_LIBRARIES_PATHS}")
-  # string(REGEX REPLACE ";" "" EXTRA_LIBRARIES_PATHS "${EXTRA_LIBRARIES_PATHS}")
-  # message(STATUS "EXTRA_LIBRARIES_PATHS ${EXTRA_LIBRARIES_PATHS}")
-
-  # string(REGEX MATCHALL "-l[a-z0-9A-Z]*" EXTRA_LIBRARIES_NAMES "${THIS_MODULE_LDFLAGS}")
-  # string(REGEX REPLACE "-l" "" EXTRA_LIBRARIES_NAMES "${EXTRA_LIBRARIES_NAMES}")
-  # string(REGEX REPLACE ";" "" EXTRA_LIBRARIES_NAMES "${EXTRA_LIBRARIES_NAMES}")
-  # message(STATUS "EXTRA_LIBRARIES_NAMES ${EXTRA_LIBRARIES_NAMES}")
-
-  # set(EXTRA_LIBS_FILES "")
-  # retrieve_full_files_names(EXTRA_LIBRARIES_PATHS EXTRA_LIBRARIES_NAMES EXTRA_LIBS_FILES )
-  # find_module_internal_libraries(${modulename} EXTRA_LIBRARIES_PATHS EXTRA_LIBRARIES_NAMES)
-  # string(TOUPPER "${modulename}_internal_libraries" THIS_MODULE_INTERNAL_LIBRARIES)
-  # message(STATUS "${THIS_MODULE_INTERNAL_LIBRARIES} ${${THIS_MODULE_INTERNAL_LIBRARIES}}")
   message(STATUS "- compiling flags ${ALL_COMPILER_FLAGS}")
 
-  #  set_target_properties(${MODULENAME} PROPERTIES LINK_FLAGS_RELEASE )
-  # set(THIS_PROJECT_DEPENDS_ALL_LIST ${THIS_PROJECT_DEPENDS_ALL_LIST} ${${THIS_MODULE_INTERNAL_LIBRARIES}})
-  # set(LIBS ${LIBS} ${${THIS_MODULE_INTERNAL_LIBRARIES}})
-
+  # wrap QT files if needed
   if(QT_WRAPPING_REQUIRED)
     generate_qt_files(${MODULENAME})
   endif(QT_WRAPPING_REQUIRED)
@@ -305,19 +301,25 @@ macro(BUILD_JAFAR_MODULE modulename)
     target_link_libraries(${MODULENAME} ${dependency})
     message(STATUS "--> linking ${MODULENAME} to ${dependency}")
   endforeach(dependency)
-  # set library version
-#  set(FULL_VERSION "${THIS_MODULE_VERSION}.${THIS_MODULE_REVISION}")
+
+  # set library properties: version, output directory, compiler flags and link flags
   set_target_properties(${MODULENAME} PROPERTIES VERSION ${FULL_VERSION} SOVERSION ${THIS_MODULE_VERSION})
-  set_target_properties(${MODULENAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${Jafar_SOURCE_DIR}/lib/${BUILDNAME})
-#  set(ALL_COMPILER_FLAGS ${THIS_MODULE_CXXFLAGS} ${THIS_MODULE_CPPFLAGS} "-D_JFR_MODULE_=\\\"${MODULENAME}\\\"")
-#  string(REGEX MATCHALL "-I.*;" EXTRA_INCLUDES "${ALL_COMPILER_FLAGS}")
-#  string(REGEX REPLACE "-I" "" EXTRA_INCLUDES "${EXTRA_INCLUDES}")
-#  string(REGEX REPLACE ";" "" EXTRA_INCLUDES "${EXTRA_INCLUDES}")
-#  message(STATUS EXTRA_INCLUDES " ${EXTRA_INCLUDES}")
+  set_target_properties(${MODULENAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${LIBRARIES_OUTPUT_DIR})
   set_target_properties(${MODULENAME} PROPERTIES COMPILER_FLAGS "${ALL_COMPILER_FLAGS}")
   set_target_properties(${MODULENAME} PROPERTIES LINK_FLAGS "${THIS_MODULE_LDFLAGS}")
-#  message(STATUS "compiling flags ${ALL_COMPILER_FLAGS}")
 #  set_target_properties(${MODULENAME} PROPERTIES LINK_FLAGS_RELEASE )
+
+  # copy headers
+  file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/${MODULENAME}/*.hpp)
+  foreach(header ${headers})
+    get_filename_component(HEADER_NAME ${header} NAME)
+    add_custom_command(
+      TARGET ${MODULENAME}
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND}
+      ARGS -E copy_if_different ${header} ${INCLUDES_OUTPUT_DIR}/${MODULENAME}/${HEADER_NAME} 
+      )
+  endforeach(header)
 
   # install headers and libraries
   install(TARGETS ${MODULENAME} DESTINATION ${LIBRARIES_INSTALL_DIR})
@@ -329,12 +331,11 @@ macro(BUILD_JAFAR_MODULE modulename)
   #------------------------------------------------------------------------------
   file(GLOB test_sources ${CMAKE_CURRENT_SOURCE_DIR}/test_suite/*.cpp)
   add_executable(test_suite_${MODULENAME} ${test_sources})
-  # target_link_libraries(test_suite_${MODULENAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${MODULENAME} ${${THIS_MODULE_INTERNAL_LIBRARIES}})
+  target_link_libraries(test_suite_${MODULENAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${MODULENAME})
+  set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME})
   # set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME} 
   #   LINK_FLAGS "${THIS_MODULE_LDFLAGS}"
   #   COMPILER_FLAGS "${ALL_COMPILER_FLAGS}")
-  target_link_libraries(test_suite_${MODULENAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${MODULENAME})
-  set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME})
   add_test(test_suite_${MODULENAME} test_suite/${BUILDNAME}/test_suite_${MODULENAME})
 
   #------------------------------------------------------------------------------
