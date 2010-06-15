@@ -311,7 +311,7 @@ macro(BUILD_JAFAR_MODULE modulename)
 #  set_target_properties(${MODULENAME} PROPERTIES LINK_FLAGS_RELEASE )
 
   # copy headers
-  file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/${MODULENAME}/*.hpp)
+  file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/${MODULENAME}/*.h*)
   foreach(header ${headers})
     get_filename_component(HEADER_NAME ${header} NAME)
     add_custom_command(
