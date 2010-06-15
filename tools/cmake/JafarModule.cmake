@@ -29,7 +29,8 @@ macro(WRAP_JAFAR_MODULE_TO_RUBY jafar_modulename)
   set_target_properties(${jafar_modulename}_ruby_wrap 
     PROPERTIES OUTPUT_NAME ${jafar_modulename} 
                LIBRARY_OUTPUT_DIRECTORY ${LIBRARIES_OUTPUT_DIR}/ruby/${RUBY_VERSION}/jafar/${jafar_modulename}
-	       LINK_FLAGS "${THIS_MODULE_LDFLAGS}")
+	       LINK_FLAGS "${THIS_MODULE_LDFLAGS}"
+	       PREFIX "")
   file(GLOB ruby_macros ${CMAKE_CURRENT_SOURCE_DIR}/macro/*.rb)
   foreach(macro ${ruby_macros})
     get_filename_component(MACRO_NAME ${macro} NAME_WE)
