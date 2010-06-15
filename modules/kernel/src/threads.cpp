@@ -1,7 +1,7 @@
 
 #include "kernel/threads.hpp"
 #include "kernel/kernelException.hpp"
-
+#include <sys/resource.h>
 //#define DEBUG
 
 namespace jafar {
@@ -107,6 +107,79 @@ std::cout << "FifoMutex::unlock(" << boost::this_thread::get_id() << ") : postin
 #endif
 			(*computingSem)->second.first->post();
 		}
+	}
+
+
+	void printThreadsPrioInfo(int r, int policy, struct sched_param &param, bool data)
+	{
+		std::cout << "error ";
+		switch (r)
+		{
+			case 0: std::cout << "OK"; break;
+			case EINVAL: std::cout << "EINVAL"; break;
+			case ENOTSUP: std::cout << "ENOTSUP"; break;
+			case EPERM: std::cout << "EPERM"; break;
+			case ESRCH: std::cout << "ESRCH"; break;
+			default: std::cout << "UNKNOWN/" << r; break;
+		}
+		if (data)
+		{
+			std::cout << ", policy ";
+			switch(policy)
+			{
+				case SCHED_FIFO: std::cout << "SCHED_FIFO"; break;
+				case SCHED_RR: std::cout << "SCHED_RR"; break;
+				case SCHED_OTHER: std::cout << "SCHED_OTHER"; break;
+				default: std::cout << "UNKNOWN"; break;
+			}
+			std::cout << ", priority " << param.sched_priority;
+		}
+		std::cout << std::endl;
+	}
+	
+	int setThreadPriority(boost::thread &t, int prio)
+	{
+		int r;
+		
+		#if 0
+		// all of this isn't working, apparently only prio 0 is allowed with SCHED_OTHER...
+		
+		int policy;
+		struct sched_param param;
+		r = pthread_getschedparam(t.native_handle(), &policy, &param);
+		printThreadsPrioInfo(r, policy, param, true);
+		
+		//policy = SCHED_FIFO;
+		param.sched_priority = prio;
+		r = pthread_setschedparam(t.native_handle(), policy, &param);
+		printThreadsPrioInfo(r, policy, param, false);
+		r = pthread_getschedparam(t.native_handle(), &policy, &param);
+		printThreadsPrioInfo(r, policy, param, true);
+		
+		r = pthread_setschedprio(t.native_handle(), prio);
+		printThreadsPrioInfo(r, policy, param, false);
+		r = pthread_getschedparam(t.native_handle(), &policy, &param);
+		printThreadsPrioInfo(r, policy, param, true);
+		
+		
+		r = sched_setscheduler(t.native_handle(), policy, &param);
+		printThreadsPrioInfo(r, policy, param, false);
+		r = pthread_getschedparam(t.native_handle(), &policy, &param);
+		printThreadsPrioInfo(r, policy, param, true);
+		#endif
+		
+		/*
+		TODO get pid of thread
+		seems impossible to do in a portable way (need to look inside pthread_t struct)
+		*/
+		int pid = 0;
+		r = setpriority(PRIO_PROCESS, pid, prio);
+		return r;
+	}
+	
+	int setCurrentThreadPriority(int prio)
+	{
+		return setpriority(PRIO_PROCESS, 0, prio);
 	}
 
 

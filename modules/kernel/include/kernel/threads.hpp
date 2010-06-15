@@ -57,7 +57,21 @@ namespace kernel {
 			}
 
 	};
-
+	
+	/**
+	@warning not working
+	instead, use priority inheritance : set current prio, start thread, reset current prio,
+	and the created thead will inherit the prio of its parent thread
+	*/
+	int setThreadPriority(boost::thread &t, int prio);
+	
+	/**
+	The program needs to be privileged to be able to increase its priority beyond normal.
+	@param prio between -20 (highest priority), to 20 (lowest priority), including 0 (normal priority). 
+	@return 0 if successful
+	*/
+	int setCurrentThreadPriority(int prio);
+	
 }}
 
 #endif
