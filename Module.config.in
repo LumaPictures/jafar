@@ -30,6 +30,7 @@ dev_objdir = $(dev_dir)/objs/$(BUILD)
 dev_libdir = $(dev_dir)/lib/$(BUILD)
 dev_macrodir = $(dev_dir)/macro
 dev_testdir  = $(dev_dir)/test_suite
+dev_demodir  = $(dev_dir)/demo_suite
 
 ####################
 # Compiler options #

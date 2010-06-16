@@ -6,6 +6,7 @@
 SRCSC = $(wildcard $(dev_srcdir)/*.c)
 SRCSCPP = $(wildcard $(dev_srcdir)/*.cpp) 
 TESTCPP = $(wildcard $(dev_testdir)/*.cpp) 
+DEMOCPP = $(wildcard $(dev_demodir)/*.cpp) 
 DEV_HEADERS = $(wildcard $(dev_includedir)/$(MODULE)/*.hpp) $(wildcard $(dev_includedir)/$(MODULE)/*.tpp) $(wildcard $(dev_includedir)/$(MODULE)/*.h)
 HEADERS = $(patsubst %.hpp, $(includedir)/$(MODULE)/%.hpp, $(notdir $(wildcard $(dev_includedir)/$(MODULE)/*.hpp)))
 HEADERS+= $(patsubst %.tpp, $(includedir)/$(MODULE)/%.tpp, $(notdir $(wildcard $(dev_includedir)/$(MODULE)/*.tpp)))
@@ -18,7 +19,8 @@ SWIG_LIBS = $(patsubst %.i, $(includedir)/$(MODULE)/%.i, $(notdir $(wildcard $(d
 SRCS_DEP = \
     $(patsubst %.cpp,$(dev_objdir)/%.dep,$(notdir $(SRCSCPP))) \
     $(patsubst %.c,$(dev_objdir)/%.dep,$(notdir $(SRCSC))) \
-    $(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.dep,$(notdir $(TESTCPP)))
+    $(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.dep,$(notdir $(TESTCPP))) \
+    $(patsubst %.cpp,$(dev_demodir)/$(BUILD)/%.dep,$(notdir $(DEMOCPP)))
 
 
 # .o files
@@ -245,6 +247,7 @@ dirs :
 	-@mkdir -p $(dev_objdir)
 	-@mkdir -p $(dev_objdir)/tcl
 	-@mkdir -p $(dev_testdir)/$(BUILD)
+	-@mkdir -p $(dev_demodir)/$(BUILD)
 	-@mkdir -p $(includedir)/$(MODULE)
 	-@mkdir -p $(libdir)
 
@@ -381,9 +384,18 @@ $(dev_testdir)/$(BUILD)/%.dep: $(dev_testdir)/%.cpp
 	@echo "Making dependencies for $<"
 	-@$(CXX) -MM $(CPPFLAGS) -MT"$(patsubst %.cpp,$(dev_testdir)/$(BUILD)/%.lo,$(notdir $<))" -MF$@ $<
 
-
 $(dev_testdir)/$(BUILD)/%.lo: $(dev_testdir)/%.cpp $(dev_testdir)/$(BUILD)/%.dep
 	-@mkdir -p $(dev_testdir)/$(BUILD)
+	@echo "compile $@"
+	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS)  $(BOOST_CPPFLAGS) -o $@ $<
+
+$(dev_demodir)/$(BUILD)/%.dep: $(dev_demodir)/%.cpp
+	-@mkdir -p $(dev_testdir)/$(BUILD)
+	@echo "Making dependencies for $<"
+	-@$(CXX) -MM $(CPPFLAGS) -MT"$(patsubst %.cpp,$(dev_demodir)/$(BUILD)/%.lo,$(notdir $<))" -MF$@ $<
+
+$(dev_demodir)/$(BUILD)/%.lo: $(dev_demodir)/%.cpp $(dev_demodir)/$(BUILD)/%.dep
+	-@mkdir -p $(dev_demodir)/$(BUILD)
 	@echo "compile $@"
 	$(LTCXX) $(CXXFLAGS) -c $(CPPFLAGS)  $(BOOST_CPPFLAGS) -o $@ $<
 
@@ -402,12 +414,24 @@ $(dev_testdir)/$(BUILD)/test_suite_$(MODULE): $(TESTOBJS)
 	@echo "link"
 	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -lboost_unit_test_framework -o $@ $^
 
+#test_%: make-lib
+#	$(MAKE) $(dev_testdir)/$(BUILD)/test_%.lo 
+#	$(MAKE) $(dev_testdir)/$(BUILD)/test_suite_$(MODULE).lo
 test_%: make-lib $(dev_testdir)/$(BUILD)/test_%.lo $(dev_testdir)/$(BUILD)/test_suite_$(MODULE).lo
-	-@mkdir -p $(dev_testdir)/$(BUILD)
 	@echo "link"
 	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -lboost_unit_test_framework -o $(dev_testdir)/$(BUILD)/$@ $(subst make-lib,,$^)
 	@echo "run"
 	$(dev_testdir)/$(BUILD)/$@
+
+
+
+#demo_%: make-lib 
+#	+$(MAKE) $(dev_demodir)/$(BUILD)/demo_%.lo
+demo_%: make-lib $(dev_demodir)/$(BUILD)/demo_%.lo
+	@echo "link"
+	$(LTLD) $(CXXFLAGS) $(LDFLAGS) $(BOOST_LDFLAGS) -l$(MODULE) -o $(dev_demodir)/$(BUILD)/$@ $(subst make-lib,,$^)
+	@echo "run"
+	$(dev_demodir)/$(BUILD)/$@
 
 .PHONY: $(USE_MODULES)
 
