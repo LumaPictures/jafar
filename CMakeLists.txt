@@ -44,19 +44,19 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/tools/cmake/)
 include(JafarConfig)
 
 set(INCLUDES_INSTALL_DIR 
-    "${Jafar_BINARY_DIR}/include"
+    "${Jafar_SOURCE_DIR}/include"
     CACHE PATH "Destination path under CMAKE_INSTALL_PREFIX for header files")
 
 set(LIBRARIES_INSTALL_DIR
-    "${Jafar_BINARY_DIR}/lib/${BUILDNAME}"
+    "${Jafar_SOURCE_DIR}/lib/${BUILDNAME}"
     CACHE PATH "Destination path under CMAKE_INSTALL_PREFIX for libraries")
 
 set(INCLUDES_OUTPUT_DIR 
-    "${Jafar_SOURCE_DIR}/include"
+    "${Jafar_BINARY_DIR}/include"
     CACHE PATH "Destination path under CMAKE_OUTPUT_PREFIX for header files")
 
 set(LIBRARIES_OUTPUT_DIR
-    "${Jafar_SOURCE_DIR}/lib/${BUILDNAME}"
+    "${Jafar_BINARY_DIR}/lib/${BUILDNAME}"
     CACHE PATH "Destination path under CMAKE_OUTPUT_PREFIX for libraries")
 
 set(JAFAR_MODULES_PARENT_DIR 
@@ -64,14 +64,30 @@ set(JAFAR_MODULES_PARENT_DIR
     CACHE PATH "Where to find Jafar modules")
 mark_as_advanced(JAFAR_MODULES_PARENT_DIR)
 
-message(STATUS "Install include dir: " ${INCLUDES_INSTALL_DIR})
-message(STATUS "Install lib dir: " ${LIBRARIES_INSTALL_DIR})
+message(STATUS "Install include dir: " ${INCLUDES_OUTPUT_DIR})
+message(STATUS "Install lib dir: " ${LIBRARIES_OUTPUT_DIR})
+message(STATUS "Build include dir: " ${INCLUDES_OUTPUT_DIR})
+message(STATUS "Build lib dir: " ${LIBRARIES_OUTPUT_DIR})
+
 if(NOT EXISTS ${LIBRARIES_OUTPUT_DIR})
   execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${LIBRARIES_OUTPUT_DIR})
 endif(NOT EXISTS ${LIBRARIES_OUTPUT_DIR})
-# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${LIBRARIES_INSTALL_DIR})
-# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${LIBRARIES_INSTALL_DIR})
-# set(CMAKE_INCLUDE_OUTPUT_DIRECTORY ${INCLUDES_INSTALL_DIR})
+
+if(NOT EXISTS ${INCLUDES_OUTPUT_DIR})
+  execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${INCLUDES_OUTPUT_DIR})
+endif(NOT EXISTS ${INCLUDES_OUTPUT_DIR})
+
+if(NOT EXISTS ${LIBRARIES_INSTALL_DIR})
+  execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${LIBRARIES_INSTALL_DIR})
+endif(NOT EXISTS ${LIBRARIES_INSTALL_DIR})
+
+if(NOT EXISTS ${INCLUDES_INSTALL_DIR})
+  execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${INCLUDES_INSTALL_DIR})
+endif(NOT EXISTS ${INCLUDES_INSTALL_DIR})
+
+# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${LIBRARIES_OUTPUT_DIR})
+# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${LIBRARIES_OUTPUT_DIR})
+# set(CMAKE_INCLUDE_OUTPUT_DIRECTORY ${INCLUDES_OUTPUT_DIR})
 # set(CMAKE_DOCUMENTATION_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/doc)
 
 #------------------------------------------------------------------------------
@@ -234,7 +250,19 @@ if(ENABLE_TCL)
   if(TCL_FOUND)
     list(APPEND AVAILABLE_LANGUAGES tcl)
     include_directories(${TCL_INCLUDE_PATH})
-  endif(TCL_FOUND)
+   set(TCLZ_OUTPUT_DIR "${Jafar_BINARY_DIR}/tclpkg/${BUILDNAME}"
+     CACHE PATH "Destination for tcl wrapped libraries when built")
+   mark_as_advanced(TCLZ_OUTPUT_DIR)
+   if(NOT EXISTS ${TCLZ_OUTPUT_DIR})
+     execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${TCLZ_OUTPUT_DIR})
+   endif(NOT EXISTS ${TCLZ_OUTPUT_DIR})
+   set(TCLZ_INSTALL_DIR "${Jafar_SOURCE_DIR}/tclpkg/${BUILDNAME}"
+     CACHE PATH "Destination for tcl wrapped libraries when installed")
+   mark_as_advanced(TCLZ_INSTALL_DIR)
+   if(NOT EXISTS ${TCLZ_INSTALL_DIR})
+     execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${TCLZ_INSTALL_DIR})
+   endif(NOT EXISTS ${TCLZ_INSTALL_DIR}) 
+ endif(TCL_FOUND)
 else(ENABLE_TCL)
   set(TCL_FOUND FALSE)
 endif(ENABLE_TCL)
@@ -248,18 +276,29 @@ if(ENABLE_RUBY)
   find_package(Ruby)
   set(RUBY_FOUND FALSE)
   if(EXISTS ${RUBY_INCLUDE_PATH} AND 
-      EXISTS ${RUBY_EXECUTABLE} AND 
-      EXISTS ${RUBY_LIBRARY})
-    set(RUBY_FOUND ON)
-    include_directories(${RUBY_INCLUDE_PATH})
-    exec_program(${RUBY_EXECUTABLE}
-      ARGS --version
-      OUTPUT_VARIABLE RUBY_VERSION)
-    string(REGEX MATCH "[0-9]+\\.[0-9]+" RUBY_VERSION "${RUBY_VERSION}")
-    message(STATUS "ruby version ${RUBY_VERSION}")
-  endif(EXISTS ${RUBY_INCLUDE_PATH} AND 
-        EXISTS ${RUBY_EXECUTABLE} AND 
-        EXISTS ${RUBY_LIBRARY})
+     EXISTS ${RUBY_EXECUTABLE} AND 
+     EXISTS ${RUBY_LIBRARY})
+   set(RUBY_FOUND ON)
+   include_directories(${RUBY_INCLUDE_PATH})
+   exec_program(${RUBY_EXECUTABLE}
+     ARGS --version
+     OUTPUT_VARIABLE RUBY_VERSION)
+   string(REGEX MATCH "[0-9]+\\.[0-9]+" RUBY_VERSION "${RUBY_VERSION}")
+   set(RUBIES_OUTPUT_DIR "${LIBRARIES_OUTPUT_DIR}/ruby/${RUBY_VERSION}/jafar"
+     CACHE PATH "Destination for ruby wrapped libraries when built")
+   mark_as_advanced(RUBIES_OUTPUT_DIR)
+   if(NOT EXISTS ${RUBIES_OUTPUT_DIR})
+     execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${RUBIES_OUTPUT_DIR})
+   endif(NOT EXISTS ${RUBIES_OUTPUT_DIR})
+   set(RUBIES_INSTALL_DIR "${LIBRARIES_INSTALL_DIR}/ruby/${RUBY_VERSION}/jafar"
+     CACHE PATH "Destination for ruby wrapped libraries when installed")
+   mark_as_advanced(RUBIES_INSTALL_DIR)
+   if(NOT EXISTS ${RUBIES_INSTALL_DIR})
+     execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${RUBIES_INSTALL_DIR})
+   endif(NOT EXISTS ${RUBIES_INSTALL_DIR})    
+ endif(EXISTS ${RUBY_INCLUDE_PATH} AND 
+   EXISTS ${RUBY_EXECUTABLE} AND 
+   EXISTS ${RUBY_LIBRARY})
 else(ENABLE_RUBY)
   set(RUBY_FOUND FALSE)
 endif(ENABLE_RUBY)
@@ -267,6 +306,13 @@ endif(ENABLE_RUBY)
 if(NOT RUBY_FOUND AND ENABLE_RUBY )
   message(FATAL_ERROR "ruby is required as scripting language but is not available")
 endif(NOT RUBY_FOUND AND ENABLE_RUBY)
+
+#------------------------------------------------------------------------------
+# configure jafarConfig.h header:
+#------------------------------------------------------------------------------
+
+configure_file(${CMAKE_SOURCE_DIR}/include/jafarConfig.h.in
+               ${INCLUDES_OUTPUT_DIR}/jafarConfig.h)
 
 #------------------------------------------------------------------------------
 # Jafar CMake modules:
@@ -286,9 +332,6 @@ add_subdirectory(modules)
 # Jafar documentation
 #------------------------------------------------------------------------------
 find_package(Doxygen)
-
-configure_file(${CMAKE_SOURCE_DIR}/include/jafarConfig.h.in
-               ${INCLUDES_INSTALL_DIR}/jafarConfig.h)
 
 configure_file(${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile.in
                ${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile)
