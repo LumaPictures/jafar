@@ -33,6 +33,20 @@ foreach(subdir ${JAFAR_MODULES_DIRS})
     set(${THIS_MODULE_DEPENDS} ${DEPENDENCIES})
     set(${THIS_MODULE_INCLUDES} ${DEPENDENCIES})
   endif(NOT("${DEPENDENCIES}" STREQUAL ""))
+
+  file(STRINGS ${JAFAR_MODULES_PARENT_DIR}/${subdir}/CMakeLists.txt  
+       OPTIONAL_DEPENDENCIES 
+       REGEX "^[ ]*OPTIONAL_MODULES[ ]*.*")
+  string(STRIP "${OPTIONAL_DEPENDENCIES}" OPTIONAL_DEPENDENCIES)
+  string(REGEX REPLACE "OPTIONAL_MODULES[ ]*" "" OPTIONAL_DEPENDENCIES "${OPTIONAL_DEPENDENCIES}")
+  string(REGEX REPLACE " " ";" OPTIONAL_DEPENDENCIES "${OPTIONAL_DEPENDENCIES}")
+  if(NOT("${OPTIONAL_DEPENDENCIES}" STREQUAL ""))
+    foreach(optional ${OPTIONAL_DEPENDENCIES})
+      if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${optional})
+	set(${THIS_MODULE_DEPENDS} ${${THIS_MODULE_DEPENDS}} ${optional})
+      endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${optional})
+    endforeach(optional)
+  endif(NOT("${OPTIONAL_DEPENDENCIES}" STREQUAL ""))
 endforeach(subdir)
 
 # Add all of the Jafar projects in reverse topological order, so that
@@ -98,7 +112,7 @@ set(JAFAR_ALL_COMPONENTS ${JAFAR_ALL_COMPONENTS} PARENT_SCOPE)
 # endforeach()
 
 # Write out a GraphViz file containing inter-library dependencies. 
-set(JAFAR_DEPENDENCY_GRAPHVIZ_FILE "${Jafar_BINARY_DIR}/doc/dependencies.dot")
+set(JAFAR_DEPENDENCY_GRAPHVIZ_FILE "${Jafar_SOURCE_DIR}/doc/dependencies.dot")
 file(WRITE ${JAFAR_DEPENDENCY_GRAPHVIZ_FILE} "digraph jafar {\n")
 foreach(SUBDIR ${JAFAR_SUBPROJECT_DIRS})
   string(TOUPPER "JAFAR_${SUBDIR}_COMPILED_LIB" JAFAR_COMPILED_LIB_VAR)
