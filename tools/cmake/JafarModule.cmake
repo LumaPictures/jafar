@@ -15,7 +15,8 @@ macro(WRAP_JAFAR_MODULE_TO_RUBY jafar_modulename)
   foreach(inc ${THIS_PROJECT_INCLUDES_ALL_LIST})
     set(INTERNAL_INCLUDES ${INTERNAL_INCLUDES} -I${JAFAR_MODULES_PARENT_DIR}/${inc}/include)
   endforeach(inc)
-  set(INTERNAL_INCLUDES ${INTERNAL_INCLUDES} -I${INCLUDES_INSTALL_DIR})
+  # jafarConfig.h is in ${INCLUDES_OUTPUT_DIR}
+  set(INTERNAL_INCLUDES ${INTERNAL_INCLUDES} -I${INCLUDES_OUTPUT_DIR})
   add_custom_command(
     OUTPUT  ${CMAKE_CURRENT_SOURCE_DIR}/src/ruby/${jafar_modulename}_wrap.cpp
     COMMAND ${SWIG_EXECUTABLE} 
@@ -28,7 +29,7 @@ macro(WRAP_JAFAR_MODULE_TO_RUBY jafar_modulename)
   target_link_libraries(${jafar_modulename}_ruby_wrap ${jafar_modulename} stdc++ ${RUBY_LIBRARY})
   set_target_properties(${jafar_modulename}_ruby_wrap 
     PROPERTIES OUTPUT_NAME ${jafar_modulename} 
-               LIBRARY_OUTPUT_DIRECTORY ${LIBRARIES_OUTPUT_DIR}/ruby/${RUBY_VERSION}/jafar/${jafar_modulename}
+               LIBRARY_OUTPUT_DIRECTORY ${RUBIES_OUTPUT_DIR}/${jafar_modulename}
 	       LINK_FLAGS "${THIS_MODULE_LDFLAGS}"
 	       PREFIX "")
   file(GLOB ruby_macros ${CMAKE_CURRENT_SOURCE_DIR}/macro/*.rb)
@@ -39,27 +40,27 @@ macro(WRAP_JAFAR_MODULE_TO_RUBY jafar_modulename)
 	TARGET ${jafar_modulename}_ruby_wrap
 	POST_BUILD
 	COMMAND ${CMAKE_COMMAND}
-	ARGS -E copy_if_different ${macro} ${LIBRARIES_OUTPUT_DIR}/ruby/${RUBY_VERSION}/jafar/${MACRO_NAME}.rb
+	ARGS -E copy_if_different ${macro} ${RUBIES_OUTPUT_DIR}/${MACRO_NAME}.rb
 	)
     else(${MACRO_NAME} STREQUAL ${jafar_modulename})
       add_custom_command(
 	TARGET ${jafar_modulename}_ruby_wrap
 	POST_BUILD
 	COMMAND ${CMAKE_COMMAND}
-	ARGS -E copy_if_different ${macro} ${LIBRARIES_OUTPUT_DIR}/ruby/${RUBY_VERSION}/jafar/${jafar_modulename}/${MACRO_NAME}.rb
+	ARGS -E copy_if_different ${macro} ${RUBIES_OUTPUT_DIR}/${jafar_modulename}/${MACRO_NAME}.rb
 	)
     endif(${MACRO_NAME} STREQUAL ${jafar_modulename})
   endforeach(macro)
 
 # install instructions for ruby library and macros
-  install(TARGETS ${jafar_modulename}_ruby_wrap DESTINATION ${LIBRARIES_INSTALL_DIR}/ruby/${RUBY_VERSION}/jafar/${jafar_modulename})
+  install(TARGETS ${jafar_modulename}_ruby_wrap DESTINATION ${RUBIES_INSTALL_DIR}/${jafar_modulename})
   file(GLOB ruby_macros macro/*.rb)
   foreach(macro ${ruby_macros})
     get_filename_component(MACRO_NAME ${macro} NAME_WE)
     if(${MACRO_NAME} STREQUAL ${jafar_modulename})
-      install(FILES ${macro} DESTINATION ${LIBRARIES_INSTALL_DIR}/ruby/${RUBY_VERSION}/jafar)
+      install(FILES ${macro} DESTINATION ${RUBIES_INSTALL_DIR})
     else(${MACRO_NAME} STREQUAL ${jafar_modulename})
-      install(FILES ${macro} DESTINATION ${LIBRARIES_INSTALL_DIR}/ruby/${RUBY_VERSION}/jafar/${jafar_modulename})
+      install(FILES ${macro} DESTINATION ${RUBIES_INSTALL_DIR}/${jafar_modulename})
     endif(${MACRO_NAME} STREQUAL ${jafar_modulename})
   endforeach(macro ${ruby_macros})
 
@@ -88,9 +89,13 @@ macro(WRAP_JAFAR_MODULE_TO_TCL jafar_modulename)
   if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/tcl)
     execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_SOURCE_DIR}/src/tcl)
   endif()
+
   foreach(inc ${THIS_PROJECT_INCLUDES_ALL_LIST})
     set(INTERNAL_INCLUDES ${INTERNAL_INCLUDES} -I${JAFAR_MODULES_PARENT_DIR}/${inc}/include)
   endforeach(inc)
+  # jafarConfig.h is in ${INCLUDES_OUTPUT_DIR}
+  set(INTERNAL_INCLUDES ${INTERNAL_INCLUDES} -I${INCLUDES_OUTPUT_DIR})
+
   add_custom_command(
     OUTPUT  ${CMAKE_CURRENT_SOURCE_DIR}/src/tcl/${jafar_modulename}_wrap.cpp
     COMMAND ${SWIG_EXECUTABLE} 
@@ -99,36 +104,39 @@ macro(WRAP_JAFAR_MODULE_TO_TCL jafar_modulename)
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}Tools.i ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}Exception.i
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
    )
+
   add_library(${jafar_modulename}_tcl_wrap SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/tcl/${jafar_modulename}_wrap.cpp)
   target_link_libraries(${jafar_modulename}_tcl_wrap ${jafar_modulename} stdc++ ${TCL_LIBRARY} ${TK_LIBRARY})
   set_target_properties(${jafar_modulename}_tcl_wrap 
     PROPERTIES OUTPUT_NAME ${jafar_modulename} 
                PREFIX ""
-	       LIBRARY_OUTPUT_DIRECTORY ${Jafar_SOURCE_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename})
-  file(GLOB tcl_macros ${CMAKE_CURRENT_SOURCE_DIR}/macro/*.tcl)
+	       LIBRARY_OUTPUT_DIRECTORY ${TCLZ_OUTPUT_DIR}/${jafar_modulename})
+
 # copy macros
+  file(GLOB tcl_macros ${CMAKE_CURRENT_SOURCE_DIR}/macro/*.tcl)
   foreach(macro ${tcl_macros})
     get_filename_component(MACRO_NAME ${macro} NAME)
     add_custom_command(
       TARGET ${jafar_modulename}_tcl_wrap
       POST_BUILD
       COMMAND ${CMAKE_COMMAND}
-      ARGS -E copy ${macro} ${Jafar_SOURCE_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename}/${MACRO_NAME} 
+      ARGS -E copy ${macro} ${TCLZ_OUTPUT_DIR}/${jafar_modulename}/${MACRO_NAME} 
       )
   endforeach(macro)
+
 # generate tcl package
   add_custom_command(
     TARGET ${jafar_modulename}_tcl_wrap
     POST_BUILD
-    COMMAND ${TCL_TCLSH} ARGS ${Jafar_SOURCE_DIR}/tools/swig/makePkg.tcl ${Jafar_SOURCE_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename}
-    WORKING_DIRECTORY ${Jafar_SOURCE_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename}
+    COMMAND ${TCL_TCLSH} ARGS ${Jafar_SOURCE_DIR}/tools/swig/makePkg.tcl ${TCLZ_OUTPUT_DIR}/${jafar_modulename}
+    WORKING_DIRECTORY ${TCLZ_OUTPUT_DIR}/${jafar_modulename}
   )
 
 # install instructions for tcl library and macros
-  install(TARGETS ${jafar_modulename}_tcl_wrap DESTINATION ${Jafar_BINARY_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename})
-#  install(FILES ${tcl_macros} DESTINATION ${Jafar_BINARY_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename})
-  file(GLOB tcl_files ${Jafar_SOURCE_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename}/*)
-  install(FILES ${tcl_files} DESTINATION ${Jafar_BINARY_DIR}/tclpkg/${BUILDNAME}/${jafar_modulename})
+  install(TARGETS ${jafar_modulename}_tcl_wrap DESTINATION ${TCLZ_INSTALL_DIR}/${jafar_modulename})
+#  install(FILES ${tcl_macros} DESTINATION ${TCLZ_INSTALL_DIR}/${jafar_modulename})
+  file(GLOB tcl_files ${TCLZ_INSTALL_DIR}/${jafar_modulename}/*)
+  install(FILES ${tcl_files} DESTINATION ${TCLZ_INSTALL_DIR}/${jafar_modulename})
 endmacro(WRAP_JAFAR_MODULE_TO_TCL)
 
 #------------------------------------------------------------------------------
@@ -284,8 +292,9 @@ macro(BUILD_JAFAR_MODULE modulename)
 
   # add headers
   include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-  include_directories(${INCLUDES_INSTALL_DIR})
-  set(LIBS ${LIBS} ${LIBRARIES_INSTALL_DIR})
+  # jafarConfig.h is located in ${INCLUDES_OUTPUT_DIR}
+  include_directories(${INCLUDES_OUTPUT_DIR}) 
+#  set(LIBS ${LIBS} ${LIBRARIES_INSTALL_DIR})
 
   # add sources
   file(GLOB module_sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
@@ -324,7 +333,7 @@ macro(BUILD_JAFAR_MODULE modulename)
 
   # install headers and libraries
   install(TARGETS ${MODULENAME} DESTINATION ${LIBRARIES_INSTALL_DIR})
-  file(GLOB module_headers include/${MODULENAME}/*.hpp)
+  file(GLOB module_headers include/${MODULENAME}/*.h*)
   install(FILES ${module_headers} DESTINATION ${INCLUDES_INSTALL_DIR}/${MODULENAME})
 
   #------------------------------------------------------------------------------
@@ -348,8 +357,9 @@ macro(BUILD_JAFAR_MODULE modulename)
       get_filename_component(demo ${source} NAME_WE)
       add_executable(${MODULENAME}_${demo} ${source})
       target_link_libraries(${MODULENAME}_${demo} ${MODULENAME})
-      set_target_properties(${MODULENAME}_${demo} PROPERTIES RUNTIME_OUTPUT_DIRECTORY demo_suite/${BUILDNAME}
-	                                                     OUTPUT_NAME ${demo})
+      set_target_properties(${MODULENAME}_${demo} PROPERTIES 
+	                    RUNTIME_OUTPUT_DIRECTORY demo_suite/${BUILDNAME}
+	                    OUTPUT_NAME ${demo})
     endforeach(source)
   endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/demo_suite)
 
