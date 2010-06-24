@@ -18,12 +18,24 @@ cmake_minimum_required(VERSION 2.6.4 FATAL_ERROR)
 
 project(Jafar CXX C)
 
-#set(CMAKE_SKIP_RPATH 1)
-#set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Byuilding type, choose either Debug or Release")
-#set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE LIST)
+#-----------------------------------------------------------------------------
+# Compilation flags for release and debug
+#-----------------------------------------------------------------------------
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE INTERNAL "possible configurations" FORCE)
+set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Byuilding type, choose either Debug or Release")
+set(CMAKE_CXX_FLAGS_RELEASE "-o2 -g0 -DNDEBUG -DJAFAR_NDEBUG -DBOOST_UBLAS_NDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "-o0 -g3 -ggdb")
+#set(JAFAR_COMPILE_FLAGS_MODULE "-pedantic -pedantic-errors -Werror -Wno-long-long -Wall")
+set(JAFAR_COMPILE_FLAGS_MODULE "-pedantic -Wno-long-long -Wall")
 
+#-----------------------------------------------------------------------------
+# enable test to generate test and run them
+#-----------------------------------------------------------------------------
 enable_testing()
 
+#-----------------------------------------------------------------------------
+# Microsoft Visual Studio special
+#-----------------------------------------------------------------------------
 if(MSVC)
   set(CMAKE_USE_RELATIVE_PATHS ON CACHE INTERNAL "" FORCE)
 endif(MSVC)
@@ -93,9 +105,11 @@ endif(NOT EXISTS ${INCLUDES_INSTALL_DIR})
 #------------------------------------------------------------------------------
 # External dependencies: 
 #------------------------------------------------------------------------------
-
 include(CheckIncludeFile)
 
+###
+# Boost v1.40 or above  -- REQUIRED
+###
 find_package(Boost 1.40 REQUIRED COMPONENTS date_time serialization unit_test_framework thread graph)
 set(BOOST_FOUND ${Boost_FOUND})
 include_directories(${Boost_INCLUDE_DIRS})
@@ -104,25 +118,27 @@ set(LIBS ${LIBS} ${Boost_LIBRARIES})
 set(HAVE_BOOST Boost_FOUND)
 set(LIBS_MAP_BOOST "Boost")
 
+###
+# SWIG -- REQUIRED
+###
 find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 include_directories(${SWIG_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${SWIG_LIBRARIES})
 
 ##
-# qt4
+# Qt4
 ##
 find_package(Qt4 COMPONENTS QtCore QtGui QtXml QtOpenGL QtSvg)
 if(QT4_FOUND)
   include(${QT_USE_FILE})
   include_directories(${QT_INCLUDES})
-#  message(STATUS "QT_LIBRARIES: ${QT_LIBRARIES}")
   set(LIBS ${LIBS} ${QT_LIBRARIES})
   set(LIBS_MAP_QT4 "QT")
 endif(QT4_FOUND)
 
 ###
-# opencv
+# OpenCV
 ###
 include(FindOpenCV)
 find_package(OpenCV)
@@ -139,7 +155,7 @@ if(OpenCV_FOUND)
 endif(OpenCV_FOUND)
 
 ###
-# openscenegraph
+# OpenSceneGraph
 ###
 #find_package(OpenSceneGraph 2.0.0 REQUIRED osgViewer osgGA)
 find_package(OpenSceneGraph 2.0.0)
@@ -151,7 +167,7 @@ if(OPENSCENEGRAPH_FOUND)
 endif(OPENSCENEGRAPH_FOUND)
 
 ###
-# opengl
+# OpenGL
 ###
 find_package(OpenGL)
 set(HAVE_OPENGL OPENGL_FOUND)
@@ -163,7 +179,7 @@ if(OPENGL_FOUND)
 endif(OPENGL_FOUND)
 
 ###
-# boost_sandbox
+# boost-sandbox
 ###
 set(PATH_TO_BOOST_SANDBOX "" CACHE PATH "path to boost_sandbox")
 if (EXISTS ${PATH_TO_BOOST_SANDBOX})
@@ -206,7 +222,7 @@ find_package(Subversion REQUIRED)
 ##
 enable_language(Fortran)
 ##
-# lapack
+# LAPACK
 ##
 find_package(LAPACK)
 set(HAVE_LAPACK LAPACK_FOUND)
@@ -215,7 +231,7 @@ if(LAPACK_FOUND)
   set(LIBS_MAP_LAPACK "LAPACK")
 endif(LAPACK_FOUND)
 ##
-# blas
+# BLAS
 ##
 find_package(BLAS)
 if(BLAS_FOUND)
@@ -345,18 +361,19 @@ add_subdirectory(modules)
 #------------------------------------------------------------------------------
 find_package(Doxygen)
 
-configure_file(${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile.in
-               ${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile)
-
-add_custom_target(doc
-  ${DOXYGEN_EXECUTABLE} ${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile
-)
-
-add_custom_command(
-  TARGET doc
-  POST_BUILD
-  COMMAND ${CMAKE_COMMAND}
-  ARGS -E copy ${Jafar_SOURCE_DIR}/doc/doxygen/images/LAASsmall.png ${Jafar_BINARY_DIR}/doc/html/LAASsmall.png
-  COMMAND ${CMAKE_COMMAND}
-  ARGS -E copy ${Jafar_SOURCE_DIR}/doc/doxygen/images/jafar.jpg ${Jafar_BINARY_DIR}/doc/html/jafar.jpg
-)
+if(DOXYGEN_FOUND)
+  configure_file(${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile.in
+    ${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile)
+  
+  add_custom_target(doc
+    ${DOXYGEN_EXECUTABLE} ${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile)
+  
+  add_custom_command(
+    TARGET doc
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND}
+    ARGS -E copy_if_different ${Jafar_SOURCE_DIR}/doc/doxygen/images/LAASsmall.png ${Jafar_SOURCE_DIR}/doc/html/LAASsmall.png
+    COMMAND ${CMAKE_COMMAND}
+    ARGS -E copy_if_different ${Jafar_SOURCE_DIR}/doc/doxygen/images/jafar.jpg ${Jafar_SOURCE_DIR}/doc/html/jafar.jpg
+    )
+endif(DOXYGEN_FOUND)
