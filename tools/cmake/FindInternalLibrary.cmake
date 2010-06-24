@@ -11,7 +11,7 @@ macro(FIND_INTERNAL_LIBRARY internal_library)
   set(${LIBRARY_NAME_FOUND} 0)
 
   find_path(${LIBRARY_NAME_INCLUDE_DIRS}  
-    NAMES ${internal_library}.h ${library_name}.h ${LIBRARY_NAME}.h lib${internal_library}.h
+    NAMES ${internal_library}.h ${library_name}.h ${LIBRARY_NAME}.h lib${internal_library}.h lib${library_name}.h lib${LIBRARY_NAME}.h ${internal_library}lib.h ${library_name}lib.h ${LIBRARY_NAME}lib.h
     PATHS
     ${ROBOTPKG_BASE}/include
     $ENV{ROBOTPKG_BASE}/include
@@ -19,7 +19,7 @@ macro(FIND_INTERNAL_LIBRARY internal_library)
     /usr/local/include
     /sw/include
     /opt/local/include
-    PATH_SUFFIXES ${internal_library} ${LIBRARY_NAME}
+    PATH_SUFFIXES ${internal_library} ${library_name} ${LIBRARY_NAME}
     DOC "The directory where ${internal_library}/${internal_library.h} resides")
   message(STATUS "\t${internal_library} headers: ${${LIBRARY_NAME_INCLUDE_DIRS}}")
 

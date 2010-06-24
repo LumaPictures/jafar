@@ -217,6 +217,7 @@ endif(BLAS_FOUND)
 #------------------------------------------------------------------------------
 
 include(FindInternalLibrary)
+include(FindMTI)
 
 foreach(internal
 	dtm
@@ -225,8 +226,14 @@ foreach(internal
 	t3d
 	gdhe
 	stereopixel
-	sift)
-  find_internal_library("${internal}")
+	sift
+	viam
+	MTI)
+  if(${internal} MATCHES "MTI")
+	find_mti()
+  else(${internal} MATCHES "MTI")
+	find_internal_library("${internal}")
+  endif(${internal} MATCHES "MTI")
   string(TOUPPER "HAVE_${internal}" HAVE_INTERNAL)
   string(TOUPPER "${internal}_FOUND" INTERNAL_FOUND)
   set(${HAVE_INTERNAL} ${${INTERNAL_FOUND}})
