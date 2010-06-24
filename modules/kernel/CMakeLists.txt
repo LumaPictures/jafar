@@ -13,5 +13,5 @@ build_jafar_module(kernel
   REQUIRED_EXTLIBS boost_date_time boost_thread
   #OPTIONAL_EXTLIBS
   CXXFLAGS -g -ggdb -Wall
-  CPPFLAGS -Wno-long-long -pedantic -pedantic-errors -Werror 
+  CPPFLAGS_MODULE -Wno-long-long -pedantic -pedantic-errors -Werror 
 )
