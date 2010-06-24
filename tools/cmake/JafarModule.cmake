@@ -20,7 +20,7 @@ macro(WRAP_JAFAR_MODULE_TO_RUBY jafar_modulename)
   add_custom_command(
     OUTPUT  ${CMAKE_CURRENT_SOURCE_DIR}/src/ruby/${jafar_modulename}_wrap.cpp
     COMMAND ${SWIG_EXECUTABLE} 
-    ARGS -c++ -Wall -v -ruby -prefix "jafar::" ${INTERNAL_INCLUDES} -I${Boost_INCLUDE_DIRS} -I${Jafar_SOURCE_DIR}/tools/swig -I${RUBY_INCLUDE_PATH} -I${CMAKE_CURRENT_SOURCE_DIR}/include "-D_JFR_MODULE_=\\\"${jafar_modulename}\\\"" -o src/ruby/${jafar_modulename}_wrap.cpp ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}.i
+    ARGS -c++ -Wall -v -ruby -prefix "jafar::" ${INTERNAL_INCLUDES} -I${Boost_INCLUDE_DIRS} -I${Jafar_SOURCE_DIR}/tools/swig -I${RUBY_INCLUDE_PATH} -I${CMAKE_CURRENT_SOURCE_DIR}/include "-D_JFR_MODULE_=\\\"${MODULENAME}\\\"" -o src/ruby/${jafar_modulename}_wrap.cpp ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}.i
     MAIN_DEPENDENCY include/${jafar_modulename}.i
     DEPENDS include/${jafar_modulename}Tools.i include/${jafar_modulename}Exception.i
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
@@ -30,6 +30,7 @@ macro(WRAP_JAFAR_MODULE_TO_RUBY jafar_modulename)
   set_target_properties(${jafar_modulename}_ruby_wrap 
     PROPERTIES OUTPUT_NAME ${jafar_modulename} 
                LIBRARY_OUTPUT_DIRECTORY ${RUBIES_OUTPUT_DIR}/${jafar_modulename}
+	       COMPILE_FLAGS "${COMMON_COMPILER_FLAGS}"
 	       LINK_FLAGS "${THIS_MODULE_LDFLAGS}"
 	       PREFIX "")
   file(GLOB ruby_macros ${CMAKE_CURRENT_SOURCE_DIR}/macro/*.rb)
@@ -99,7 +100,7 @@ macro(WRAP_JAFAR_MODULE_TO_TCL jafar_modulename)
   add_custom_command(
     OUTPUT  ${CMAKE_CURRENT_SOURCE_DIR}/src/tcl/${jafar_modulename}_wrap.cpp
     COMMAND ${SWIG_EXECUTABLE} 
-    ARGS -c++ -Wall -v -tcl -namespace -pkgversion ${FULL_VERSION} ${INTERNAL_INCLUDES} -I${Boost_INCLUDE_DIRS} -I${Jafar_SOURCE_DIR}/tools/swig -I${TCL_INCLUDE_PATH} -I${TK_INCLUDE_PATH} "-D_JFR_MODULE_=\\\"${jafar_modulename}\\\"" -o ${CMAKE_CURRENT_SOURCE_DIR}/src/tcl/${jafar_modulename}_wrap.cpp ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}.i
+    ARGS -c++ -Wall -v -tcl -namespace -pkgversion ${FULL_VERSION} ${INTERNAL_INCLUDES} -I${Boost_INCLUDE_DIRS} -I${Jafar_SOURCE_DIR}/tools/swig -I${TCL_INCLUDE_PATH} -I${TK_INCLUDE_PATH} "-D_JFR_MODULE_=\\\"${MODULENAME}\\\"" -o ${CMAKE_CURRENT_SOURCE_DIR}/src/tcl/${jafar_modulename}_wrap.cpp ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}.i
     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}.i
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}Tools.i ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}Exception.i
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
@@ -110,7 +111,9 @@ macro(WRAP_JAFAR_MODULE_TO_TCL jafar_modulename)
   set_target_properties(${jafar_modulename}_tcl_wrap 
     PROPERTIES OUTPUT_NAME ${jafar_modulename} 
                PREFIX ""
-	       LIBRARY_OUTPUT_DIRECTORY ${TCLZ_OUTPUT_DIR}/${jafar_modulename})
+	       LIBRARY_OUTPUT_DIRECTORY ${TCLZ_OUTPUT_DIR}/${jafar_modulename}
+	       COMPILE_FLAGS "${COMMON_COMPILER_FLAGS}"
+	       LINK_FLAGS "${THIS_MODULE_LDFLAGS}")
 
 # copy macros
   file(GLOB tcl_macros ${CMAKE_CURRENT_SOURCE_DIR}/macro/*.tcl)
@@ -120,7 +123,7 @@ macro(WRAP_JAFAR_MODULE_TO_TCL jafar_modulename)
       TARGET ${jafar_modulename}_tcl_wrap
       POST_BUILD
       COMMAND ${CMAKE_COMMAND}
-      ARGS -E copy ${macro} ${TCLZ_OUTPUT_DIR}/${jafar_modulename}/${MACRO_NAME} 
+      ARGS -E copy ${macro} ${TCLZ_OUTPUT_DIR}/${jafar_modulename}/${MACRO_NAME}
       )
   endforeach(macro)
 
@@ -159,11 +162,18 @@ macro(GENERATE_QT_FILES JAFAR_MODULENAME)
     file(STRINGS ${header} Q_OBJECT_STRING REGEX "^[ ]*Q_OBJECT[ ]*$")
     if(NOT("${Q_OBJECT_STRING}" STREQUAL ""))
       get_filename_component(HEADER_NAME ${header} NAME_WE)
-      execute_process(COMMAND ${QT_MOC_EXECUTABLE} ${header} -o ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc
-#	INPUT_FILE ${header} 
-#	OUTPUT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc
-)
-#      QT4_GENERATE_MOC(${header} ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc)
+      add_custom_command(    
+	TARGET ${jafar_modulename}
+	PRE_BUILD
+	COMMAND COMMAND ${QT_MOC_EXECUTABLE} ${header} -o ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc
+	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc
+	)
+
+#       execute_process(COMMAND ${QT_MOC_EXECUTABLE} ${header} -o ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc
+# #	INPUT_FILE ${header} 
+#         OUTPUT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc
+# 	)
+# #      QT4_GENERATE_MOC(${header} ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc)
     endif(NOT("${Q_OBJECT_STRING}" STREQUAL ""))
   endforeach(header)
 
@@ -287,20 +297,23 @@ macro(BUILD_JAFAR_MODULE modulename)
   # building module library
   #------------------------------------------------------------------------------
 
-  #read all the project properties
+  # read all the project properties
   set(FULL_VERSION "${THIS_MODULE_VERSION}.${THIS_MODULE_REVISION}")
   string(TOUPPER "JAFAR_${modulename}_OPTIONAL_MODULES_FLAGS" THIS_MODULE_OPTIONAL_MODULES_FLAGS)
-  set(ALL_COMPILER_FLAGS "${THIS_MODULE_CXXFLAGS} ${THIS_MODULE_CPPFLAGS} ${THIS_MODULE_CPPFLAGS_MODULE} -D_JFR_MODULE_=\\\"${MODULENAME}\\\"")
+  set(COMMON_COMPILER_FLAGS "${THIS_MODULE_CXXFLAGS} ${THIS_MODULE_CPPFLAGS} -D_JFR_MODULE_=\\\"${MODULENAME}\\\"")
   if(NOT "${${THIS_MODULE_OPTIONAL_MODULES_FLAGS}}" STREQUAL "")
-    set(ALL_COMPILER_FLAGS "${ALL_COMPILER_FLAGS} ${${THIS_MODULE_OPTIONAL_MODULES_FLAGS}}")
+    set(COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} ${${THIS_MODULE_OPTIONAL_MODULES_FLAGS}}")
   endif(NOT "${${THIS_MODULE_OPTIONAL_MODULES_FLAGS}}" STREQUAL "")
   if(NOT "${${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS}}" STREQUAL "")
-    set(ALL_COMPILER_FLAGS "${ALL_COMPILER_FLAGS} ${${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS}}")
+    set(COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} ${${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS}}")
   endif(NOT "${${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS}}" STREQUAL "")
+  string(STRIP "${COMMON_COMPILER_FLAGS}" COMMON_COMPILER_FLAGS)
+  string(REGEX REPLACE "[ ]*;" " " COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS}")
+  message(STATUS "- common compiling flags ${COMMON_COMPILER_FLAGS}")
+  set(ALL_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} ${THIS_MODULE_CPPFLAGS_MODULE}")
   string(STRIP "${ALL_COMPILER_FLAGS}" ALL_COMPILER_FLAGS)
   string(REGEX REPLACE "[ ]*;" " " ALL_COMPILER_FLAGS "${ALL_COMPILER_FLAGS}")
-  message(STATUS "- compiling flags ${ALL_COMPILER_FLAGS}")
-
+  message(STATUS "- ${modulename} compiling flags ${ALL_COMPILER_FLAGS}")
   # wrap QT files if needed
   if(QT_WRAPPING_REQUIRED)
     generate_qt_files(${MODULENAME})
@@ -308,7 +321,7 @@ macro(BUILD_JAFAR_MODULE modulename)
 
   # add headers
   include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-  # jafarConfig.h is located in ${INCLUDES_OUTPUT_DIR}
+  # jafarConfig.h is located in ${INCLUDES_OUTPUT_DIR} so include
   include_directories(${INCLUDES_OUTPUT_DIR}) 
 #  set(LIBS ${LIBS} ${LIBRARIES_INSTALL_DIR})
 
