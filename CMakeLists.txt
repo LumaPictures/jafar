@@ -186,6 +186,17 @@ if(GDAL_FOUND)
 endif(GDAL_FOUND)
 
 ###
+# MTI
+###
+find_package(MTI)
+set(HAVE_MTI MTI_FOUND)
+if(MTI_FOUND)
+  include_directories(${MTI_INCLUDE_DIRS})
+  set(LIBS ${LIBS} ${MTI_LIBRARIES})
+  set(LIBS_MAP_MTI "MTI")
+endif(MTI_FOUND)
+
+###
 # Subversion to play around
 ###
 find_package(Subversion REQUIRED)
@@ -217,7 +228,6 @@ endif(BLAS_FOUND)
 #------------------------------------------------------------------------------
 
 include(FindInternalLibrary)
-include(FindMTI)
 
 foreach(internal
 	dtm
@@ -227,13 +237,8 @@ foreach(internal
 	gdhe
 	stereopixel
 	sift
-	viam
-	MTI)
-  if(${internal} MATCHES "MTI")
-	find_mti()
-  else(${internal} MATCHES "MTI")
-	find_internal_library("${internal}")
-  endif(${internal} MATCHES "MTI")
+	viam)
+  find_internal_library("${internal}")
   string(TOUPPER "HAVE_${internal}" HAVE_INTERNAL)
   string(TOUPPER "${internal}_FOUND" INTERNAL_FOUND)
   set(${HAVE_INTERNAL} ${${INTERNAL_FOUND}})
