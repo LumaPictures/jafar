@@ -100,7 +100,7 @@ macro(WRAP_JAFAR_MODULE_TO_TCL jafar_modulename)
   add_custom_command(
     OUTPUT  ${CMAKE_CURRENT_SOURCE_DIR}/src/tcl/${jafar_modulename}_wrap.cpp
     COMMAND ${SWIG_EXECUTABLE} 
-    ARGS -c++ -Wall -v -tcl -namespace -pkgversion ${FULL_VERSION} ${INTERNAL_INCLUDES} -I${Boost_INCLUDE_DIRS} -I${Jafar_SOURCE_DIR}/tools/swig -I${TCL_INCLUDE_PATH} -I${TK_INCLUDE_PATH} "-D_JFR_MODULE_=\\\"${MODULENAME}\\\"" -o ${CMAKE_CURRENT_SOURCE_DIR}/src/tcl/${jafar_modulename}_wrap.cpp ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}.i
+    ARGS -c++ -Wall -v -tcl -namespace -pkgversion ${THIS_MODULE_FULL_VERSION} ${INTERNAL_INCLUDES} -I${Boost_INCLUDE_DIRS} -I${Jafar_SOURCE_DIR}/tools/swig -I${TCL_INCLUDE_PATH} -I${TK_INCLUDE_PATH} "-D_JFR_MODULE_=\\\"${MODULENAME}\\\"" -o ${CMAKE_CURRENT_SOURCE_DIR}/src/tcl/${jafar_modulename}_wrap.cpp ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}.i
     MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}.i
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}Tools.i ${CMAKE_CURRENT_SOURCE_DIR}/include/${jafar_modulename}Exception.i
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
@@ -192,7 +192,7 @@ macro(BUILD_JAFAR_MODULE modulename)
   # required as well as optional ones
   #----------------------------------------------------------------------------
   parse_arguments(THIS_MODULE
-    "VERSION;REVISION;REQUIRED_MODULES;OPTIONAL_MODULES;REQUIRED_EXTLIBS;OPTIONAL_EXTLIBS;CPPFLAGS_MODULE;CXXFLAGS;CPPFLAGS;LDFLAGS"
+    "VERSION;REVISION;REQUIRED_MODULES;OPTIONAL_MODULES;REQUIRED_EXTLIBS;OPTIONAL_EXTLIBS;CPPFLAGS_MODULE;CXXFLAGS;CPPFLAGS;LDFLAGS;ROBOTPKG_CATEGORY;SHORT_DESCRIPTION"
     ""
     ${ARGN}
     )
@@ -296,7 +296,7 @@ macro(BUILD_JAFAR_MODULE modulename)
   #------------------------------------------------------------------------------
 
   # read all the project properties
-  set(FULL_VERSION "${THIS_MODULE_VERSION}.${THIS_MODULE_REVISION}")
+  set(THIS_MODULE_FULL_VERSION "${THIS_MODULE_VERSION}.${THIS_MODULE_REVISION}")
   string(TOUPPER "JAFAR_${modulename}_OPTIONAL_MODULES_FLAGS" THIS_MODULE_OPTIONAL_MODULES_FLAGS)
   set(COMMON_COMPILER_FLAGS "${THIS_MODULE_CXXFLAGS} ${THIS_MODULE_CPPFLAGS} -D_JFR_MODULE_=\\\"${MODULENAME}\\\"")
   if(NOT "${${THIS_MODULE_OPTIONAL_MODULES_FLAGS}}" STREQUAL "")
@@ -340,7 +340,7 @@ macro(BUILD_JAFAR_MODULE modulename)
   endforeach(dependency)
 
   # set library properties: version, output directory, compiler flags and link flags
-  set_target_properties(${MODULENAME} PROPERTIES VERSION ${FULL_VERSION} SOVERSION ${THIS_MODULE_VERSION})
+  set_target_properties(${MODULENAME} PROPERTIES VERSION ${THIS_MODULE_FULL_VERSION} SOVERSION ${THIS_MODULE_VERSION})
   set_target_properties(${MODULENAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${LIBRARIES_OUTPUT_DIR})
   set_target_properties(${MODULENAME} PROPERTIES COMPILE_FLAGS "${ALL_COMPILER_FLAGS}")
   set_target_properties(${MODULENAME} PROPERTIES LINK_FLAGS "${THIS_MODULE_LDFLAGS}")
@@ -402,5 +402,3 @@ macro(BUILD_JAFAR_MODULE modulename)
   if(ENABLE_TCL)
     wrap_jafar_module_to_tcl(${modulename})
   endif(ENABLE_TCL)
-
-endmacro(BUILD_JAFAR_MODULE)
