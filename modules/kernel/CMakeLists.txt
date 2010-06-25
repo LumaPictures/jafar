@@ -1,10 +1,5 @@
 # $Id$ #
 
-#
-# User part of the makefiles
-# module kernel
-#
-
 build_jafar_module(kernel
   VERSION 0
   REVISION 2
@@ -15,4 +10,6 @@ build_jafar_module(kernel
   #CXXFLAGS
   #CPPFLAGS
   #CPPFLAGS_MODULE
+  ROBOTPKG_CATEGORY devel
+  SHORT_DESCRIPTION "Defines some jafar common tools: exceptions, debug message facility, data logging facility,..."
 )
