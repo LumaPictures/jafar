@@ -76,6 +76,11 @@ svn_add() {
 
 cd $TOPDIR
 svn_add COPYRIGHT CMakeLists.txt doc include macro src test_suite demo_suite
+#if you have an in source cmake build ignore generated files
+svn propset svn:ignore CMakeFiles .
+svn propset svn:ignore cmake_install.cmake .
+svn propset svn:ignore CTestTestfile.cmake .
+svn propset svn:ignore Makefile .
 
 cd $TOPDIR/doc
 svn_add *.doxy *.tcl *.hpp *.cpp
