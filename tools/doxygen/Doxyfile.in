@@ -5,7 +5,7 @@
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = Jafar
 PROJECT_NUMBER         = 
-OUTPUT_DIRECTORY       = /home/nizar/Work/jafar/doc
+OUTPUT_DIRECTORY       = @CMAKE_SOURCE_DIR@/doc
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
