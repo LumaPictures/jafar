@@ -75,7 +75,7 @@ svn_add() {
 }
 
 cd $TOPDIR
-svn_add COPYRIGHT Makefile README User.make doc include macro src test_suite
+svn_add COPYRIGHT CMakeLists.txt doc include macro src test_suite demo_suite
 
 cd $TOPDIR/doc
 svn_add *.doxy *.tcl *.hpp *.cpp
