@@ -26,8 +26,8 @@ while [[ finished -eq 0 ]]; do
 	mdeps=""
 	odeps=""
 	for m in $olddeps; do
-		mdeps="`cat ${JAFAR_DIR}/modules/$m/CMakeLists.txt | grep REQUIRED_MODULES | cut -d"=" -f2` $mdeps"
-		odeps="`cat ${JAFAR_DIR}/modules/$m/CMakeLists.txt | grep OPTIONAL_MODULES | cut -d"=" -f2` $odeps"
+		mdeps="`cat ${JAFAR_DIR}/modules/$m/User.make | grep REQUIRED_MODULES | cut -d"=" -f2` $mdeps"
+		odeps="`cat ${JAFAR_DIR}/modules/$m/User.make | grep OPTIONAL_MODULES | cut -d"=" -f2` $odeps"
 	done
 	mdeps=`echo $mdeps | awk '{n=split($0,mods," "); for(i=1;i<=n;i++) { if (!x[mods[i]]++) print mods[i];}}'`
 	odeps=`echo $odeps | awk '{n=split($0,mods," "); for(i=1;i<=n;i++) { if (!x[mods[i]]++) print mods[i];}}'`
