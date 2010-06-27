@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id:$ */
 
 // boost unit test includes
 #define BOOST_TEST_MAIN 

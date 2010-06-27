@@ -1,4 +1,4 @@
-# $Id$ #
+# $Id:$ #
 
 #
 # User part of the makefiles

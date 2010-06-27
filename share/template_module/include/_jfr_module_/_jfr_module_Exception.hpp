@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id:$ */
 
 #ifndef _jfr_MODULE___jfr_MODULE__EXCEPTION_HPP
 #define _jfr_MODULE___jfr_MODULE__EXCEPTION_HPP
