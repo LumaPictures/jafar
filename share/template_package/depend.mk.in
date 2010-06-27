@@ -1,0 +1,42 @@
+# $ LAAS $
+#
+# Copyright (c) @THIS_YEAR@ LAAS/CNRS
+# All rights reserved.
+#
+# Permission to use, copy, modify, and distribute this software for any purpose
+# with or without   fee is hereby granted, provided   that the above  copyright
+# notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+# REGARD TO THIS  SOFTWARE INCLUDING ALL  IMPLIED WARRANTIES OF MERCHANTABILITY
+# AND FITNESS. IN NO EVENT SHALL THE AUTHOR  BE LIABLE FOR ANY SPECIAL, DIRECT,
+# INDIRECT, OR CONSEQUENTIAL DAMAGES OR  ANY DAMAGES WHATSOEVER RESULTING  FROM
+# LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+# OTHER TORTIOUS ACTION,   ARISING OUT OF OR IN    CONNECTION WITH THE USE   OR
+# PERFORMANCE OF THIS SOFTWARE.
+#
+#	                                               Jafar on @OH_HAPPY_DAY@
+#
+
+DEPEND_DEPTH:=		@DOLLAR_SYMBOL@{DEPEND_DEPTH}+
+jafar-@MODULENAME@_DEPEND_MK:=	@DOLLAR_SYMBOL@{jafar-@MODULENAME@_DEPEND_MK}+
+
+ifeq (+,@DOLLAR_SYMBOL@(DEPEND_DEPTH))
+DEPEND_PKG+=		jafar-@MODULENAME@
+endif
+
+ifeq (+,@DOLLAR_SYMBOL@(jafar-@MODULENAME@_DEPEND_MK)) # -----------------------------------------------
+
+PREFER.jafar-@MODULENAME@?=		robotpkg
+
+DEPEND_USE+=		jafar-@MODULENAME@
+DEPEND_ABI.jafar-@MODULENAME@?=	jafar-@MODULENAME@>=@THIS_MODULE_FULL_VERSION@
+DEPEND_DIR.jafar-@MODULENAME@?=	../../@THIS_MODULE_ROBOTPKG_CATEGORY@/jafar-@MODULENAME@
+
+SYSTEM_SEARCH.jafar-@MODULENAME@=\
+	include/jafar/@MODULENAME@/@MODULENAME@Exception.hpp	\
+	lib/@CMAKE_SHARED_LIBRARY_PREFIX@@MODULENAME@@CMAKE_SHARED_LIBRARY_SUFFIX@
+
+endif # jafar-@MODULENAME@_DEPEND_MK ----------------------------------------------------
+
+DEPEND_DEPTH:=		@DOLLAR_SYMBOL@{DEPEND_DEPTH:+=}
