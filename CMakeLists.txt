@@ -110,7 +110,7 @@ include(CheckIncludeFile)
 ###
 # Boost v1.40 or above  -- REQUIRED
 ###
-find_package(Boost 1.40 REQUIRED COMPONENTS date_time serialization unit_test_framework thread graph)
+find_package(Boost 1.40 REQUIRED COMPONENTS date_time serialization unit_test_framework thread graph system filesystem regex)
 set(BOOST_FOUND ${Boost_FOUND})
 include_directories(${Boost_INCLUDE_DIRS})
 message(STATUS "boost libraries "${Boost_LIBRARIES})
