@@ -334,10 +334,7 @@ macro(BUILD_JAFAR_MODULE modulename)
   add_library(${MODULENAME} SHARED ${module_sources})
 
   # link module to dependencies
-  foreach(dependency ${THIS_PROJECT_DEPENDS_ALL_LIST})
-    target_link_libraries(${MODULENAME} ${dependency})
-    message(STATUS "--> linking ${MODULENAME} to ${dependency}")
-  endforeach(dependency)
+  target_link_libraries(${MODULENAME} ${THIS_PROJECT_DEPENDS_ALL_LIST})
 
   # set library properties: version, output directory, compiler flags and link flags
   set_target_properties(${MODULENAME} PROPERTIES VERSION ${THIS_MODULE_FULL_VERSION} SOVERSION ${THIS_MODULE_VERSION})
