@@ -366,10 +366,9 @@ macro(BUILD_JAFAR_MODULE modulename)
   file(GLOB test_sources ${CMAKE_CURRENT_SOURCE_DIR}/test_suite/*.cpp)
   add_executable(test_suite_${MODULENAME} ${test_sources})
   target_link_libraries(test_suite_${MODULENAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${MODULENAME})
-  set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME})
-  # set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME} 
+  set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME} 
+     COMPILER_FLAGS "${ALL_COMPILER_FLAGS}")
   #   LINK_FLAGS "${THIS_MODULE_LDFLAGS}"
-  #   COMPILER_FLAGS "${ALL_COMPILER_FLAGS}")
   add_test(test_suite_${MODULENAME} test_suite/${BUILDNAME}/test_suite_${MODULENAME})
 
   #------------------------------------------------------------------------------
@@ -383,6 +382,7 @@ macro(BUILD_JAFAR_MODULE modulename)
       target_link_libraries(${MODULENAME}_${demo} ${MODULENAME})
       set_target_properties(${MODULENAME}_${demo} PROPERTIES 
 	                    RUNTIME_OUTPUT_DIRECTORY demo_suite/${BUILDNAME}
+	                    COMPILE_FLAGS "${ALL_COMPILER_FLAGS}"
 	                    OUTPUT_NAME ${demo})
     endforeach(source)
   endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/demo_suite)
