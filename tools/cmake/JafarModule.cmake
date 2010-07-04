@@ -399,4 +399,12 @@ macro(BUILD_JAFAR_MODULE modulename)
   if(ENABLE_TCL)
     wrap_jafar_module_to_tcl(${modulename})
   endif(ENABLE_TCL)
-endmacro()
+
+  #------------------------------------------------------------------------------
+  # setting up convenient symbolic links
+  #------------------------------------------------------------------------------
+	execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/code)
+	execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/data)
+
+
+endmacro(BUILD_JAFAR_MODULE)
