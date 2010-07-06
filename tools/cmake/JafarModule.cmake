@@ -363,21 +363,20 @@ macro(BUILD_JAFAR_MODULE modulename)
   target_link_libraries(${MODULENAME} ${THIS_PROJECT_DEPENDS_ALL_LIST})
 
   # set library properties: version, output directory, compiler flags and link flags
-  set_target_properties(${MODULENAME} PROPERTIES VERSION ${THIS_MODULE_FULL_VERSION} SOVERSION ${THIS_MODULE_VERSION})
-  set_target_properties(${MODULENAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${LIBRARIES_OUTPUT_DIR})
-  set_target_properties(${MODULENAME} PROPERTIES COMPILE_FLAGS "${ALL_COMPILER_FLAGS}")
-  set_target_properties(${MODULENAME} PROPERTIES LINK_FLAGS "${THIS_MODULE_LDFLAGS}")
+  set_target_properties(${MODULENAME} 
+    PROPERTIES VERSION ${THIS_MODULE_FULL_VERSION} SOVERSION ${THIS_MODULE_VERSION}
+               LIBRARY_OUTPUT_DIRECTORY ${LIBRARIES_OUTPUT_DIR}
+	       COMPILE_FLAGS "${ALL_COMPILER_FLAGS}"
+	       LINK_FLAGS "${THIS_MODULE_LDFLAGS}")
 
   # copy headers
   file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/${MODULENAME}/*.h*)
   foreach(header ${headers})
     get_filename_component(HEADER_NAME ${header} NAME)
-    add_custom_command(
-      TARGET ${MODULENAME}
+    add_custom_command(TARGET ${MODULENAME}
       POST_BUILD
       COMMAND ${CMAKE_COMMAND}
-      ARGS -E copy_if_different ${header} ${INCLUDES_OUTPUT_DIR}/${MODULENAME}/${HEADER_NAME} 
-      )
+      ARGS -E copy_if_different ${header} ${INCLUDES_OUTPUT_DIR}/${MODULENAME}/${HEADER_NAME})
   endforeach(header)
 
   # install headers and libraries
@@ -391,10 +390,9 @@ macro(BUILD_JAFAR_MODULE modulename)
   file(GLOB test_sources ${CMAKE_CURRENT_SOURCE_DIR}/test_suite/*.cpp)
   add_executable(test_suite_${MODULENAME} ${test_sources})
   target_link_libraries(test_suite_${MODULENAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${MODULENAME})
-  set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME})
-  # set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME} 
-  #   LINK_FLAGS "${THIS_MODULE_LDFLAGS}"
-  #   COMPILER_FLAGS "${ALL_COMPILER_FLAGS}")
+  set_target_properties(test_suite_${MODULENAME} 
+    PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME}
+               COMPILER_FLAGS "${ALL_COMPILER_FLAGS}")
   add_test(test_suite_${MODULENAME} test_suite/${BUILDNAME}/test_suite_${MODULENAME})
 
   #------------------------------------------------------------------------------
@@ -406,10 +404,10 @@ macro(BUILD_JAFAR_MODULE modulename)
       get_filename_component(demo ${source} NAME_WE)
       add_executable(${MODULENAME}_${demo} ${source})
       target_link_libraries(${MODULENAME}_${demo} ${MODULENAME})
-      set_target_properties(${MODULENAME}_${demo} PROPERTIES 
-	                    RUNTIME_OUTPUT_DIRECTORY demo_suite/${BUILDNAME}
-	                    COMPILE_FLAGS "${ALL_COMPILER_FLAGS}"
-	                    OUTPUT_NAME ${demo})
+      set_target_properties(${MODULENAME}_${demo} 
+	PROPERTIES RUNTIME_OUTPUT_DIRECTORY demo_suite/${BUILDNAME}
+	           COMPILE_FLAGS "${ALL_COMPILER_FLAGS}"
+	           OUTPUT_NAME ${demo})
     endforeach(source)
   endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/demo_suite)
 
