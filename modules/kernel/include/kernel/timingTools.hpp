@@ -6,6 +6,8 @@
 #include "boost/date_time/posix_time/posix_time.hpp"
 // we could use a better singleton here...
 #include "boost/pool/detail/singleton.hpp"
+#include <unistd.h>
+#include <sys/time.h>
 
 #include "kernel/jafarDebug.hpp"
 
@@ -35,26 +37,65 @@ namespace jafar {
 	refTime = boost::posix_time::microsec_clock::local_time();
       }
 
-      /// return the time elapsed since the last reset (in millisecond)
+      /// return the time elapsed since the last reset (in milliseconds)
       long elapsed() {
 	boost::posix_time::ptime curTime = boost::posix_time::microsec_clock::local_time();
 	return (curTime - refTime).total_milliseconds();
       }
 
-      /// return the time elapsed since the last reset (in microsecond)
+      /// return the time elapsed since the last reset (in seconds)
       long elapsedSecond() {
 	boost::posix_time::ptime curTime = boost::posix_time::microsec_clock::local_time();
 	return (curTime - refTime).total_seconds();
       }
 
-      /// return the time elapsed since the last reset (in microsecond)
+      /// return the time elapsed since the last reset (in microseconds)
       long elapsedMicrosecond() {
 	boost::posix_time::ptime curTime = boost::posix_time::microsec_clock::local_time();
 	return (curTime - refTime).total_microseconds();
       }
+      
 
     }; // class Chrono
 
+
+		/// This function returns an absolute time
+		class Clock
+		{
+			public:
+			static double getTime()
+			{
+				// FIXME should use boost::posix_time
+				//boost::posix_time::ptime curTime = boost::posix_time::microsec_clock::local_time();
+				//return curTime.total_seconds() + curTime.fractional_seconds() / time_duration::ticks_per_second();
+				struct timeval tv; struct timezone tz;
+				gettimeofday(&tv, &tz);
+				return tv.tv_sec + tv.tv_usec*1e-6;
+			}
+			
+		};
+
+		class Timer
+		{
+			private:
+				double period;
+				double last_tic_time;
+			public:
+				Timer(int period_us): period(period_us*1e-6) { restart(); }
+				void restart()  { last_tic_time = Clock::getTime(); }
+				void wait()
+				{
+					// FIXME should use nanosleep
+					double current_time = Clock::getTime();
+					last_tic_time += period;
+					double wait_time = last_tic_time - current_time;
+					if (wait_time < 0)
+						last_tic_time = current_time;
+					else
+						usleep(wait_time*1e6);
+				}
+				
+		};
 
 #ifndef SWIG
 
@@ -63,7 +104,7 @@ namespace jafar {
 
     namespace detail {
 
-      /** Global chronos for tic() and toc() interective functions.
+      /** Global chronos for tic() and toc() interactive functions.
        *
        * \ingroup kernel
        */
