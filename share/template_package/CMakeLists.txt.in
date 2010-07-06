@@ -1,0 +1,144 @@
+############################################################################
+# @MODULENAME@ CMakeLists.txt						   #
+# 									   #
+# This is an automatically generated file, don't modify			   #
+# 									   #
+# Copyright (c) 2010 CNRS/LAAS						   #
+# 									   #
+# Permission to use, copy, modify, and distribute this software for any	   #
+# purpose with or without fee is hereby granted, provided that the above   #
+# copyright notice and this permission notice appear in all copies.	   #
+# 									   #
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES #
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF	   #
+# MERCHANTABILITY AND FITNESS.						   #
+############################################################################
+
+project(jafar-@MODULENAME@ C CXX Fortran)
+
+cmake_minimum_required(VERSION 2.6.4 FATAL_ERROR)
+
+if(COMMAND cmake_policy)
+  cmake_policy(SET CMP0003 NEW)
+endif(COMMAND cmake_policy)
+
+#-----------------------------------------------------------------------------
+# Compilation flags for release and debug
+#-----------------------------------------------------------------------------
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE INTERNAL "possible configurations" FORCE)
+# In case of Makefiles if the user does not setup CMAKE_BUILD_TYPE, assume it's Debug
+if (${CMAKE_GENERATOR} MATCHES ".*Makefiles")
+  if("${CMAKE_BUILD_TYPE}" STREQUAL "")
+    set(CMAKE_BUILD_TYPE Debug)
+  endif()
+endif()
+set(CMAKE_CXX_FLAGS_RELEASE "-o2 -g0 -DNDEBUG -DJAFAR_NDEBUG -DBOOST_UBLAS_NDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "-o0 -g3 -ggdb")
+
+#-----------------------------------------------------------------------------
+# Macro to help find other robotpkg modules
+#-----------------------------------------------------------------------------
+macro(FIND_ROBOTS_PACKAGE robots_package)
+  message(STATUS "looking for @DOLLAR_SYMBOL@{robots_package}")
+  string(TOLOWER "@DOLLAR_SYMBOL@{robots_package}" library_name)
+  string(TOUPPER "@DOLLAR_SYMBOL@{robots_package}" LIBRARY_NAME)
+  string(TOUPPER "@DOLLAR_SYMBOL@{robots_package}_FOUND" LIBRARY_NAME_FOUND)
+  string(TOUPPER "@DOLLAR_SYMBOL@{robots_package}_INCLUDE_DIRS" LIBRARY_NAME_INCLUDE_DIRS)
+  string(TOUPPER "@DOLLAR_SYMBOL@{robots_package}_LIBRARIES" LIBRARY_NAME_LIBRARIES)
+
+  set(@DOLLAR_SYMBOL@{LIBRARY_NAME_FOUND} 0)
+
+  find_path(@DOLLAR_SYMBOL@{LIBRARY_NAME_INCLUDE_DIRS}  
+    NAMES @DOLLAR_SYMBOL@{robots_package}.h @DOLLAR_SYMBOL@{library_name}.h @DOLLAR_SYMBOL@{LIBRARY_NAME}.h lib@DOLLAR_SYMBOL@{robots_package}.h lib@DOLLAR_SYMBOL@{library_name}.h lib@DOLLAR_SYMBOL@{LIBRARY_NAME}.h @DOLLAR_SYMBOL@{robots_package}lib.h @DOLLAR_SYMBOL@{library_name}lib.h @DOLLAR_SYMBOL@{LIBRARY_NAME}lib.h
+    PATHS
+    @DOLLAR_SYMBOL@{ROBOTPKG_BASE}/include
+    @DOLLAR_SYMBOL@ENV{ROBOTPKG_BASE}/include
+    PATH_SUFFIXES @DOLLAR_SYMBOL@{robots_package} @DOLLAR_SYMBOL@{library_name} @DOLLAR_SYMBOL@{LIBRARY_NAME}
+    DOC "The directory where @DOLLAR_SYMBOL@{robots_package}/@DOLLAR_SYMBOL@{robots_package.h} resides")
+  message(STATUS "\t@DOLLAR_SYMBOL@{robots_package} headers: @DOLLAR_SYMBOL@{@DOLLAR_SYMBOL@{LIBRARY_NAME_INCLUDE_DIRS}}")
+
+  find_library(@DOLLAR_SYMBOL@{LIBRARY_NAME_LIBRARIES} 
+    NAMES @DOLLAR_SYMBOL@{robots_package} @DOLLAR_SYMBOL@{LIBRARY_NAME}
+    PATHS
+    @DOLLAR_SYMBOL@{ROBOTPKG_BASE}/lib
+    @DOLLAR_SYMBOL@ENV{ROBOTPKG_BASE}/lib
+    DOC "The @DOLLAR_SYMBOL@{robots_package} library")
+  message(STATUS "\t@DOLLAR_SYMBOL@{robots_package} libraries: @DOLLAR_SYMBOL@{@DOLLAR_SYMBOL@{LIBRARY_NAME_LIBRARIES}}")
+
+  if(EXISTS @DOLLAR_SYMBOL@{@DOLLAR_SYMBOL@{LIBRARY_NAME_LIBRARIES}} AND EXISTS @DOLLAR_SYMBOL@{@DOLLAR_SYMBOL@{LIBRARY_NAME_INCLUDE_DIRS}})
+    set(@DOLLAR_SYMBOL@{LIBRARY_NAME_FOUND} 1)
+  endif(EXISTS @DOLLAR_SYMBOL@{@DOLLAR_SYMBOL@{LIBRARY_NAME_LIBRARIES}} AND EXISTS @DOLLAR_SYMBOL@{@DOLLAR_SYMBOL@{LIBRARY_NAME_INCLUDE_DIRS}})
+  mark_as_advanced( FORCE @DOLLAR_SYMBOL@{LIBRARY_NAME_FOUND} )
+endmacro(FIND_ROBOTS_PACKAGE robots_package)
+
+
+#-----------------------------------------------------------------------------
+# Go find them
+#-----------------------------------------------------------------------------
+foreach(package @ROBOTS_PACKAGES_TO_FIND@)
+  find_robots_package("@DOLLAR_SYMBOL@{package}")
+  string(TOUPPER "HAVE_@DOLLAR_SYMBOL@{package}" HAVE_PACKAGE)
+  string(TOUPPER "@DOLLAR_SYMBOL@{package}_FOUND" PACKAGE_FOUND)
+  set(@DOLLAR_SYMBOL@{HAVE_PACKAGE} @DOLLAR_SYMBOL@{@DOLLAR_SYMBOL@{PACKAGE_FOUND}})
+  if(@DOLLAR_SYMBOL@{PACKAGE_FOUND})
+    string(TOUPPER "@DOLLAR_SYMBOL@{package}" PACKAGE)
+    set(EXTRA_COMPILE_FLAGS "@DOLLAR_SYMBOL@{EXTRA_COMPILE_FLAGS} -DHAVE_@DOLLAR_SYMBOL@{PACKAGE}")
+    set(LIBS @DOLLAR_SYMBOL@{LIBS} @DOLLAR_SYMBOL@{@DOLLAR_SYMBOL@{PACKAGE}_LIBRARIES})
+    include_directories(@DOLLAR_SYMBOL@{@DOLLAR_SYMBOL@{PACKAGE}_INCLUDE_DIRS})
+    list(APPEND IMPORTED_HEADERS @DOLLAR_SYMBOL@{@DOLLAR_SYMBOL@{PACKAGE}_INCLUDE_DIRS})
+  endif(@DOLLAR_SYMBOL@{PACKAGE_FOUND})
+endforeach(package)
+
+@THIS_MODULE_REQUIRES@
+
+# add module headers
+file(GLOB module_headers @DOLLAR_SYMBOL@{jafar-@MODULENAME@_SOURCE_DIR}/include/@MODULENAME@/*.h*)
+# add sources
+file(GLOB module_sources @DOLLAR_SYMBOL@{jafar-@MODULENAME@_SOURCE_DIR}/src/*.cpp)
+#remove jafarConfig.h from included headers
+foreach(header @DOLLAR_SYMBOL@{module_headers} @DOLLAR_SYMBOL@{module_sources})
+  file(READ @DOLLAR_SYMBOL@{header} header_data)
+  string(REGEX MATCH "#include [<|\"]jafarConfig.h[\"|>]" is_concerned "@DOLLAR_SYMBOL@{header_data}")
+  if (NOT "@DOLLAR_SYMBOL@{is_concerned}" STREQUAL "")
+    string(REGEX REPLACE "#include [<|\"]jafarConfig.h[\"|>]" "" header_data "@DOLLAR_SYMBOL@{header_data}")
+  endif (NOT "@DOLLAR_SYMBOL@{is_concerned}" STREQUAL "")
+  file(WRITE @DOLLAR_SYMBOL@{header} "@DOLLAR_SYMBOL@{header_data}")
+endforeach(header)
+
+include_directories(@DOLLAR_SYMBOL@{jafar-@MODULENAME@_SOURCE_DIR}/include)
+# add other module headers
+include_directories(@DOLLAR_SYMBOL@{CMAKE_INSTALL_PREFIX}/include/jafar)
+# include installed headers
+include_directories(@DOLLAR_SYMBOL@{CMAKE_INSTALL_PREFIX}/include)
+# include folders of installed headers
+file(GLOB_RECURSE includes @DOLLAR_SYMBOL@{CMAKE_INSTALL_PREFIX}/include/*)
+foreach(potential_include @DOLLAR_SYMBOL@{includes})
+  if(IS_DIRECTORY @DOLLAR_SYMBOL@{potential_include})
+    list(APPEND headers_folders @DOLLAR_SYMBOL@{potential_include})
+  endif(IS_DIRECTORY @DOLLAR_SYMBOL@{potential_include})
+endforeach(potential_include)
+include_directories(@DOLLAR_SYMBOL@{headers_folders})
+
+# build the library
+add_library(@MODULENAME@ SHARED @DOLLAR_SYMBOL@{module_sources})
+
+# link module to required modules
+@THIS_MODULE_REQUIRED_MODULES_LINKAGE@
+# link module to external libraries
+@THIS_MODULE_EXTLIBS_LINKAGE@
+
+# set library properties: version, output directory, compiler flags and link flags
+set_target_properties(@MODULENAME@ PROPERTIES VERSION @THIS_MODULE_FULL_VERSION@ SOVERSION @THIS_MODULE_VERSION@)
+if(NOT "@DOLLAR_SYMBOL@{EXTRA_COMPILE_FLAGS}" STREQUAL "")
+  set_target_properties(${MODULENAME} PROPERTIES COMPILE_FLAGS "@DOLLAR_SYMBOL@{EXTRA_COMPILE_FLAGS}")
+endif(NOT "@DOLLAR_SYMBOL@{EXTRA_COMPILE_FLAGS}" STREQUAL "")
+
+# install headers and libraries
+install(TARGETS @MODULENAME@ DESTINATION lib EXPORT @MODULENAME@)
+install(FILES @DOLLAR_SYMBOL@{module_headers} DESTINATION include/jafar/@MODULENAME@/)
+install(EXPORT @MODULENAME@ NAMESPACE jafar- DESTINATION lib/jafar)
+execute_process(
+  COMMAND @DOLLAR_SYMBOL@{CMAKE_COMMAND} -E echo "SET(JAFAR_@MODULENAME@_IMPORTED_HEADERS @DOLLAR_SYMBOL@{IMPORTED_HEADERS})"
+  OUTPUT_FILE @DOLLAR_SYMBOL@{CMAKE_CURRENT_BINARY_DIR}/@MODULENAME@-headers.cmake)
+install(FILES @DOLLAR_SYMBOL@{CMAKE_CURRENT_BINARY_DIR}/@MODULENAME@-headers.cmake 
+  DESTINATION lib/jafar)
