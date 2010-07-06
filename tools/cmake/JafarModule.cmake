@@ -416,10 +416,10 @@ macro(BUILD_JAFAR_MODULE modulename)
   #------------------------------------------------------------------------------
   # setting up convenient symbolic links
   #------------------------------------------------------------------------------
-  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/code)
-#    OUTPUT ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/code)
-  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/data)
-#    OUTPUT ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/data)
+  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/code
+    OUTPUT_FILE ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/code)
+  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/data
+    OUTPUT_FILE ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/data)
 
   #------------------------------------------------------------------------------
   # building wrapped libraries in available script languages
