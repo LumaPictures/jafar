@@ -199,7 +199,16 @@ macro(BUILD_JAFAR_MODULE modulename)
   # include headers from required modules
   foreach(required_module ${THIS_MODULE_REQUIRED_MODULES})
     include_directories(${JAFAR_MODULES_PARENT_DIR}/${required_module}/include)
+    #gather robotpkg dependencies from required modules
+    string(TOUPPER "ROBOTPKG_MAP_${required_module}" ROBOTPKG_MAP_REQUIRED_MODULE)
+    set(THIS_MODULE_ROBOTPKG_REQ_MODULES ${THIS_MODULE_ROBOTPKG_REQ_MODULES} ${${ROBOTPKG_MAP_REQUIRED_MODULE}})
   endforeach(required_module)
+
+  foreach(optional_module ${THIS_MODULE_OPTIONAL_MODULES})
+    #gather robotpkg dependencies from optional modules
+    string(TOUPPER "ROBOTPKG_MAP_${optional_module}" ROBOTPKG_MAP_OPTIONAL_MODULE)
+    set(THIS_MODULE_ROBOTPKG_OPT_MODULES ${THIS_MODULE_ROBOTPKG_OPT_MODULES} ${${ROBOTPKG_MAP_OPTIONAL_MODULE}})
+  endforeach(optional_module)
 
   # Set THIS_PROJECT_DEPENDS_ALL to the set of all of its
   # dependencies, its dependencies' dependencies, etc., transitively.
@@ -232,16 +241,27 @@ macro(BUILD_JAFAR_MODULE modulename)
   if(${NB_EXTLIBS} GREATER 0)
     foreach(extlib ${THIS_MODULE_REQUIRED_EXTLIBS})
       get_ext_library_exact_name(${extlib} LIB_EXACT_NAME)
+
+      #gather robotpkg dependencies from required external libraries
+      string(TOUPPER "ROBOTPKG_MAP_${LIB_EXACT_NAME}" ROBOTPKG_MAP_EXTLIB)
+      if(NOT("${${ROBOTPKG_MAP_EXTLIB}}" STREQUAL  ""))
+	foreach(component ${${ROBOTPKG_MAP_EXTLIB}})
+	  set(THIS_MODULE_ROBOTPKG_REQ_EXTLIBS ${THIS_MODULE_ROBOTPKG_REQ_EXTLIBS} ${component})
+	endforeach(component)
+      # else(NOT("${${ROBOTPKG_MAP_EXTLIB}}" STREQUAL  ""))
+      # 	list(APPEND THIS_MODULE_REQUIRED_EXTLIBS_EXACT_NAMES ${LIB_EXACT_NAME})
+      endif(NOT("${${ROBOTPKG_MAP_EXTLIB}}" STREQUAL  ""))
+      list(APPEND THIS_MODULE_REQUIRED_EXTLIBS_EXACT_NAMES ${LIB_EXACT_NAME})
       # boost is always found as it is a requirement
       # besides, boost libraries are located in components, we treat them apart
       if("${LIB_EXACT_NAME}" STREQUAL "Boost")
 	get_boost_component_library(${extlib} BOOST_COMPONENT_LIBRARY)
 	list(APPEND THIS_PROJECT_DEPENDS_ALL_LIST ${BOOST_COMPONENT_LIBRARY})
       else("${LIB_EXACT_NAME}" STREQUAL "Boost")
-	if("${LIB_EXACT_NAME}" STREQUAL "QT")
+	if("${LIB_EXACT_NAME}" STREQUAL "Qt4")
 	  set(QT_WRAPPING_REQUIRED 1)
 	  list(APPEND THIS_PROJECT_DEPENDS_ALL_LIST ${QT_LIBRARIES})
-	else("${LIB_EXACT_NAME}" STREQUAL "QT")
+	else("${LIB_EXACT_NAME}" STREQUAL "Qt4")
 	  string(TOUPPER "${LIB_EXACT_NAME}_FOUND" THIS_LIB_FOUND)
 	  if(${THIS_LIB_FOUND})
 	    set(LIB_EXACT_NAME_LIBRARIES "${LIB_EXACT_NAME}_LIBRARIES")
@@ -249,43 +269,52 @@ macro(BUILD_JAFAR_MODULE modulename)
 	  else(${EXTLIB_FOUND})
 	    message(FATAL_ERROR "this module requires ${extlib} but it wasn't found, please install it and rerun cmake on top of jafar!")
 	  endif(${THIS_LIB_FOUND})
-	endif("${LIB_EXACT_NAME}" STREQUAL "QT")
+	endif("${LIB_EXACT_NAME}" STREQUAL "Qt4")
       endif("${LIB_EXACT_NAME}" STREQUAL "Boost")
     endforeach(extlib)
   endif(${NB_EXTLIBS} GREATER 0)
 
-  string(TOUPPER "${modulename}_OPTIONAL_EXTLIBS_FLAGS" THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS)
   # check optional external libraries dependencies
   list(LENGTH THIS_MODULE_OPTIONAL_EXTLIBS NB_EXTLIBS)
   if(${NB_EXTLIBS} GREATER 0)
     foreach(extlib ${THIS_MODULE_OPTIONAL_EXTLIBS})
       get_ext_library_exact_name(${extlib} LIB_EXACT_NAME)
+      #gather robotpkg dependencies from required external libraries
+      string(TOUPPER "ROBOTPKG_MAP_${LIB_EXACT_NAME}" ROBOTPKG_MAP_EXTLIB)
+      if(NOT("${${ROBOTPKG_MAP_EXTLIB}}" STREQUAL  ""))
+	foreach(component ${${ROBOTPKG_MAP_EXTLIB}})
+	  set(THIS_MODULE_ROBOTPKG_OPT_EXTLIBS ${THIS_MODULE_ROBOTPKG_OPT_EXTLIBS} ${component})
+	endforeach(component)
+      # else(NOT("${${ROBOTPKG_MAP_EXTLIB}}" STREQUAL  ""))
+      # 	list(APPEND THIS_MODULE_OPTIONAL_EXTLIBS_EXACT_NAMES ${LIB_EXACT_NAME})
+      endif(NOT("${${ROBOTPKG_MAP_EXTLIB}}" STREQUAL  ""))
+
+      list(APPEND THIS_MODULE_OPTIONAL_EXTLIBS_EXACT_NAMES ${LIB_EXACT_NAME})
+      #do the job
       if("${LIB_EXACT_NAME}" STREQUAL "Boost")
 	get_boost_component_library(${extlib} BOOST_COMPONENT_LIBRARY)
 	list(APPEND THIS_PROJECT_DEPENDS_ALL ${BOOST_COMPONENT_LIBRARY})
-	set(${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS} "${${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS}}")
       else("${LIB_EXACT_NAME}" STREQUAL "Boost")
-	if(("${LIB_EXACT_NAME}" STREQUAL "QT" AND QT4_FOUND) 
-	    OR ("${LIB_EXACT_NAME}" STREQUAL "QT4" AND QT4_FOUND))
+	if("${LIB_EXACT_NAME}" STREQUAL "Qt4" AND QT4_FOUND)
 	  set(QT_WRAPPING_REQUIRED 1)
-	  set(${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS} "${${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS}}")
 	  list(APPEND THIS_PROJECT_DEPENDS_ALL_LIST ${QT_LIBRARIES})
-	else(("${LIB_EXACT_NAME}" STREQUAL "QT" AND QT4_FOUND) OR ("${LIB_EXACT_NAME}" STREQUAL "QT4" AND QT4_FOUND))
+	else("${LIB_EXACT_NAME}" STREQUAL "Qt4" AND QT4_FOUND)
 	  string(TOUPPER "${LIB_EXACT_NAME}_FOUND" THIS_LIB_FOUND)
 	  if(${THIS_LIB_FOUND})
 	    set(LIB_EXACT_NAME_LIBRARIES "${LIB_EXACT_NAME}_LIBRARIES")
 	    list(APPEND THIS_PROJECT_DEPENDS_ALL_LIST ${${LIB_EXACT_NAME_LIBRARIES}})
-	    set(${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS} "${${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS}}")
 	  else(${EXTLIB_FOUND})
 	    message(STATUS "this module requires ${extlib} but it wasn't found, some features may be disabled!")
 	  endif(${THIS_LIB_FOUND})
-	endif(("${LIB_EXACT_NAME}" STREQUAL "QT" AND QT4_FOUND) OR ("${LIB_EXACT_NAME}" STREQUAL "QT4" AND QT4_FOUND))
+	endif("${LIB_EXACT_NAME}" STREQUAL "Qt4" AND QT4_FOUND)
       endif("${LIB_EXACT_NAME}" STREQUAL "Boost")
     endforeach(extlib)
   endif(${NB_EXTLIBS} GREATER 0)
 
   string(TOLOWER "${modulename}" MODULENAME)
   string(TOLOWER "jafar_module_${MODULENAME}" JAFAR_MODULE_PROJECT)
+  string(TOUPPER "ROBOTPKG_MAP_${modulename}" ROBOTPKG_MAP_THIS_MODULE)
+  set(${ROBOTPKG_MAP_THIS_MODULE} "${THIS_MODULE_ROBOTPKG_CATEGORY}/jafar-${modulename}" PARENT_SCOPE)
 
   #------------------------------------------------------------------------------
   # instantiate module project and targets: library, test and wrappers
@@ -299,12 +328,6 @@ macro(BUILD_JAFAR_MODULE modulename)
   set(THIS_MODULE_FULL_VERSION "${THIS_MODULE_VERSION}.${THIS_MODULE_REVISION}")
   string(TOUPPER "JAFAR_${modulename}_OPTIONAL_MODULES_FLAGS" THIS_MODULE_OPTIONAL_MODULES_FLAGS)
   set(COMMON_COMPILER_FLAGS "${THIS_MODULE_CXXFLAGS} ${THIS_MODULE_CPPFLAGS} -D_JFR_MODULE_=\\\"${MODULENAME}\\\"")
-  if(NOT "${${THIS_MODULE_OPTIONAL_MODULES_FLAGS}}" STREQUAL "")
-    set(COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} ${${THIS_MODULE_OPTIONAL_MODULES_FLAGS}}")
-  endif(NOT "${${THIS_MODULE_OPTIONAL_MODULES_FLAGS}}" STREQUAL "")
-  if(NOT "${${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS}}" STREQUAL "")
-    set(COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} ${${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS}}")
-  endif(NOT "${${THIS_MODULE_OPTIONAL_EXTLIBS_FLAGS}}" STREQUAL "")
   string(STRIP "${COMMON_COMPILER_FLAGS}" COMMON_COMPILER_FLAGS)
   string(REGEX REPLACE "[ ]*;" " " COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS}")
   message(STATUS "- common compiling flags ${COMMON_COMPILER_FLAGS}")
@@ -341,7 +364,6 @@ macro(BUILD_JAFAR_MODULE modulename)
   set_target_properties(${MODULENAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${LIBRARIES_OUTPUT_DIR})
   set_target_properties(${MODULENAME} PROPERTIES COMPILE_FLAGS "${ALL_COMPILER_FLAGS}")
   set_target_properties(${MODULENAME} PROPERTIES LINK_FLAGS "${THIS_MODULE_LDFLAGS}")
-#  set_target_properties(${MODULENAME} PROPERTIES LINK_FLAGS_RELEASE )
 
   # copy headers
   file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/${MODULENAME}/*.h*)
@@ -366,9 +388,10 @@ macro(BUILD_JAFAR_MODULE modulename)
   file(GLOB test_sources ${CMAKE_CURRENT_SOURCE_DIR}/test_suite/*.cpp)
   add_executable(test_suite_${MODULENAME} ${test_sources})
   target_link_libraries(test_suite_${MODULENAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${MODULENAME})
-  set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME} 
-     COMPILER_FLAGS "${ALL_COMPILER_FLAGS}")
+  set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME})
+  # set_target_properties(test_suite_${MODULENAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME} 
   #   LINK_FLAGS "${THIS_MODULE_LDFLAGS}"
+  #   COMPILER_FLAGS "${ALL_COMPILER_FLAGS}")
   add_test(test_suite_${MODULENAME} test_suite/${BUILDNAME}/test_suite_${MODULENAME})
 
   #------------------------------------------------------------------------------
@@ -388,6 +411,14 @@ macro(BUILD_JAFAR_MODULE modulename)
   endif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/demo_suite)
 
   #------------------------------------------------------------------------------
+  # setting up convenient symbolic links
+  #------------------------------------------------------------------------------
+  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/code
+    OUTPUT ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/code)
+  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/data
+    ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/data)
+
+  #------------------------------------------------------------------------------
   # building wrapped libraries in available script languages
   #------------------------------------------------------------------------------
   # wrap module to ruby
@@ -400,11 +431,7 @@ macro(BUILD_JAFAR_MODULE modulename)
     wrap_jafar_module_to_tcl(${modulename})
   endif(ENABLE_TCL)
 
-  #------------------------------------------------------------------------------
-  # setting up convenient symbolic links
-  #------------------------------------------------------------------------------
-	execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/code)
-	execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/data)
-
+  add_custom_target(package-${modulename}
+    ${CMAKE_COMMAND} -DMODULENAME=${MODULENAME} -DJafar_SOURCE_DIR=${Jafar_SOURCE_DIR} -DJafar_BINARY_DIR=${Jafar_BINARY_DIR} -DTHIS_MODULE_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DTHIS_MODULE_FULL_VERSION=${THIS_MODULE_FULL_VERSION} -DTHIS_MODULE_VERSION=${THIS_MODULE_VERSION} -DTHIS_MODULE_ROBOTPKG_CATEGORY=${THIS_MODULE_ROBOTPKG_CATEGORY} -DTHIS_MODULE_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR} -DTHIS_MODULE_REQUIRED_MODULES="${THIS_MODULE_REQUIRED_MODULES}" -DTHIS_MODULE_OPTIONAL_MODULES="${THIS_MODULE_OPTIONAL_MODULES}" -DTHIS_MODULE_ROBOTPKG_REQ_MODULES="${THIS_MODULE_ROBOTPKG_REQ_MODULES}" -DTHIS_MODULE_ROBOTPKG_OPT_MODULES="${THIS_MODULE_ROBOTPKG_OPT_MODULES}" -DTHIS_MODULE_REQUIRED_EXTLIBS_EXACT_NAMES="${THIS_MODULE_REQUIRED_EXTLIBS_EXACT_NAMES}" -DTHIS_MODULE_OPTIONAL_EXTLIBS_EXACT_NAMES="${THIS_MODULE_OPTIONAL_EXTLIBS_EXACT_NAMES}" -DTHIS_MODULE_ROBOTPKG_REQ_EXTLIBS="${THIS_MODULE_ROBOTPKG_REQ_EXTLIBS}" -DTHIS_MODULE_ROBOTPKG_OPT_EXTLIBS="${DTHIS_MODULE_ROBOTPKG_OPT_EXTLIBS}" -DCMAKE_SHARED_LIBRARY_PREFIX=${CMAKE_SHARED_LIBRARY_PREFIX} -DCMAKE_SHARED_LIBRARY_SUFFIX=${CMAKE_SHARED_LIBRARY_SUFFIX} -P ${Jafar_SOURCE_DIR}/tools/cmake/JafarModuleRelease.cmake)
 
 endmacro(BUILD_JAFAR_MODULE)
