@@ -1,7 +1,7 @@
 #! /bin/sh
 set -e
 
-. ${JAFAR_DIR}/bin/git_config.sh
+#. ${JAFAR_DIR}/bin/git_config.sh
 
 OPTIONAL_MODULES=""
 MAKEFILE=CMakeLists.txt
