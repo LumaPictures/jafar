@@ -47,3 +47,9 @@
 
 /* Stereopixel */
 #cmakedefine HAVE_STEREOPIXEL
+
+/* Viam */
+#cmakedefine HAVE_VIAM
+
+/* MTI */
+#cmakedefine HAVE_MTI
