@@ -21,8 +21,14 @@ project(Jafar CXX C)
 #-----------------------------------------------------------------------------
 # Compilation flags for release and debug
 #-----------------------------------------------------------------------------
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE INTERNAL "possible configurations" FORCE)
-set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Byuilding type, choose either Debug or Release")
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE "possible configurations" FORCE)
+# In case of Makefiles if the user does not setup CMAKE_BUILD_TYPE, assume it's Debug
+if (${CMAKE_GENERATOR} MATCHES ".*Makefiles")
+    if("${CMAKE_BUILD_TYPE}" STREQUAL "")
+        set(CMAKE_BUILD_TYPE Debug)
+    endif()
+endif()
+
 set(CMAKE_CXX_FLAGS_RELEASE "-o2 -g0 -DNDEBUG -DJAFAR_NDEBUG -DBOOST_UBLAS_NDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "-o0 -g3 -ggdb")
 #set(JAFAR_COMPILE_FLAGS_MODULE "-pedantic -pedantic-errors -Werror -Wno-long-long -Wall")
@@ -117,6 +123,7 @@ message(STATUS "boost libraries "${Boost_LIBRARIES})
 set(LIBS ${LIBS} ${Boost_LIBRARIES})
 set(HAVE_BOOST Boost_FOUND)
 set(LIBS_MAP_BOOST "Boost")
+set(ROBOTPKG_MAP_BOOST "devel/boost-headers" "devel/boost-libs")
 
 ###
 # SWIG -- REQUIRED
@@ -134,7 +141,7 @@ if(QT4_FOUND)
   include(${QT_USE_FILE})
   include_directories(${QT_INCLUDES})
   set(LIBS ${LIBS} ${QT_LIBRARIES})
-  set(LIBS_MAP_QT4 "QT")
+  set(LIBS_MAP_QT4 "Qt4")
 endif(QT4_FOUND)
 
 ###
@@ -153,6 +160,7 @@ if(OpenCV_FOUND)
   set(LIBS ${LIBS} ${OpenCV_LIBRARIES})
   set(LIBS_MAP_OPENCV "OpenCV")
 endif(OpenCV_FOUND)
+set(ROBOTPKG_MAP_OPENCV "image/opencv")
 
 ###
 # OpenSceneGraph
@@ -188,6 +196,7 @@ if (EXISTS ${PATH_TO_BOOST_SANDBOX})
     SET(HAVE_BOOST_SANDBOX TRUE)
   endif(EXISTS ${PATH_TO_BOOST_SANDBOX}/boost/numeric/bindings/lapack/lapack.hpp) 
 endif(EXISTS ${PATH_TO_BOOST_SANDBOX})
+set(ROBOTPKG_MAP_BOOST_SANDBOX "devel/boost-numeric-bindings")
 
 ###
 # GDAL
@@ -211,6 +220,7 @@ if(MTI_FOUND)
   set(LIBS ${LIBS} ${MTI_LIBRARIES})
   set(LIBS_MAP_MTI "MTI")
 endif(MTI_FOUND)
+set(ROBOTPKG_MAP_MTI "hardware/MTI")
 
 ###
 # Subversion to play around
@@ -230,6 +240,8 @@ if(LAPACK_FOUND)
   set(LIBS ${LIBS} ${LAPACK_LIBRARIES})
   set(LIBS_MAP_LAPACK "LAPACK")
 endif(LAPACK_FOUND)
+set(ROBOTPKG_MAP_LAPACK "math/lapack")
+
 ##
 # BLAS
 ##
@@ -238,6 +250,7 @@ if(BLAS_FOUND)
   set(LIBS ${LIBS} ${BLAS_LIBRARIES})
   set(LIBS_MAP_BLAS "BLAS")
 endif(BLAS_FOUND)
+set(ROBOTPKG_MAP_BLAS "math/blas")
 
 #------------------------------------------------------------------------------
 # Internal dependencies
@@ -267,6 +280,14 @@ foreach(internal
   endif(${INTERNAL_FOUND})
 endforeach(internal)
 
+set(ROBOTPKG_MAP_DTM "mapping/libdtm")
+set(ROBOTPKG_MAP_IMAGES3D "image/libimages3d")
+set(ROBOTPKG_MAP_P3D "path/libp3d")
+set(ROBOTPKG_MAP_T3D "math/libt3d")
+set(ROBOTPKG_MAP_GDHE "graphics/gdhe")
+set(ROBOTPKG_MAP_STEREOPIXEL "mapping/libstereopixel")
+set(ROBOTPKG_MAP_SIFT "image/sift")
+set(ROBOTPKG_MAP_VIAM "image/viam-libs")
 
 #------------------------------------------------------------------------------
 # Scripting languages
