@@ -328,6 +328,9 @@ macro(BUILD_JAFAR_MODULE modulename)
   set(THIS_MODULE_FULL_VERSION "${THIS_MODULE_VERSION}.${THIS_MODULE_REVISION}")
   string(TOUPPER "JAFAR_${modulename}_OPTIONAL_MODULES_FLAGS" THIS_MODULE_OPTIONAL_MODULES_FLAGS)
   set(COMMON_COMPILER_FLAGS "${THIS_MODULE_CXXFLAGS} ${THIS_MODULE_CPPFLAGS} -D_JFR_MODULE_=\\\"${MODULENAME}\\\"")
+  if(NOT "${${THIS_MODULE_OPTIONAL_MODULES_FLAGS}}" STREQUAL "")
+    set(COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS} ${${THIS_MODULE_OPTIONAL_MODULES_FLAGS}}")
+  endif(NOT "${${THIS_MODULE_OPTIONAL_MODULES_FLAGS}}" STREQUAL "")
   string(STRIP "${COMMON_COMPILER_FLAGS}" COMMON_COMPILER_FLAGS)
   string(REGEX REPLACE "[ ]*;" " " COMMON_COMPILER_FLAGS "${COMMON_COMPILER_FLAGS}")
   message(STATUS "- common compiling flags ${COMMON_COMPILER_FLAGS}")
@@ -413,10 +416,10 @@ macro(BUILD_JAFAR_MODULE modulename)
   #------------------------------------------------------------------------------
   # setting up convenient symbolic links
   #------------------------------------------------------------------------------
-  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/code
-    OUTPUT ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/code)
-  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/data
-    ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/data)
+  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/code)
+#    OUTPUT ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/code)
+  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/data ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/data)
+#    OUTPUT ${CMAKE_INSTALL_PREFIX}/modules/${modulename}/data)
 
   #------------------------------------------------------------------------------
   # building wrapped libraries in available script languages

@@ -21,7 +21,8 @@ project(Jafar CXX C)
 #-----------------------------------------------------------------------------
 # Compilation flags for release and debug
 #-----------------------------------------------------------------------------
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE "possible configurations" FORCE)
+#set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE "possible configurations" FORCE)
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE INTERNAL "possible configurations" FORCE)
 # In case of Makefiles if the user does not setup CMAKE_BUILD_TYPE, assume it's Debug
 if (${CMAKE_GENERATOR} MATCHES ".*Makefiles")
     if("${CMAKE_BUILD_TYPE}" STREQUAL "")
