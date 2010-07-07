@@ -5,6 +5,7 @@
 
 #include <list>
 #include <set>
+#include <iostream>
 
 namespace jafar {
 	namespace kernel {
@@ -81,8 +82,11 @@ namespace jafar {
 				T defrag(T lastid)
 				{
 					typename storage_t::reverse_iterator rit;
-					for(rit = freed.rbegin(); rit != freed.rend() && *rit == lastid; --lastid)
-						freed.erase((++rit).base());
+					for(rit = freed.rbegin(); !freed.empty() && *rit == lastid; --lastid)
+					{
+						freed.erase(--rit.base());
+						if (!freed.empty()) ++rit;
+					}
 					return lastid; 
 				}
 		};
@@ -104,15 +108,15 @@ namespace jafar {
 				/// Call this to get an unique id, starting from 1, 0 means overflow
 				T getId()
 				{
-					if (freed.empty())
-						return ++m_lastId; 
-					else
-						return freed.get();
+					T id = (freed.empty() ? ++m_lastId : freed.get());
+//std::cout << "IdFactory::getId " << id << std::endl;
+					return id;
 				}
 				
 				/// Call this when you want to stop using an id
 				bool releaseId(T id) 
 				{
+//std::cout << "IdFactory::releaseId " << id << std::endl;
 					if (id == 0 || id > m_lastId) return false;
 					if (id == m_lastId ) 
 						m_lastId = freed.defrag(m_lastId-1); 

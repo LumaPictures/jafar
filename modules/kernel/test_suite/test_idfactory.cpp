@@ -127,5 +127,11 @@ BOOST_AUTO_TEST_CASE( test_idfactory )
 	BOOST_CHECK_EQUAL(if_set.releaseId(2), false);
 	BOOST_CHECK_EQUAL(if_set.countUsed(), 2);
 	BOOST_CHECK_EQUAL(if_set.countCollected(), 1);
+	BOOST_CHECK_EQUAL(if_set.releaseId(1), true);
+	BOOST_CHECK_EQUAL(if_set.countUsed(), 1);
+	BOOST_CHECK_EQUAL(if_set.countCollected(), 2);
+	BOOST_CHECK_EQUAL(if_set.releaseId(3), true);
+	BOOST_CHECK_EQUAL(if_set.countUsed(), 0);
+	BOOST_CHECK_EQUAL(if_set.countCollected(), 0);
 }
 
