@@ -121,7 +121,7 @@ set(BOOST_FOUND ${Boost_FOUND})
 include_directories(${Boost_INCLUDE_DIRS})
 message(STATUS "boost libraries "${Boost_LIBRARIES})
 set(LIBS ${LIBS} ${Boost_LIBRARIES})
-set(HAVE_BOOST Boost_FOUND)
+set(HAVE_BOOST ${Boost_FOUND})
 set(LIBS_MAP_BOOST "Boost")
 set(ROBOTPKG_MAP_BOOST "devel/boost-headers" "devel/boost-libs")
 
@@ -149,7 +149,7 @@ endif(QT4_FOUND)
 ###
 include(FindOpenCV)
 find_package(OpenCV)
-set(HAVE_OPENCV OpenCV_FOUND)
+set(HAVE_OPENCV ${OpenCV_FOUND})
 set(OPENCV_FOUND ${OpenCV_FOUND})
 if(OpenCV_FOUND)
   #this is a hack be cause the FindOpenCV.cmake provides duplicated values
@@ -167,7 +167,7 @@ set(ROBOTPKG_MAP_OPENCV "image/opencv")
 ###
 #find_package(OpenSceneGraph 2.0.0 REQUIRED osgViewer osgGA)
 find_package(OpenSceneGraph 2.0.0)
-set(HAVE_OSG OPENSCENEGRAPH_FOUND)
+set(HAVE_OSG ${OPENSCENEGRAPH_FOUND})
 if(OPENSCENEGRAPH_FOUND)
   include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
   set(LIBS ${LIBS} ${OPENSCENEGRAPH_LIBRARIES})
@@ -178,7 +178,7 @@ endif(OPENSCENEGRAPH_FOUND)
 # OpenGL
 ###
 find_package(OpenGL)
-set(HAVE_OPENGL OPENGL_FOUND)
+set(HAVE_OPENGL ${OPENGL_FOUND})
 if(OPENGL_FOUND)
   set(OPENGL_INCLUDE_DIRS ${OPENGL_INCLUDE_DIR})
   include_directories(${OPENGL_INCLUDE_DIRS})
@@ -202,7 +202,7 @@ set(ROBOTPKG_MAP_BOOST_SANDBOX "devel/boost-numeric-bindings")
 # GDAL
 ###
 find_package(GDAL)
-set(HAVE_GDAL GDAL_FOUND)
+set(HAVE_GDAL ${GDAL_FOUND})
 if(GDAL_FOUND)
   set(GDAL_INCLUDE_DIRS ${GDAL_INCLUDE_DIR})
   include_directories(${GDAL_INCLUDE_DIRS})
@@ -214,7 +214,7 @@ endif(GDAL_FOUND)
 # MTI
 ###
 find_package(MTI)
-set(HAVE_MTI MTI_FOUND)
+set(HAVE_MTI ${MTI_FOUND})
 if(MTI_FOUND)
   include_directories(${MTI_INCLUDE_DIRS})
   set(LIBS ${LIBS} ${MTI_LIBRARIES})
@@ -235,7 +235,7 @@ enable_language(Fortran)
 # LAPACK
 ##
 find_package(LAPACK)
-set(HAVE_LAPACK LAPACK_FOUND)
+set(HAVE_LAPACK ${LAPACK_FOUND})
 if(LAPACK_FOUND)
   set(LIBS ${LIBS} ${LAPACK_LIBRARIES})
   set(LIBS_MAP_LAPACK "LAPACK")
