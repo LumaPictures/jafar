@@ -392,7 +392,7 @@ macro(BUILD_JAFAR_MODULE modulename)
   target_link_libraries(test_suite_${MODULENAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${MODULENAME})
   set_target_properties(test_suite_${MODULENAME} 
     PROPERTIES RUNTIME_OUTPUT_DIRECTORY test_suite/${BUILDNAME}
-               COMPILER_FLAGS "${ALL_COMPILER_FLAGS}")
+               COMPILE_FLAGS "${ALL_COMPILER_FLAGS}")
   add_test(test_suite_${MODULENAME} test_suite/${BUILDNAME}/test_suite_${MODULENAME})
 
   #------------------------------------------------------------------------------
