@@ -1,3 +1,4 @@
+# $Id$ #
 
 #---------------------------------------------------------------------------
 # Project related configuration options
@@ -113,7 +114,8 @@ FILE_PATTERNS          = */include/*/*.hpp \
 RECURSIVE              = YES
 EXCLUDE                = doc/doxygen/MyClass_example.hpp
 EXCLUDE_SYMLINKS       = NO
-EXCLUDE_PATTERNS       = */.svn/*
+EXCLUDE_PATTERNS       = */.svn/* \
+		         */include/*.i	
 EXCLUDE_SYMBOLS        = 
 EXAMPLE_PATH           = @CMAKE_SOURCE_DIR@/doc/doxygen \
                          @CMAKE_SOURCE_DIR@/modules \
@@ -127,7 +129,7 @@ EXAMPLE_PATTERNS       = *.hpp \
                          *.tpp \
                          *.cpp \
                          */doc/* \
-                         */include/*.i
+#                         */include/*.i
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             = @CMAKE_SOURCE_DIR@/doc/doxygen/images
 INPUT_FILTER           = 
@@ -255,9 +257,9 @@ PERLMOD_MAKEVAR_PREFIX =
 # Configuration options related to the preprocessor
 #---------------------------------------------------------------------------
 ENABLE_PREPROCESSING   = YES
-MACRO_EXPANSION        = YES
+MACRO_EXPANSION        = NO
 EXPAND_ONLY_PREDEF     = NO
-SEARCH_INCLUDES        = YES
+SEARCH_INCLUDES        = NO
 INCLUDE_PATH           = 
 INCLUDE_FILE_PATTERNS  = @CMAKE_SOURCE_DIR@/include/jafarConfig.h
 PREDEFINED             = 
@@ -284,7 +286,7 @@ DOT_FONTNAME           = FreeSans
 DOT_FONTSIZE           = 10
 DOT_FONTPATH           = 
 CLASS_GRAPH            = YES
-COLLABORATION_GRAPH    = YES
+COLLABORATION_GRAPH    = NO
 GROUP_GRAPHS           = YES
 UML_LOOK               = YES
 TEMPLATE_RELATIONS     = NO
