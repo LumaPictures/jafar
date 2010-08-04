@@ -72,6 +72,64 @@ namespace kernel {
 	*/
 	int setCurrentThreadPriority(int prio);
 	
+	/**
+	This class wraps a simple variable with a mutex
+	very limited but can be useful for lazy people
+	respects the Lockable concept
+	*/
+	template<typename T>
+	class VariableMutex
+	{
+		public:
+			T var; ///< @warning direct access to the variable, needs manual locking! Provided for efficiency purpose when doing several operations.
+			
+		protected:
+			boost::mutex m;
+			
+		public:
+			VariableMutex(const T &val_init): var(val_init) {}
+			
+			T get() { boost::unique_lock<boost::mutex> l(m); return var; }
+			void set(const T &val) { boost::unique_lock<boost::mutex> l(m); var = val; }
+			T operator()() { return get(); }
+			void operator()(const T &val) { set(val); }
+			
+			void lock() { m.lock(); }
+			bool try_lock() { return m.try_lock(); }
+			void unlock() { m.unlock(); }
+	};
+
+	/**
+	This class represents a standalone variable condition
+	quite limited but can be useful
+	*/
+	template<typename T>
+	class VariableCondition: public VariableMutex<T>
+	{
+		protected:
+			boost::condition_variable c;
+
+		public:
+			VariableCondition(const T &val_init): VariableMutex<T>(val_init) {}
+			
+			template<typename Comp>
+			void wait(const T &val, Comp comp)
+			{
+				boost::unique_lock<boost::mutex> l(VariableMutex<T>::m);
+				while(!(comp(VariableMutex<T>::var, val))) c.wait(l);
+			}
+			void notify() { c.notify_all(); }
+			void setNotify(const T &val) { set(val); notify(); }
+			
+			static bool eq(const T &val1, const T &val2) { return (val1 == val2); }
+			static bool ne(const T &val1, const T &val2) { return (val1 != val2); }
+			static bool le(const T &val1, const T &val2) { return (val1 <= val2); }
+			static bool lt(const T &val1, const T &val2) { return (val1 < val2); }
+			static bool ge(const T &val1, const T &val2) { return (val1 >= val2); }
+			static bool gt(const T &val1, const T &val2) { return (val1 > val2); }
+			
+	};
+
 }}
 
 #endif
