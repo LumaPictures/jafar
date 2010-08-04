@@ -4,6 +4,7 @@
 #include <boost/thread/thread.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
+#include <boost/lambda/lambda.hpp>
 
 namespace boost {
 	typedef interprocess::interprocess_semaphore semaphore;
@@ -90,7 +91,8 @@ namespace kernel {
 			VariableMutex(const T &val_init): var(val_init) {}
 			
 			T get() { boost::unique_lock<boost::mutex> l(m); return var; }
-			void set(const T &val) { boost::unique_lock<boost::mutex> l(m); var = val; }
+			template<typename Assign> void apply(Assign assign) { boost::unique_lock<boost::mutex> l(m); assign(var); }
+			void set(const T &val) { apply(boost::lambda::_1 = val); }
 			T operator()() { return get(); }
 			void operator()(const T &val) { set(val); }
 			
@@ -101,7 +103,8 @@ namespace kernel {
 
 	/**
 	This class represents a standalone variable condition
-	quite limited but can be useful
+	quite limited but can be useful.
+	It is a VariableMutex that you can wait and notify for change
 	*/
 	template<typename T>
 	class VariableCondition: public VariableMutex<T>
@@ -112,22 +115,23 @@ namespace kernel {
 		public:
 			VariableCondition(const T &val_init): VariableMutex<T>(val_init) {}
 			
-			template<typename Comp>
-			void wait(const T &val, Comp comp)
+			/**
+			You can use boost::lambda to easily create the predicate:
+				(#include <boost/lambda/lambda.hpp>)
+				vc.wait(boost::lambda::_1 != 3);
+			or STL bind1st and bind2nd and comparison operators:
+				#include <functional>
+			  vc.wait(std::bind1st(std::not_equal_to<int>(),3));
+			*/
+			template<typename Pred>
+			void wait(Pred pred)
 			{
 				boost::unique_lock<boost::mutex> l(VariableMutex<T>::m);
-				while(!(comp(VariableMutex<T>::var, val))) c.wait(l);
+				while(!pred(VariableMutex<T>::var)) c.wait(l);
 			}
 			void notify() { c.notify_all(); }
-			void setNotify(const T &val) { set(val); notify(); }
-			
-			static bool eq(const T &val1, const T &val2) { return (val1 == val2); }
-			static bool ne(const T &val1, const T &val2) { return (val1 != val2); }
-			static bool le(const T &val1, const T &val2) { return (val1 <= val2); }
-			static bool lt(const T &val1, const T &val2) { return (val1 < val2); }
-			static bool ge(const T &val1, const T &val2) { return (val1 >= val2); }
-			static bool gt(const T &val1, const T &val2) { return (val1 > val2); }
-			
+			template<typename Assign> void applyAndNotify(Assign assign) { apply(assign); notify(); }
+			void setAndNotify(const T &val) { applyAndNotify(boost::lambda::_1 = val); }
 	};
 
 }}
