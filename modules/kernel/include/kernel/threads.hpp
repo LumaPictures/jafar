@@ -124,10 +124,11 @@ namespace kernel {
 			  vc.wait(std::bind1st(std::not_equal_to<int>(),3));
 			*/
 			template<typename Pred>
-			void wait(Pred pred)
+			void wait(Pred pred, bool unlock = true)
 			{
 				boost::unique_lock<boost::mutex> l(VariableMutex<T>::m);
 				while(!pred(VariableMutex<T>::var)) c.wait(l);
+				if (!unlock) l.release();
 			}
 			void notify() { c.notify_all(); }
 			template<typename Assign> void applyAndNotify(Assign assign) { apply(assign); notify(); }

@@ -3,7 +3,21 @@
 #include "kernel/timingTools.hpp"
 
 using namespace boost::posix_time;
-using namespace jafar::kernel;
+
+
+
+namespace jafar {
+namespace kernel {
+
+
+std::ostream& operator<<(std::ostream& os, const jafar::kernel::Timestamp &t)
+{
+	const std::streamsize oldprecision = os.precision();
+	os << std::setprecision(19) << t.data;
+	os.precision(oldprecision);
+	return os;
+}
+
 
 
 /*
@@ -50,3 +64,5 @@ void FrameRate::updateFps() {
 float FrameRate::getFps() {
   return fps;
 }
+
+}}

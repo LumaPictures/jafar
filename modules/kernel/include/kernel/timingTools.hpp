@@ -11,9 +11,26 @@
 
 #include "kernel/jafarDebug.hpp"
 
+
 namespace jafar {
   namespace kernel {
 
+		class Timestamp
+		{
+			private:
+				/*long*/ double data;
+			public:
+				Timestamp(): data(-1.0) {}
+				Timestamp(double param): data(param) {}
+				//Timestamp(long double param): data(param) {}
+				operator double() const { return data; }
+				//operator long double() const { return data; }
+				friend std::ostream& operator<<(std::ostream& os, const jafar::kernel::Timestamp &t);
+		};
+		
+		std::ostream& operator<<(std::ostream& os, const Timestamp &t);
+		
+		
     /** This class functions to measure time consumed by your
      * algorithm.
      * 
@@ -170,5 +187,6 @@ namespace jafar {
 
   } // namespace kernel
 } // namespace jafar
+
 
 #endif // KERNEL_TIMINGTOOLS_HPP
