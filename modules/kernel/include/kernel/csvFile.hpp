@@ -64,7 +64,7 @@ namespace jafar {
       }
       /// get the \a value at \a columnNumber at \a line.
       template<class T>
-        void getItem(const int& line, const int& columnNumber, T& value) const {
+        void getItem(size_t line, size_t columnNumber, T& value) const {
 
         JFR_PRED_ERROR(line >= 0 && line < fileMatrix.size1(),
                        KernelException,
@@ -76,22 +76,21 @@ namespace jafar {
                        KernelException::CSVFILE_UNKNOWN_COLUMN,
                        "CSVFile:getItem: unknown column: " << columnNumber);
         std::istringstream ss(fileMatrix(line, columnNumber));
-
         ss >> value;
 
         JFR_IO_STREAM(ss, 
                       "CSVFile::getItem: invalid value parsing:" << std::endl << 
                       "line: " << line << std::endl <<
                       "column: " << columnNumber << std::endl <<
-                      "value: " <<  fileMatrix(line, columnNumber) << std::endl <<
+                      "value: " << fileMatrix(line, columnNumber) << std::endl <<
                       "value-type: " << typeid(T).name());
       }	
 
       /// get the \a value of item \a columnName at \a line.
       template<class T>
-        void getItem(const int& line, const std::string& columnName, T& value) const {
+        void getItem(size_t line, const std::string& columnName, T& value) const {
         std::map<std::string,int>::const_iterator iter = columnNames.find(columnName);
-	JFR_PRED_ERROR(iter != columnNames.end(),
+				JFR_PRED_ERROR(iter != columnNames.end(),
 		       KernelException,
 		       KernelException::CSVFILE_UNKNOWN_COLUMN_NAME,
 		       "CSVFile:getItem: unknown column name: " << columnName);
@@ -102,7 +101,7 @@ namespace jafar {
 
       /// set the \a value at \a column and \a line.     
       template<class T>
-        void setItem(int line, int column, T value) {
+        void setItem(size_t line, size_t column, const T& value) {
         if (fileMatrix.size1() < line+1) {
           fileMatrix.resize((line+1), fileMatrix.size2(), true);
         }
@@ -116,9 +115,9 @@ namespace jafar {
 
       /// set the \a value of item \a column at \a line.     
       template<class T>
-        void setItem(const int& line, const std::string& colName, T& value) {
+        void setItem(size_t line, const std::string& colName, const T& value) {
         std::map<std::string,int>::const_iterator iter = columnNames.find(colName);
-	JFR_PRED_ERROR(iter != columnNames.end(),
+				JFR_PRED_ERROR(iter != columnNames.end(),
 		       KernelException,
 		       KernelException::CSVFILE_UNKNOWN_COLUMN_NAME,
 		       "CSVFile:getItem: unknown column name: " << colName);
