@@ -1,13 +1,9 @@
 #!/bin/sh
-# $Id$
-#
-# This script makes an update in jafar, and in all the modules
-#
 
 set -e 
 echo "Jafar backbone..."
 cd "${JAFAR_DIR}"
-svn up
+git pull --rebase
 
 cd "modules"
 
@@ -15,7 +11,7 @@ for m in $(ls | grep -v CMakeLists.txt); do
     echo ""
     echo "Module ${m}..."
     cd "${m}"
-    svn up
+	git pull --rebase
     cd ".."
 done
 
