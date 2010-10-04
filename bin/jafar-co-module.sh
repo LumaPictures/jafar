@@ -1,7 +1,7 @@
 #! /bin/sh
 set -e
 
-#. ${JAFAR_DIR}/bin/git_config.sh
+. ${JAFAR_DIR}/bin/git_config.sh
 
 OPTIONAL_MODULES=""
 MAKEFILE=CMakeLists.txt
@@ -13,8 +13,8 @@ checkout_module()
 {
 	local module_name=$1
 	echo "Checkout module : |${module_name}|"
-    url="svn+ssh://${VCS_USER}@svn.laas.fr/svn/jafar/jafarModules/trunk/${module_name}"
-	svn co ${url} > /dev/null
+    url=${BASE_URL}/${module_name}
+	git clone ${url} > /dev/null
 }
 
 # Get the list of dependencies of a module, and try to get it, if necessary
