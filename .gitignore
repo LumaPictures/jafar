@@ -2,3 +2,10 @@ modules/
 !modules/CMakeLists.txt
 !modules/kernel
 !modules/helloworld
+include/
+lib/
+tclpkg/
+CMakeCache.txt
+CMakeFiles/
+CTestTestfile.cmake
+cmake_install.cmake
