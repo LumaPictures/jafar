@@ -74,7 +74,7 @@ proc processDirectory { dir } {
     puts "ok"
 
     # we want to get all files and some special hidden files
-    set filesList [ glob -nocomplain [file join $dir *] [file join $dir .cvsignore] [file join $dir .config] ]
+    set filesList [ glob -nocomplain [file join $dir *] [file join $dir .gitignore] ]
 
     processFileList $filesList
 }
