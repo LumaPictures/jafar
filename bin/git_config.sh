@@ -1,8 +1,8 @@
 # XXX Don't forget to change value in create_jafar_git.sh too
 
-HOST=softs.laas.fr
+HOST=trac.laas.fr
 BASE_GIT=/git/robots
-BASE_DIRECTORY=${BASE_GIT}/jafar/modules/test/
+BASE_DIRECTORY=${BASE_GIT}/jafar/modules/
 
 if [ "$GIT_LAAS_USER" != "" ]
 then

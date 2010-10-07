@@ -1,7 +1,7 @@
 #! /bin/sh
 
 BASE_GIT=/git/robots
-BASE_DIRECTORY=${BASE_GIT}/jafar/modules/test/
+BASE_DIRECTORY=${BASE_GIT}/jafar/modules/
 
 MODULE_DIRECTORY="${BASE_DIRECTORY}${1}.git"
 if [ -d ${MODULE_DIRECTORY} ]
@@ -25,4 +25,4 @@ ln -s ${BASE_GIT}/laas-git-hooks.git/post-receive ${MODULE_DIRECTORY}/hooks/
 # Add config hooks
 echo "[hooks]" >> ${MODULE_DIRECTORY}/config
 echo "        emailprefix = " >> ${MODULE_DIRECTORY}/config
-echo "        mailinglist = adegroot@laas.fr" >> ${MODULE_DIRECTORY}/config
+echo "        mailinglist = jafar-source@laas.fr" >> ${MODULE_DIRECTORY}/config
