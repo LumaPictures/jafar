@@ -93,16 +93,6 @@ remove_duplicate_optional()
 main()
 {
 	local module_name=$1
-
-	if [ "$SVN_LAAS_USER" != "" ]
-	then
-		VCS_USER=$SVN_LAAS_USER
-	else
-		VCS_USER=$USER
-	fi
-	echo "Will use ${VCS_USER} to login on svn.laas.fr"
-
-
 	checkout_module_with_dependencies $module_name
 	echo "Module ${module_name} and all its dependencies have been successfully"
 	echo "installed, you can now run make in the directory modules/${module_name}"
