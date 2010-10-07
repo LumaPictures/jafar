@@ -12,3 +12,7 @@ cmake_install.cmake
 doc/dependencies.dot
 tools/doxygen/Doxyfile
 share/jafar.rb
+build/
+build_debug/
+build_release/
+boost-sandbox/
