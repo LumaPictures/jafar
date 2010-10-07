@@ -39,7 +39,7 @@ TOPDIR=$PWD/$MODULE
 cd $TOPDIR
 git init 
 
-git add COPYRIGHT Makefile README User.make doc include macro src test_suite
+git add COPYRIGHT README .make doc include macro src test_suite .gitignore
 
 cd $TOPDIR/doc
 git add *.doxy *.tcl *.hpp *.cpp
