@@ -11,3 +11,4 @@ CTestTestfile.cmake
 cmake_install.cmake
 doc/dependencies.dot
 tools/doxygen/Doxyfile
+share/jafar.rb

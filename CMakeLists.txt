@@ -345,6 +345,8 @@ if(ENABLE_RUBY)
    if(NOT EXISTS ${RUBIES_INSTALL_DIR})
      execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${RUBIES_INSTALL_DIR})
    endif(NOT EXISTS ${RUBIES_INSTALL_DIR})    
+	 configure_file(${CMAKE_SOURCE_DIR}/share/jafar.rb.in
+              		${CMAKE_SOURCE_DIR}/share/jafar.rb)
  endif(EXISTS ${RUBY_INCLUDE_PATH} AND 
    EXISTS ${RUBY_EXECUTABLE} AND 
    EXISTS ${RUBY_LIBRARY})
