@@ -1,0 +1,21 @@
+#!/bin/sh
+
+SCRIPT_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
+MY_JAFAR_DIR=`dirname "$SCRIPT_PATH"`/..
+
+cd "${MY_JAFAR_DIR}"
+
+if [ ! -e tools/doxygen/Doxyfile ]; then
+	echo Generating Doxyfile file
+	sed "s,@CMAKE_SOURCE_DIR@,$MY_JAFAR_DIR,;s,@DOXYGEN_DOT_FOUND@,YES," tools/doxygen/Doxyfile.in > tools/doxygen/Doxyfile
+fi
+
+doxygen tools/doxygen/Doxyfile
+
+cd modules
+
+for m in $(ls -d */); do
+	cp $m/doc/images/* ${MY_JAFAR_DIR}/doc/html/
+done
+
+
