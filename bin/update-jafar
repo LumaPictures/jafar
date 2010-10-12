@@ -1,8 +1,11 @@
 #!/bin/sh
 
-set -e 
+SCRIPT_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
+MY_JAFAR_DIR=`dirname "$SCRIPT_PATH"`/..
+
+set -e
 echo "Jafar backbone..."
-cd "${JAFAR_DIR}"
+cd "${MY_JAFAR_DIR}"
 git pull --rebase
 
 cd "modules"

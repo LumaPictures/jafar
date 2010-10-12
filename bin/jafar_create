@@ -12,6 +12,9 @@ set -e
 #  _jfr_date_: the current date with format year-month-day 
 #
 
+SCRIPT_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
+MY_JAFAR_DIR=`dirname "$SCRIPT_PATH"`/..
+
 process()
 {
 	list_files=$(ls -d ${template_dir}/* ${template_dir}/*/* ${template_dir}/*/*/*)
@@ -46,8 +49,8 @@ MODULE=$(echo $module | tr '[a-z]' '[A-Z]')
 local first_letter=$(echo $module | cut -c1-1)
 local rest=$(echo $module | cut -c2-)
 Module="$(echo $first_letter | tr '[a-z]' '[A-Z]')${rest}"
-destination_dir=${JAFAR_DIR}/modules/${module}
-template_dir=${JAFAR_DIR}/share/template_module
+destination_dir=${MY_JAFAR_DIR}/modules/${module}
+template_dir=${MY_JAFAR_DIR}/share/template_module
 today=$(date +%Y-%m-%d)
 }
 

@@ -1,7 +1,10 @@
 #! /bin/sh
 set -e
 
-. ${JAFAR_DIR}/bin/git_config.sh
+SCRIPT_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
+MY_JAFAR_DIR=`dirname "$SCRIPT_PATH"`/..
+
+. ${MY_JAFAR_DIR}/bin/git_config.sh
 
 OPTIONAL_MODULES=""
 MAKEFILE=CMakeLists.txt

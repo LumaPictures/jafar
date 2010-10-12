@@ -1,7 +1,10 @@
 #! /bin/sh
 #set -e
 
-. ${JAFAR_DIR}/bin/git_config.sh
+SCRIPT_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
+MY_JAFAR_DIR=`dirname "$SCRIPT_PATH"`/..
+
+. ${MY_JAFAR_DIR}/bin/git_config.sh
 
 usage()
 {
@@ -27,7 +30,7 @@ fi
 # Check if a module of same kind exists
 # Otherwise, create the repository
 # For this, call create_jafar_git.sh, with $1 = $MODULE
-sed "s,\${1},$MODULE,"  ${JAFAR_DIR}/bin/create_jafar_git.sh | ssh ${VCS_USER}@${HOST} "sh -s"
+sed "s,\${1},$MODULE,"  ${MY_JAFAR_DIR}/bin/create_jafar_git.sh | ssh ${VCS_USER}@${HOST} "sh -s"
 
 if [ $? -ne 0 ]
 then
