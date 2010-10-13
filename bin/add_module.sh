@@ -10,7 +10,7 @@ usage()
 
     imports the jafar module 'name' 
 
-The script adds C, C++, documentation, Swig and scripts and sets the needed svn properties. 
+The script adds C, C++, documentation, Swig and scripts 
 You have to add any other files (if any) manually
 EOF
     exit 1
@@ -39,7 +39,7 @@ TOPDIR=$PWD/$MODULE
 cd $TOPDIR
 git init 
 
-git add COPYRIGHT README .make doc include macro src test_suite .gitignore
+git add COPYRIGHT README doc include macro src test_suite .gitignore
 
 cd $TOPDIR/doc
 git add *.doxy *.tcl *.hpp *.cpp
