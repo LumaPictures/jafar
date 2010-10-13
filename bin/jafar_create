@@ -1,0 +1,82 @@
+#! /bin/sh
+set -e
+
+#
+# This script creates a new module from the template one, files name
+# and content are parsed to replace defined variables by their value.
+#
+# Defined variables: 
+#  _jfr_module_: name of the module (given on the command line)
+#  _jfr_Module_: name of the module, first char upper-case 
+#  _jfr_MODULE_: name of the module, upper-case
+#  _jfr_date_: the current date with format year-month-day 
+#
+
+process()
+{
+	list_files=$(ls -d ${template_dir}/* ${template_dir}/*/* ${template_dir}/*/*/*)
+	list_files="${list_files} ${template_dir}/.gitignore"
+
+	mkdir ${destination_dir}
+
+	for file in $list_files; 
+	do 
+		res_file=$(echo $file | sed -e "s,${template_dir},${destination_dir},"  \
+								 -e "s,_jfr_module_,${module},g")
+		display=$(echo $file | sed -e "s,${template_dir},.," \
+								   -e "s,_jfr_module_,${module},g")
+		if [ -d $file ];
+		then
+			mkdir $res_file
+			echo "$display ... OK"
+		else
+			sed -e "s,_jfr_module_,${module},g" \
+				-e "s,_jfr_Module_,${Module},g" \
+				-e "s,_jfr_MODULE_,${MODULE},g" \
+				-e "s,_jfr_date_,${today},g" $file > $res_file
+			echo "$display ... OK" 
+		fi
+	done
+}
+
+init_variables()
+{
+module=$1
+MODULE=$(echo $module | tr '[a-z]' '[A-Z]')
+local first_letter=$(echo $module | cut -c1-1)
+local rest=$(echo $module | cut -c2-)
+Module="$(echo $first_letter | tr '[a-z]' '[A-Z]')${rest}"
+destination_dir=${JAFAR_DIR}/modules/${module}
+template_dir=${JAFAR_DIR}/share/template_module
+today=$(date +%Y-%m-%d)
+}
+
+main()
+{
+init_variables $1
+if [ -d ${destination_dir} ];
+then
+	echo "Directory ${destination_dir} already exists !"
+	echo "Check if your module is not already here"
+	exit 1
+fi
+
+process
+}
+
+usage()
+{
+	echo "jafar_create <module_name>"
+	echo "create a directory module_name in JAFAR_DIR/modules"
+	echo "including files to start a new jafar module."
+
+	exit 1
+}
+
+if [ $# != 1 ]
+then 
+	usage
+fi
+main $1
+
+
