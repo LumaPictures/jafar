@@ -4,109 +4,87 @@
 
 \section secLaasRepository Jafar under version control at LAAS
 
-At LAAS we use subversion to version control the jafar tree.
+At LAAS we use git to version control the jafar tree.
 
 \section subsecLaasSvnBeforeYouStart Before you start
 
-- You must be in the \b robots user group to use the svn repository (even for a simple checkout). To get into this group, send a request to sysadmin@laas.fr.
+- You must be in the \b robots user group to use the git repository (even for a simple checkout). To get into this group, send a request to sysadmin@laas.fr.
 - You must have a umask equal to 2, edit your ~/.tcshrc and add the following:
 
 \code
 umask 2
 \endcode
 
-\subsection subsecLaasSvnAbout About Subversion
+\subsection subsecLaasGitAbout About Git
 
-Subversion is quite similar to CVS, most of the commands \c cvs \c command are now \c svn \c command. http://svnbook.red-bean.com/nightly/en/svn.forcvs.html will help you moving from CVS to subversion. You also can start with the \c help command.
+Git is really different from CVS or SVN, as it can work in distributed mode.
+Contrary to CVS/SVN, git commit does not expose the commit to every one, it
+only does the commit in your own repository. To push it in the main repository,
+you need to call git push. You can push many commit in one operation. With git,
+it is easy to do a lot of little atomic commit, and push the whole stuff when
+it is really ready.
 
-\verbatim
-$ svn help
-$ svn help status
-$ svn help ci
-\endverbatim
+There a lot of interesting resources about git on Internet :
+ - a tutorial : http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html
+ - git for svn user : http://git.or.cz/course/svn.html
+ - git reference :  http://gitref.org/
+ - git help or man git
 
-\subsection subsecLaasSvnRep Svn repository layout
+\subsection subsecLaasGitRep Git repository layout
 
-The layout of the repository follows the general guidelines given in
-the subversion documentation: at the top of the repository, there are three directories:
-    - \c jafarBackbone contains the common files of jafar, including the kernel and helloworld modules.
-    - \c jafarModules is dedicated to modules development (exept kernel and helloworld).
-    - \c jafarThirdParty constains snapshots of external libraries
-    which are used by some modules, generally these libraries are not
-    widely available.
+The core part of Jafar is stored in the repository trac.laas.fr/git/robots/jafar/jafar.git.
+Each modules has its own git repository in trac.laas.fr/git/robots/jafar/modules/<module>.git
 
-Each one of \c jafarBackbone and \c jafarModules contains three subdirectories :
-    - \c trunk/ holds the main development files,
-    - \c branches/ holds alternative development branches,
-    - \c tags/ holds tagged versions.
+Do not hesitate to tag versions of your modules, and to use branches for
+developpement. It is more or less free with Git.
 
-Be aware that in subversion the difference between a \e branch and a \e tag does not exist any more, a tag becomes a branche once some one has commited on it.
-
-Do not hesitate to tag versions of your modules, and to use branches for developpement.
-Names of your branches and tags must reflect module version numbers (\ref secModuleVersion) !
-
-\image html repositoryLayout.png "Jafar repository layout"
-
-The repository can be browsed online at this url http://www2.laas.fr/~tlemaire/viewsvn_jafar
+The repository can be browsed online at this url http://trac.laas.fr/git/, in
+the sub-section "jafar and its sub-modules.
 
 \subsection subsecLaasCo Check out of your working copy
 
 You first retrieve a version of the jafar backbone:
 \verbatim
-$ svn co svn+ssh://toto@svn.laas.fr/svn/jafar/jafarBackbone/trunk jafar/
+$ git clone ssh://<user>@trac.laas.fr/git/robots/jafar/jafar
 \endverbatim
 
 You will get, among other things, the kernel module in the \c jafar/module/ directory.
-
 
 \subsection secInstallingModule Installing module
 To retrieve the modules versions you are interested in, cd in the module directory and do some checkouts:
 \verbatim
 $ cd $JAFAR_DIR/modules
-$ ../bin/jafar-co-module.rb [modulename]
+$ ../bin/jafar_checkout [modulename]
 \endverbatim
 
-The \c jafar-co-module.rb scripts checkout all the required dependencies. And at the end, return you with a list of suggested packages.
+The \c jafar_checkout scripts checkout all the required dependencies. And at the end, return you with a list of suggested packages.
 
-If you are using the script from your personnal computer, and that your personnal login is different from the LAAS login, you need to set the environnement variable SVN_LAAS_USER to your LAAS login before using the script.
+If you are using the script from your personnal computer, and that your personnal login is different from the LAAS login, you need to set the environnement variable GIT_LAAS_USER to your LAAS login before using the script.
 
 \subsection subsecLaasCoUp Commit/Update
 
-Please refer to http://svnbook.red-bean.com for a complete subversion documentation. This section only describes usage of \c svn-update-jafar which can be found in \c JAFAR_DIR/bin.
+Please refer to http://gitref.org/  for a complete git documentation. This
+section only describes usage of \c jafar_update which can be found in \c
+JAFAR_DIR/bin.
 
-Because of the special layout of the repository, directories in your \c modules/ do not belong to the \c modules/ directory of the repository (except for \e kernel), this does break the recursive execution of \c svn \c update. \c svn-update-jafar updates your jafar and all your modules in one go. A module which has not already been added to the repository is just skipped.
+Each module is stored in a separate repository, there is no easy way to update
+all modules. The script \c jafar_update takes care of that, updating first
+jafar-core, then every modules, using git pull --rebase (the rebase option
+tries to rebase your change on top of the tree to get a linear history). Note
+that git will refuse to pull from remote repository is your repository is not
+clean (uncommited changes) : you can use the git stash dance to deal with this
+modules.
 
-\subsection subsecLaasSvnModule Adding a new module under subversion
+\subsection subsecLaasSvnModule Adding a new module under git
 
-The \c svn-add-module command can be found in \c JAFAR_DIR/bin. This shell script can be used to add a new module under subversion, or ensure a module is properly set under version control. It will do the following for you:
-
-  - add all the relevant directories and files,
-  - enable the Id variable,
-  - enable and set the $copyright$ variable.
+The \c jafar_add command can be found in \c JAFAR_DIR/bin. This shell script can be used to add a new module under git, or ensure a module is properly set under version control. 
 
 Example:
 \verbatim
 $ cd /home/toto/jafar/modules
-$ svn-add-module helloworld
+$ jafar_add helloworld
 \endverbatim
 
-\section secConfigure Typical configure option at LAAS on a linux workstation
-
-Some modules (\e jmath...) relie on recent swig features. In order to get a recent swig:
-
-\verbatim
-$ ./configure --with-swig=/usr/local/swig/bin
-\endverbatim
-
-Other options of interest:
-  - \c --with-opencv=/usr/local/opencv: to use openCV library required by module image
-  - \c --with-boost_sandbox=/home/tlemaire/usr/local/boost-sandbox \c --with-lapack: to use lapack algebra function from within uBlas
-  - \c --with-opengl: to develop openGL 3D display function, to be used with gdhe (\ref secLaasToolsGdhe)
-
-\warning openCV (currently 1.0.0) headers emmits annoying warnings about \e aliasing when compiled with gcc 4.1. One is adviced to turn off strict aliasing optimisation in gcc:
-\verbatim
-env CFLAGS=-fno-strict-aliasing CXXFLAGS=-fno-strict-aliasing ./configure [...]
-\endverbatim
 
 \section secDaily daily script
 
@@ -129,7 +107,7 @@ MODULES="kernel helloworld image display jmath hpm cine model3d stereo filter sl
 
 Some of the Jafar modules depend on external libraries. If you are working on the laboratory network, every thing should already be properly installed.
 
-If you are developping on your Linux laptop you should refer to \ref pageGettingStartedfromaLinuxLaptop. For MacOSX users the \ref pageFaq should be of high interest.
+If you miss some dependencies, you can check https://intranet.laas.fr/intranet/robots/wiki/Jafar/Installation2 to get it.
 
 \section secLaasMailingList Mailing list
 
@@ -143,14 +121,14 @@ There are two mailing list related to jafar, both hosted on http://sympa.laas.fr
 
 If you want to distribute jafar outside LAAS. You first need to retrieve the jafar backbone:
 \verbatim
-$ svn co svn+ssh://toto@svn.laas.fr/svn/jafar/jafarBackbone/trunk jafar/
+$ git clone ssh://<user>@trac.laas.fr//git/robots/jafar/jafar.git
 \endverbatim
 
-Then using the \c jafar-co-module.rb script like in \ref secInstallingModule, you retrieve the modules you want to distribute, and the script extract all the dependences you need.
+Then using the \c jafar_checkout script like in \ref secInstallingModule, you retrieve the modules you want to distribute, and the script extract all the dependences you need.
 
-Then you need to remove the subversion information, as follow:
+Then you need to remove the git information, as follow:
 \verbatim
-$ find . -type d -name \.svn -exec rm -rf {} \;
+$ git archive --format=tar HEAD > <module>.tar
 \endverbatim
 Don't worry about the error message thrown by this command, for some reasons the command try to see if the file is available after you have delete it.
 
