@@ -37,9 +37,10 @@ along with relevant links to get to know them:
         - http://www.doxygen.org
         - http://www.stack.nl/~dimitri/doxygen/commands.html (for a list of special commands)
 
-    - Subversion: 
-        - http://subversion.tigris.org 
-        - on-line book: http://svnbook.red-bean.com
+    - Git:
+        - http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html
+        - http://gitref.org/
+		- man git
 
     - SWIG (Simple Wrapper Interface Generator): http://www.swig.org
 
