@@ -52,10 +52,9 @@ along with relevant links to get to know them:
 
     - OpenGL:
         - the Redbook: http://glprogramming.com/red/
+	
+	- CMake :
+		- http://www.cmake.org
+		- Mastering CMake (ISBN-13: 978-1-930934-22-1)
 
-    - Autoconf, Automake and Libtool: 
-        - on-line autobook: http://sources.redhat.com/autobook/ 
-        - autoconf macro archive: http://ac-archive.sourceforge.net/
-
-    - GNU M4 : http://www.gnu.org/software/m4/manual/m4.html
 */
