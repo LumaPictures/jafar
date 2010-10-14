@@ -10,7 +10,7 @@ related to the same algorithm, or group of algorithms. A jafar module
 is constituted by:
 
     - source code and headers,
-    - a piece of makefile,
+    - a piece of CMakeLists.txt
     - errors definition (\ref pageJafarError),
     - swig wrapped interface definition (\ref secModuleSwig),
     - documentation (\ref secModuleDocumentation).
@@ -27,13 +27,12 @@ tool. jafar-module is a tcl script in the \c $JAFAR_DIR/bin
 directory. To create a new module with name toto:
 
 \verbatim
-$ $JAFAR_DIR/bin/jafar-module -c toto
+$ $JAFAR_DIR/bin/jafar_create toto
 \endverbatim
 
 A new directory \c toto will be created in \c $JAFAR_DIR/modules wich
-contains a minimal set of files with a already usable \c Makefile to
-compile the module (refer to \ref subsecFrameworkMakefile) (if you have already invoked the configure
-script at the root of your jafar).
+contains a minimal set of files with a already usable \c CMakeLists.txt to
+compile the module (refer to \ref subsecFrameworkMakefile) 
 
 \subsection subsecModuleName The name of the module.
 
@@ -54,17 +53,15 @@ several other names:
 
 To go further with your new module please read \ref pageCodeDocRules
 
-\section secModuleFilesLayout Files layout
-
-\image html moduleLayout.png "Module files layout (module helloworld)"
-
-\section secModuleUserMake User.make file
+\section secModuleUserMake CMakeLists.txt file
 
 \subsection subsecModuleUserMakeStandard Customize the compilation process: standard flags
 
-\c User.make is the file where developpers can configure the compilation process for their module.
+\c CMakeLists.txt is the file where developpers can configure the compilation process for their module.
 
-Standard compilation flags can be modified (\c CPPFLAGS, \c CXXFLAGS, \c LDFLAGS, \c LIBS) so that the compiler finds all the necessary external libraries. Please make use of the variables defined by the configure process (see \ref secInstallConfigureMake).
+Standard compilation flags can be modified (\c CPPFLAGS, \c CXXFLAGS, \c
+LDFLAGS, \c LIBS) so that the compiler finds all the necessary external
+libraries. Please make use of the variables defined by the cmake process.
 
 \subsection subsecModuleUserMakeJafar Customize the compilation process: Jafar specific flags
 Compilation process of Jafar is driven by a few flags:
@@ -73,23 +70,16 @@ Compilation process of Jafar is driven by a few flags:
 
 \subsection subsecModuleDependencies Inter modules dependancies
 
-You are developping module \e pipo, and your module depends on module \e image, then you need to modify \c User.make in \e pipo:
+You are developping module \e pipo, and your module depends on module \e image, then you need to modify \c CMakeLists.txt in \e pipo:
 
-- Add \e image to the list of modules in \c USE_MODULES. During the compilation process, these modules will be checked for beeing up to date.
-- Add the \c -l option to the \c LIBS variable if needed (no need to modify other flags).
-
-\verbatim
-USE_MODULES = kernel image
-LIBS += -lkernel -limage
-\endverbatim
+- Add \e image to the list of modules in \c REQUIRED_MODULES. During the compilation process, these modules will be checked for beeing up to date.
 
 \section secModuleVersion Module versions policy
 
-The version of a module is defined in \c User.make by two variables,
-MODULE_VERSION and MODULE_REVISION. MODULE_REVISION should increment
-when small improvments are done which do not break the
-API. MODULE_VERSION should increment when huge modifications are done,
-MODULE_REVISION is then reset to 0. 
+The version of a module is defined in \c CMakeLists.txt by two variables,
+VERSION and REVISION. REVISION should increment when small improvments are done
+which do not break the API. VERSION should increment when huge modifications
+are done, REVISION is then reset to 0. 
 
 \section secModuleSwig Swig .i files
 
@@ -143,7 +133,7 @@ want to include in the tcl package, they will be available after a
 
   - your tcl procedures must be declared in the module namespace,
   - for each tcl script you must add a \c package \c provide command
-using the \e same version number as in \c User.make
+using the \e same version number as in \c CMakeLists.txt
 
 Do not forget to follow \ref pageCodeDocRules. Here is an example from helloworld module:
 
