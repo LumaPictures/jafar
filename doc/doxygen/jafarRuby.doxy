@@ -3,10 +3,10 @@
 \section secConfiguringRuby Configure your environnement for Ruby
 
 \subsection subsecBuildRuby Enabling building of Ruby binding in jafar
-The first step is to enable the build of Ruby modules in jafar. It is done using --enable-lang="ruby" at configure time:
+The first step is to enable the build of Ruby modules in jafar. It is done using -DENABLE_RUBY=ON at configure time:
 \code
 cd $JAFAR_DIR
-./configure --enable-lang="ruby" --all-my-others-cool-parameters
+./cmake -DENABLE_RUBY=ON other_cool_params .
 cd -
 \endcode
 
