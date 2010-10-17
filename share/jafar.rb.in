@@ -4,17 +4,15 @@ module Jafar
   TOPDIR = "${Jafar_BINARY_DIR}"
   class << self
     ## Sets load path using the system type
-    attr_reader :system_type
     attr_reader :library_path
-    def system_type=(system_type)
-      @system_type = system_type
+    def set_library_path
       @library_path = "${RUBIES_OUTPUT_DIR}"
       $LOAD_PATH << @library_path
     end
   end
 end
 
-Jafar.system_type = Jafar.detect_system_type
+Jafar.set_library_path
 
 puts ""
 puts "Welcome to jafar !         (c) 2004-20010 LAAS-CNRS"
