@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE( test_threads )
 	thread_reader1 = new boost::thread(reader1);
 	sleep(1);
 	thread_reader2 = new boost::thread(reader2);
-	sleep(1000);
+	sleep(20);
 
 }
 
