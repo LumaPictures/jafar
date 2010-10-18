@@ -11,9 +11,9 @@ REMOTE_MODULES=`ssh ${VCS_USER}@${HOST} "sh -c 'cd ${BASE_DIRECTORY} ; ls -d */ 
 for m in $REMOTE_MODULES; do
 	if [ -d $m ]; then
 		echo "Pulling $m"
-		pushd $m > /dev/null
+		cd $m
 		git pull --rebase
-		popd > /dev/null
+		cd -
 	else
 		echo "Cloning $m"
 		git clone $BASE_URL$m

@@ -95,7 +95,7 @@ remove_duplicate_optional()
 
 main()
 {
-	pushd $MY_JAFAR_DIR/modules > /dev/null
+	cd $MY_JAFAR_DIR/modules
 
 	local module_name=$1
 	checkout_module_with_dependencies $module_name
@@ -109,8 +109,6 @@ main()
 		echo ""
 		echo "Optional dependencies that you may want to install : ${OPTIONAL_MODULES}"
 	fi
-
-	popd > /dev/null
 }
 
 usage()
