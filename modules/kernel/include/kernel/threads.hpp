@@ -131,7 +131,9 @@ namespace kernel {
 				if (!unlock) l.release();
 			}
 			void notify() { c.notify_all(); }
-			template<typename Assign> void applyAndNotify(Assign assign) { apply(assign); notify(); }
+			template<typename Assign> void applyAndNotify(Assign assign) { 
+				VariableMutex<T>::apply(assign); notify(); 
+			}
 			void setAndNotify(const T &val) { applyAndNotify(boost::lambda::_1 = val); }
 	};
 
