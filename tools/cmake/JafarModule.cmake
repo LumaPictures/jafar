@@ -167,7 +167,7 @@ macro(GENERATE_QT_FILES JAFAR_MODULENAME)
 	endforeach(ui_file)
 
   # generate moc files from headers contining \"Q_OBJECT\"
-  file(GLOB HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/${JAFAR_MODULENAME}/*.hpp")
+  file(GLOB HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/${JAFAR_MODULENAME}/*.hpp" "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp")
   foreach(header ${HEADERS})
     file(STRINGS ${header} Q_OBJECT_STRING REGEX "Q_OBJECT")
     if(NOT("${Q_OBJECT_STRING}" STREQUAL ""))
