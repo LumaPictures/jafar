@@ -151,7 +151,7 @@ namespace jafar {
       static std::ostream& stream() { return *(instance().debugStream); }
 
       // necessary because because the constructor is private
-      friend class boost::details::pool::singleton_default<DebugStream>;
+      friend struct boost::details::pool::singleton_default<DebugStream>;
 
       friend DebugStream& operator << (DebugStream& debugStream, 
 				       details::stream_function function);
