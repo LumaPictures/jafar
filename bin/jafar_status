@@ -1,0 +1,21 @@
+#!/bin/sh
+
+SCRIPT_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
+MY_JAFAR_DIR=`dirname "$SCRIPT_PATH"`/..
+
+cd "${MY_JAFAR_DIR}"
+echo "### jafar/kernel/helloworld:"
+git status -s -uno
+git --no-pager log --oneline origin/master..master
+
+cd "modules"
+
+for m in $(ls | grep -v CMakeLists.txt | grep -v kernel | grep -v helloworld); do
+    echo "### ${m}:"
+    cd "${m}"
+	git status -s -uno
+	git --no-pager log --oneline origin/master..master
+    cd ".."
+done
+
+
