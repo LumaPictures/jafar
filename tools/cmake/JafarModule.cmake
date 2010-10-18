@@ -154,26 +154,32 @@ macro(GENERATE_QT_FILES JAFAR_MODULENAME)
 
   #generate headers from ui files
   file(GLOB UI_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.ui)
-  QT4_WRAP_UI(${QTUI_H_SRC} ${UI_FILES})
+#  QT4_WRAP_UI(${QTUI_H_SRC} ${UI_FILES})
+	foreach(ui_file ${UI_FILES})
+		get_filename_component(generated_header ${ui_file} NAME_WE)
+		set(generated_header ${CMAKE_CURRENT_SOURCE_DIR}/src/${generated_header}.h)
+    execute_process(
+				COMMAND ${QT_UIC_EXECUTABLE} ${ui_file} -o ${generated_header} 
+				OUTPUT_FILE ${generated_header}
+				INPUT_FILE ${ui_file}
+				)
+		set(${QTUI_H_SRC} ${${QTUI_H_SRC}} ${generated_header})	
+	endforeach(ui_file)
 
   # generate moc files from headers contining \"Q_OBJECT\"
   file(GLOB HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/${JAFAR_MODULENAME}/*.hpp")
   foreach(header ${HEADERS})
-    file(STRINGS ${header} Q_OBJECT_STRING REGEX "^[ ]*Q_OBJECT[ ]*$")
+    file(STRINGS ${header} Q_OBJECT_STRING REGEX "Q_OBJECT")
     if(NOT("${Q_OBJECT_STRING}" STREQUAL ""))
-      get_filename_component(HEADER_NAME ${header} NAME_WE)
-      add_custom_command(    
-	TARGET ${jafar_modulename}
-	PRE_BUILD
-	COMMAND COMMAND ${QT_MOC_EXECUTABLE} ${header} -o ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc
-	OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc
-	)
-
-#       execute_process(COMMAND ${QT_MOC_EXECUTABLE} ${header} -o ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc
-# #	INPUT_FILE ${header} 
-#         OUTPUT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc
-# 	)
-# #      QT4_GENERATE_MOC(${header} ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc)
+      get_filename_component(generated_moc ${header} NAME_WE)
+			set(generated_moc ${CMAKE_CURRENT_SOURCE_DIR}/src/${generated_moc}.moc)
+      execute_process(
+				COMMAND ${QT_MOC_EXECUTABLE} ${header} -o ${generated_moc}
+				OUTPUT_FILE ${generated_moc}
+				INPUT_FILE ${header}
+				)
+			set(${QT_MOC_SRCS} ${${QT_MOC_SRCS}} ${generated_moc})
+#      QT4_GENERATE_MOC(${header} ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc)
     endif(NOT("${Q_OBJECT_STRING}" STREQUAL ""))
   endforeach(header)
 
