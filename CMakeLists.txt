@@ -289,6 +289,16 @@ set(ROBOTPKG_MAP_STEREOPIXEL "mapping/libstereopixel")
 set(ROBOTPKG_MAP_SIFT "image/sift")
 set(ROBOTPKG_MAP_VIAM "image/viam-libs")
 
+###
+# vcglib
+###
+set(PATH_TO_VCG "" CACHE PATH "path to vcg")
+if (EXISTS ${PATH_TO_VCG})
+    include_directories(${PATH_TO_VCG})
+    SET(HAVE_VCG TRUE)
+endif(EXISTS ${PATH_TO_VCG})
+set(ROBOTPKG_MAP_VCG "math/vcglib")
+
 #------------------------------------------------------------------------------
 # Scripting languages
 #------------------------------------------------------------------------------
