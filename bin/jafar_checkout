@@ -109,6 +109,8 @@ main()
 		echo ""
 		echo "Optional dependencies that you may want to install : ${OPTIONAL_MODULES}"
 	fi
+
+	touch CMakeLists.txt
 }
 
 usage()
