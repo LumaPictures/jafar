@@ -5,6 +5,7 @@ MY_JAFAR_DIR=`dirname "$SCRIPT_PATH"`/..
 
 . ${MY_JAFAR_DIR}/bin/git_config.sh
 cd ${MY_JAFAR_DIR}
+echo "### Pulling jafar core"
 git pull --rebase
 
 cd modules
@@ -16,7 +17,7 @@ for m in $REMOTE_MODULES; do
 		echo "### Pulling $m"
 		cd $m
 		git pull --rebase
-		cd -
+		cd - > /dev/null
 	else
 		echo "### Cloning $m"
 		git clone $BASE_URL$m
