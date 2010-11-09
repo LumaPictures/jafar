@@ -21,6 +21,7 @@ endmacro()
 # Find all of the subdirectories with CMakeLists.txt files in
 # them. This contains all of the Jafar libraries.
 jafar_collect_subproject_directory_names(${JAFAR_MODULES_PARENT_DIR} JAFAR_MODULES_DIRS "CMakeLists.txt")
+set(JAFAR_MODULES_DIRS ${JAFAR_MODULES_DIRS} PARENT_SCOPE)
 foreach(subdir ${JAFAR_MODULES_DIRS})
   file(STRINGS ${JAFAR_MODULES_PARENT_DIR}/${subdir}/CMakeLists.txt  DEPENDENCIES 
        REGEX "^[ ]*REQUIRED_MODULES[ ]*.*")

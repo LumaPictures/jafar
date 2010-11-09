@@ -400,7 +400,7 @@ if(DOXYGEN_FOUND)
   
   add_custom_target(doc
     ${DOXYGEN_EXECUTABLE} ${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile)
-  
+
   add_custom_command(
     TARGET doc
     POST_BUILD
@@ -408,5 +408,14 @@ if(DOXYGEN_FOUND)
     ARGS -E copy_if_different ${Jafar_SOURCE_DIR}/doc/doxygen/images/LAASsmall.png ${Jafar_SOURCE_DIR}/doc/html/LAASsmall.png
     COMMAND ${CMAKE_COMMAND}
     ARGS -E copy_if_different ${Jafar_SOURCE_DIR}/doc/doxygen/images/jafar.jpg ${Jafar_SOURCE_DIR}/doc/html/jafar.jpg
-    )
+  )
+
+  foreach(module ${JAFAR_MODULES_DIRS})
+	  add_custom_command(
+	    TARGET doc
+	    POST_BUILD
+	    COMMAND ${CMAKE_COMMAND}
+	    ARGS -E copy_directory ${JAFAR_MODULES_PARENT_DIR}/${module}/doc/images ${Jafar_SOURCE_DIR}/doc/html/
+	  )
+  endforeach(module)
 endif(DOXYGEN_FOUND)
