@@ -53,3 +53,6 @@
 
 /* MTI */
 #cmakedefine HAVE_MTI
+
+/* SIFT */
+#cmakedefine HAVE_SIFT

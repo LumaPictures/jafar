@@ -1,8 +1,9 @@
-modules/
+modules/*
 !modules/CMakeLists.txt
 !modules/kernel
 !modules/helloworld
-include/
+include/*
+!include/jafarConfig.h.in
 lib/
 tclpkg/
 CMakeCache.txt
