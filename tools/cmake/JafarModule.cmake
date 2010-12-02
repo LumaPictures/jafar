@@ -145,7 +145,7 @@ endmacro(WRAP_JAFAR_MODULE_TO_TCL)
 #------------------------------------------------------------------------------
 #This macro generates qt special files
 #------------------------------------------------------------------------------
-macro(GENERATE_QT_FILES JAFAR_MODULENAME)
+macro(GENERATE_QT_FILES JAFAR_MODULENAME CPPFLAGS)
   #include qt specific macros
   include(${QT_USE_FILE})
 
@@ -173,10 +173,12 @@ macro(GENERATE_QT_FILES JAFAR_MODULENAME)
     if(NOT("${Q_OBJECT_STRING}" STREQUAL ""))
       get_filename_component(generated_moc ${header} NAME_WE)
 			set(generated_moc ${CMAKE_CURRENT_SOURCE_DIR}/src/${generated_moc}.moc)
+
+      set(MYCPPFLAGS "${CPPFLAGS}")
+      string(STRIP "${MYCPPFLAGS}" MYCPPFLAGS)
+      string(REPLACE " " ";" MYCPPFLAGS "${MYCPPFLAGS}")
       execute_process(
-				COMMAND ${QT_MOC_EXECUTABLE} ${header} -o ${generated_moc}
-				OUTPUT_FILE ${generated_moc}
-				INPUT_FILE ${header}
+				COMMAND ${QT_MOC_EXECUTABLE} ${MYCPPFLAGS} ${header} -o ${generated_moc}
 				)
 			set(${QT_MOC_SRCS} ${${QT_MOC_SRCS}} ${generated_moc})
 #      QT4_GENERATE_MOC(${header} ${CMAKE_CURRENT_SOURCE_DIR}/src/${HEADER_NAME}.moc)
@@ -346,7 +348,7 @@ macro(BUILD_JAFAR_MODULE modulename)
   message(STATUS "- ${modulename} compiling flags ${ALL_COMPILER_FLAGS}")
   # wrap QT files if needed
   if(QT_WRAPPING_REQUIRED)
-    generate_qt_files(${MODULENAME})
+    generate_qt_files(${MODULENAME} "${${THIS_MODULE_OPTIONAL_MODULES_FLAGS}}")
   endif(QT_WRAPPING_REQUIRED)
 
   # add headers
