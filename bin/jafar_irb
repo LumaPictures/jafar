@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 require 'Qt4'
 
+MY_JAFAR_DIR = File.expand_path(File.dirname(__FILE__))+"/../"
+
 Qt::Application.new(ARGV)
 Qt::Application.setQuitOnLastWindowClosed(false)
 
@@ -28,7 +30,7 @@ ENV["IRBRC"] = "#{ENV['HOME']}/.jrbrc"
 require 'irb'
 
 # Initialize jafar
-require "#{ENV['JAFAR_DIR']}/share/jafar.rb"
+require "#{MY_JAFAR_DIR}/share/jafar.rb"
 require 'jafar/kernel/completion.rb'
 
 IRB.setup(nil)
