@@ -1,9 +1,9 @@
 #! /bin/sh
 
 BASE_GIT=/git/robots
-BASE_DIRECTORY=${BASE_GIT}/jafar/modules/
+BASE_DIRECTORY=${BASE_GIT}/jafar
 
-MODULE_DIRECTORY="${BASE_DIRECTORY}${1}.git"
+MODULE_DIRECTORY="${BASE_DIRECTORY}/modules/${1}.git"
 if [ -d ${MODULE_DIRECTORY} ]
 then
 	echo "The module ${1} seems to already exists !!"

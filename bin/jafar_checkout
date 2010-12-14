@@ -16,7 +16,7 @@ checkout_module()
 {
 	local module_name=$1
 	echo "Checkout module : |${module_name}|"
-    url=${BASE_URL}/${module_name}
+    url=${BASE_URL}/modules/${module_name}${GITREPO_SUFFIX}
 	git clone ${url} > /dev/null
 }
 

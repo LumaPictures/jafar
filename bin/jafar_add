@@ -69,10 +69,10 @@ cd $TOPDIR
 
 git commit -m "Initial commit of ${MODULE}"
 
-git push ${BASE_URL}/${MODULE} master
+git push ${BASE_URL}/modules/${MODULE} master
 
 echo "[remote \"origin\"]
-	url = ${BASE_URL}/${MODULE}
+	url = ${BASE_URL}/modules/${MODULE}
 	fetch = +refs/heads/*:refs/remotes/origin/*
 [branch \"master\"]
 	remote = origin

@@ -10,7 +10,7 @@ git pull --rebase
 
 cd modules
 
-REMOTE_MODULES=`ssh ${VCS_USER}@${HOST} "sh -c 'cd ${BASE_DIRECTORY} ; ls -d */ | sed s,.git/,,'"`
+REMOTE_MODULES=`ssh ${VCS_USER}@${HOST} "sh -c 'cd ${BASE_DIRECTORY}/modules ; ls -d */ | sed s,.git/,,'"`
 
 for m in $REMOTE_MODULES; do
 	if [ -d $m ]; then
@@ -20,7 +20,7 @@ for m in $REMOTE_MODULES; do
 		cd - > /dev/null
 	else
 		echo "### Cloning $m"
-		git clone $BASE_URL$m
+		git clone $BASE_URL/modules/$m
 	fi;
 
 done
