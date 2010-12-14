@@ -29,7 +29,7 @@ if (${CMAKE_GENERATOR} MATCHES ".*Makefiles")
     endif()
 endif()
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -g0 -DNDEBUG -DJFR_NDEBUG -DBOOST_UBLAS_NDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -march=native -g0 -DNDEBUG -DJFR_NDEBUG -DBOOST_UBLAS_NDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3 -ggdb")
 #set(JAFAR_COMPILE_FLAGS_MODULE "-pedantic -pedantic-errors -Werror -Wno-long-long -Wall")
 set(JAFAR_COMPILE_FLAGS_MODULE "-pedantic -Wno-long-long -Wall")
