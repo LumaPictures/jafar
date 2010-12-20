@@ -21,6 +21,8 @@ echo "jafar/modules/${1}" > ${MODULE_DIRECTORY}/description
 # Add hooks
 rm ${MODULE_DIRECTORY}/hooks/post-receive
 ln -s ${BASE_GIT}/laas-git-hooks.git/post-receive ${MODULE_DIRECTORY}/hooks/
+rm ${MODULE_DIRECTORY}/hooks/post-update
+ln -s ${BASE_GIT}/laas-git-hooks.git/post-update ${MODULE_DIRECTORY}/hooks/
 
 # Add config hooks
 echo "[hooks]" >> ${MODULE_DIRECTORY}/config
