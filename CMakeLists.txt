@@ -133,6 +133,11 @@ include(${SWIG_USE_FILE})
 include_directories(${SWIG_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${SWIG_LIBRARIES})
 
+###
+# Doxygen
+###
+find_package(Doxygen)
+
 ##
 # Qt4
 ##
@@ -189,12 +194,21 @@ endif(OPENGL_FOUND)
 ###
 # boost-sandbox
 ###
+# set(PATH_TO_BOOST_SANDBOX "" CACHE PATH "path to boost_sandbox")
+# if (EXISTS ${PATH_TO_BOOST_SANDBOX})
+#   if(EXISTS ${PATH_TO_BOOST_SANDBOX}/boost/numeric/bindings/lapack/lapack.hpp) 
+#     include_directories(${PATH_TO_BOOST_SANDBOX})
+#     SET(HAVE_BOOST_SANDBOX TRUE)
+#   endif(EXISTS ${PATH_TO_BOOST_SANDBOX}/boost/numeric/bindings/lapack/lapack.hpp) 
+# endif(EXISTS ${PATH_TO_BOOST_SANDBOX})
+# set(ROBOTPKG_MAP_BOOST_SANDBOX "devel/boost-numeric-bindings-v1")
+
 set(PATH_TO_BOOST_SANDBOX "" CACHE PATH "path to boost_sandbox")
 if (EXISTS ${PATH_TO_BOOST_SANDBOX})
-  if(EXISTS ${PATH_TO_BOOST_SANDBOX}/boost/numeric/bindings/lapack/lapack.hpp) 
+  if(EXISTS ${PATH_TO_BOOST_SANDBOX}/boost/numeric/bindings/lapack.hpp) 
     include_directories(${PATH_TO_BOOST_SANDBOX})
     SET(HAVE_BOOST_SANDBOX TRUE)
-  endif(EXISTS ${PATH_TO_BOOST_SANDBOX}/boost/numeric/bindings/lapack/lapack.hpp) 
+  endif(EXISTS ${PATH_TO_BOOST_SANDBOX}/boost/numeric/bindings/lapack.hpp) 
 endif(EXISTS ${PATH_TO_BOOST_SANDBOX})
 set(ROBOTPKG_MAP_BOOST_SANDBOX "devel/boost-numeric-bindings")
 
@@ -223,9 +237,9 @@ endif(MTI_FOUND)
 set(ROBOTPKG_MAP_MTI "hardware/MTI")
 
 ###
-# Subversion to play around
+# GIT to play around
 ###
-find_package(Subversion REQUIRED)
+find_package(Git REQUIRED)
 
 ##
 # CMake tests for lapack and blas requires fortran
@@ -252,43 +266,6 @@ if(BLAS_FOUND)
 endif(BLAS_FOUND)
 set(ROBOTPKG_MAP_BLAS "math/blas")
 
-#------------------------------------------------------------------------------
-# Internal dependencies
-#------------------------------------------------------------------------------
-
-include(FindInternalLibrary)
-
-foreach(internal
-	dtm
-	images3d
-	p3d
-	t3d
-	gdhe
-	stereopixel
-	sift
-	viam)
-  find_internal_library("${internal}")
-  string(TOUPPER "HAVE_${internal}" HAVE_INTERNAL)
-  string(TOUPPER "${internal}_FOUND" INTERNAL_FOUND)
-  set(${HAVE_INTERNAL} ${${INTERNAL_FOUND}})
-  string(TOUPPER "LIBS_MAP_${internal}" LIBS_MAP_INTERNAL)
-  string(TOUPPER "${internal}" INTERNAL)
-  set(${LIBS_MAP_INTERNAL} "${INTERNAL}")
-  if(${INTERNAL_FOUND})
-    set(LIBS ${LIBS} ${${INTERNAL}_LIBRARIES})
-    include_directories(${${INTERNAL}_INCLUDE_DIRS})
-  endif(${INTERNAL_FOUND})
-endforeach(internal)
-
-set(ROBOTPKG_MAP_DTM "mapping/libdtm")
-set(ROBOTPKG_MAP_IMAGES3D "image/libimages3d")
-set(ROBOTPKG_MAP_P3D "path/libp3d")
-set(ROBOTPKG_MAP_T3D "math/libt3d")
-set(ROBOTPKG_MAP_GDHE "graphics/gdhe")
-set(ROBOTPKG_MAP_STEREOPIXEL "mapping/libstereopixel")
-set(ROBOTPKG_MAP_SIFT "image/sift")
-set(ROBOTPKG_MAP_VIAM "image/viam-libs")
-
 ###
 # vcglib
 ###
@@ -297,7 +274,20 @@ if (EXISTS ${PATH_TO_VCG})
     include_directories(${PATH_TO_VCG})
     SET(HAVE_VCG TRUE)
 endif(EXISTS ${PATH_TO_VCG})
-set(ROBOTPKG_MAP_VCG "math/vcglib")
+
+###
+# gsl #!!! nizar 20101116 : to remove as soon as possible
+###
+find_package(GSL)
+if(GSL_FOUND)
+	include_directories(GSL_INCLUDE_DIR)
+	string(STRIP "${GSL_LIBRARIES}" GSL_LIBRARIES)
+	string(REPLACE " " ";" GSL_LIBRARIES "${GSL_LIBRARIES}")
+	message(STATUS "gsl libraries: ${GSL_LIBRARIES}")
+  set(LIBS ${LIBS} ${GSL_LIBRARIES})
+  set(LIBS_MAP_GSL "GSL")
+endif(GSL_FOUND)
+set(ROBOTPKG_MAP_GSL "math/gsl")
 
 #------------------------------------------------------------------------------
 # Scripting languages
@@ -369,11 +359,77 @@ if(NOT RUBY_FOUND AND ENABLE_RUBY )
 endif(NOT RUBY_FOUND AND ENABLE_RUBY)
 
 #------------------------------------------------------------------------------
+# pkgconfig findable
+#------------------------------------------------------------------------------
+
+include(FindInternalLibrary)
+include(FindPkgConfig)
+if(PKG_CONFIG_FOUND)
+	foreach(package
+			flann)
+		string(TOUPPER "${package}" PACKAGE)
+		string(TOUPPER "${package}_FOUND" PACKAGE_FOUND)
+		find_package(${package})
+		message(STATUS "finding ${package} ${${PACKAGE_FOUND}}")
+		if(${PACKAGE_FOUND})
+			message(STATUS "${package} found ${${PACKAGE}_INCLUDE_DIRS} ${${PACKAGE}_LIBRARIES}")
+			string(TOUPPER "LIBS_MAP_${package}" LIBS_MAP_PACKAGE)
+			set(${LIBS_MAP_PACKAGE} "${package}")
+			set(LIBS ${LIBS} ${${PACKAGE}_LIBRARIES})
+			include_directories(${${PACKAGE}_INCLUDE_DIRS})		
+		endif(${PACKAGE_FOUND})
+	endforeach(package)
+else(PKG_CONFIG_FOUND)
+  message(ERROR " pkgconfig not found you won't be able to build some modules")
+endif(PKG_CONFIG_FOUND)
+
+#------------------------------------------------------------------------------
+# Internal dependencies
+#------------------------------------------------------------------------------
+foreach(internal
+	dtm
+	images3d
+	p3d
+	t3d
+	gdhe
+	stereopixel
+	sift
+	viam
+	lbfgs
+	ANN)
+  find_internal_library("${internal}")
+  string(TOUPPER "HAVE_${internal}" HAVE_INTERNAL)
+  string(TOUPPER "${internal}_FOUND" INTERNAL_FOUND)
+  set(${HAVE_INTERNAL} ${${INTERNAL_FOUND}})
+  string(TOUPPER "LIBS_MAP_${internal}" LIBS_MAP_INTERNAL)
+  string(TOUPPER "${internal}" INTERNAL)
+  set(${LIBS_MAP_INTERNAL} "${INTERNAL}")
+  if(${INTERNAL_FOUND})
+    set(LIBS ${LIBS} ${${INTERNAL}_LIBRARIES})
+    include_directories(${${INTERNAL}_INCLUDE_DIRS})
+  endif(${INTERNAL_FOUND})
+endforeach(internal)
+
+set(ROBOTPKG_MAP_DTM "mapping/libdtm")
+set(ROBOTPKG_MAP_IMAGES3D "image/libimages3d")
+set(ROBOTPKG_MAP_P3D "path/libp3d")
+set(ROBOTPKG_MAP_T3D "math/libt3d")
+set(ROBOTPKG_MAP_GDHE "graphics/gdhe")
+set(ROBOTPKG_MAP_STEREOPIXEL "mapping/libstereopixel")
+set(ROBOTPKG_MAP_SIFT "image/sift")
+set(ROBOTPKG_MAP_VIAM "image/viam-libs")
+set(ROBOTPKG_MAP_VCGLIB "graphics/vcglib")
+set(ROBOTPKG_MAP_LBFGS "math/liblbfgs")
+set(ROBOTPKG_MAP_ANN "wip/libANN")
+
+
+#------------------------------------------------------------------------------
 # configure jafarConfig.h header:
 #------------------------------------------------------------------------------
 
 configure_file(${CMAKE_SOURCE_DIR}/include/jafarConfig.h.in
                ${INCLUDES_OUTPUT_DIR}/jafarConfig.h)
+install(FILES ${INCLUDES_OUTPUT_DIR}/jafarConfig.h DESTINATION ${INCLUDES_INSTALL_DIR})
 
 #------------------------------------------------------------------------------
 # Jafar CMake modules:
@@ -392,8 +448,6 @@ add_subdirectory(modules)
 #------------------------------------------------------------------------------
 # Jafar documentation
 #------------------------------------------------------------------------------
-find_package(Doxygen)
-
 if(DOXYGEN_FOUND)
   configure_file(${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile.in
     ${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile)

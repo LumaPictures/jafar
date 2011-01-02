@@ -114,8 +114,9 @@ FILE_PATTERNS          = */include/*/*.hpp \
 RECURSIVE              = YES
 EXCLUDE                = doc/doxygen/MyClass_example.hpp
 EXCLUDE_SYMLINKS       = NO
-EXCLUDE_PATTERNS       = */.svn/* \
-		         */include/*.i	
+EXCLUDE_PATTERNS       = */.svn \
+											   */include/*.i \
+												 */.git
 EXCLUDE_SYMBOLS        = 
 EXAMPLE_PATH           = @CMAKE_SOURCE_DIR@/doc/doxygen \
                          @CMAKE_SOURCE_DIR@/modules \
