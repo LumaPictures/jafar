@@ -133,11 +133,6 @@ include(${SWIG_USE_FILE})
 include_directories(${SWIG_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${SWIG_LIBRARIES})
 
-###
-# Doxygen
-###
-find_package(Doxygen)
-
 ##
 # Qt4
 ##
@@ -370,9 +365,7 @@ if(PKG_CONFIG_FOUND)
 		string(TOUPPER "${package}" PACKAGE)
 		string(TOUPPER "${package}_FOUND" PACKAGE_FOUND)
 		find_package(${package})
-		message(STATUS "finding ${package} ${${PACKAGE_FOUND}}")
 		if(${PACKAGE_FOUND})
-			message(STATUS "${package} found ${${PACKAGE}_INCLUDE_DIRS} ${${PACKAGE}_LIBRARIES}")
 			string(TOUPPER "LIBS_MAP_${package}" LIBS_MAP_PACKAGE)
 			set(${LIBS_MAP_PACKAGE} "${package}")
 			set(LIBS ${LIBS} ${${PACKAGE}_LIBRARIES})
@@ -448,6 +441,8 @@ add_subdirectory(modules)
 #------------------------------------------------------------------------------
 # Jafar documentation
 #------------------------------------------------------------------------------
+find_package(Doxygen)
+
 if(DOXYGEN_FOUND)
   configure_file(${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile.in
     ${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile)
