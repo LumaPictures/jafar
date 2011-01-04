@@ -56,3 +56,6 @@
 
 /* SIFT */
 #cmakedefine HAVE_SIFT
+
+/* FLANN */
+#cmakedefine HAVE_FLANN

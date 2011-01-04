@@ -284,6 +284,10 @@ if(GSL_FOUND)
 endif(GSL_FOUND)
 set(ROBOTPKG_MAP_GSL "math/gsl")
 
+###
+# Doxygen
+###
+find_package(Doxygen)
 #------------------------------------------------------------------------------
 # Scripting languages
 #------------------------------------------------------------------------------
@@ -363,8 +367,10 @@ if(PKG_CONFIG_FOUND)
 	foreach(package
 			flann)
 		string(TOUPPER "${package}" PACKAGE)
+		string(TOUPPER "HAVE_${package}" HAVE_PACKAGE)
 		string(TOUPPER "${package}_FOUND" PACKAGE_FOUND)
 		find_package(${package})
+		set(${HAVE_PACKAGE} ${${PACKAGE_FOUND}})
 		if(${PACKAGE_FOUND})
 			string(TOUPPER "LIBS_MAP_${package}" LIBS_MAP_PACKAGE)
 			set(${LIBS_MAP_PACKAGE} "${package}")
@@ -441,8 +447,6 @@ add_subdirectory(modules)
 #------------------------------------------------------------------------------
 # Jafar documentation
 #------------------------------------------------------------------------------
-find_package(Doxygen)
-
 if(DOXYGEN_FOUND)
   configure_file(${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile.in
     ${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile)
