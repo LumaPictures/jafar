@@ -275,7 +275,7 @@ endif(EXISTS ${PATH_TO_VCG})
 ###
 find_package(GSL)
 if(GSL_FOUND)
-	include_directories(GSL_INCLUDE_DIR)
+	include_directories(${GSL_INCLUDE_DIR})
 	string(STRIP "${GSL_LIBRARIES}" GSL_LIBRARIES)
 	string(REPLACE " " ";" GSL_LIBRARIES "${GSL_LIBRARIES}")
 	message(STATUS "gsl libraries: ${GSL_LIBRARIES}")
