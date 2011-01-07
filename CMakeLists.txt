@@ -7,7 +7,7 @@
 #
 # ----------------------------------------------------------------------------
 
-set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS true)
+set(CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS 0)
 
 # it MUST go before PROJECT(Jafar) in order to work
 if (NOT CMAKE_INSTALL_PREFIX)
@@ -284,10 +284,70 @@ if(GSL_FOUND)
 endif(GSL_FOUND)
 set(ROBOTPKG_MAP_GSL "math/gsl")
 
-###
-# Doxygen
-###
-find_package(Doxygen)
+#------------------------------------------------------------------------------
+# pkgconfig findable
+#------------------------------------------------------------------------------
+
+include(FindInternalLibrary)
+include(FindPkgConfig)
+if(PKG_CONFIG_FOUND)
+	foreach(package
+			flann)
+		string(TOUPPER "${package}" PACKAGE)
+		string(TOUPPER "HAVE_${package}" HAVE_PACKAGE)
+		string(TOUPPER "${package}_FOUND" PACKAGE_FOUND)
+		find_this_package(${package})
+		set(${HAVE_PACKAGE} ${${PACKAGE_FOUND}})
+		if(${PACKAGE_FOUND})
+			string(TOUPPER "LIBS_MAP_${package}" LIBS_MAP_PACKAGE)
+			set(${LIBS_MAP_PACKAGE} "${PACKAGE}")
+			set(LIBS ${LIBS} ${${PACKAGE}_LIBRARIES})
+			include_directories(${${PACKAGE}_INCLUDE_DIRS})		
+		endif(${PACKAGE_FOUND})
+	endforeach(package)
+else(PKG_CONFIG_FOUND)
+  message(ERROR " pkgconfig not found you won't be able to build some modules")
+endif(PKG_CONFIG_FOUND)
+
+#------------------------------------------------------------------------------
+# Internal dependencies
+#------------------------------------------------------------------------------
+foreach(internal
+	dtm
+	images3d
+	p3d
+	t3d
+	gdhe
+	stereopixel
+	sift
+	viam
+	lbfgs
+	ANN)
+  find_internal_library("${internal}")
+  string(TOUPPER "HAVE_${internal}" HAVE_INTERNAL)
+  string(TOUPPER "${internal}_FOUND" INTERNAL_FOUND)
+  set(${HAVE_INTERNAL} ${${INTERNAL_FOUND}})
+  string(TOUPPER "LIBS_MAP_${internal}" LIBS_MAP_INTERNAL)
+  string(TOUPPER "${internal}" INTERNAL)
+  set(${LIBS_MAP_INTERNAL} "${INTERNAL}")
+  if(${INTERNAL_FOUND})
+    set(LIBS ${LIBS} ${${INTERNAL}_LIBRARIES})
+    include_directories(${${INTERNAL}_INCLUDE_DIRS})
+  endif(${INTERNAL_FOUND})
+endforeach(internal)
+
+set(ROBOTPKG_MAP_DTM "mapping/libdtm")
+set(ROBOTPKG_MAP_IMAGES3D "image/libimages3d")
+set(ROBOTPKG_MAP_P3D "path/libp3d")
+set(ROBOTPKG_MAP_T3D "math/libt3d")
+set(ROBOTPKG_MAP_GDHE "graphics/gdhe")
+set(ROBOTPKG_MAP_STEREOPIXEL "mapping/libstereopixel")
+set(ROBOTPKG_MAP_SIFT "image/sift")
+set(ROBOTPKG_MAP_VIAM "image/viam-libs")
+set(ROBOTPKG_MAP_VCGLIB "graphics/vcglib")
+set(ROBOTPKG_MAP_LBFGS "math/liblbfgs")
+set(ROBOTPKG_MAP_ANN "wip/libANN")
+
 #------------------------------------------------------------------------------
 # Scripting languages
 #------------------------------------------------------------------------------
@@ -358,71 +418,6 @@ if(NOT RUBY_FOUND AND ENABLE_RUBY )
 endif(NOT RUBY_FOUND AND ENABLE_RUBY)
 
 #------------------------------------------------------------------------------
-# pkgconfig findable
-#------------------------------------------------------------------------------
-
-include(FindInternalLibrary)
-include(FindPkgConfig)
-if(PKG_CONFIG_FOUND)
-	foreach(package
-			flann)
-		string(TOUPPER "${package}" PACKAGE)
-		string(TOUPPER "HAVE_${package}" HAVE_PACKAGE)
-		string(TOUPPER "${package}_FOUND" PACKAGE_FOUND)
-		find_package(${package})
-		set(${HAVE_PACKAGE} ${${PACKAGE_FOUND}})
-		if(${PACKAGE_FOUND})
-			string(TOUPPER "LIBS_MAP_${package}" LIBS_MAP_PACKAGE)
-			set(${LIBS_MAP_PACKAGE} "${PACKAGE}")
-			set(LIBS ${LIBS} ${${PACKAGE}_LIBRARIES})
-			include_directories(${${PACKAGE}_INCLUDE_DIRS})		
-		endif(${PACKAGE_FOUND})
-	endforeach(package)
-else(PKG_CONFIG_FOUND)
-  message(ERROR " pkgconfig not found you won't be able to build some modules")
-endif(PKG_CONFIG_FOUND)
-
-#------------------------------------------------------------------------------
-# Internal dependencies
-#------------------------------------------------------------------------------
-foreach(internal
-	dtm
-	images3d
-	p3d
-	t3d
-	gdhe
-	stereopixel
-	sift
-	viam
-	lbfgs
-	ANN)
-  find_internal_library("${internal}")
-  string(TOUPPER "HAVE_${internal}" HAVE_INTERNAL)
-  string(TOUPPER "${internal}_FOUND" INTERNAL_FOUND)
-  set(${HAVE_INTERNAL} ${${INTERNAL_FOUND}})
-  string(TOUPPER "LIBS_MAP_${internal}" LIBS_MAP_INTERNAL)
-  string(TOUPPER "${internal}" INTERNAL)
-  set(${LIBS_MAP_INTERNAL} "${INTERNAL}")
-  if(${INTERNAL_FOUND})
-    set(LIBS ${LIBS} ${${INTERNAL}_LIBRARIES})
-    include_directories(${${INTERNAL}_INCLUDE_DIRS})
-  endif(${INTERNAL_FOUND})
-endforeach(internal)
-
-set(ROBOTPKG_MAP_DTM "mapping/libdtm")
-set(ROBOTPKG_MAP_IMAGES3D "image/libimages3d")
-set(ROBOTPKG_MAP_P3D "path/libp3d")
-set(ROBOTPKG_MAP_T3D "math/libt3d")
-set(ROBOTPKG_MAP_GDHE "graphics/gdhe")
-set(ROBOTPKG_MAP_STEREOPIXEL "mapping/libstereopixel")
-set(ROBOTPKG_MAP_SIFT "image/sift")
-set(ROBOTPKG_MAP_VIAM "image/viam-libs")
-set(ROBOTPKG_MAP_VCGLIB "graphics/vcglib")
-set(ROBOTPKG_MAP_LBFGS "math/liblbfgs")
-set(ROBOTPKG_MAP_ANN "wip/libANN")
-
-
-#------------------------------------------------------------------------------
 # configure jafarConfig.h header:
 #------------------------------------------------------------------------------
 
@@ -447,6 +442,8 @@ add_subdirectory(modules)
 #------------------------------------------------------------------------------
 # Jafar documentation
 #------------------------------------------------------------------------------
+find_package(Doxygen)
+
 if(DOXYGEN_FOUND)
   configure_file(${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile.in
     ${Jafar_SOURCE_DIR}/tools/doxygen/Doxyfile)

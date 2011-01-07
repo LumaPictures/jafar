@@ -72,9 +72,7 @@ macro(FIND_INTERNAL_LIBRARY internal_library)
 
 endmacro(FIND_INTERNAL_LIBRARY internal_library)
 
-macro(FIND_PACKAGE package_name)
+macro(FIND_THIS_PACKAGE package_name)
 		string(TOUPPER "${package_name}" PACKAGE_NAME)
-#		string(TOUPPER "${package_name}_FOUND" PACKAGE_NAME_FOUND)
 		pkg_check_modules(${PACKAGE_NAME} ${package_name})
-#		message(STATUS "finding ${package_name} ${${PACKAGE_NAME_FOUND}}")
-endmacro(FIND_PACKAGE package_name)
+endmacro(FIND_THIS_PACKAGE package_name)
