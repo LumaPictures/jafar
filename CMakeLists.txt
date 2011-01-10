@@ -21,7 +21,7 @@ project(Jafar CXX C)
 #-----------------------------------------------------------------------------
 # Compilation flags for release and debug
 #-----------------------------------------------------------------------------
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "possible configurations" FORCE)
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release;FastDebug" CACHE STRING "possible configurations" FORCE)
 # In case of Makefiles if the user does not setup CMAKE_BUILD_TYPE, assume it's Debug
 if (${CMAKE_GENERATOR} MATCHES ".*Makefiles")
     if("${CMAKE_BUILD_TYPE}" STREQUAL "")
@@ -31,6 +31,7 @@ endif()
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -march=native -g0 -DNDEBUG -DJFR_NDEBUG -DBOOST_UBLAS_NDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3 -ggdb")
+set(CMAKE_CXX_FLAGS_FASTDEBUG "-O1 -g3 -ggdb -DNDEBUG -DJFR_NDEBUG -DBOOST_UBLAS_NDEBUG")
 #set(JAFAR_COMPILE_FLAGS_MODULE "-pedantic -pedantic-errors -Werror -Wno-long-long -Wall")
 set(JAFAR_COMPILE_FLAGS_MODULE "-pedantic -Wno-long-long -Wall")
 
