@@ -7,3 +7,5 @@ code
 src/ruby/*_wrap.cpp
 src/tcl
 test_suite/
+test_suite/*.hpp
+test_suite/*.cpp
