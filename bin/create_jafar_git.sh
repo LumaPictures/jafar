@@ -16,7 +16,7 @@ cd ${MODULE_DIRECTORY}
 git --bare init --shared
 
 # description
-echo "jafar/modules/${1}" > ${MODULE_DIRECTORY}/description
+echo "${1}-jafar" > ${MODULE_DIRECTORY}/description
 
 # Add hooks
 rm ${MODULE_DIRECTORY}/hooks/post-receive
