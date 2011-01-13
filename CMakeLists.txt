@@ -285,6 +285,17 @@ if(GSL_FOUND)
 endif(GSL_FOUND)
 set(ROBOTPKG_MAP_GSL "math/gsl")
 
+###
+# OpenNI, Nite and Sensor
+###
+include(FindOpenNIX)
+if(OPENNIX_FOUND)
+	include_directories(${OPENNIX_INCLUDE_DIRS})
+  set(LIBS ${LIBS} ${OPENNIX_LIBRARIES})
+	set(LIBS_MAP_OPENNIX "OPENNIX")
+endif(OPENNIX_FOUND)
+set(ROBOTPKG_MAP_OPENNIX "wip/openni")
+
 #------------------------------------------------------------------------------
 # pkgconfig findable
 #------------------------------------------------------------------------------
