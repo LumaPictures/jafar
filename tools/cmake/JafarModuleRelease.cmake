@@ -96,8 +96,10 @@ file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/doc
   DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
 file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/test_suite 
   DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
-file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/demo_suite 
-  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+if(EXISTS ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/demo_suite)
+	file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/demo_suite 
+		DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+endif()
 ##
 # create the options list of this package
 ##
