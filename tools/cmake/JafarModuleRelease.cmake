@@ -67,26 +67,37 @@ if(NOT EXISTS ${THIS_MODULE_BINARY_DIR}/package)
     execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
 endif()
 
-file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME} 
-  DESTINATION ${THIS_MODULE_BINARY_DIR}/package
-  PATTERN "*/.svn" EXCLUDE
-	PATTERN "*/.git" EXCLUDE
-	PATTERN "*/.gitignore" EXCLUDE
-  PATTERN "CMakeLists.txt" EXCLUDE
-	#!!! nizar 20110207 : those are the symlinks we added
-	PATTERN "code" EXCLUDE
-	PATTERN "data" EXCLUDE
-  #!!! nizar 20100702 : if nasty people do build in source then ignore what they did
-  PATTERN "CMakeFiles" EXCLUDE
-  PATTERN "cmake_install.cmake" EXCLUDE
-  PATTERN "CTestTestfile.cmake" EXCLUDE
-  PATTERN "lib" EXCLUDE
-  PATTERN "macro" EXCLUDE
-  PATTERN "Makefile" EXCLUDE
-  PATTERN "objs" EXCLUDE
-  PATTERN "User.make" EXCLUDE
-  PATTERN "Testing" EXCLUDE)
-
+##file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME} 
+#  DESTINATION ${THIS_MODULE_BINARY_DIR}/package
+#  PATTERN "*/.svn" EXCLUDE
+#	PATTERN "*/.git" EXCLUDE
+#	PATTERN "*/.gitignore" EXCLUDE
+#  PATTERN "CMakeLists.txt" EXCLUDE
+#	#!!! nizar 20110207 : those are the symlinks we added
+#	PATTERN "code" EXCLUDE
+#	PATTERN "data" EXCLUDE
+#  #!!! nizar 20100702 : if nasty people do build in source then ignore what they did
+#  PATTERN "CMakeFiles" EXCLUDE
+#  PATTERN "cmake_install.cmake" EXCLUDE
+#  PATTERN "CTestTestfile.cmake" EXCLUDE
+#  PATTERN "lib" EXCLUDE
+#  PATTERN "macro" EXCLUDE
+#  PATTERN "Makefile" EXCLUDE
+#  PATTERN "objs" EXCLUDE
+#  PATTERN "User.make" EXCLUDE
+#  PATTERN "Testing" EXCLUDE)
+file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/include 
+  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/src 
+  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/macro 
+  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/doc 
+  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/test_suite 
+  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/demo_suite 
+  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
 ##
 # create the options list of this package
 ##
