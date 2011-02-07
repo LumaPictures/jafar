@@ -147,7 +147,7 @@ namespace jafar {
 
       protected:
 
-      virtual ~CSVFileLoad() {};
+      virtual ~CSVFileLoad() {}
 
       /** Implement this method calling repeatedly
        * CSVFile::getItem() method.
@@ -176,7 +176,7 @@ namespace jafar {
 
       protected:
 
-      virtual ~CSVFileSave() {};
+      virtual ~CSVFileSave() {}
 
       /** Implement this method calling repeatedly
        * CSVFile::setItem() method.
