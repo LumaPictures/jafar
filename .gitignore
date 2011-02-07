@@ -18,3 +18,4 @@ build_debug/
 build_release/
 boost-sandbox/
 doc/html
+Makefile
