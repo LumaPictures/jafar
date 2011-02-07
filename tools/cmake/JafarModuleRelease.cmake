@@ -151,8 +151,8 @@ if(${NB_REQ_MODS} GREATER 0)
 include ../../${reqcategory}/depend.mk")
     set(THIS_MODULE_REQUIRED_MODULES_LINKAGE "${THIS_MODULE_REQUIRED_MODULES_LINKAGE}
 include(\${CMAKE_INSTALL_PREFIX}/lib/jafar/${reqmodule}.cmake)
-target_link_libraries(${MODULENAME} jafar-${reqmodule})
-message(STATUS \"--> linking ${MODULENAME} to ${reqmodule}\")
+target_link_libraries(jafar-${MODULENAME} jafar-${reqmodule})
+message(STATUS \"--> linking jafar-${MODULENAME} to ${reqmodule}\")
 include_directories(\${JAFAR_${reqmodule}_IMPORTED_HEADERS})
 message(STATUS \"--> including headers from \${JAFAR_${reqmodule}_IMPORTED_HEADERS}\")")
   endforeach(counter)
@@ -203,8 +203,8 @@ if(${extlib}_FOUND)
 endif(${extlib}_FOUND)\n")
     endif("${extlib}" STREQUAL Qt4)
     set(THIS_MODULE_EXTLIBS_LINKAGE "${THIS_MODULE_EXTLIBS_LINKAGE}
-target_link_libraries(${MODULENAME} \${${extlib}_LIBRARIES})
-message(STATUS \"--> linking ${MODULENAME} to ${extlib} libraries\")")
+target_link_libraries(jafar-${MODULENAME} \${${extlib}_LIBRARIES})
+message(STATUS \"--> linking jafar-${MODULENAME} to ${extlib} libraries\")")
   else(EXISTS ${Jafar_SOURCE_DIR}/tools/cmake/Find${extlib}.cmake)
     set(ROBOTS_PACKAGES_TO_FIND "${ROBOTS_PACKAGES_TO_FIND} ${extlib}")
   endif(EXISTS ${Jafar_SOURCE_DIR}/tools/cmake/Find${extlib}.cmake)
@@ -213,6 +213,7 @@ endforeach(extlib)
 #FIX nizar 20100702 : cmake doesn't likd "$" symbol so we put @DOLLAR_SYMBOL@ 
 # in files to configure then we replace. 
 set(DOLLAR_SYMBOL "\$")
+set(AT_SYMBOL "\@")
 
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/Makefile.in
   ${THIS_MODULE_BINARY_DIR}/package/Makefile)
@@ -222,6 +223,9 @@ configure_file(${Jafar_SOURCE_DIR}/share/template_package/depend.mk.in
 
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/CMakeLists.txt.in
   ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME}/CMakeLists.txt)
+
+configure_file(${Jafar_SOURCE_DIR}/share/template_package/jafar-module.pc.in
+  ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME}/jafar-${MODULENAME}.pc.in)
 
 execute_process(
   COMMAND ${CMAKE_COMMAND} -E tar czf jafar-${THIS_MODULE_LAST_TAG}.tar.gz ${MODULENAME}
