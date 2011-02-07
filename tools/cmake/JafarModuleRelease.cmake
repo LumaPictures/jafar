@@ -1,5 +1,7 @@
 # $Id:$ #
-
+if(COMMAND cmake_policy)
+	cmake_policy(SET CMP0007 OLD)
+endif()
 #-------------------------------------------------------------------------------
 # List arguments are passed as strings so we need to split them
 #-------------------------------------------------------------------------------
@@ -23,7 +25,7 @@ list(REMOVE_DUPLICATES THIS_MODULE_OPTIONAL_EXTLIBS_EXACT_NAMES)
 # This macro retrieves today's date and output it works only on mac and linux
 #-------------------------------------------------------------------------------
 macro(get_current_date today)
-  if((CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (CMAKE_SYSTEM_NAME STREQUAL "Darwin"))
+  if(("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux") OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin"))
     find_program(date_program NAMES date)
     if(NOT("${date_program}" STREQUAL ""))
       execute_process(COMMAND ${date_program} "+\"%a %b %d %Y\""
@@ -31,25 +33,34 @@ macro(get_current_date today)
       #stupid but I don't wanna damn quotes
       string(REGEX REPLACE "\"" "" ${today} "${${today}}")
     endif(NOT("${date_program}" STREQUAL ""))
-  endif((CMAKE_SYSTEM_NAME STREQUAL "Linux") OR (CMAKE_SYSTEM_NAME STREQUAL "Darwin"))
+  endif(("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux") OR ("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin"))
 endmacro(get_current_date)
 
 #-------------------------------------------------------------------------------
-# This macro retrieves current module subversion revision
+# This macro retrieves last module git tag
 #-------------------------------------------------------------------------------
-macro(get_current_revision revision)
-  include(FindSubversion REQUIRED)
-  if(Subversion_FOUND)
-    Subversion_WC_INFO(${THIS_MODULE_SOURCE_DIR} Project)
-    set(${revision} ${Project_WC_REVISION})
-  endif(Subversion_FOUND)
-endmacro(get_current_revision)
+macro(get_last_tag last_tag)
+	if(DEFINED GIT_EXECUTABLE)
+		execute_process(
+			COMMAND ${CMAKE_COMMAND} -E chdir ${THIS_MODULE_SOURCE_DIR} ${GIT_EXECUTABLE} "tag"
+			OUTPUT_VARIABLE tags)
+		string(REPLACE "\n" ";" tags "${tags}")
+		list(LENGTH tags nb_tags)
+		if(${nb_tags} GREATER 0)
+			list(GET tags -1 ${last_tag})
+		else()
+			message(FATAL_ERROR "\tno available tags for this module!")
+		endif()
+	endif(DEFINED GIT_EXECUTABLE)
+endmacro(get_last_tag)
+
+#TODO: use git archive git archive --format=tar --prefix=kernel-0.1/ kernel-0.1
 
 #get current date
 get_current_date(OH_HAPPY_DAY)
-#get current project subversion revision
-get_current_revision(THIS_MODULE_SUBVERSION_REVISION)
-
+#get last tag
+get_last_tag(THIS_MODULE_LAST_TAG)
+message(STATUS "I will release ${MODULENAME} identified tag ${THIS_MODULE_LAST_TAG}")
 if(NOT EXISTS ${THIS_MODULE_BINARY_DIR}/package)
   execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${THIS_MODULE_BINARY_DIR}/package)
   else(NOT EXISTS ${THIS_MODULE_BINARY_DIR}/package)
@@ -59,7 +70,12 @@ endif()
 file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME} 
   DESTINATION ${THIS_MODULE_BINARY_DIR}/package
   PATTERN "*/.svn" EXCLUDE
+	PATTERN "*/.git" EXCLUDE
+	PATTERN "*/.gitignore" EXCLUDE
   PATTERN "CMakeLists.txt" EXCLUDE
+	#!!! nizar 20110207 : those are the symlinks we added
+	PATTERN "code" EXCLUDE
+	PATTERN "data" EXCLUDE
   #!!! nizar 20100702 : if nasty people do build in source then ignore what they did
   PATTERN "CMakeFiles" EXCLUDE
   PATTERN "cmake_install.cmake" EXCLUDE
@@ -70,15 +86,6 @@ file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}
   PATTERN "objs" EXCLUDE
   PATTERN "User.make" EXCLUDE
   PATTERN "Testing" EXCLUDE)
-
-execute_process(
-  COMMAND ${CMAKE_COMMAND} -E tar czf jafar-${MODULENAME}-${THIS_MODULE_FULL_VERSION}_${THIS_MODULE_SUBVERSION_REVISION}.tar.gz ${MODULENAME}
-  WORKING_DIRECTORY ${THIS_MODULE_BINARY_DIR}/package
-  OUTPUT_FILE ${THIS_MODULE_BINARY_DIR}/package/jafar-${MODULENAME}-${THIS_MODULE_FULL_VERSION}_${THIS_MODULE_SUBVERSION_REVISION}.tar.gz)
-
-execute_process(COMMAND ${CMAKE_COMMAND} -E md5sum jafar-${MODULENAME}-${THIS_MODULE_FULL_VERSION}_${THIS_MODULE_SUBVERSION_REVISION}.tar.gz
-  OUTPUT_FILE ${THIS_MODULE_BINARY_DIR}/package/distinfo
-  WORKING_DIRECTORY ${THIS_MODULE_BINARY_DIR}/package)
 
 ##
 # create the options list of this package
@@ -214,4 +221,13 @@ configure_file(${Jafar_SOURCE_DIR}/share/template_package/depend.mk.in
   ${THIS_MODULE_BINARY_DIR}/package/depend.mk)
 
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/CMakeLists.txt.in
-  ${THIS_MODULE_BINARY_DIR}/package/@MODULENAME@/CMakeLists.txt)
+  ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME}/CMakeLists.txt)
+
+execute_process(
+  COMMAND ${CMAKE_COMMAND} -E tar czf jafar-${THIS_MODULE_LAST_TAG}.tar.gz ${MODULENAME}
+  WORKING_DIRECTORY ${THIS_MODULE_BINARY_DIR}/package
+  OUTPUT_FILE ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}.tar.gz)
+
+execute_process(COMMAND ${CMAKE_COMMAND} -E md5sum jafar-${THIS_MODULE_LAST_TAG}.tar.gz
+  OUTPUT_FILE ${THIS_MODULE_BINARY_DIR}/package/distinfo
+  WORKING_DIRECTORY ${THIS_MODULE_BINARY_DIR}/package)
