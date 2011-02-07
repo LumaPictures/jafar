@@ -115,10 +115,10 @@ main()
 
 usage()
 {
-  echo "jafar-co-module.sh [modulename]"
-  echo "This scripts will attempt to checkout"
-  echo "a specific module and its dependencies"
-  echo "You need to use your LAAS password !"
+  echo "usage: jafar-checkout [modulename]"
+  echo "  This scripts will attempt to checkout"
+  echo "  a specific module and its dependencies"
+  echo "  You need to use your LAAS password !"
   exit 1
 }
 
