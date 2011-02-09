@@ -134,9 +134,6 @@ if(NOT "@DOLLAR_SYMBOL@{EXTRA_COMPILE_FLAGS}" STREQUAL "")
 endif(NOT "@DOLLAR_SYMBOL@{EXTRA_COMPILE_FLAGS}" STREQUAL "")
 
 #configure the module.pc.in and install it
-if(NOT EXISTS @DOLLAR_SYMBOL@{CMAKE_INSTALL_PREFIX}/lib/pkgconfig)
-	execute_process(COMMAND @DOLLAR_SYMBOL@{CMAKE_COMMAND} -E make_directory @DOLLAR_SYMBOL@{CMAKE_INSTALL_PREFIX}/lib/pkgconfig)
-endif(NOT EXISTS @DOLLAR_SYMBOL@{CMAKE_INSTALL_PREFIX}/lib/pkgconfig)
 configure_file(jafar-@MODULENAME@.pc.in jafar-@MODULENAME@.pc)
 install(FILES jafar-@MODULENAME@.pc DESTINATION lib/pkgconfig/)
 # install headers and libraries

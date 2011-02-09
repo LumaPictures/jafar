@@ -64,7 +64,7 @@ message(STATUS "I will release ${MODULENAME} identified tag ${THIS_MODULE_LAST_T
 if(NOT EXISTS ${THIS_MODULE_BINARY_DIR}/package)
   execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${THIS_MODULE_BINARY_DIR}/package)
   else(NOT EXISTS ${THIS_MODULE_BINARY_DIR}/package)
-    execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+    execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
 endif()
 
 ##file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME} 
@@ -87,18 +87,18 @@ endif()
 #  PATTERN "User.make" EXCLUDE
 #  PATTERN "Testing" EXCLUDE)
 file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/include 
-  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
 file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/src 
-  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
 file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/macro 
-  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
 file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/doc 
-  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
 file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/test_suite 
-  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
 if(EXISTS ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/demo_suite)
 	file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/demo_suite 
-		DESTINATION ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME})
+		DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
 endif()
 ##
 # create the options list of this package
@@ -181,7 +181,7 @@ foreach(extlib ${THIS_MODULE_REQUIRED_EXTLIBS_EXACT_NAMES})
   string(TOUPPER "${extlib}" EXTLIB)
   if(EXISTS ${Jafar_SOURCE_DIR}/tools/cmake/Find${extlib}.cmake)
     file(COPY ${Jafar_SOURCE_DIR}/tools/cmake/Find${extlib}.cmake 
-      DESTINATION ${THIS_MODULE_BINARY_DIR}/package/@MODULENAME@)
+      DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
     if("${extlib}" STREQUAL Qt4)
       set(THIS_MODULE_REQUIRES "${THIS_MODULE_REQUIRES}
 #-----------------------------------------------------------------------------
@@ -235,16 +235,12 @@ configure_file(${Jafar_SOURCE_DIR}/share/template_package/depend.mk.in
   ${THIS_MODULE_BINARY_DIR}/package/depend.mk)
 
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/CMakeLists.txt.in
-  ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME}/CMakeLists.txt)
+	${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}/CMakeLists.txt)
 
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/jafar-module.pc.in
-  ${THIS_MODULE_BINARY_DIR}/package/${MODULENAME}/jafar-${MODULENAME}.pc.in)
+	${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}/jafar-${MODULENAME}.pc.in)
 
 execute_process(
-  COMMAND ${CMAKE_COMMAND} -E tar czf jafar-${THIS_MODULE_LAST_TAG}.tar.gz ${MODULENAME}
+	COMMAND ${CMAKE_COMMAND} -E tar czf jafar-${THIS_MODULE_LAST_TAG}.tar.gz jafar-${THIS_MODULE_LAST_TAG}
   WORKING_DIRECTORY ${THIS_MODULE_BINARY_DIR}/package
   OUTPUT_FILE ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}.tar.gz)
-
-execute_process(COMMAND ${CMAKE_COMMAND} -E md5sum jafar-${THIS_MODULE_LAST_TAG}.tar.gz
-  OUTPUT_FILE ${THIS_MODULE_BINARY_DIR}/package/distinfo
-  WORKING_DIRECTORY ${THIS_MODULE_BINARY_DIR}/package)
