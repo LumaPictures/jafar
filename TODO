@@ -39,3 +39,7 @@ autres bus error
 
   - better interface
   - fix issues with swig ruby wrapper
+
+* cmake
+
+  - make per module install with dependencies
