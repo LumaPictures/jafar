@@ -25,19 +25,13 @@ MAINTAINER=		jafar@laas.fr
 HOMEPAGE=		https://intranet.laas.fr/intranet/robots/wiki/Jafar
 COMMENT=		@THIS_MODULE_SHORT_DESCRIPTION@
 
-USE_LANGUAGES+=		c c++
+USE_LANGUAGES+=		c c++ fortran
 USE_PKGLOCALEDIR=	yes
-
-# option for building examples
-PKG_SUPPORTED_OPTIONS+=		debug
-PKG_OPTION_DESCR.debug= 	Build in debug mode
-define PKG_OPTION_SET.debug
-  CMAKE_ARGS+=			-DCMAKE_BUILD_TYPE=Debug
-endef
 
 @THIS_MODULE_ROBOTPKG_OPTIONS@
 @THIS_MODULE_ROBOTPKG_DEPENDENCIES@
 
 include ../../pkgtools/libtool/depend.mk
 include ../../pkgtools/pkg-config/depend.mk
+include ../../mk/sysdep/cmake.mk
 include ../../mk/robotpkg.mk
