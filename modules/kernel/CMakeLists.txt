@@ -10,6 +10,6 @@ build_jafar_module(kernel
   #CXXFLAGS
   #CPPFLAGS
   #CPPFLAGS_MODULE
-  ROBOTPKG_CATEGORY devel
+  ROBOTPKG_CATEGORY wip
   SHORT_DESCRIPTION "Defines some jafar common tools: exceptions, debug message facility, data logging facility,..."
 )
