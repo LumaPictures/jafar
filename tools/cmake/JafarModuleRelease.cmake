@@ -1,9 +1,7 @@
 # $Id:$ #
-# Allow for using list even if they are unset cause we check after so it is OK
 if(COMMAND cmake_policy)
 	cmake_policy(SET CMP0007 OLD)
 endif()
-
 #-------------------------------------------------------------------------------
 # List arguments are passed as strings so we need to split them
 #-------------------------------------------------------------------------------
@@ -56,45 +54,38 @@ macro(get_last_tag last_tag)
 	endif(DEFINED GIT_EXECUTABLE)
 endmacro(get_last_tag)
 
+#TODO: use git archive git archive --format=tar --prefix=kernel-0.1/ kernel-0.1
+
 #get current date
 get_current_date(OH_HAPPY_DAY)
 #get last tag
 get_last_tag(THIS_MODULE_LAST_TAG)
 message(STATUS "I will release ${MODULENAME} identified tag ${THIS_MODULE_LAST_TAG}")
-
-#-------------------------------------------------------------------------------
-# Do the magic
-#-------------------------------------------------------------------------------
-#create the package directory if it doesn't exist
 if(NOT EXISTS ${THIS_MODULE_BINARY_DIR}/package)
   execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${THIS_MODULE_BINARY_DIR}/package)
-else(NOT EXISTS ${THIS_MODULE_BINARY_DIR}/package)
-    execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
+  else(NOT EXISTS ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
+	  execute_process(COMMAND ${CMAKE_COMMAND} -E remove_directory ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
 endif()
-#stash local git then checkout the last tag
-execute_process(
-	COMMAND ${CMAKE_COMMAND} -E chdir ${THIS_MODULE_SOURCE_DIR} ${GIT_EXECUTABLE} "stash"
-	COMMAND ${CMAKE_COMMAND} -E chdir ${THIS_MODULE_SOURCE_DIR} ${GIT_EXECUTABLE} checkout -q ${THIS_MODULE_LAST_TAG})
-#copy FOI
-file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/include 
-  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
-file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/src 
-  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
-file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/macro 
-  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
-file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/doc 
-  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
-file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/test_suite 
-  DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
-if(EXISTS ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/demo_suite)
-	file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/demo_suite 
-		DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
-endif()
-#rollback git changes
-execute_process(
-	COMMAND ${CMAKE_COMMAND} -E chdir ${THIS_MODULE_SOURCE_DIR} ${GIT_EXECUTABLE} checkout -q
-	COMMAND ${CMAKE_COMMAND} -E chdir ${THIS_MODULE_SOURCE_DIR} ${GIT_EXECUTABLE} stash apply -q)
 
+file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/
+	DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}
+	PATTERN "*/.svn" EXCLUDE
+	PATTERN "*/.git" EXCLUDE
+	PATTERN "*/.gitignore" EXCLUDE
+	PATTERN "CMakeLists.txt" EXCLUDE
+	#!!! nizar 20110207 : those are the symlinks we added
+	PATTERN "code" EXCLUDE
+	PATTERN "data" EXCLUDE
+  #!!! nizar 20100702 : if nasty people do build in source then ignore what they did
+  PATTERN "CMakeFiles" EXCLUDE
+  PATTERN "cmake_install.cmake" EXCLUDE
+  PATTERN "CTestTestfile.cmake" EXCLUDE
+  PATTERN "lib" EXCLUDE
+  PATTERN "macro" EXCLUDE
+  PATTERN "Makefile" EXCLUDE
+  PATTERN "objs" EXCLUDE
+  PATTERN "User.make" EXCLUDE
+  PATTERN "Testing" EXCLUDE)
 
 ##
 # create the options list of this package
@@ -160,8 +151,8 @@ if(${NB_REQ_MODS} GREATER 0)
 include ../../${reqcategory}/depend.mk")
     set(THIS_MODULE_REQUIRED_MODULES_LINKAGE "${THIS_MODULE_REQUIRED_MODULES_LINKAGE}
 include(\${CMAKE_INSTALL_PREFIX}/lib/jafar/${reqmodule}.cmake)
-target_link_libraries(jafar-${MODULENAME} jafar-${reqmodule})
-message(STATUS \"--> linking jafar-${MODULENAME} to ${reqmodule}\")
+target_link_libraries(${MODULENAME} jafar-${reqmodule})
+message(STATUS \"--> linking ${MODULENAME} to ${reqmodule}\")
 include_directories(\${JAFAR_${reqmodule}_IMPORTED_HEADERS})
 message(STATUS \"--> including headers from \${JAFAR_${reqmodule}_IMPORTED_HEADERS}\")")
   endforeach(counter)
@@ -177,7 +168,7 @@ foreach(extlib ${THIS_MODULE_REQUIRED_EXTLIBS_EXACT_NAMES})
   string(TOUPPER "${extlib}" EXTLIB)
   if(EXISTS ${Jafar_SOURCE_DIR}/tools/cmake/Find${extlib}.cmake)
     file(COPY ${Jafar_SOURCE_DIR}/tools/cmake/Find${extlib}.cmake 
-      DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
+		DESTINATION ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG})
     if("${extlib}" STREQUAL Qt4)
       set(THIS_MODULE_REQUIRES "${THIS_MODULE_REQUIRES}
 #-----------------------------------------------------------------------------
@@ -212,8 +203,8 @@ if(${extlib}_FOUND)
 endif(${extlib}_FOUND)\n")
     endif("${extlib}" STREQUAL Qt4)
     set(THIS_MODULE_EXTLIBS_LINKAGE "${THIS_MODULE_EXTLIBS_LINKAGE}
-target_link_libraries(jafar-${MODULENAME} \${${extlib}_LIBRARIES})
-message(STATUS \"--> linking jafar-${MODULENAME} to ${extlib} libraries\")")
+target_link_libraries(${MODULENAME} \${${extlib}_LIBRARIES})
+message(STATUS \"--> linking ${MODULENAME} to ${extlib} libraries\")")
   else(EXISTS ${Jafar_SOURCE_DIR}/tools/cmake/Find${extlib}.cmake)
     set(ROBOTS_PACKAGES_TO_FIND "${ROBOTS_PACKAGES_TO_FIND} ${extlib}")
   endif(EXISTS ${Jafar_SOURCE_DIR}/tools/cmake/Find${extlib}.cmake)
@@ -222,7 +213,6 @@ endforeach(extlib)
 #FIX nizar 20100702 : cmake doesn't likd "$" symbol so we put @DOLLAR_SYMBOL@ 
 # in files to configure then we replace. 
 set(DOLLAR_SYMBOL "\$")
-set(AT_SYMBOL "\@")
 
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/Makefile.in
   ${THIS_MODULE_BINARY_DIR}/package/Makefile)
@@ -233,15 +223,11 @@ configure_file(${Jafar_SOURCE_DIR}/share/template_package/depend.mk.in
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/CMakeLists.txt.in
 	${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}/CMakeLists.txt)
 
-configure_file(${Jafar_SOURCE_DIR}/share/template_package/jafar-module.pc.in
-	${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}/jafar-${MODULENAME}.pc.in)
+execute_process(
+	COMMAND ${CMAKE_COMMAND} -E tar czf jafar-${THIS_MODULE_LAST_TAG}.tar.gz jafar-${THIS_MODULE_LAST_TAG}
+  WORKING_DIRECTORY ${THIS_MODULE_BINARY_DIR}/package
+  OUTPUT_FILE ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}.tar.gz)
 
-#create the tar.gz archive
-execute_process(
-  COMMAND ${CMAKE_COMMAND} -E tar czf jafar-${THIS_MODULE_LAST_TAG}.tar.gz jafar-${THIS_MODULE_LAST_TAG}
-  OUTPUT_FILE ${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}.tar.gz
-	WORKING_DIRECTORY ${THIS_MODULE_BINARY_DIR}/package)
-execute_process(
-	COMMAND ${CMAKE_COMMAND} -E remove_directory jafar-${THIS_MODULE_LAST_TAG}
-	WORKING_DIRECTORY ${THIS_MODULE_BINARY_DIR}/package
-)
+execute_process(COMMAND ${CMAKE_COMMAND} -E md5sum jafar-${THIS_MODULE_LAST_TAG}.tar.gz
+  OUTPUT_FILE ${THIS_MODULE_BINARY_DIR}/package/distinfo
+  WORKING_DIRECTORY ${THIS_MODULE_BINARY_DIR}/package)
