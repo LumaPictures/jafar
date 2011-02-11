@@ -150,7 +150,7 @@ if(${NB_REQ_MODS} GREATER 0)
     set(THIS_MODULE_ROBOTPKG_DEPENDENCIES "${THIS_MODULE_ROBOTPKG_DEPENDENCIES}
 include ../../${reqcategory}/depend.mk")
     set(THIS_MODULE_REQUIRED_MODULES_LINKAGE "${THIS_MODULE_REQUIRED_MODULES_LINKAGE}
-include(\${CMAKE_INSTALL_PREFIX}/lib/jafar/${reqmodule}.cmake)
+include(\${CMAKE_INSTALL_PREFIX}/share/cmake/jafar/${reqmodule}.cmake)
 target_link_libraries(${MODULENAME} jafar-${reqmodule})
 message(STATUS \"--> linking ${MODULENAME} to ${reqmodule}\")
 include_directories(\${JAFAR_${reqmodule}_IMPORTED_HEADERS})

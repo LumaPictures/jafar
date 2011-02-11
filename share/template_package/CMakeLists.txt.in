@@ -139,9 +139,9 @@ install(FILES jafar-@MODULENAME@.pc DESTINATION lib/pkgconfig/)
 # install headers and libraries
 install(TARGETS jafar-@MODULENAME@ DESTINATION lib EXPORT jafar-@MODULENAME@)
 install(FILES @DOLLAR_SYMBOL@{module_headers} DESTINATION include/jafar/@MODULENAME@/)
-install(EXPORT jafar-@MODULENAME@ DESTINATION lib)
+install(EXPORT jafar-@MODULENAME@ DESTINATION share/cmake/jafar)
 execute_process(
   COMMAND @DOLLAR_SYMBOL@{CMAKE_COMMAND} -E echo "SET(JAFAR_@MODULENAME@_IMPORTED_HEADERS @DOLLAR_SYMBOL@{IMPORTED_HEADERS})"
   OUTPUT_FILE @DOLLAR_SYMBOL@{CMAKE_CURRENT_BINARY_DIR}/@MODULENAME@-headers.cmake)
 install(FILES @DOLLAR_SYMBOL@{CMAKE_CURRENT_BINARY_DIR}/@MODULENAME@-headers.cmake 
-  DESTINATION lib)
+  DESTINATION share/cmake/jafar)
