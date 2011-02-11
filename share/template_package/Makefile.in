@@ -24,6 +24,7 @@ MASTER_SITES=		@DOLLAR_SYMBOL@{MASTER_SITE_OPENROBOTS:=jafar-@MODULENAME@/}
 MAINTAINER=		jafar@laas.fr
 HOMEPAGE=		https://intranet.laas.fr/intranet/robots/wiki/Jafar
 COMMENT=		@THIS_MODULE_SHORT_DESCRIPTION@
+LICENSE=		isc
 
 USE_LANGUAGES+=		c c++ fortran
 USE_PKGLOCALEDIR=	yes
