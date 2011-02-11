@@ -221,6 +221,9 @@ configure_file(${Jafar_SOURCE_DIR}/share/template_package/Makefile.in
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/depend.mk.in
   ${THIS_MODULE_BINARY_DIR}/package/depend.mk)
 
+configure_file(${Jafar_SOURCE_DIR}/share/template_package/DESCR.in
+  ${THIS_MODULE_BINARY_DIR}/package/DESCR)
+
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/CMakeLists.txt.in
 	${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}/CMakeLists.txt)
 
