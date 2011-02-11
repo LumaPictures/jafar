@@ -320,6 +320,7 @@ if(PKG_CONFIG_FOUND)
 else(PKG_CONFIG_FOUND)
   message(ERROR " pkgconfig not found you won't be able to build some modules")
 endif(PKG_CONFIG_FOUND)
+set(ROBOTPKG_MAP_FLANN "wip/flann")
 
 #------------------------------------------------------------------------------
 # Internal dependencies
