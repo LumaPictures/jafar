@@ -1,10 +1,4 @@
 /* $Id$ */
-
-#include <fstream>
-
-#include "boost/date_time/posix_time/posix_time.hpp"
-#include "boost/tokenizer.hpp"
-
 #include "kernel/csvFile.hpp"
 
 using namespace jafar::kernel;
@@ -16,12 +10,9 @@ using namespace jafar::kernel;
 CSVFile::CSVFile(std::string const& separator_, char commentPrefix_, bool withColumnsNames_) :
   m_separator(separator_),
   m_commentPrefix(commentPrefix_),
-  withColumnsNames(withColumnsNames_)
-{
-  lineNumber = 0;
-  dataLineNumber = 0;
-  columnNumber = 0;
-}
+  withColumnsNames(withColumnsNames_),
+	lineNumber(0), dataLineNumber(0), columnNumber(0)
+{}
 
 void CSVFile::hasColumnsNames(const bool&  _withColumnsNames) {
   withColumnsNames = _withColumnsNames;
@@ -41,23 +32,55 @@ size_t CSVFile::nbOfColumns() const {
   return fileMatrix.size2();
 }
 
+void CSVFile::compute_matrix_size(const std::string& _filename, 
+																	size_t& nb_lines,
+																	size_t& nb_columns,
+																	const std::string& _separator,
+																	char _commentPrefix){
+	std::ifstream _file(_filename.c_str());
+  JFR_IO_STREAM(_file, "CSVFile::readFile: failed to open file: " << _filename);
+	nb_lines = 0;
+	nb_columns = 0;
+	bool are_columns_computed = false;
+	std::string line;
+	while(!_file.eof()) {
+		getline(_file, line);
+		if(line.size() == 0 || line.at(0) == _commentPrefix || ( line.size() == 1 && line.at(0) == 13 ))
+			continue;
+		else if (!are_columns_computed){
+			const boost::char_separator<char> _sep(_separator.c_str());
+			typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
+			tokenizer tokens(line, _sep);
+			tokenizer::iterator it = tokens.begin();
+			assert(it != tokens.end());
+			for(it = tokens.begin(); it != tokens.end(); it++)
+				nb_columns++;
+			std::cout << "nb_columns " << nb_columns << std::endl;
+			are_columns_computed = true;
+		}
+		nb_lines++;
+	}
+	_file.close();
+}
+
 void CSVFile::readFile(std::string const& filename) {
   using namespace std;
   //cout<<">>> csvFile_read"<<endl;
   ifstream file(filename.c_str());
   JFR_IO_STREAM(file, "CSVFile::readFile: failed to open file: " << filename);
-
+	size_t nb_of_lines, nb_of_columns;
+	//check the first line to compute number of columns
   string line;
   // tokenizer
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
   boost::char_separator<char> sep(m_separator.c_str());
-  size_t maxNbTokens = 0;
+  compute_matrix_size(filename, nb_of_lines, nb_of_columns, m_separator, m_commentPrefix);
+	fileMatrix.resize(nb_of_lines, nb_of_columns);
   // reading the lines
   while(getline(file,line)) {
     // this is an empty line or a comment
     if (line.size() == 0 || line.at(0) == m_commentPrefix || ( line.size() == 1 && line.at(0) == 13 ))
       continue;
-    ++lineNumber;
     tokenizer tokens(line, sep);
     tokenizer::iterator it = tokens.begin();
     JFR_PRED_ERROR(it != tokens.end(),
@@ -80,29 +103,21 @@ void CSVFile::readFile(std::string const& filename) {
       for(it = tokens.begin(), columnNumber = 0; 
           it != tokens.end(); 
           ++it, ++columnNumber) {
-        ss << columnNumber;
+        ss << "column_" << columnNumber;
         columnNames[ss.str()] = columnNumber;
         ss << std::flush;
-        if (columnNumber > maxNbTokens){
-          maxNbTokens = columnNumber;
-        }
-        fileMatrix.resize(1, maxNbTokens+1);
         fileMatrix(0, columnNumber) = *it;
-      }
+			}
       //treat data line
-    } else {
+		} else {
       ++dataLineNumber;
       for(it = tokens.begin(), columnNumber = 0; 
           it != tokens.end(); 
           ++columnNumber, ++it) {
-        if (columnNumber > maxNbTokens){
-          maxNbTokens = columnNumber;
-        }
-        fileMatrix.resize(dataLineNumber, maxNbTokens+1);
         fileMatrix(dataLineNumber-1, columnNumber) = *it;
-      }
-    }
-    //cout << "data line n° "<<dataLineNumber<<endl;
+			}
+		}
+		//    cout << "data line n° "<<dataLineNumber<<endl;
   }//while loop
   file.close();
   //cout<<"<<< csvFile_read"<<endl;

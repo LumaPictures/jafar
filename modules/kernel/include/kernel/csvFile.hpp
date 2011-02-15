@@ -5,8 +5,11 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <fstream>
 #include "boost/numeric/ublas/matrix.hpp"
 #include "kernel/kernelException.hpp"
+#include "boost/date_time/posix_time/posix_time.hpp"
+#include "boost/tokenizer.hpp"
 
 namespace jafar {
   namespace kernel {
@@ -33,7 +36,11 @@ namespace jafar {
       size_t lineNumber;
       size_t dataLineNumber;
       size_t columnNumber;
-
+			static void compute_matrix_size(const std::string& _file, 
+																			size_t& nb_lines,
+																			size_t& nb_columns,
+																			const std::string& _separator = " ",
+																			char _commentPrefix = '#');
       public:
 
       CSVFile(std::string const& separator_ = " ", char commentPrefix_ = '#', bool withColumnsNames_ = false);
