@@ -54,6 +54,7 @@ endif(MSVC)
 # ----------------------------------------------------------------------------
 if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 NEW)
+	cmake_policy(SET CMP0007 OLD)
 endif()
 
 # ----------------------------------------------------------------------------
@@ -146,28 +147,36 @@ if(QT4_FOUND)
 endif(QT4_FOUND)
 
 ###
+# PkgConfig
+###
+include(FindPkgConfig)
+
+###
 # OpenCV
 ###
-include(FindOpenCV)
-find_package(OpenCV)
+#include(FindOpenCV)
+#find_package(OpenCV)
+pkg_check_modules(OpenCV opencv)
 set(HAVE_OPENCV ${OpenCV_FOUND})
 set(OPENCV_FOUND ${OpenCV_FOUND})
 if(OpenCV_FOUND)
-  #this is a hack be cause the FindOpenCV.cmake provides duplicated values
-  LIST(REMOVE_DUPLICATES OpenCV_INCLUDE_DIRS)
-  LIST(REMOVE_DUPLICATES OpenCV_LIBRARIES)
-  #end of hack
+	message(STATUS "opencv include dir ${OpenCV_INCLUDE_DIRS}")
+	message(STATUS "opencv libs ${OpenCV_LIBRARIES}")
   include_directories(${OpenCV_INCLUDE_DIRS})
   set(LIBS ${LIBS} ${OpenCV_LIBRARIES})
+	message(STATUS "version ${OpenCV_VERSION}")
   set(LIBS_MAP_OPENCV "OpenCV")
+	string(REGEX MATCH "[0-9]+" CV_MAJOR_VERSION "${OpenCV_VERSION}")
+	string(REGEX MATCH "[0-9]+.[0-9]+" CV_MINOR_VERSION "${OpenCV_VERSION}")
+	string(REPLACE "${CV_MAJOR_VERSION}." "" CV_MINOR_VERSION "${CV_MINOR_VERSION}")
 endif(OpenCV_FOUND)
 set(ROBOTPKG_MAP_OPENCV "image/opencv")
 
 ###
 # OpenSceneGraph
 ###
-#find_package(OpenSceneGraph 2.0.0 REQUIRED osgViewer osgGA)
-find_package(OpenSceneGraph 2.0.0)
+find_package(OpenSceneGraph 2.0.0 REQUIRED osgViewer osgGA)
+#find_package(OpenSceneGraph 2.0.0)
 set(HAVE_OSG ${OPENSCENEGRAPH_FOUND})
 if(OPENSCENEGRAPH_FOUND)
   include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
@@ -301,10 +310,10 @@ set(ROBOTPKG_MAP_OPENNIX "wip/openni")
 #------------------------------------------------------------------------------
 
 include(FindInternalLibrary)
-include(FindPkgConfig)
 if(PKG_CONFIG_FOUND)
 	foreach(package
-			flann)
+			flann
+			libfreenect)
 		string(TOUPPER "${package}" PACKAGE)
 		string(TOUPPER "HAVE_${package}" HAVE_PACKAGE)
 		string(TOUPPER "${package}_FOUND" PACKAGE_FOUND)
