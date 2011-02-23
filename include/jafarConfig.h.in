@@ -14,8 +14,6 @@
 
 /* openCV library */
 #cmakedefine HAVE_OPENCV
-#cmakedefine CV_MAJOR_VERSION @CV_MAJOR_VERSION@
-#cmakedefine CV_MINOR_VERSION @CV_MINOR_VERSION@
 
 /* opengl library */
 #cmakedefine HAVE_OPENGL
