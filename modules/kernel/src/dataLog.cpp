@@ -39,6 +39,7 @@ DataLogger::DataLogger(std::string const& logFilename_,
   nbColumns(0),
   loggables() 
 {
+  logHeaderLine << commentPrefix_;
   JFR_IO_STREAM(logStream,
 		"DataLogger: error while opening file " << logFilename_);
 }
