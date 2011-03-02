@@ -3,7 +3,7 @@
 /*!
   \addtogroup kernel Module kernel
 
-\version 0.2
+\version 0.3
 
 \author 
   thomas.lemaire@laas.fr
@@ -13,6 +13,7 @@ exceptions, debug message facility, data logging facility,...
 
 \section secKernelHistory History
 
+	- 0.3 (2011-02-15) - Handling larges files in csvFile
   - 0.2 (2005-10-14) - Add a better debug system
   - 0.1 (2004-09-09) - Initial version
 
