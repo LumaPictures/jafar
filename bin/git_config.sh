@@ -7,7 +7,7 @@ JAFAR_URL=`grep "url = " ${MY_JAFAR_DIR}/.git/config | sed -e "s#\t*url = ##"`
 GITREPO_SUFFIX=`echo ${JAFAR_URL} | sed -e "s#\(\.git\$\)##"`
 if [ "$GITREPO_SUFFIX" != "$JAFAR_URL" ]; then GITREPO_SUFFIX=".git"; else GITREPO_SUFFIX=""; fi
 BASE_URL=`echo ${JAFAR_URL} | sed -e "s#jafar/jafar\(\.git\)*#jafar#"`
-PROTOCOL=`echo ${BASE_URL} | sed -r -e "s#([htpshgi]*)://.*#\1#"`
+PROTOCOL=`echo ${BASE_URL} | cut -d ':' -f 1`
 VCS_USER=`echo ${BASE_URL} | sed -e "s#.*://##" -e "s#trac.*##" -e "s#@##"`
 
 if [ "$VCS_USER" = "" ]
