@@ -171,7 +171,7 @@ set(ROBOTPKG_MAP_OPENCV "image/opencv")
 ###
 # OpenSceneGraph
 ###
-find_package(OpenSceneGraph 2.0.0 REQUIRED osgViewer osgGA)
+find_package(OpenSceneGraph 2.0.0 REQUIRED osgViewer osgGA osgDB)
 #find_package(OpenSceneGraph 2.0.0)
 set(HAVE_OSG ${OPENSCENEGRAPH_FOUND})
 if(OPENSCENEGRAPH_FOUND)
