@@ -3,6 +3,7 @@
 
 SCRIPT_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
 MY_JAFAR_DIR=`dirname "$SCRIPT_PATH"`/..
+LISTOFFILES=""
 
 . ${MY_JAFAR_DIR}/bin/git_config.sh
 
@@ -19,6 +20,18 @@ EOF
     exit 1
 }
 
+getExistingFilesOnly()
+{
+	FINALLIST=""
+	for i in $(ls -d $LISTOFFILES 2> /dev/null); do
+		# Adding files or directories
+		if [ -e $i ]; then 
+			FINALLIST="$FINALLIST $i"
+		fi
+	done
+	echo $FINALLIST
+}
+
 MODULE=`echo $1 | sed 's,/$,,'`
 test -z "$MODULE" && usage;
 
@@ -30,6 +43,7 @@ fi
 # Check if a module of same kind exists
 # Otherwise, create the repository
 # For this, call create_jafar_git.sh, with $1 = $MODULE
+
 sed "s,\${1},$MODULE,"  ${MY_JAFAR_DIR}/bin/create_jafar_git.sh | ssh ${VCS_USER}@${HOST} "sh -s"
 
 if [ $? -ne 0 ]
@@ -42,28 +56,36 @@ TOPDIR=$PWD/$MODULE
 cd $TOPDIR
 git init 
 
-git add COPYRIGHT README doc include macro src test_suite .gitignore
+LISTOFFILES="COPYRIGHT README doc include macro src test_suite .gitignore"
+git add $(getExistingFilesOnly)
 
 cd $TOPDIR/doc
-git add *.doxy *.tcl *.hpp *.cpp
+LISTOFFILES="*.doxy *.tcl *.hpp *.cpp"
+git add $(getExistingFilesOnly)
 
 cd $TOPDIR/include
-git add *.i
+LISTOFFILES="*.i"
+git add $(getExistingFilesOnly)
 
 cd $TOPDIR/include/$MODULE
-git add *.hpp *.h *.i
+LISTOFFILES="*.hpp *.h *.i"
+git add $(getExistingFilesOnly)
 
 cd $TOPDIR/macro
-git add *.tcl *.rb
+LISTOFFILES="*.tcl *.rb"
+git add $(getExistingFilesOnly)
 
 cd $TOPDIR/src
-git add *.cpp *.c ruby
+LISTOFFILES="*.cpp *.c ruby"
+git add $(getExistingFilesOnly)
 
 cd $TOPDIR/src/ruby
-git add extconf.rb
+LISTOFFILES="extconf.rb"
+git add $(getExistingFilesOnly)
 
 cd $TOPDIR/test_suite
-git add *.cpp *.hpp
+LISTOFFILES="*.cpp *.hpp"
+git add $(getExistingFilesOnly)
 
 cd $TOPDIR
 
