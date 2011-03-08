@@ -56,7 +56,7 @@ TOPDIR=$PWD/$MODULE
 cd $TOPDIR
 git init 
 
-LISTOFFILES="COPYRIGHT README doc include macro src test_suite .gitignore"
+LISTOFFILES="CMakeLists.txt COPYRIGHT README doc include macro src test_suite .gitignore"
 git add $(getExistingFilesOnly)
 
 cd $TOPDIR/doc
