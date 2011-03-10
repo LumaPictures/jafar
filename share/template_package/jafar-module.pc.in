@@ -1,10 +1,10 @@
 prefix=${CMAKE_INSTALL_PREFIX}
-exec_prefix=${prefix}
-libdir=${prefix}/lib
-includedir=${prefix}/include/jafar
+exec_prefix=${CMAKE_INSTALL_PREFIX}
+libdir=${CMAKE_INSTALL_PREFIX}/lib
+includedir=${CMAKE_INSTALL_PREFIX}/include/jafar
 
 Name: jafar-@MODULENAME@
 Description: @THIS_MODULE_SHORT_DESCRIPTION@
 Version: @THIS_MODULE_FULL_VERSION@
-Libs: -L${libdir} -l@MODULENAME@
-Cflags: -I${includedir} -D_JFR_MODULE_="@MODULENAME@"
+Libs: -L${CMAKE_INSTALL_PREFIX} -l@MODULENAME@
+Cflags: -I${CMAKE_INSTALL_PREFIX} -D_JFR_MODULE_="@MODULENAME@"
