@@ -210,25 +210,20 @@ message(STATUS \"--> linking ${MODULENAME} to ${extlib} libraries\")")
   endif(EXISTS ${Jafar_SOURCE_DIR}/tools/cmake/Find${extlib}.cmake)
 endforeach(extlib)
 
-#FIX nizar 20100702 : cmake doesn't likd "$" symbol so we put @DOLLAR_SYMBOL@ 
-# in files to configure then we replace. 
-set(DOLLAR_SYMBOL "\$")
-set(AT_SYMBOL "\@")
-
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/Makefile.in
-  ${THIS_MODULE_BINARY_DIR}/package/Makefile)
+  ${THIS_MODULE_BINARY_DIR}/package/Makefile @ONLY)
 
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/depend.mk.in
-  ${THIS_MODULE_BINARY_DIR}/package/depend.mk)
+  ${THIS_MODULE_BINARY_DIR}/package/depend.mk @ONLY)
 
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/DESCR.in
-  ${THIS_MODULE_BINARY_DIR}/package/DESCR)
+  ${THIS_MODULE_BINARY_DIR}/package/DESCR @ONLY)
 
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/CMakeLists.txt.in
-	${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}/CMakeLists.txt)
+	${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}/CMakeLists.txt @ONLY)
 
 configure_file(${Jafar_SOURCE_DIR}/share/template_package/jafar-module.pc.in
-	${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}/jafar-${MODULENAME}.pc.in)
+	${THIS_MODULE_BINARY_DIR}/package/jafar-${THIS_MODULE_LAST_TAG}/jafar-${MODULENAME}.pc.in @ONLY)
 
 execute_process(
 	COMMAND ${CMAKE_COMMAND} -E tar czf jafar-${THIS_MODULE_LAST_TAG}.tar.gz jafar-${THIS_MODULE_LAST_TAG}

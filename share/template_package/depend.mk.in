@@ -1,12 +1,12 @@
 
-DEPEND_DEPTH:=		@DOLLAR_SYMBOL@{DEPEND_DEPTH}+
-jafar-@MODULENAME@_DEPEND_MK:=	@DOLLAR_SYMBOL@{jafar-@MODULENAME@_DEPEND_MK}+
+DEPEND_DEPTH:=		${DEPEND_DEPTH}+
+jafar-@MODULENAME@_DEPEND_MK:=	${jafar-@MODULENAME@_DEPEND_MK}+
 
-ifeq (+,@DOLLAR_SYMBOL@(DEPEND_DEPTH))
+ifeq (+,$(DEPEND_DEPTH))
 DEPEND_PKG+=		jafar-@MODULENAME@
 endif
 
-ifeq (+,@DOLLAR_SYMBOL@(jafar-@MODULENAME@_DEPEND_MK)) # -----------------------------------------------
+ifeq (+,$(jafar-@MODULENAME@_DEPEND_MK)) # -----------------------------------------------
 
 PREFER.jafar-@MODULENAME@?=		robotpkg
 
@@ -20,4 +20,4 @@ SYSTEM_SEARCH.jafar-@MODULENAME@=\
 
 endif # jafar-@MODULENAME@_DEPEND_MK ----------------------------------------------------
 
-DEPEND_DEPTH:=		@DOLLAR_SYMBOL@{DEPEND_DEPTH:+=}
+DEPEND_DEPTH:=		${DEPEND_DEPTH:+=}
