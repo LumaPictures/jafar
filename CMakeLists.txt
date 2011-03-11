@@ -371,7 +371,7 @@ set(ROBOTPKG_MAP_ANN "wip/libANN")
 # Scripting languages
 #------------------------------------------------------------------------------
 
-set(ENABLE_TCL ON CACHE OPTION "enable tcl scripting language")
+option(ENABLE_TCL "enable tcl scripting language" ON)
 if(ENABLE_TCL)
   find_package(TCL)
   if(TCL_FOUND)
@@ -398,7 +398,7 @@ if(NOT TCL_FOUND AND ENABLE_TCL )
   message(FATAL_ERROR "tcl is required as scripting language but is not available")
 endif(NOT TCL_FOUND AND ENABLE_TCL)
 
-set(ENABLE_RUBY ON CACHE OPTION "enable ruby scripting language")
+option(ENABLE_RUBY "enable ruby scripting language" ON)
 if(ENABLE_RUBY)
   find_package(Ruby)
   set(RUBY_FOUND FALSE)
