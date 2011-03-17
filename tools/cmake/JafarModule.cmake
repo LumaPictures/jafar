@@ -358,7 +358,7 @@ macro(BUILD_JAFAR_MODULE modulename)
 #  set(LIBS ${LIBS} ${LIBRARIES_INSTALL_DIR})
 
   # add sources
-  file(GLOB module_sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+  file(GLOB module_sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c*)
   if(QT_WRAPPING_REQUIRED)
     string(TOUPPER "${MODULENAME}_WRAPPED_CPPS" generated_cxx)
     set(module_sources ${module_sources} ${${generated_cxx}})
