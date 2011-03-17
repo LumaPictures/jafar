@@ -21,6 +21,9 @@
 /* GDHE */
 #cmakedefine HAVE_GDHE
 
+/* posterLib */
+#cmakedefine HAVE_POSTERLIB
+
 /* CGAL library */
 #cmakedefine HAVE_CGAL
 

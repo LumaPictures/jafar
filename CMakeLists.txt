@@ -32,6 +32,7 @@ endif()
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -march=native -g0 -DNDEBUG -DJFR_NDEBUG -DBOOST_UBLAS_NDEBUG")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3 -ggdb")
 set(CMAKE_CXX_FLAGS_FASTDEBUG "-O1 -g3 -ggdb -DNDEBUG -DJFR_NDEBUG -DBOOST_UBLAS_NDEBUG")
+#set(CMAKE_CXX_FLAGS_FASTDEBUG "-O1 -g3 -ggdb -pg -DNDEBUG -DJFR_NDEBUG -DBOOST_UBLAS_NDEBUG")
 #set(JAFAR_COMPILE_FLAGS_MODULE "-pedantic -pedantic-errors -Werror -Wno-long-long -Wall")
 set(JAFAR_COMPILE_FLAGS_MODULE "-pedantic -Wno-long-long -Wall")
 
@@ -346,7 +347,8 @@ foreach(internal
 	sift
 	viam
 	lbfgs
-	ANN)
+	ANN
+	posterLib)
   find_internal_library("${internal}")
   string(TOUPPER "HAVE_${internal}" HAVE_INTERNAL)
   string(TOUPPER "${internal}_FOUND" INTERNAL_FOUND)
