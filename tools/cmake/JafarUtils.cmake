@@ -192,20 +192,43 @@ macro(CHECKOUT_JAFAR_MODULE MODULE_TO_CHECK CHECKOUT_FAILED)
   endif(Subversion_FOUND)
 endmacro(CHECKOUT_JAFAR_MODULE)
 
+
+#-------------------------------------------------------------------------------
+# This macro returns a library component to link with
+#-------------------------------------------------------------------------------
+macro(GET_COMPONENT_LIBRARY library component component_library)
+	string(TOUPPER LIBS_MAP_${library} LIBRARY_KEY)
+  string(LENGTH "${component}" component_length)
+  string(LENGTH "${library}_" library_word_length)
+  math(EXPR length "${component_length} - ${library_word_length}")
+  string(SUBSTRING ${component} ${library_word_length} ${length} component)
+  string(TOUPPER ${component} component)
+  set(component_library_name "${${LIBRARY_KEY}}_${component}_LIBRARY")
+  set(${component_library} ${${component_library_name}})
+endmacro(GET_COMPONENT_LIBRARY)
+
 #-------------------------------------------------------------------------------
 # This macro returns external library exact name.
 # Indeed, from CMakeList.txt the libraries name aren't exactly the same as in 
 # CMakeLists.cmake. This macro finds the right name.
 #-------------------------------------------------------------------------------
-macro(GET_EXT_LIBRARY_EXACT_NAME LIB EXACT_NAME)
+macro(GET_EXT_LIBRARY_EXACT_NAME LIB EXACT_NAME COMPONENT)
   # a slight workaround for boost libraries hence we treat them apart
   string(TOUPPER "${LIB}" EXT_LIB)
-  if(EXT_LIB MATCHES "BOOST_.*")
-    set(EXT_LIB "BOOST")
-  endif(EXT_LIB MATCHES "BOOST_.*")
+  if(EXT_LIB MATCHES "_" AND NOT ("${LIB}" STREQUAL "boost_sandbox"))
+		string(REGEX REPLACE "([A-Z]*)_.*" "\\1" PREFIX "${EXT_LIB}")
+		set(LIBS_MAP_PREFIX_COMPONENTS "LIBS_MAP_${PREFIX}_COMPONENTS")
+		if(${LIBS_MAP_PREFIX_COMPONENTS})
+			string(TOUPPER "LIBS_MAP_${PREFIX}" THIS_LIB_KEY)
+			set(${EXACT_NAME} "${${THIS_LIB_KEY}}")
+			string(REGEX REPLACE "[a-zA-Z]*_(.*)" "\\1" ${COMPONENT} "${LIB}")
+		endif(${LIBS_MAP_PREFIX_COMPONENTS})
+	else(EXT_LIB MATCHES "_" AND NOT ("${LIB}" STREQUAL "boost_sandbox"))
   # get exact library name from LIBS_MAP
   string(TOUPPER "LIBS_MAP_${EXT_LIB}" THIS_LIB_KEY)
   set(${EXACT_NAME} "${${THIS_LIB_KEY}}")
+	set(${COMPONENT} "")
+  endif(EXT_LIB MATCHES "_" AND NOT ("${LIB}" STREQUAL "boost_sandbox"))
 endmacro(GET_EXT_LIBRARY_EXACT_NAME)
 
 #-------------------------------------------------------------------------------

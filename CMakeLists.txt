@@ -125,6 +125,7 @@ message(STATUS "boost libraries "${Boost_LIBRARIES})
 set(LIBS ${LIBS} ${Boost_LIBRARIES})
 set(HAVE_BOOST ${Boost_FOUND})
 set(LIBS_MAP_BOOST "Boost")
+set(LIBS_MAP_BOOST_COMPONENTS date_time serialization unit_test_framework thread graph system filesystem regex)
 set(ROBOTPKG_MAP_BOOST "devel/boost-headers" "devel/boost-libs")
 
 ###
@@ -144,7 +145,9 @@ if(QT4_FOUND)
   include_directories(${QT_INCLUDES})
   set(LIBS ${LIBS} ${QT_LIBRARIES})
   set(LIBS_MAP_QT4 "Qt4")
+	set(LIBS_MAP_QT4_COMPONENTS QtCore QtGui QtXml QtOpenGL QtSvg)
 endif(QT4_FOUND)
+message(STATUS "QT_LIBRARIES ${QT_LIBRARIES}")
 
 ###
 # PkgConfig
@@ -178,6 +181,7 @@ if(OPENSCENEGRAPH_FOUND)
   include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
   set(LIBS ${LIBS} ${OPENSCENEGRAPH_LIBRARIES})
   set(LIBS_MAP_OPENSCENEGRAPH "OPENSCENEGRAPH")
+	set(LIBS_MAP_OPENSCENEGRAPH_COMPONENTS osgViewer osgGA osgDB)
 endif(OPENSCENEGRAPH_FOUND)
 
 ###

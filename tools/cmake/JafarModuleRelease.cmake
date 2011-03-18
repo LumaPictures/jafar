@@ -17,7 +17,11 @@ separate_arguments(THIS_MODULE_ROBOTPKG_REQ_MODULES UNIX_COMMAND "${THIS_MODULE_
 separate_arguments(THIS_MODULE_ROBOTPKG_OPT_MODULES UNIX_COMMAND "${THIS_MODULE_ROBOTPKG_OPT_MODULES}")
 separate_arguments(THIS_MODULE_ROBOTPKG_REQ_EXTLIBS UNIX_COMMAND "${THIS_MODULE_ROBOTPKG_REQ_EXTLIBS}")
 separate_arguments(THIS_MODULE_ROBOTPKG_OPT_EXTLIBS UNIX_COMMAND "${THIS_MODULE_ROBOTPKG_OPT_EXTLIBS}")
-
+separate_arguments(THIS_MODULE_EXTLIBS_COMPONENTS UNIX_COMMAND "${THIS_MODULE_EXTLIBS_COMPONENTS}")
+foreach(ext_with_components ${THIS_MODULE_EXTLIBS_COMPONENTS})
+	set(${ext_with_components} "${${ext_with_components}}")
+	string(REPLACE ";" " " ${ext_with_components} "${${ext_with_components}}")
+endforeach(ext_with_components)
 list(REMOVE_DUPLICATES THIS_MODULE_REQUIRED_EXTLIBS_EXACT_NAMES)
 list(REMOVE_DUPLICATES THIS_MODULE_OPTIONAL_EXTLIBS_EXACT_NAMES)
 
@@ -190,8 +194,15 @@ endif(QT4_FOUND)\n")
 #-----------------------------------------------------------------------------
 # Check for ${extlib}
 #-----------------------------------------------------------------------------
-include(Find${extlib}.cmake)
-find_package(${extlib} REQUIRED)
+include(Find${extlib}.cmake)")
+			if(NOT "${extlib}_COMPONENTS" STREQUAL "")
+				set(THIS_MODULE_REQUIRES "${THIS_MODULE_REQUIRES}
+find_package(${extlib} REQUIRED COMPONENTS ${${extlib}_COMPONENTS})")
+		 else(NOT "${extlib}_COMPONENTS" STREQUAL "")
+      set(THIS_MODULE_REQUIRES "${THIS_MODULE_REQUIRES}
+find_package(${extlib} REQUIRED)")
+		 endif(NOT "${extlib}_COMPONENTS" STREQUAL "")
+      set(THIS_MODULE_REQUIRES "${THIS_MODULE_REQUIRES}
 if(${extlib}_FOUND)
   set(EXTRA_COMPILE_FLAGS \"\${EXTRA_COMPILE_FLAGS} -DHAVE_${EXTLIB}\")
   if(NOT ${extlib}_INCLUDE_DIRS)

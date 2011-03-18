@@ -161,7 +161,12 @@ foreach(_osg_module ${_osg_modules_to_process})
     string(TOUPPER ${_osg_module} _osg_module_UC)
     list(APPEND OPENSCENEGRAPH_INCLUDE_DIR ${${_osg_module_UC}_INCLUDE_DIR})
     list(APPEND OPENSCENEGRAPH_LIBRARIES ${${_osg_module_UC}_LIBRARIES})
-
+		set(OpenSceneGraph_MODULE_INCLUDE_DIR "OpenSceneGraph_${_osg_module_UC}_INCLUDE_DIR")
+		set(${OpenSceneGraph_MODULE_INCLUDE_DIR} ${${_osg_module_UC}_INCLUDE_DIR}
+			CACHE STRING "The OpenSceneGraph ${_osg_module} headers" FORCE)
+		set(OpenSceneGraph_MODULE_LIBRARY "OpenSceneGraph_${_osg_module_UC}_LIBRARY")
+		set(${OpenSceneGraph_MODULE_LIBRARY} ${${_osg_module_UC}_LIBRARY}
+			CACHE STRING "The OpenSceneGraph ${basename} library" FORCE)
     if(OpenSceneGraph_MARK_AS_ADVANCED)
         OSG_MARK_AS_ADVANCED(${_osg_module})
     endif()
