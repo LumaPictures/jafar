@@ -300,7 +300,7 @@ ENDIF(QT_QT_LIBRARY)
 INCLUDE(CheckSymbolExists)
 INCLUDE(MacroAddFileDependencies)
 
-SET(QT_USE_FILE ${CMAKE_CURRENT_LIST_DIR}/UseQt4.cmake)
+SET(QT_USE_FILE ${Jafar_SOURCE_DIR}/tools/cmake/UseQt4.cmake)
 
 SET( QT_DEFINITIONS "")
 
