@@ -133,9 +133,6 @@ if(NOT "${EXTRA_COMPILE_FLAGS}" STREQUAL "")
   set_target_properties(jafar-@MODULENAME@ PROPERTIES COMPILE_FLAGS "${EXTRA_COMPILE_FLAGS}")
 endif(NOT "${EXTRA_COMPILE_FLAGS}" STREQUAL "")
 
-#configure the module.pc.in and install it
-configure_file(jafar-@MODULENAME@.pc.in jafar-@MODULENAME@.pc)
-install(FILES jafar-@MODULENAME@.pc DESTINATION lib/pkgconfig/)
 # install headers and libraries
 install(TARGETS jafar-@MODULENAME@ DESTINATION lib EXPORT jafar-@MODULENAME@)
 install(FILES ${module_headers} DESTINATION include/jafar/@MODULENAME@/)
@@ -145,3 +142,8 @@ execute_process(
   OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/@MODULENAME@-headers.cmake)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/@MODULENAME@-headers.cmake 
   DESTINATION share/cmake/jafar)
+#configure the module.pc.in and install it
+string(REPLACE ";" " -I" IMPORTED_HEADERS "${IMPORTED_HEADERS}")
+set(IMPORTED_HEADERS "-I${IMPORTED_HEADERS}")
+configure_file(jafar-@MODULENAME@.pc.in jafar-@MODULENAME@.pc)
+install(FILES jafar-@MODULENAME@.pc DESTINATION lib/pkgconfig/)
