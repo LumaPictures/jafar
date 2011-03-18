@@ -156,7 +156,10 @@ message(STATUS \"--> linking ${MODULENAME} to ${reqmodule}\")
 include_directories(\${JAFAR_${reqmodule}_IMPORTED_HEADERS})
 message(STATUS \"--> including headers from \${JAFAR_${reqmodule}_IMPORTED_HEADERS}\")")
   endforeach(counter)
+	string(REPLACE ";" ",jafar-" THIS_MODULE_REQUIRED_MODULES "jafar-${THIS_MODULE_REQUIRED_MODULES}")
 endif(${NB_REQ_MODS} GREATER 0)
+	
+
 
 #add required external libraries depend.mk
 foreach(extlib ${THIS_MODULE_ROBOTPKG_REQ_EXTLIBS})
