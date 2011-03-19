@@ -192,6 +192,18 @@ macro(CHECKOUT_JAFAR_MODULE MODULE_TO_CHECK CHECKOUT_FAILED)
   endif(Subversion_FOUND)
 endmacro(CHECKOUT_JAFAR_MODULE)
 
+#-------------------------------------------------------------------------------
+# This macro returns boost component library to link with
+#-------------------------------------------------------------------------------
+macro(GET_BOOST_COMPONENT_LIBRARY boost_component boost_library)
+  string(LENGTH "${boost_component}" boost_component_length)
+  string(LENGTH "boost_" boost_word_length)
+  math(EXPR length "${boost_component_length} - ${boost_word_length}")
+  string(SUBSTRING ${boost_component} ${boost_word_length} ${length} component)
+  string(TOUPPER ${component} component)
+  set(boost_library_name "Boost_${component}_LIBRARY")
+  set(${boost_library} ${${boost_library_name}})
+endmacro(GET_BOOST_COMPONENT_LIBRARY)
 
 #-------------------------------------------------------------------------------
 # This macro returns a library component to link with
@@ -201,9 +213,10 @@ macro(GET_COMPONENT_LIBRARY library component component_library)
   string(LENGTH "${component}" component_length)
   string(LENGTH "${library}_" library_word_length)
   math(EXPR length "${component_length} - ${library_word_length}")
-  string(SUBSTRING ${component} ${library_word_length} ${length} component)
-  string(TOUPPER ${component} component)
-  set(component_library_name "${${LIBRARY_KEY}}_${component}_LIBRARY")
+  string(SUBSTRING ${component} ${library_word_length} ${length} component_name)
+	message(">>> component_name ${component_name}")
+  string(TOUPPER ${component_name} component_name)
+  set(component_library_name "${${LIBRARY_KEY}}_${component_name}_LIBRARY")
   set(${component_library} ${${component_library_name}})
 endmacro(GET_COMPONENT_LIBRARY)
 
@@ -234,19 +247,6 @@ macro(GET_EXT_LIBRARY_EXACT_NAME LIB EXACT_NAME COMPONENT)
 		endif(${THIS_LIB_KEY})
   endif(EXT_LIB MATCHES "_" AND NOT (EXT_LIB MATCHES "BOOST_SANDBOX"))
 endmacro(GET_EXT_LIBRARY_EXACT_NAME)
-
-#-------------------------------------------------------------------------------
-# This macro returns boost component library to link with
-#-------------------------------------------------------------------------------
-macro(GET_BOOST_COMPONENT_LIBRARY boost_component boost_library)
-  string(LENGTH "${boost_component}" boost_component_length)
-  string(LENGTH "boost_" boost_word_length)
-  math(EXPR length "${boost_component_length} - ${boost_word_length}")
-  string(SUBSTRING ${boost_component} ${boost_word_length} ${length} component)
-  string(TOUPPER ${component} component)
-  set(boost_library_name "Boost_${component}_LIBRARY")
-  set(${boost_library} ${${boost_library_name}})
-endmacro(GET_BOOST_COMPONENT_LIBRARY)
 
 #-------------------------------------------------------------------------------
 # This macro retrieves files given files mames and paths
