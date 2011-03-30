@@ -55,7 +55,6 @@ void CSVFile::compute_matrix_size(const std::string& _filename,
 			assert(it != tokens.end());
 			for(it = tokens.begin(); it != tokens.end(); it++)
 				nb_columns++;
-			std::cout << "nb_columns " << nb_columns << std::endl;
 			are_columns_computed = true;
 		}
 		nb_lines++;
