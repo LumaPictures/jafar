@@ -49,7 +49,7 @@ macro(FIND_INTERNAL_LIBRARY internal_library)
     SET(${LIBRARY_NAME_INCLUDE_DIRS} "${${LIBRARY_NAME_INCLUDE_DIRS}};${${LIBRARY_NAME_INCLUDE_DIRS2}}")
   endif(EXISTS ${${LIBRARY_NAME_INCLUDE_DIRS2}})
 
-  message(STATUS "\t${internal_library} headers: ${${LIBRARY_NAME_INCLUDE_DIRS}}")
+#  message(STATUS "\t${internal_library} headers: ${${LIBRARY_NAME_INCLUDE_DIRS}}")
 
   find_library(${LIBRARY_NAME_LIBRARIES} 
     NAMES ${internal_library} ${LIBRARY_NAME}
@@ -63,13 +63,12 @@ macro(FIND_INTERNAL_LIBRARY internal_library)
     /sw/lib
     /opt/local/lib
     DOC "The ${internal_library} library")
-  message(STATUS "\t${internal_library} libraries: ${${LIBRARY_NAME_LIBRARIES}}")
+#  message(STATUS "\t${internal_library} libraries: ${${LIBRARY_NAME_LIBRARIES}}")
 
-  if(EXISTS ${${LIBRARY_NAME_LIBRARIES}} AND (EXISTS ${${LIBRARY_NAME_INCLUDE_DIRS1}} OR EXISTS ${${LIBRARY_NAME_INCLUDE_DIRS2}}))
-    set(${LIBRARY_NAME_FOUND} 1)
-  endif(EXISTS ${${LIBRARY_NAME_LIBRARIES}} AND (EXISTS ${${LIBRARY_NAME_INCLUDE_DIRS1}} OR EXISTS ${${LIBRARY_NAME_INCLUDE_DIRS2}}))
-  mark_as_advanced( FORCE ${LIBRARY_NAME_FOUND} )
-
+	include(FindPackageHandleStandardArgs)
+	find_package_handle_standard_args(${internal_library} DEFAULT_MSG
+    ${LIBRARY_NAME_LIBRARIES} ${LIBRARY_NAME_INCLUDE_DIRS})
+  mark_as_advanced(${LIBRARY_NAME_LIBRARIES} ${LIBRARY_NAME_INCLUDE_DIRS})
 endmacro(FIND_INTERNAL_LIBRARY internal_library)
 
 macro(FIND_THIS_PACKAGE package_name)
