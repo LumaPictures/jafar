@@ -28,15 +28,15 @@ get_dependency()
 	if [ ! -r ${module_name}/${MAKEFILE} ]
 	then
 		user_make=${module_name}/${OLDMAKEFILE}
-		required_modules=$(awk 'BEGIN { FS = "=" } /REQUIRED_MODULES/ {print $2}' $user_make)
-		optional_modules=$(awk 'BEGIN { FS = "=" } /OPTIONAL_MODULES/ {print $2}' $user_make)
+		required_modules=$(awk 'BEGIN { FS = "=" } /^[^#].*REQUIRED_MODULES/ {print $2}' $user_make)
+		optional_modules=$(awk 'BEGIN { FS = "=" } /^[^#].*OPTIONAL_MODULES/ {print $2}' $user_make)
 	else	
 		user_make="${module_name}/${MAKEFILE}"
-		required_modules=$(awk '/REQUIRED_MODULES/  {for (i=2; i <= NF; i++) 
+		required_modules=$(awk '/^[^#].*REQUIRED_MODULES/  {for (i=2; i <= NF; i++) 
 							{ printf "%s ", $i }
 						  print ""
 						}' $user_make)
-		optional_modules=$(awk '/OPTIONAL_MODULES/  {for (i=2; i <= NF; i++) 
+		optional_modules=$(awk '/^[^#].*OPTIONAL_MODULES/  {for (i=2; i <= NF; i++) 
 							{ printf "%s ", $i }
 						  print ""
 						}' $user_make)
