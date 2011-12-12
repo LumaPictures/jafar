@@ -74,7 +74,7 @@ FIND_PATH(RUBY_INCLUDE_PATH
 
 # search the ruby library, the version for MSVC can have the "msvc" prefix and the "static" suffix
 FIND_LIBRARY(RUBY_LIBRARY
-  NAMES ruby ruby1.8 ruby1.9
+  NAMES ruby ruby1.8 ruby1.9 ruby18 ruby19
         msvcrt-ruby18 msvcrt-ruby19 msvcrt-ruby18-static msvcrt-ruby19-static
   PATHS ${RUBY_POSSIBLE_LIB_DIR}
   )
