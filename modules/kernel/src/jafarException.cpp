@@ -18,12 +18,12 @@ namespace jafar {
 namespace kernel {
 
 		#include <stdlib.h>
-#ifndef WIN32
+#ifdef __linux__
 		#include <execinfo.h>
 #endif
 		std::string get_system_trace ()
 		{
-#ifndef WIN32
+#ifdef __linux__
 			void *array[15];
 			size_t size;
 			char **strings;
