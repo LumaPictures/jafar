@@ -32,8 +32,8 @@ if (${CMAKE_GENERATOR} MATCHES ".*Makefiles")
     set(CMAKE_BUILD_TYPE Debug)
   endif()
 endif()
-set(CMAKE_CXX_FLAGS_RELEASE "-o2 -g0 -DNDEBUG -DJAFAR_NDEBUG -DBOOST_UBLAS_NDEBUG")
-set(CMAKE_CXX_FLAGS_DEBUG "-o0 -g3 -ggdb")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -g0 -DNDEBUG -DJAFAR_NDEBUG -DBOOST_UBLAS_NDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3 -ggdb")
 
 #-----------------------------------------------------------------------------
 # Macro to help find other robotpkg modules
@@ -92,7 +92,10 @@ endforeach(package)
 @THIS_MODULE_REQUIRES@
 
 # add module headers
-file(GLOB module_headers ${jafar-@MODULENAME@_SOURCE_DIR}/include/@MODULENAME@/*.h*)
+file(GLOB module_h ${jafar-@MODULENAME@_SOURCE_DIR}/include/@MODULENAME@/*.h)
+file(GLOB module_hh ${jafar-@MODULENAME@_SOURCE_DIR}/include/@MODULENAME@/*.hh)
+file(GLOB module_hpp ${jafar-@MODULENAME@_SOURCE_DIR}/include/@MODULENAME@/*.hpp)
+set(module_headers "${module_h};${module_hh};${module_hpp}")
 # add sources
 file(GLOB module_sources ${jafar-@MODULENAME@_SOURCE_DIR}/src/*.cpp)
 #remove jafarConfig.h from included headers
