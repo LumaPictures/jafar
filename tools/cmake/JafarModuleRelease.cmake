@@ -80,6 +80,7 @@ file(COPY ${Jafar_SOURCE_DIR}/modules/${MODULENAME}/
 	#!!! nizar 20110207 : those are the symlinks we added
 	PATTERN "code" EXCLUDE
 	PATTERN "data" EXCLUDE
+	PATTERN "*.moc" EXCLUDE
   #!!! nizar 20100702 : if nasty people do build in source then ignore what they did
   PATTERN "CMakeFiles" EXCLUDE
   PATTERN "cmake_install.cmake" EXCLUDE
@@ -188,7 +189,41 @@ if(QT4_FOUND)
   list(APPEND IMPORTED_HEADERS \${QT_INCLUDES})
   set(LIBS \${LIBS} \${QT_LIBRARIES})
   set(Qt4_LIBS \${QT_LIBRARIES})
-endif(QT4_FOUND)\n")
+endif(QT4_FOUND)
+include(${QT_USE_FILE})
+
+string(TOUPPER \"${MODULENAME}_WRAPPED_HEADERS\" QTUI_H_SRC)
+string(TOUPPER \"${MODULENAME}_WRAPPED_CPPS\" QT_MOC_SRCS)
+
+#generate headers from ui files
+file(GLOB UI_FILES \${jafar-${MODULENAME}_SOURCE_DIR}/src/*.ui)
+foreach(ui_file \${UI_FILES})
+	get_filename_component(generated_header \${ui_file} NAME_WE)
+	set(generated_header \${jafar-${MODULENAME}_SOURCE_DIR}/src/\${generated_header}.h)
+execute_process(
+			COMMAND \${QT_UIC_EXECUTABLE} \${ui_file} -o \${generated_header} 
+			OUTPUT_FILE \${generated_header}
+			INPUT_FILE \${ui_file}
+			)
+	set(\${QTUI_H_SRC} \${\${QTUI_H_SRC}} \${generated_header})	
+endforeach(ui_file)
+
+file(GLOB HEADERS \"\${jafar-${MODULENAME}_SOURCE_DIR}/include/${MODULENAME}/*.hpp\" \"\${jafar-${MODULENAME}_SOURCE_DIR}/src/*.hpp\")
+foreach(header \${HEADERS})
+file(STRINGS \${header} Q_OBJECT_STRING REGEX \"Q_OBJECT\")
+if(NOT(\"\${Q_OBJECT_STRING}\" STREQUAL \"\"))
+  get_filename_component(generated_moc \${header} NAME_WE)
+  set(generated_moc \${jafar-${MODULENAME}_SOURCE_DIR}/src/\${generated_moc}.moc)
+
+  set(MYCPPFLAGS \"\${CPPFLAGS}\")
+  string(STRIP \"\${MYCPPFLAGS}\" MYCPPFLAGS)
+  string(REPLACE \" \" \";\" MYCPPFLAGS \"\${MYCPPFLAGS}\")
+  execute_process(
+			COMMAND \${QT_MOC_EXECUTABLE} \${MYCPPFLAGS} \${header} -o \${generated_moc}
+			)
+		set(\${QT_MOC_SRCS} \${\${QT_MOC_SRCS}} \${generated_moc})
+endif(NOT(\"\${Q_OBJECT_STRING}\" STREQUAL \"\"))
+endforeach(header)\n")
     else("${extlib}" STREQUAL Qt4)
       set(THIS_MODULE_REQUIRES "${THIS_MODULE_REQUIRES}
 #-----------------------------------------------------------------------------
