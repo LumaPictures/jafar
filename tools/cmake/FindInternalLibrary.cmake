@@ -7,7 +7,6 @@ macro(FIND_INTERNAL_LIBRARY internal_library)
   string(TOUPPER "${internal_library}_FOUND" LIBRARY_NAME_FOUND)
   string(TOUPPER "${internal_library}_INCLUDE_DIRS" LIBRARY_NAME_INCLUDE_DIRS)
   string(TOUPPER "${internal_library}_LIBRARIES" LIBRARY_NAME_LIBRARIES)
-
   string(TOUPPER "${internal_library}_INCLUDE_DIRS1" LIBRARY_NAME_INCLUDE_DIRS1)
   string(TOUPPER "${internal_library}_INCLUDE_DIRS2" LIBRARY_NAME_INCLUDE_DIRS2)
 
@@ -19,7 +18,10 @@ macro(FIND_INTERNAL_LIBRARY internal_library)
   # we should try to improve the way it is implemented for now...
 
   find_path(${LIBRARY_NAME_INCLUDE_DIRS1}
-    NAMES ${internal_library}.h ${library_name}.h ${LIBRARY_NAME}.h lib${internal_library}.h lib${library_name}.h lib${LIBRARY_NAME}.h ${internal_library}lib.h ${library_name}lib.h ${LIBRARY_NAME}lib.h
+    NAMES ${internal_library}.h ${library_name}.h ${LIBRARY_NAME}.h
+    lib${internal_library}.h lib${library_name}.h lib${LIBRARY_NAME}.h
+    ${internal_library}lib.h ${library_name}lib.h ${LIBRARY_NAME}lib.h
+    ${internal_library}Lib.h ${library_name}Lib.h ${LIBRARY_NAME}Lib.h
     PATHS
     ${ROBOTPKG_BASE}/include
     $ENV{ROBOTPKG_BASE}/include
@@ -32,9 +34,31 @@ macro(FIND_INTERNAL_LIBRARY internal_library)
 
   find_path(${LIBRARY_NAME_INCLUDE_DIRS2}
     NAMES
-    ${library_name}/${internal_library}.h ${library_name}/${library_name}.h ${library_name}/${LIBRARY_NAME}.h ${library_name}/lib${internal_library}.h ${library_name}/lib${library_name}.h ${library_name}/lib${LIBRARY_NAME}.h ${library_name}/${internal_library}lib.h ${library_name}/${library_name}lib.h ${library_name}/${LIBRARY_NAME}lib.h
-    ${internal_library}/${internal_library}.h ${internal_library}/${library_name}.h ${internal_library}/${LIBRARY_NAME}.h ${internal_library}/lib${internal_library}.h ${internal_library}/lib${library_name}.h ${internal_library}/lib${LIBRARY_NAME}.h ${internal_library}/${internal_library}lib.h ${internal_library}/${library_name}lib.h ${internal_library}/${LIBRARY_NAME}lib.h
-    ${LIBRARY_NAME}/${internal_library}.h ${LIBRARY_NAME}/${library_name}.h ${LIBRARY_NAME}/${LIBRARY_NAME}.h ${LIBRARY_NAME}/lib${internal_library}.h ${LIBRARY_NAME}/lib${library_name}.h ${LIBRARY_NAME}/lib${LIBRARY_NAME}.h ${LIBRARY_NAME}/${internal_library}lib.h ${LIBRARY_NAME}/${library_name}lib.h ${LIBRARY_NAME}/${LIBRARY_NAME}lib.h
+    ${library_name}/${internal_library}.h ${library_name}/${library_name}.h
+    ${library_name}/${LIBRARY_NAME}.h ${library_name}/lib${internal_library}.h
+    ${library_name}/lib${library_name}.h ${library_name}/lib${LIBRARY_NAME}.h
+    ${library_name}/${internal_library}lib.h
+    ${library_name}/${library_name}lib.h ${library_name}/${LIBRARY_NAME}lib.h
+    ${internal_library}/${internal_library}.h
+    ${internal_library}/${library_name}.h ${internal_library}/${LIBRARY_NAME}.h
+    ${internal_library}/lib${internal_library}.h
+    ${internal_library}/lib${library_name}.h
+    ${internal_library}/lib${LIBRARY_NAME}.h
+    ${internal_library}/${internal_library}lib.h
+    ${internal_library}/${library_name}lib.h
+    ${internal_library}/${LIBRARY_NAME}lib.h
+    ${LIBRARY_NAME}/${internal_library}.h ${LIBRARY_NAME}/${library_name}.h
+    ${LIBRARY_NAME}/${LIBRARY_NAME}.h ${LIBRARY_NAME}/lib${internal_library}.h
+    ${LIBRARY_NAME}/lib${library_name}.h ${LIBRARY_NAME}/lib${LIBRARY_NAME}.h
+    ${LIBRARY_NAME}/${internal_library}lib.h
+    ${LIBRARY_NAME}/${library_name}lib.h ${LIBRARY_NAME}/${LIBRARY_NAME}lib.h
+    ${library_name}/${internal_library}Lib.h
+    ${library_name}/${library_name}Lib.h ${library_name}/${LIBRARY_NAME}Lib.h
+    ${internal_library}/${internal_library}Lib.h
+    ${internal_library}/${library_name}Lib.h
+    ${internal_library}/${LIBRARY_NAME}Lib.h
+    ${LIBRARY_NAME}/${internal_library}Lib.h
+    ${LIBRARY_NAME}/${library_name}Lib.h ${LIBRARY_NAME}/${LIBRARY_NAME}Lib.h
     PATHS
     ${ROBOTPKG_BASE}/include
     $ENV{ROBOTPKG_BASE}/include
@@ -46,13 +70,15 @@ macro(FIND_INTERNAL_LIBRARY internal_library)
 
   SET(${LIBRARY_NAME_INCLUDE_DIRS} "${${LIBRARY_NAME_INCLUDE_DIRS1}}")
   if (EXISTS ${${LIBRARY_NAME_INCLUDE_DIRS2}})
-    SET(${LIBRARY_NAME_INCLUDE_DIRS} "${${LIBRARY_NAME_INCLUDE_DIRS}};${${LIBRARY_NAME_INCLUDE_DIRS2}}")
+    SET(${LIBRARY_NAME_INCLUDE_DIRS}
+      "${${LIBRARY_NAME_INCLUDE_DIRS}};${${LIBRARY_NAME_INCLUDE_DIRS2}}")
   endif(EXISTS ${${LIBRARY_NAME_INCLUDE_DIRS2}})
-
-#  message(STATUS "\t${internal_library} headers: ${${LIBRARY_NAME_INCLUDE_DIRS}}")
+# message(STATUS "\t${internal_library} headers:
+#   ${${LIBRARY_NAME_INCLUDE_DIRS}}")
 
   find_library(${LIBRARY_NAME_LIBRARIES} 
     NAMES ${internal_library} ${LIBRARY_NAME}
+    ${internal_library}Lib ${LIBRARY_NAME}Lib
     PATHS
     ${ROBOTPKG_BASE}/lib
     $ENV{ROBOTPKG_BASE}/lib
@@ -63,15 +89,16 @@ macro(FIND_INTERNAL_LIBRARY internal_library)
     /sw/lib
     /opt/local/lib
     DOC "The ${internal_library} library")
-#  message(STATUS "\t${internal_library} libraries: ${${LIBRARY_NAME_LIBRARIES}}")
+# message(STATUS "\t${internal_library} libraries:
+#   ${${LIBRARY_NAME_LIBRARIES}}")
 
-	include(FindPackageHandleStandardArgs)
-	find_package_handle_standard_args(${internal_library} DEFAULT_MSG
+  include(FindPackageHandleStandardArgs)
+  find_package_handle_standard_args(${internal_library} DEFAULT_MSG
     ${LIBRARY_NAME_LIBRARIES} ${LIBRARY_NAME_INCLUDE_DIRS})
   mark_as_advanced(${LIBRARY_NAME_LIBRARIES} ${LIBRARY_NAME_INCLUDE_DIRS})
 endmacro(FIND_INTERNAL_LIBRARY internal_library)
 
 macro(FIND_THIS_PACKAGE package_name)
-		string(TOUPPER "${package_name}" PACKAGE_NAME)
-		pkg_check_modules(${PACKAGE_NAME} ${package_name})
+  string(TOUPPER "${package_name}" PACKAGE_NAME)
+  pkg_check_modules(${PACKAGE_NAME} ${package_name})
 endmacro(FIND_THIS_PACKAGE package_name)
