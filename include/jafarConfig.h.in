@@ -54,6 +54,9 @@
 /* Viam */
 #cmakedefine HAVE_VIAM
 
+/* Ueye */
+#cmakedefine HAVE_UEYE
+
 /* MTI */
 #cmakedefine HAVE_MTI
 

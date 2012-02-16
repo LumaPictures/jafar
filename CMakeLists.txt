@@ -312,6 +312,24 @@ if(OPENNIX_FOUND)
 endif(OPENNIX_FOUND)
 set(ROBOTPKG_MAP_OPENNIX "wip/openni")
 
+###
+# UEYE
+###
+option(ENABLE_UEYE "enable use of UEYE" ON)
+if(ENABLE_UEYE)
+	find_package(UEYE)
+	set(HAVE_UEYE ${UEYE_FOUND})
+	if(UEYE_FOUND)
+		include_directories(${UEYE_INCLUDE_DIR})
+		set(LIBS ${LIBS} ${UEYE_LIBRARIES})
+		set(LIBS_MAP_UEYE "UEYE")
+		MESSAGE(STATUS "Found Ueye " ${LIBS})
+	endif(UEYE_FOUND)
+else(ENABLE_UEYE)
+	set(HAVE_UEYE FALSE)
+endif(ENABLE_UEYE)
+
+
 #------------------------------------------------------------------------------
 # pkgconfig findable
 #------------------------------------------------------------------------------
