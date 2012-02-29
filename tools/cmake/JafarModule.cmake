@@ -361,7 +361,9 @@ macro(BUILD_JAFAR_MODULE modulename)
 #  set(LIBS ${LIBS} ${LIBRARIES_INSTALL_DIR})
 
   # add sources
-  file(GLOB module_sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c*)
+#  file(GLOB module_sources ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c*)
+  set(prefix "${CMAKE_CURRENT_SOURCE_DIR}/src/")
+  file(GLOB module_sources ${prefix}/*.c ${prefix}/*.cpp ${prefix}/*.cc ${prefix}/*.cxx)
   if(QT_WRAPPING_REQUIRED)
     string(TOUPPER "${MODULENAME}_WRAPPED_CPPS" generated_cxx)
     set(module_sources ${module_sources} ${${generated_cxx}})
@@ -381,7 +383,9 @@ macro(BUILD_JAFAR_MODULE modulename)
 	       LINK_FLAGS "${THIS_MODULE_LDFLAGS}")
 
   # copy headers
-  file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/${MODULENAME}/*.h*)
+#  file(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/${MODULENAME}/*.h*)
+  set(prefix "${CMAKE_CURRENT_SOURCE_DIR}/include/${MODULENAME}")
+  file(GLOB headers ${prefix}/*.h ${prefix}/*.hpp ${prefix}/*.hh ${prefix}/*.hxx ${prefix}/*.txx)
   foreach(header ${headers})
     get_filename_component(HEADER_NAME ${header} NAME)
     add_custom_command(TARGET ${MODULENAME}
@@ -392,7 +396,9 @@ macro(BUILD_JAFAR_MODULE modulename)
 
   # install headers and libraries
   install(TARGETS ${MODULENAME} DESTINATION ${LIBRARIES_INSTALL_DIR})
-  file(GLOB module_headers include/${MODULENAME}/*.h*)
+#  file(GLOB module_headers include/${MODULENAME}/*.h*)
+  set(prefix "include/${MODULENAME}")
+  file(GLOB module_headers ${prefix}/*.h ${prefix}/*.hpp ${prefix}/*.hh ${prefix}/*.hxx ${prefix}/*.txx)
   install(FILES ${module_headers} DESTINATION ${INCLUDES_INSTALL_DIR}/${MODULENAME})
 
   #------------------------------------------------------------------------------
