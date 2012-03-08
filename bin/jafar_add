@@ -3,7 +3,6 @@
 
 SCRIPT_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
 MY_JAFAR_DIR=`dirname "$SCRIPT_PATH"`/..
-LISTOFFILES=""
 
 . ${MY_JAFAR_DIR}/bin/git_config.sh
 
@@ -12,30 +11,19 @@ usage()
     cat <<EOF
 	add_module [name]
 
-    imports the jafar module 'name' 
+    publish the jafar module 'name'
 
-The script adds C, C++, documentation, Swig and scripts 
-You have to add any other files (if any) manually
+The script creates a repository on the public server
+for the module and pushes the local commits.
 EOF
     exit 1
 }
 
-getExistingFilesOnly()
-{
-	FINALLIST=""
-	for i in $(ls -d $LISTOFFILES 2> /dev/null); do
-		# Adding files or directories
-		if [ -e $i ]; then 
-			FINALLIST="$FINALLIST $i"
-		fi
-	done
-	echo $FINALLIST
-}
 
 MODULE=`echo $1 | sed 's,/$,,'`
-test -z "$MODULE" && usage;
+test -z "${MY_JAFAR_DIR}/modules/$MODULE" && usage;
 
-if ! test -d "$MODULE"; then
+if ! test -d "${MY_JAFAR_DIR}/modules/$MODULE"; then
     echo "ERROR: $MODULE is not a directory"
     exit 1
 fi
@@ -51,45 +39,8 @@ then
 	exit 1
 fi
 
-TOPDIR=$PWD/$MODULE
-
+TOPDIR=$MY_JAFAR_DIR/modules/$MODULE
 cd $TOPDIR
-git init 
-
-LISTOFFILES="CMakeLists.txt COPYRIGHT README doc include macro src test_suite .gitignore"
-git add $(getExistingFilesOnly)
-
-cd $TOPDIR/doc
-LISTOFFILES="*.doxy *.tcl *.hpp *.cpp"
-git add $(getExistingFilesOnly)
-
-cd $TOPDIR/include
-LISTOFFILES="*.i"
-git add $(getExistingFilesOnly)
-
-cd $TOPDIR/include/$MODULE
-LISTOFFILES="*.hpp *.h *.i"
-git add $(getExistingFilesOnly)
-
-cd $TOPDIR/macro
-LISTOFFILES="*.tcl *.rb"
-git add $(getExistingFilesOnly)
-
-cd $TOPDIR/src
-LISTOFFILES="*.cpp *.c ruby"
-git add $(getExistingFilesOnly)
-
-cd $TOPDIR/src/ruby
-LISTOFFILES="extconf.rb"
-git add $(getExistingFilesOnly)
-
-cd $TOPDIR/test_suite
-LISTOFFILES="*.cpp *.hpp"
-git add $(getExistingFilesOnly)
-
-cd $TOPDIR
-
-git commit -m "Initial commit of ${MODULE}"
 
 git push ${BASE_URL}/modules/${MODULE} master
 

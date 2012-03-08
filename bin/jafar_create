@@ -14,6 +14,7 @@ set -e
 
 SCRIPT_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
 MY_JAFAR_DIR=`dirname "$SCRIPT_PATH"`/..
+LISTOFFILES=""
 
 process()
 {
@@ -42,6 +43,66 @@ process()
 	done
 }
 
+
+getExistingFilesOnly()
+{
+	FINALLIST=""
+	for i in $(ls -d $LISTOFFILES 2> /dev/null); do
+		# Adding files or directories
+		if [ -e $i ]; then
+			FINALLIST="$FINALLIST $i"
+		fi
+	done
+	echo $FINALLIST
+}
+
+commit()
+{
+	TOPDIR=$MY_JAFAR_DIR/modules/$module
+
+	cd $TOPDIR
+	git init
+
+	LISTOFFILES="CMakeLists.txt COPYRIGHT README .gitignore"
+	git add $(getExistingFilesOnly)
+
+	cd $TOPDIR/doc
+	LISTOFFILES="*.doxy *.tcl *.hpp *.cpp"
+	git add $(getExistingFilesOnly)
+
+	cd $TOPDIR/include
+	LISTOFFILES="*.i"
+	git add $(getExistingFilesOnly)
+
+	cd $TOPDIR/include/$module
+	LISTOFFILES="*.hpp *.h *.i"
+	git add $(getExistingFilesOnly)
+
+	cd $TOPDIR/macro
+	LISTOFFILES="*.tcl *.rb"
+	git add $(getExistingFilesOnly)
+
+	cd $TOPDIR/src
+	LISTOFFILES="*.cpp *.c ruby"
+	git add $(getExistingFilesOnly)
+
+	cd $TOPDIR/src/ruby
+	LISTOFFILES="extconf.rb"
+	git add $(getExistingFilesOnly)
+
+	cd $TOPDIR/test_suite
+	LISTOFFILES="*.cpp *.hpp"
+	git add $(getExistingFilesOnly)
+
+	cd $TOPDIR/demo_suite
+	LISTOFFILES="*.cpp *.hpp"
+	git add $(getExistingFilesOnly)
+
+	cd $TOPDIR
+
+	git commit -m "Initial commit of ${module}"
+}
+
 init_variables()
 {
 module=$1
@@ -65,13 +126,16 @@ then
 fi
 
 process
+commit
 }
 
 usage()
 {
 	echo "jafar_create <module_name>"
-	echo "create a directory module_name in JAFAR_DIR/modules"
-	echo "including files to start a new jafar module."
+	echo "Create a directory module_name in JAFAR_DIR/modules"
+	echo "including files to start a new jafar module,"
+	echo "and create local git repository and initial commit."
+	echo "You will have to add any other files manually."
 
 	exit 1
 }
