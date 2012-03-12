@@ -119,14 +119,14 @@ include(CheckIncludeFile)
 ###
 # Boost v1.40 or above  -- REQUIRED
 ###
-find_package(Boost 1.40 REQUIRED COMPONENTS date_time serialization unit_test_framework thread graph system filesystem regex)
+find_package(Boost 1.40 REQUIRED COMPONENTS date_time serialization unit_test_framework thread graph system filesystem regex program_options)
 set(BOOST_FOUND ${Boost_FOUND})
 include_directories(${Boost_INCLUDE_DIRS})
 message(STATUS "boost libraries "${Boost_LIBRARIES})
 set(LIBS ${LIBS} ${Boost_LIBRARIES})
 set(HAVE_BOOST ${Boost_FOUND})
 set(LIBS_MAP_BOOST "Boost")
-set(LIBS_MAP_BOOST_COMPONENTS date_time serialization unit_test_framework thread graph system filesystem regex)
+set(LIBS_MAP_BOOST_COMPONENTS date_time serialization unit_test_framework thread graph system filesystem regex program_options)
 set(ROBOTPKG_MAP_BOOST "devel/boost-headers" "devel/boost-libs")
 
 ###
