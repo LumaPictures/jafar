@@ -5,7 +5,7 @@
 
 #include "boost/date_time/posix_time/posix_time.hpp"
 // we could use a better singleton here...
-#include "boost/pool/detail/singleton.hpp"
+#include "boost/serialization/singleton.hpp"
 #include <unistd.h>
 #include <sys/time.h>
 
@@ -125,24 +125,20 @@ namespace jafar {
        *
        * \ingroup kernel
        */
-      class TicTocChrono {
-
-      private:
+      class TicTocChrono : public boost::serialization::singleton<TicTocChrono> {
+		  private:
 	
-	TicTocChrono() {};
 
-	Chrono chrono;
+			Chrono chrono;
 
-	static TicTocChrono& instance() {
-	  return boost::details::pool::singleton_default<TicTocChrono>::instance(); 
-	}
+			static TicTocChrono& instance() {
+				return boost::serialization::singleton<TicTocChrono>::get_mutable_instance(); 
+			}
 
-	// necessary because the constructor is private
-	friend class boost::details::pool::singleton_default<TicTocChrono>;
+			// necessary because the constructor is private
 
-	friend void jafar::kernel::tic();
-	friend long jafar::kernel::toc();
-
+			friend void jafar::kernel::tic();
+			friend long jafar::kernel::toc();
       };
     } // namespace detail
 

@@ -11,7 +11,7 @@
 #include <vector>
 
 // we could use a better singleton here...
-#include "boost/pool/detail/singleton.hpp"
+#include <boost/serialization/singleton.hpp>
 
 namespace jafar { 
   namespace debug {
@@ -120,7 +120,8 @@ namespace jafar {
        */
       static DebugStream& instance() {
 	// we could use better singleton here...
-	return boost::details::pool::singleton_default<DebugStream>::instance(); 
+	return boost::serialization::singleton<DebugStream>::get_mutable_instance(); 
+
       }
 
 #endif // SWIG
@@ -150,8 +151,14 @@ namespace jafar {
       /// @return the underlying std::ostream.
       static std::ostream& stream() { return *(instance().debugStream); }
 
-      // necessary because because the constructor is private
-      friend struct boost::details::pool::singleton_default<DebugStream>;
+      /*
+	   * The documented method
+	   * http://www.boost.org/doc/libs/1_49_0/libs/serialization/doc/singleton.html
+	   * does not seem to work. Use the following friend hack to make it work,
+	   * but it is not really better than previous, as it depends on something
+	   * which can break at any instant
+	   */
+	  friend struct boost::serialization::detail::singleton_wrapper<DebugStream>;
 
       friend DebugStream& operator << (DebugStream& debugStream, 
 				       details::stream_function function);
