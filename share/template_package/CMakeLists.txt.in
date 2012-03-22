@@ -32,8 +32,9 @@ if (${CMAKE_GENERATOR} MATCHES ".*Makefiles")
     set(CMAKE_BUILD_TYPE Debug)
   endif()
 endif()
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -g0 -DNDEBUG -DJAFAR_NDEBUG -DBOOST_UBLAS_NDEBUG")
-set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3 -ggdb")
+set(CMAKE_CXX_FLAGS "-pthread ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -g0 -DNDEBUG -DJAFAR_NDEBUG -DBOOST_UBLAS_NDEBUG ${CMAKE_CXX_FLAGS_RELEASE}")
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3 -ggdb ${CMAKE_CXX_FLAGS}")
 
 #-----------------------------------------------------------------------------
 # Macro to help find other robotpkg modules
