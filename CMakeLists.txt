@@ -153,6 +153,7 @@ if(QT4_FOUND)
   set(LIBS_MAP_QT4 "Qt4")
 	set(LIBS_MAP_QT4_COMPONENTS QtCore QtGui QtXml QtOpenGL QtSvg)
 endif(QT4_FOUND)
+set(HAVE_QT4 ${QT4_FOUND})
 message(STATUS "QT_LIBRARIES ${QT_LIBRARIES}")
 
 ###

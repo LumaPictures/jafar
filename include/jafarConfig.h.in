@@ -66,3 +66,5 @@
 /* FLANN */
 #cmakedefine HAVE_FLANN
 
+/* QT4 */
+#cmakedefine HAVE_QT4
