@@ -1,7 +1,7 @@
 # $Id$ #
 
 find_path(MTI_INCLUDE_DIRS
-  NAMES MTI.h
+  NAMES MTI-clients/MTI.h
   PATHS
   ${ROBOTPKG_BASE}/include
   $ENV{ROBOTPKG_BASE}/include
