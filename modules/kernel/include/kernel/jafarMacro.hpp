@@ -272,7 +272,7 @@ namespace jafar {
  * (usually to make the program catch), but disable this in debug mode because it
  * prevents from getting a backtrace in debuggers.
  */
-#ifndef JFR_NDEBUG
+#ifdef JFR_NDEBUG
 	#define JFR_GLOBAL_TRY try{
 	#define JFR_GLOBAL_CATCH } catch (kernel::Exception &e) { std::cout << e.what(); throw e; }
 #else
