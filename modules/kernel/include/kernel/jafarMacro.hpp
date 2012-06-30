@@ -267,6 +267,19 @@ namespace jafar {
     throw ExceptionName(id, s.str(), __FILE__, __LINE__);	\
   }
 
+/**
+ * general try/catch block to display the exception message and forward the exception
+ * (usually to make the program catch), but disable this in debug mode because it
+ * prevents from getting a backtrace in debuggers.
+ */
+#ifndef JFR_NDEBUG
+	#define JFR_GLOBAL_TRY try{
+	#define JFR_GLOBAL_CATCH } catch (kernel::Exception &e) { std::cout << e.what(); throw e; }
+#else
+	#define JFR_GLOBAL_TRY
+	#define JFR_GLOBAL_CATCH
+#endif
+
 /** If the \a predicate is \c FALSE, throw \a ExceptionName with ID \a
  * id along with \a message. The constructor of the class \a
  * ExceptionName must have signature compatible with ExceptionName(id,
