@@ -69,9 +69,23 @@ namespace kernel {
 	/**
 	The program needs to be privileged to be able to increase its priority beyond normal.
 	@param prio between -20 (highest priority), to 20 (lowest priority), including 0 (normal priority). 
-	@return 0 if successful
 	*/
-	int setCurrentThreadPriority(int prio);
+	void setCurrentThreadPriority(int prio);
+
+	/**
+	 * @brief setCurrentThreadScheduler
+	 * @param policy SCHED_OTHER (default), SCHED_FIFO, SCHED_RR... (see man sched_setscheduler)
+	 * @param priority
+	 */
+	void setCurrentThreadScheduler(int policy, int priority);
+
+	/**
+	 * @brief setProcessScheduler
+	 * @param policy SCHED_OTHER (default), SCHED_FIFO, SCHED_RR... (see man sched_setscheduler)
+	 * @param priority
+	 */
+	void setProcessScheduler(int policy, int priority);
+
 	
 	/**
 	This class wraps a simple variable with a mutex
