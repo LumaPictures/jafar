@@ -2,7 +2,7 @@
 
 build_jafar_module(kernel
   VERSION 0
-  REVISION 3
+  REVISION 4
   #REQUIRED_MODULES
   #OPTIONAL_MODULES
   REQUIRED_EXTLIBS boost_date_time boost_thread
