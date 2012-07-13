@@ -9,9 +9,66 @@
 #include <list>
 #include <iomanip>
 
+#include <kernel/threads.hpp>
+
 namespace jafar {
 
   namespace kernel {
+
+
+    /** Interface Loggable. Objects that aim at being logged
+     * by LoggerTask have to implement this interface and contain
+     * everything that is required to log the object (file names, file
+     * descriptors, content...)
+     *
+     * \ingroup kernel
+     */
+    class Loggable
+    {
+     public:
+      virtual void log() = 0;
+      virtual ~Loggable() {}
+    };
+
+
+    /** This object creates a thread that log objects.
+     *
+     * \ingroup kernel
+     */
+    class LoggerTask
+    {
+     private:
+      kernel::VariableCondition<size_t> cond;
+      std::list<Loggable*> queue;
+      bool stopping;
+      boost::thread *task_thread;
+      int niceness;
+
+     private:
+      void task();
+
+     public:
+      LoggerTask(int niceness = 0);
+      void push(Loggable *loggable);
+      void stop(bool wait = true);
+      void join();
+    };
+
+
+    /** Loggable object for DataLogger
+     *
+     * \ingroup kernel
+     */
+    class LoggableString: public Loggable
+    {
+     private:
+      std::ofstream &logStream;
+      std::string content;
+     public:
+       LoggableString(std::ofstream & logStream, std::string const & content):
+        logStream(logStream), content(content) {}
+       virtual void log();
+    };
 
 
     class DataLogger;
@@ -66,7 +123,9 @@ namespace jafar {
 
     }; // class Loggable
 
-    /** This object logs data.
+
+
+    /** This object logs data in a single log file.
      *
      * \ingroup kernel
      */
@@ -76,6 +135,7 @@ namespace jafar {
 
       std::ofstream logStream;
       std::ostringstream logHeaderLine;
+      std::ostringstream logContent;
       bool logStarted;
 
       /// default separator is whitespace
@@ -86,11 +146,15 @@ namespace jafar {
 
       unsigned int nbColumns;
 
+      LoggerTask *loggerTask;
+
       typedef std::list<DataLoggable const*> LoggablesList;
       LoggablesList loggables;
 
       typedef std::list<DataLogger*> LoggersList;
       LoggersList slaves;
+
+      void write(std::ostringstream & content);
 
     public:
 
@@ -99,10 +163,12 @@ namespace jafar {
        * @param separator_ string used to separate the data
        * @param commentPrefix_ string which starts a comment line
        */
-      DataLogger(std::string const& logFilename_, 
-		 char separator_ = '\t', 
-		 char commentPrefix_ = '#');
+      DataLogger(std::string const& logFilename_,
+        char separator_ = '\t',
+        char commentPrefix_ = '#');
 
+      /// setting a logger task defers actual file write to a separate thread
+      void setLoggerTask(LoggerTask *loggerTask) { this->loggerTask = loggerTask; }
 
       /// write \a comment_
       void writeComment(std::string const& comment_);
@@ -127,7 +193,7 @@ namespace jafar {
       void logStats();
 
       /** This method writes a line of legend. Example:
-       * 
+       *
        * \code
        *  log.writeLegend("x");
        * \endcode
@@ -147,22 +213,22 @@ namespace jafar {
       /// this method logs any data
       template <typename T>
       void writeData(T const& d) {
-	logStream << d << separator;
+        logContent << d << separator;
       }
       void writeNewLine() {
-	logStream << std::endl;
+        logContent << std::endl;
       }
 
       /// write a NaN to the log
       void writeNaN() {
-	logStream << "NaN" << separator;
+        logContent << "NaN" << separator;
       }
 
       /// this method logs any data vector
       template <class Vec>
       void writeDataVector(Vec const& v) {
-	for (std::size_t i = 0 ; i < v.size() ; ++i)
-	  writeData(v[i]);
+        for (std::size_t i = 0 ; i < v.size() ; ++i)
+          writeData(v[i]);
       }
 
     }; // class DataLogger

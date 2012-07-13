@@ -4,9 +4,85 @@
 #include "boost/tokenizer.hpp"
 
 #include "kernel/jafarException.hpp"
+#include <kernel/jafarMacro.hpp>
 #include "kernel/dataLog.hpp"
 
 using namespace jafar::kernel;
+
+
+
+/*
+ * LoggerTask
+ */
+
+void LoggerTask::task()
+{ JFR_GLOBAL_TRY
+  // this thread should never be real time
+  kernel::setCurrentThreadScheduler(SCHED_OTHER, 0);
+  kernel::setCurrentThreadPriority(niceness);
+
+  const int warning_queue_size = 500;
+  int remain = 0, prev_remain = 0;
+
+  Loggable *object;
+
+  while (!stopping || remain)
+  {
+    // wait for and get next data to save
+    cond.wait(boost::lambda::_1 != 0, false);
+    object = queue.back();
+    queue.pop_back();
+    cond.var--;
+    remain = cond.var;
+    cond.unlock();
+
+    object->log();
+    delete object;
+
+    bool remain_cut = (remain > warning_queue_size ? remain : 0);
+    if (remain_cut > prev_remain || (remain_cut == 0 && prev_remain != 0))
+      std::cout << "LoggerTask: " << remain << " objects in queue." << std::endl;
+    prev_remain = remain_cut;
+  }
+  JFR_GLOBAL_CATCH
+}
+
+LoggerTask::LoggerTask(int niceness): cond(0), stopping(false), niceness(niceness)
+{
+  task_thread = new boost::thread(boost::bind(&LoggerTask::task,this));
+}
+
+void LoggerTask::push(Loggable *loggable)
+{
+  cond.lock();
+  queue.push_front(loggable);
+  cond.var++;
+  cond.unlock();
+  cond.notify();
+}
+
+void LoggerTask::stop(bool wait)
+{
+  stopping = true;
+  if (wait) join();
+}
+
+void LoggerTask::join()
+{
+  task_thread->join();
+}
+
+
+/*
+ * LoggableString
+ */
+
+void LoggableString::log()
+{
+  logStream << content;
+  JFR_IO_STREAM(logStream, "LoggableString: write error");
+}
+
 
 /*
  * DataLoggable
@@ -37,6 +113,7 @@ DataLogger::DataLogger(std::string const& logFilename_,
   separator(separator_),
   commentPrefix(commentPrefix_),
   nbColumns(0),
+  loggerTask(NULL),
   loggables() 
 {
   logHeaderLine << commentPrefix_;
@@ -44,11 +121,23 @@ DataLogger::DataLogger(std::string const& logFilename_,
 		"DataLogger: error while opening file " << logFilename_);
 }
 
+
+void DataLogger::write(std::ostringstream & content)
+{
+  if (loggerTask)
+    loggerTask->push(new LoggableString(logStream, content.str()));
+  else
+  {
+    logStream << content.str();
+    JFR_IO_STREAM(logStream, "DataLogger: write error");
+  }
+  content.str("");
+}
+
+
 void DataLogger::writeComment(std::string const& comment_)
 {
-  logStream << commentPrefix << commentPrefix << " " << comment_ << " " << std::endl;
-  JFR_IO_STREAM(logStream,
-		"DataLogger::writeComment: error while writting :\n" << comment_);
+  logContent << commentPrefix << commentPrefix << " " << comment_ << " " << std::endl;
 }
 
 void DataLogger::writeCurrentDate()
@@ -64,6 +153,7 @@ void DataLogger::addLoggable(DataLoggable& loggable_)
   loggable_.setLogger(*this);
   loggable_.writeLogHeader(*this);
   loggable_.addMembersToLog(*this);
+  write(logContent);
 }
 
 void DataLogger::removeLoggable(DataLoggable const& loggable_)
@@ -80,32 +170,31 @@ void DataLogger::log()
 {
 	if (!logStarted)
 	{
-		logStream << logHeaderLine.str() << std::endl;
+		write(logContent); // flush
+		logHeaderLine << std::endl;
+		write(logHeaderLine);
 		logStarted = true;
 	}
 
   // ask loggables to log their data in turn
-  for (LoggablesList::const_iterator it = loggables.begin() ; it != loggables.end() ; ++it) {
+  for (LoggablesList::const_iterator it = loggables.begin() ; it != loggables.end() ; ++it)
     (**it).writeLogData(*this);
-  }
-  logStream << std::endl;
-  JFR_IO_STREAM(logStream, "DataLogger::log");
+  logContent << std::endl;
+  write(logContent);
 
   // dispatch the log() event to the slaves
-  for (LoggersList::iterator it = slaves.begin() ; it != slaves.end() ; ++it) {
+  for (LoggersList::iterator it = slaves.begin() ; it != slaves.end() ; ++it)
     (**it).log();
-  }
 }
 
 
 void DataLogger::logStats()
 {
   // ask loggables to log their data in turn
-  for (LoggablesList::const_iterator it = loggables.begin() ; it != loggables.end() ; ++it) {
+  for (LoggablesList::const_iterator it = loggables.begin() ; it != loggables.end() ; ++it)
     (**it).writeLogStats(*this);
-  }
-  logStream << std::endl;
-  JFR_IO_STREAM(logStream, "DataLogger::log");
+  logContent << std::endl;
+  write(logContent);
 
   // dispatch the log() event to the slaves
   for (LoggersList::iterator it = slaves.begin() ; it != slaves.end() ; ++it) {
@@ -117,10 +206,8 @@ void DataLogger::logStats()
 void DataLogger::writeLegend(std::string const& legend_)
 {
   nbColumns++;
-  logStream << commentPrefix << " " << nbColumns  << ":" << legend_ << std::endl;
+  logContent << commentPrefix << " " << nbColumns  << ":" << legend_ << std::endl;
   logHeaderLine << legend_ << separator;
-  JFR_IO_STREAM(logStream,
-		"DataLogger::writeLegend: error while writting :\n" << legend_);
 }
 
 void DataLogger::writeLegendTokens(std::string const& legendTokens_, std::string const& tokenSep_)
@@ -128,14 +215,12 @@ void DataLogger::writeLegendTokens(std::string const& legendTokens_, std::string
   typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
   boost::char_separator<char> sep(tokenSep_.c_str());
   tokenizer tokens(legendTokens_, sep);
-  logStream << commentPrefix << " ";
+  logContent << commentPrefix << " ";
   for (tokenizer::iterator it = tokens.begin(); it != tokens.end(); ++it) {
     nbColumns++;
-    logStream << nbColumns << ":" << *it << separator;
+    logContent << nbColumns << ":" << *it << separator;
     logHeaderLine << *it << separator;
   }
-  logStream << std::endl;
-  JFR_IO_STREAM(logStream,
-		"DataLogger::writeLegendTokens: error while writting :\n" << legendTokens_);
+  logContent << std::endl;
 }
 

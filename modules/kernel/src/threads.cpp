@@ -142,7 +142,7 @@ std::cout << "FifoMutex::unlock(" << boost::this_thread::get_id() << ") : postin
 		int r;
 		
 		#if 0
-		// all of this isn't working, apparently only prio 0 is allowed with SCHED_OTHER...
+		// all of this isn't working
 		
 		int policy;
 		struct sched_param param;
@@ -161,11 +161,6 @@ std::cout << "FifoMutex::unlock(" << boost::this_thread::get_id() << ") : postin
 		r = pthread_getschedparam(t.native_handle(), &policy, &param);
 		printThreadsPrioInfo(r, policy, param, true);
 		
-		
-		r = sched_setscheduler(t.native_handle(), policy, &param);
-		printThreadsPrioInfo(r, policy, param, false);
-		r = pthread_getschedparam(t.native_handle(), &policy, &param);
-		printThreadsPrioInfo(r, policy, param, true);
 		#endif
 		
 		/*
@@ -177,9 +172,26 @@ std::cout << "FifoMutex::unlock(" << boost::this_thread::get_id() << ") : postin
 		return r;
 	}
 	
-	int setCurrentThreadPriority(int prio)
+	void setCurrentThreadPriority(int priority)
 	{
-		return setpriority(PRIO_PROCESS, 0, prio);
+		int r = setpriority(PRIO_PROCESS, 0, priority);
+		if (r) perror("Error setCurrentThreadPriority");
+	}
+
+	void setCurrentThreadScheduler(int policy, int priority)
+	{
+		struct sched_param param;
+		param.sched_priority = priority;
+		int r = pthread_setschedparam(pthread_self(), policy, &param);
+		if (r) perror("Error setCurrentThreadScheduler");
+	}
+
+	void setProcessScheduler(int policy, int priority)
+	{
+		struct sched_param param;
+		param.sched_priority = priority;
+		int r = sched_setscheduler(0/*getpid()*/, policy, &param);
+		if (r) perror("Error setProcessScheduler");
 	}
 
 

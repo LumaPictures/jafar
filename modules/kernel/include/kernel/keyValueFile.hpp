@@ -66,7 +66,24 @@ namespace jafar {
 		      "key: " << key << std::endl <<
 		      "value: " << it->second << std::endl <<
 		      "value-type: " << typeid(T).name());
+			}
+
+      /// get the \a value of item \a key with default value if does not exist
+      template<class T>
+      void getItem(std::string const& key, T& value, std::string default_value) const
+      {
+        KeyValueMap::const_iterator it = keyValue.find(key);
+
+        std::istringstream ss(it == keyValue.end() ? default_value : it->second);
+        ss >> value;
+
+        JFR_IO_STREAM(ss,
+                "KeyValueFile::getItem: invalid value parsing:" << std::endl <<
+                "key: " << key << std::endl <<
+                "value: " << it->second << std::endl <<
+                "value-type: " << typeid(T).name());
       }
+
 
       /// set the \a value of item \a key.     
       template<class T>
