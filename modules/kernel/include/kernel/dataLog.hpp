@@ -148,7 +148,7 @@ namespace jafar {
 
       LoggerTask *loggerTask;
 
-      typedef std::list<DataLoggable const*> LoggablesList;
+      typedef std::list<DataLoggable *> LoggablesList;
       LoggablesList loggables;
 
       typedef std::list<DataLogger*> LoggersList;
@@ -167,6 +167,8 @@ namespace jafar {
         char separator_ = '\t',
         char commentPrefix_ = '#');
 
+      ~DataLogger();
+
       /// setting a logger task defers actual file write to a separate thread
       void setLoggerTask(LoggerTask *loggerTask) { this->loggerTask = loggerTask; }
 
@@ -180,7 +182,7 @@ namespace jafar {
       void addLoggable(DataLoggable& loggable_);
 
       /// remove \a loggable_
-      void removeLoggable(DataLoggable const& loggable_);
+      void removeLoggable(DataLoggable & loggable_);
 
       /** Add slave \a logger_. log() events are dispatched to the
        * slaves.

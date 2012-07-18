@@ -121,6 +121,20 @@ DataLogger::DataLogger(std::string const& logFilename_,
 		"DataLogger: error while opening file " << logFilename_);
 }
 
+DataLogger::~DataLogger()
+{
+	LoggablesList::iterator end = loggables.end();
+	for(LoggablesList::iterator current = loggables.begin();
+			current != end; ++current)
+	{
+		// Set the p_logger for all loggables to NULL, to indicate that it is
+		// no longer valid... this way, things should work whether all the
+		// loggables are deleted first, or the logger
+		DataLoggable* curP = *current;
+		curP->p_logger = NULL;
+	}
+}
+
 
 void DataLogger::write(std::ostringstream & content)
 {
@@ -156,7 +170,7 @@ void DataLogger::addLoggable(DataLoggable& loggable_)
   write(logContent);
 }
 
-void DataLogger::removeLoggable(DataLoggable const& loggable_)
+void DataLogger::removeLoggable(DataLoggable & loggable_)
 {
   loggables.remove(&loggable_);
 }
