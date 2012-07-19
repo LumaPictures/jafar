@@ -341,6 +341,21 @@ else(ENABLE_UEYE)
 	set(HAVE_UEYE FALSE)
 endif(ENABLE_UEYE)
 
+###
+# Aruco
+###
+option(ENABLE_ARUCO "enable use of ARUCO" ON)
+if(ENABLE_ARUCO)
+    find_package(Aruco)
+    set(HAVE_ARUCO ${ARUCO_FOUND})
+    if(ARUCO_FOUND)    
+        include_directories(${Aruco_INCLUDE_DIRS})
+        set(LIBS ${LIBS} ${Aruco_LIBRARIES})
+        set(LIBS_MAP_ARUCO "Aruco")
+    endif(ARUCO_FOUND)
+else(ENABLE_ARUCO)
+    set(HAVE_ARUCO FALSE)
+endif(ENABLE_ARUCO)
 
 #------------------------------------------------------------------------------
 # pkgconfig findable
