@@ -68,3 +68,6 @@
 
 /* QT4 */
 #cmakedefine HAVE_QT4
+
+/* Aruco */
+#cmakedefine HAVE_ARUCO
