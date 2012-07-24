@@ -64,6 +64,7 @@ void LoggerTask::push(Loggable *loggable)
 void LoggerTask::stop(bool wait)
 {
   stopping = true;
+  task_thread->interrupt();
   if (wait) join();
 }
 
