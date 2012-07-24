@@ -3,7 +3,7 @@
 SCRIPT_PATH=$(cd ${0%/*} && echo $PWD/${0##*/})
 MY_JAFAR_DIR=`dirname "$SCRIPT_PATH"`/..
 
-JAFAR_URL=`grep "url = " ${MY_JAFAR_DIR}/.git/config | sed -e "s#\t*url = ##"`
+JAFAR_URL=`grep -m 1 "url = " ${MY_JAFAR_DIR}/.git/config | sed -e "s#\t*url = ##"`
 GITREPO_SUFFIX=`echo ${JAFAR_URL} | sed -e "s#\(\.git\$\)##"`
 if [ "$GITREPO_SUFFIX" != "$JAFAR_URL" ]; then GITREPO_SUFFIX=".git"; else GITREPO_SUFFIX=""; fi
 BASE_URL=`echo ${JAFAR_URL} | sed -e "s#jafar/jafar\(\.git\)*#jafar#"`
